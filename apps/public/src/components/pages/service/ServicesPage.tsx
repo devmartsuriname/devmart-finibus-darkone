@@ -1,19 +1,17 @@
 import React from "react";
 import Breadcrumb from "../../common/Breadcrumb";
-import WhatWeDoArea from "./WhatWeDoArea";
-import HowWeWorkArea from "./HowWeWorkArea";
-import WhyChooseUsArea from "../../common/WhyChooseUsArea";
-import TestimonialArea from "../../common/TestimonialArea";
 import LetsTalkArea from "../../common/LetsTalkArea";
+import HowWeWorkArea from "./HowWeWorkArea";
+import ServicePrice from "./ServicePrice";
+import WhatWeDoArea from "./WhatWeDoArea";
 
 function ServicesPage() {
   return (
     <>
-      <Breadcrumb pageName="Services" />
+      <Breadcrumb pageName="Service" />
       <WhatWeDoArea />
       <HowWeWorkArea />
-      <WhyChooseUsArea black="" lable="" />
-      <TestimonialArea />
+      <ServicePrice />
       <LetsTalkArea />
     </>
   );
