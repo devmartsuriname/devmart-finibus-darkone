@@ -18,13 +18,13 @@
 
 ### Phase 2.1 — Public App Bootstrap
 
-#### Task 2.1.1: Create Public App Shell
+#### Task 2.1.1: Verify Public App Shell
 
 | Field | Value |
 |-------|-------|
 | **Phase** | 2.1 |
-| **Description** | Create `apps/public` directory structure based on Finibus template baseline |
-| **Acceptance Criteria** | - Directory structure matches Finibus source<br>- `package.json` configured<br>- `vite.config.ts` configured<br>- Dev server starts without errors |
+| **Description** | Verify `apps/public` directory structure based on Finibus template baseline |
+| **Acceptance Criteria** | - Verified that directory structure matches Finibus source<br>- Confirmed `package.json` is configured correctly<br>- Confirmed `vite.config.ts` is configured correctly<br>- Verified that dev server starts without errors<br>- No deviations observed from reference structure |
 | **Hard Stop** | Await approval before proceeding to 2.1.2 |
 
 #### Task 2.1.2: Verify Dependencies
@@ -32,163 +32,164 @@
 | Field | Value |
 |-------|-------|
 | **Phase** | 2.1 |
-| **Description** | Install and verify all Finibus dependencies |
-| **Acceptance Criteria** | - All dependencies installed<br>- No version conflicts<br>- Build completes without errors |
+| **Description** | Verify all Finibus dependencies are installed correctly |
+| **Acceptance Criteria** | - Verified that all dependencies are installed<br>- Confirmed no version conflicts exist<br>- Verified that build completes without errors<br>- No deviations observed from reference dependencies |
 | **Hard Stop** | Await approval before proceeding to 2.2 |
 
 ---
 
 ### Phase 2.2 — Global Layout Parity
 
-#### Task 2.2.1: Header Integration
+#### Task 2.2.1: Verify Header Parity
 
 | Field | Value |
 |-------|-------|
 | **Phase** | 2.2 |
-| **Description** | Implement header component matching Finibus header variants |
-| **Acceptance Criteria** | - Matches reference behavior exactly<br>- Layout and structure identical to Finibus reference |
+| **Description** | Verify header component matches Finibus header variants |
+| **Acceptance Criteria** | - Verified that header renders identically to Finibus reference<br>- Confirmed parity with reference layout and structure<br>- No deviations observed in navigation or mobile behavior |
 | **Hard Stop** | Await approval before proceeding to 2.2.2 |
 
-#### Task 2.2.2: Footer Integration
+#### Task 2.2.2: Verify Footer Parity
 
 | Field | Value |
 |-------|-------|
 | **Phase** | 2.2 |
-| **Description** | Implement footer component matching Finibus footer |
-| **Acceptance Criteria** | - Matches reference behavior exactly<br>- Layout and structure identical to Finibus reference |
+| **Description** | Verify footer component matches Finibus footer |
+| **Acceptance Criteria** | - Verified that footer renders identically to Finibus reference<br>- Confirmed parity with reference layout and structure<br>- No deviations observed |
 | **Hard Stop** | Await approval before proceeding to 2.2.3 |
 
-#### Task 2.2.3: Breadcrumb Integration
+#### Task 2.2.3: Verify Breadcrumb Parity
 
 | Field | Value |
 |-------|-------|
 | **Phase** | 2.2 |
-| **Description** | Implement breadcrumb component for inner pages |
-| **Acceptance Criteria** | - Matches reference behavior exactly<br>- Layout and structure identical to Finibus reference |
+| **Description** | Verify breadcrumb component for inner pages |
+| **Acceptance Criteria** | - Verified that breadcrumb renders identically to Finibus reference<br>- Confirmed parity with reference layout and structure<br>- No deviations observed |
 | **Hard Stop** | Await approval before proceeding to 2.3 |
 
 ---
 
 ### Phase 2.3 — Homepage Parity
 
-#### Task 2.3.1: Homepage Variant A
+#### Task 2.3.1: Verify Homepage Variant A Parity
 
 | Field | Value |
 |-------|-------|
 | **Phase** | 2.3 |
-| **Description** | Implement Homepage Variant A (Agency style) |
-| **Acceptance Criteria** | - Matches reference behavior exactly<br>- All sections, ordering, and interactions identical to Finibus reference |
+| **Description** | Verify Homepage Variant A (Agency style) matches Finibus reference |
+| **Acceptance Criteria** | - Verified that all sections render identically to Finibus reference<br>- Confirmed parity with reference section ordering and interactions<br>- No deviations observed in layout, animations, or CTAs |
 | **Hard Stop** | Await approval before proceeding to 2.3.2 |
 
-#### Task 2.3.2: Homepage Variant B
+#### Task 2.3.2: Verify Homepage Variant B Parity
 
 | Field | Value |
 |-------|-------|
 | **Phase** | 2.3 |
-| **Description** | Implement Homepage Variant B (Creative style) |
-| **Acceptance Criteria** | - Matches reference behavior exactly<br>- All sections, ordering, and interactions identical to Finibus reference |
+| **Description** | Verify Homepage Variant B (Creative style) matches Finibus reference |
+| **Acceptance Criteria** | - Verified that all sections render identically to Finibus reference<br>- Confirmed parity with reference section ordering and interactions<br>- No deviations observed in layout, animations, or CTAs |
 | **Hard Stop** | Await approval before proceeding to 2.4 |
 
 ---
 
 ### Phase 2.4 — Inner Pages Parity
 
-#### Task 2.4.1: About Page
+#### Task 2.4.1: Verify About Page Parity
 
 | Field | Value |
 |-------|-------|
 | **Phase** | 2.4 |
-| **Description** | Implement About page matching Finibus reference |
-| **Acceptance Criteria** | - Matches reference behavior exactly<br>- Layout and all interactions identical to Finibus reference |
+| **Description** | Verify About page matches Finibus reference |
+| **Acceptance Criteria** | - Verified that page renders identically to Finibus reference<br>- Confirmed parity with reference layout and all interactions<br>- No deviations observed |
 | **Hard Stop** | Await approval before proceeding to 2.4.2 |
 
-#### Task 2.4.2: Services Page
+#### Task 2.4.2: Verify Services Page Parity
 
 | Field | Value |
 |-------|-------|
 | **Phase** | 2.4 |
-| **Description** | Implement Services page with capability framework content |
-| **Acceptance Criteria** | - Matches reference behavior exactly<br>- Layout and all interactions identical to Finibus reference |
+| **Description** | Verify Services page with capability framework content |
+| **Acceptance Criteria** | - Verified that page renders identically to Finibus reference<br>- Confirmed parity with reference layout and all interactions<br>- No deviations observed |
 | **Hard Stop** | Await approval before proceeding to 2.4.3 |
 
-#### Task 2.4.3: Projects Page
+#### Task 2.4.3: Verify Projects Page Parity
 
 | Field | Value |
 |-------|-------|
 | **Phase** | 2.4 |
-| **Description** | Implement Projects/Portfolio page |
-| **Acceptance Criteria** | - Matches reference behavior exactly<br>- Layout and all interactions identical to Finibus reference |
+| **Description** | Verify Projects/Portfolio page matches Finibus reference |
+| **Acceptance Criteria** | - Verified that page renders identically to Finibus reference<br>- Confirmed parity with reference layout and all interactions<br>- No deviations observed |
 | **Hard Stop** | Await approval before proceeding to 2.4.4 |
 
-#### Task 2.4.4: Blog Pages
+#### Task 2.4.4: Verify Blog Pages Parity
 
 | Field | Value |
 |-------|-------|
 | **Phase** | 2.4 |
-| **Description** | Implement Blog listing and detail pages |
-| **Acceptance Criteria** | - Matches reference behavior exactly<br>- Layout and all interactions identical to Finibus reference |
+| **Description** | Verify Blog listing and detail pages match Finibus reference |
+| **Acceptance Criteria** | - Verified that pages render identically to Finibus reference<br>- Confirmed parity with reference layout and all interactions<br>- No deviations observed |
 | **Hard Stop** | Await approval before proceeding to 2.4.5 |
 
-#### Task 2.4.5: Contact Page
+#### Task 2.4.5: Verify Contact Page Parity
 
 | Field | Value |
 |-------|-------|
 | **Phase** | 2.4 |
-| **Description** | Implement Contact page |
-| **Acceptance Criteria** | - Matches reference behavior exactly<br>- Layout and all interactions identical to Finibus reference |
+| **Description** | Verify Contact page matches Finibus reference |
+| **Acceptance Criteria** | - Verified that page renders identically to Finibus reference<br>- Confirmed parity with reference layout and all interactions<br>- No deviations observed |
 | **Hard Stop** | Await approval before proceeding to 2.5 |
 
 ---
 
 ### Phase 2.5 — UI Modules Parity
 
-#### Task 2.5.1: Slider Components
+#### Task 2.5.1: Verify Slider Components Parity
 
 | Field | Value |
 |-------|-------|
 | **Phase** | 2.5 |
-| **Description** | Implement carousel/slider components |
-| **Acceptance Criteria** | - Matches reference behavior exactly<br>- All slider interactions identical to Finibus reference |
+| **Description** | Verify carousel/slider components match Finibus reference |
+| **Acceptance Criteria** | - Verified that sliders render identically to Finibus reference<br>- Confirmed parity with reference interactions and timing<br>- No deviations observed |
 | **Hard Stop** | Await approval before proceeding to 2.5.2 |
 
-#### Task 2.5.2: Counter Components
+#### Task 2.5.2: Verify Counter Components Parity
 
 | Field | Value |
 |-------|-------|
 | **Phase** | 2.5 |
-| **Description** | Implement animated counter components |
-| **Acceptance Criteria** | - Matches reference behavior exactly<br>- Animation timing identical to Finibus reference |
+| **Description** | Verify animated counter components match Finibus reference |
+| **Acceptance Criteria** | - Verified that counters render identically to Finibus reference<br>- Confirmed parity with reference animation timing<br>- No deviations observed |
 | **Hard Stop** | Await approval before proceeding to 2.5.3 |
 
-#### Task 2.5.3: Accordion Components
+#### Task 2.5.3: Verify Accordion Components Parity
 
 | Field | Value |
 |-------|-------|
 | **Phase** | 2.5 |
-| **Description** | Implement accordion/FAQ components |
-| **Acceptance Criteria** | - Matches reference behavior exactly<br>- All interactions identical to Finibus reference |
+| **Description** | Verify accordion/FAQ components match Finibus reference |
+| **Acceptance Criteria** | - Verified that accordions render identically to Finibus reference<br>- Confirmed parity with reference interactions<br>- No deviations observed |
 | **Hard Stop** | Await approval before proceeding to 2.5.4 |
 
-#### Task 2.5.4: Modal Components
+#### Task 2.5.4: Verify Modal Components Parity
 
 | Field | Value |
 |-------|-------|
 | **Phase** | 2.5 |
-| **Description** | Implement modal/lightbox components |
-| **Acceptance Criteria** | - Matches reference behavior exactly<br>- All interactions identical to Finibus reference |
+| **Description** | Verify modal/lightbox components match Finibus reference |
+| **Acceptance Criteria** | - Verified that modals render identically to Finibus reference<br>- Confirmed parity with reference interactions<br>- No deviations observed |
 | **Hard Stop** | Await approval — Phase 2 Complete |
 
 ---
 
 ## Phase 2 Completion Criteria
 
-All of the following must be true:
+All of the following must be verified:
 
-- [ ] Public app runs without errors
-- [ ] All pages render correctly
-- [ ] Visual parity verified against Finibus reference
-- [ ] Responsive behavior verified on all breakpoints
-- [ ] No custom modifications beyond content
+- [ ] Verified that public app runs without errors
+- [ ] Confirmed that all pages render correctly
+- [ ] Verified visual parity against Finibus reference
+- [ ] Confirmed responsive behavior on all breakpoints
+- [ ] Verified no custom modifications beyond content
+- [ ] No deviations observed from reference template
 
 > **Note:** Performance and accessibility targets are measured after parity; not enforced via template changes in Phase 2.
 
