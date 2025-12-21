@@ -92,11 +92,15 @@ apps/admin/src/assets/scss/     # Darkone styles ONLY
 ### 4.2 Admin App Routes
 
 ```
-/admin              # Dashboard (redirects to /admin/dashboards)
-/admin/dashboards   # Main dashboard
-/admin/auth/*       # Authentication pages
-/admin/*            # Other admin modules
+/admin              # Dashboard (redirects to /admin/dashboards) — TBD
+/admin/dashboards   # Main dashboard — TBD
+/admin/auth/*       # Authentication pages — TBD
+/admin/*            # Other admin modules — TBD
 ```
+
+> **Note:** Admin base path (`/admin`) and `/admin/auth/*` routing are TBD.
+> 
+> **No routing/basepath changes authorized in Phase 2.**
 
 ### 4.3 No Cross-Navigation
 

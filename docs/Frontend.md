@@ -70,8 +70,9 @@
 |------|---------|
 | Text content | ✅ Replace with Devmart copy |
 | Images | ✅ Replace with Devmart assets |
-| Colors | ✅ Update CSS variables only |
 | Links | ✅ Update hrefs to Devmart routes |
+
+> **Note:** Colors, styling, tokens, and SCSS changes are NOT allowed in Phase 2.
 
 #### 2.1.2 Prohibited Changes
 
@@ -211,6 +212,8 @@ Both apps follow Bootstrap 5 breakpoints:
 | Cumulative Layout Shift | < 0.1 |
 | Time to Interactive | < 3.0s |
 
+> **Phase 2 Note:** Performance targets are measured only; do not enforce via template changes during parity.
+
 ---
 
 ## 7. Accessibility Requirements
@@ -222,6 +225,8 @@ Both apps follow Bootstrap 5 breakpoints:
 | Color contrast | WCAG AA |
 | Focus indicators | Visible |
 | Alt text | All images |
+
+> **Phase 2 Note:** Accessibility targets are measured only; do not enforce via template changes during parity.
 
 ---
 
