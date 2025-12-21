@@ -1,8 +1,20 @@
-import React from 'react'
-import Breadcrumb from '../../common/Breadcrumb'
+import React from "react";
+import Breadcrumb from "../../common/Breadcrumb";
+import ContactUsArea from "./ContactUsArea";
+import ContactForm from "./ContactForm";
+import LetsTalkArea from "../../common/LetsTalkArea";
 
 function ContactPage() {
-  return (<><Breadcrumb pageName="Contact Us" /><section className="contact-area sec-mar"><div className="container"><h2>Contact Us</h2></div></section></>)
+  return (
+    <>
+      <Breadcrumb pageName="Contact Us" />
+      <section className="contact-area sec-mar">
+        <ContactUsArea />
+        <ContactForm />
+      </section>
+      <LetsTalkArea />
+    </>
+  );
 }
 
-export default ContactPage
+export default ContactPage;
