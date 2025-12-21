@@ -1,8 +1,11 @@
 # Architecture — Devmart Platform
 
-**Status:** Draft  
-**Phase:** Planning Only  
-**Execution:** Not Authorized  
+```
+Status: AUTHORITATIVE
+Phase: Phase 3 Alignment Complete
+Execution: Documentation Only — Build Not Authorized
+Last Updated: 2025-12-21
+```
 
 ---
 
@@ -10,20 +13,20 @@
 
 ```
 /
-├── Darkone-React_v1.0/      # Admin template (running, demo state)
-│   ├── src/
-│   ├── public/
-│   ├── package.json
-│   └── vite.config.ts
+├── apps/
+│   ├── public/              # Finibus-based public website (LOCKED)
+│   │   ├── src/
+│   │   ├── public/
+│   │   └── ...
+│   │
+│   └── admin/               # Darkone-based admin portal
+│       ├── src/
+│       ├── public/
+│       └── ...
 │
-├── finibus/                  # Public template (baseline imported)
-│   ├── src/
-│   ├── public/
-│   └── package.json
+├── Darkone-React_v1.0/      # Admin template (reference, read-only)
 │
-├── src/                      # Lovable wrapper (entry point)
-│
-├── docs/                     # Documentation (this directory)
+├── docs/                    # Documentation (this directory)
 └── README.md
 ```
 
@@ -31,43 +34,37 @@
 
 ---
 
-## 2. Future Target Structure (Optional — Not Authorized)
+## 2. Application Status
 
-The following structure is a conceptual target only. It is **NOT AUTHORIZED** for implementation.
+### 2.1 Public Website (apps/public)
 
-```
-devmart/
-├── apps/
-│   ├── public/          # Finibus-based public website
-│   │   ├── src/
-│   │   ├── public/
-│   │   ├── package.json
-│   │   └── vite.config.ts
-│   │
-│   └── admin/           # Darkone-based admin portal
-│       ├── src/
-│       ├── public/
-│       ├── package.json
-│       └── vite.config.ts
-│
-├── docs/                # Documentation
-├── package.json         # Root workspace config
-└── README.md
-```
+| Attribute | Value |
+|-----------|-------|
+| Template | Finibus React |
+| Status | **LOCKED** — Phase 2 Complete |
+| Phase | Phase 2 Complete |
+| Modifications | ❌ Not Authorized |
 
-> **STATUS: This structure is conceptual only. No migration or restructuring is authorized.**
+### 2.2 Admin Portal (apps/admin)
+
+| Attribute | Value |
+|-----------|-------|
+| Template | Darkone React |
+| Status | Phase 3 — Placeholder Cleanup |
+| Phase | Phase 3 (Documentation Complete) |
+| Build | ❌ Not Authorized |
 
 ---
 
 ## 3. Application Isolation
 
-### 3.1 Build Isolation (Current State)
+### 3.1 Build Isolation
 
-| Aspect | Public App (Finibus) | Admin App (Darkone) |
-|--------|----------------------|---------------------|
-| Location | `/finibus/` | `/Darkone-React_v1.0/` |
-| Entry point | `finibus/src/main.tsx` | `Darkone-React_v1.0/src/main.tsx` |
-| Dev port | TBD | 8080 |
+| Aspect | Public App | Admin App |
+|--------|------------|-----------|
+| Location | `/apps/public/` | `/apps/admin/` |
+| Entry point | `src/main.tsx` | `src/main.tsx` |
+| Dev port | 3000 | 8080 |
 | Base path | `/` | `/admin` (TBD) |
 
 ### 3.2 Dependency Isolation
@@ -81,11 +78,11 @@ devmart/
 
 ## 4. SCSS Isolation Rules
 
-### 4.1 Strict Separation (Current Paths)
+### 4.1 Strict Separation
 
 ```
-finibus/src/assets/scss/              # Finibus styles ONLY
-Darkone-React_v1.0/src/assets/scss/   # Darkone styles ONLY
+apps/public/src/assets/scss/    # Finibus styles ONLY
+apps/admin/src/assets/scss/     # Darkone styles ONLY
 ```
 
 ### 4.2 Prohibited Actions
@@ -104,9 +101,9 @@ Darkone-React_v1.0/src/assets/scss/   # Darkone styles ONLY
 
 ---
 
-## 4. Routing Isolation
+## 5. Routing Architecture
 
-### 4.1 Public App Routes
+### 5.1 Public App Routes (Locked)
 
 ```
 /                   # Homepage
@@ -118,20 +115,44 @@ Darkone-React_v1.0/src/assets/scss/   # Darkone styles ONLY
 /contact            # Contact page
 ```
 
-### 4.2 Admin App Routes
+### 5.2 Admin App Routes (Phase 3)
 
-```
-/admin              # Dashboard (redirects to /admin/dashboards) — TBD
-/admin/dashboards   # Main dashboard — TBD
-/admin/auth/*       # Authentication pages — TBD
-/admin/*            # Other admin modules — TBD
-```
+**Devmart Business Routes:**
 
-> **Note:** Admin base path (`/admin`) and `/admin/auth/*` routing are TBD.
-> 
-> **No routing/basepath changes authorized in Phase 2.**
+| Route | Module | Phase 3 State |
+|-------|--------|---------------|
+| `/admin/dashboard` | Dashboard | Coming Soon |
+| `/admin/content/blog` | Blog | Empty table |
+| `/admin/content/projects` | Projects | Empty table |
+| `/admin/content/pages` | Pages | Empty table |
+| `/admin/content/media` | Media | Empty grid |
+| `/admin/content/testimonials` | Testimonials | Empty table |
+| `/admin/crm/leads` | Leads | Empty table |
+| `/admin/analytics` | Analytics | Coming Soon |
+| `/admin/settings` | Settings | Coming Soon |
 
-### 4.3 No Cross-Navigation
+**Auth Routes (Preserved):**
+
+| Route | Purpose |
+|-------|---------|
+| `/admin/auth/sign-in` | Login (demo) |
+| `/admin/auth/sign-up` | Registration (demo) |
+| `/admin/auth/reset-password` | Password reset (demo) |
+| `/admin/auth/lock-screen` | Lock screen (demo) |
+
+**Darkone Demo Routes (Hidden from Navigation):**
+
+| Route Pattern | Status |
+|---------------|--------|
+| `/admin/base-ui/*` | Hidden |
+| `/admin/forms/*` | Hidden |
+| `/admin/tables/*` | Hidden |
+| `/admin/charts/*` | Hidden |
+| `/admin/maps/*` | Hidden |
+| `/admin/icons/*` | Hidden |
+| `/admin/layouts/*` | Hidden |
+
+### 5.3 No Cross-Navigation
 
 - Public app never links to admin routes
 - Admin app never links to public routes
@@ -139,9 +160,9 @@ Darkone-React_v1.0/src/assets/scss/   # Darkone styles ONLY
 
 ---
 
-## 5. Authentication Boundary
+## 6. Authentication Boundary
 
-### 5.1 Current State (Demo)
+### 6.1 Current State (Demo)
 
 **Darkone Admin Only:**
 
@@ -157,7 +178,7 @@ Darkone-React_v1.0/src/assets/scss/   # Darkone styles ONLY
 - No protected routes
 - All pages publicly accessible
 
-### 5.2 Future State (Supabase)
+### 6.2 Future State (Supabase)
 
 **Planned Architecture:**
 
@@ -179,16 +200,16 @@ Darkone-React_v1.0/src/assets/scss/   # Darkone styles ONLY
 
 ---
 
-## 6. Deployment Architecture
+## 7. Deployment Architecture
 
-### 6.1 Current (Development)
+### 7.1 Current (Development)
 
 | App | Command | URL |
 |-----|---------|-----|
 | Admin | `npm run dev` | `http://localhost:8080` |
-| Public | TBD | `http://localhost:3000` |
+| Public | `npm run dev` | `http://localhost:3000` |
 
-### 6.2 Future (Production)
+### 7.2 Future (Production)
 
 | App | Domain | Path |
 |-----|--------|------|
@@ -206,13 +227,13 @@ OR
 
 ---
 
-## 8. Asset Isolation (Current Paths)
+## 8. Asset Isolation
 
 ### 8.1 Images
 
 ```
-finibus/src/assets/images/              # Public website images
-Darkone-React_v1.0/src/assets/images/   # Admin portal images
+apps/public/src/assets/images/    # Public website images
+apps/admin/src/assets/images/     # Admin portal images
 ```
 
 ### 8.2 Fonts
@@ -227,13 +248,13 @@ Darkone-React_v1.0/src/assets/images/   # Admin portal images
 
 ---
 
-## 8. Environment Variables
+## 9. Environment Variables
 
-### 8.1 Current
+### 9.1 Current
 
 No environment variables in use (demo mode).
 
-### 8.2 Future
+### 9.2 Future
 
 ```
 # Public App
@@ -250,10 +271,55 @@ VITE_ADMIN_API_URL=
 
 ---
 
+## 10. Devmart Admin Module Architecture
+
+### 10.1 Approved Modules
+
+| Section | Modules |
+|---------|---------|
+| MAIN | Dashboard |
+| CONTENT | Blog, Projects, Pages, Media, Testimonials |
+| CRM | Leads |
+| ANALYTICS | Analytics Dashboard |
+| SYSTEM | Settings |
+
+### 10.2 Excluded Modules
+
+| Module | Reason |
+|--------|--------|
+| Team Management | Not in scope |
+| Client Portal | Not in scope |
+| User/Profile | Phase 3 excluded |
+
+### 10.3 Hidden Modules (Darkone Demo)
+
+| Category | Status |
+|----------|--------|
+| Base UI | Hidden from navigation |
+| Forms | Hidden from navigation |
+| Tables | Hidden from navigation |
+| Charts | Hidden from navigation |
+| Maps | Hidden from navigation |
+| Icons | Hidden from navigation |
+| Layouts | Hidden from navigation |
+
+---
+
+## 11. Frontend Style Guide Requirement
+
+**Status:** Required in later phase — NOT Phase 3
+
+A Finibus-based Frontend Style Guide is required to ensure consistency between public frontend and admin content creation.
+
+**Phase 3 Action:** Document the requirement only.
+
+---
+
 ## Document Control
 
 | Version | Date | Author | Notes |
 |---------|------|--------|-------|
 | 0.1 | 2025-01-XX | Planning Agent | Initial draft |
+| 1.0 | 2025-12-21 | Planning Agent | Phase 3 alignment complete |
 
-**Next Review:** After Phase 2 execution approval
+**Next Review:** After Phase 3 build authorization
