@@ -1,23 +1,24 @@
-# Admin Placeholder Map
+# Admin Placeholder Map — Devmart Platform
 
 ```
-Status: Draft
-Phase: Planning Only
-Execution: Not Authorized
+Status: AUTHORITATIVE
+Phase: Phase 3 Alignment Complete
+Execution: Documentation Only — Build Not Authorized
+Last Updated: 2025-12-21
 ```
 
 ---
 
 ## 1. Purpose
 
-This document defines the placeholder strategy for each Admin module. Each placeholder specifies:
+This document defines the placeholder strategy for **Devmart business modules only**. 
 
-- Visual intent
-- Data state
-- Reusability intent
-- Placeholder content
+**Key Change:** This document has been rewritten to focus on Devmart business modules, not Darkone demo modules.
 
-**Note:** All placeholders described herein are conceptual. Implementation requires explicit authorization.
+**Governance:**
+- All placeholders described herein are conceptual
+- Implementation requires explicit authorization
+- Aligned with `Admin_Module_Map.md`
 
 ---
 
@@ -25,167 +26,254 @@ This document defines the placeholder strategy for each Admin module. Each place
 
 | Type | Visual Intent | Use Case |
 |------|---------------|----------|
-| `Empty State` | Clean, intentionally blank | Modules awaiting data connection |
-| `Coming Soon` | Informative placeholder | Features planned for future phases |
-| `Inactive Module` | Greyed/muted appearance | Modules not in current scope |
+| `Coming Soon` | Informative placeholder | Dashboard, Analytics, Settings |
+| `Empty Table` | Table structure with no data | Content modules, Leads |
+| `Empty Grid` | Grid structure with no items | Media Library |
 
 ---
 
-## 3. Dashboard Placeholders
+## 3. Dashboard Placeholder
 
-| Component | Current State | Placeholder Type | Data State | Reusability Intent |
-|-----------|---------------|------------------|------------|-------------------|
-| Cards (4x) | `cardsData` demo array | Empty State | No mock data | Card components preserved |
-| Chart | Demo series data | Empty State | No mock data | ApexCharts wrapper preserved |
-| SaleChart | Demo sales data | Empty State | No mock data | Chart config preserved |
-| CountryMap | Interactive demo | Empty State | Static map only | VectorMap component preserved |
-| User Widget | Demo user list | Empty State | No mock data | Widget structure preserved |
+| Component | Phase 3 State | Placeholder Content |
+|-----------|---------------|---------------------|
+| Main Dashboard | Coming Soon | "Admin Dashboard – Coming Soon" |
 
-**Placeholder Text (Dashboard):**
-- Cards: "—" or "0" with muted styling
-- Charts: "No data available"
-- Map: Static render, no tooltips
-- User: "No users to display"
+**Placeholder Specification:**
+```
+Route: /admin/dashboard
+Title: Admin Dashboard
+Content: 
+  - Centered "Coming Soon" message
+  - Optional: Card container for visual structure
+  - No demo data, no mock metrics
+  - No charts, no user widgets
+Visual: Clean, intentional empty state
+```
 
----
-
-## 4. Base UI Module Placeholders
-
-| Module | Route | Placeholder Type | Placeholder Content |
-|--------|-------|------------------|---------------------|
-| Accordions | `/admin/base-ui/accordions` | Inactive Module | "Component reference available" |
-| Alerts | `/admin/base-ui/alerts` | Inactive Module | "Component reference available" |
-| Avatars | `/admin/base-ui/avatars` | Inactive Module | "Component reference available" |
-| Badges | `/admin/base-ui/badges` | Inactive Module | "Component reference available" |
-| Breadcrumb | `/admin/base-ui/breadcrumb` | Inactive Module | "Component reference available" |
-| Buttons | `/admin/base-ui/buttons` | Inactive Module | "Component reference available" |
-| Cards | `/admin/base-ui/cards` | Inactive Module | "Component reference available" |
-| Collapse | `/admin/base-ui/collapse` | Inactive Module | "Component reference available" |
-| Dropdown | `/admin/base-ui/dropdown` | Inactive Module | "Component reference available" |
-| List Group | `/admin/base-ui/list-group` | Inactive Module | "Component reference available" |
-| Modals | `/admin/base-ui/modals` | Inactive Module | "Component reference available" |
-| Offcanvas | `/admin/base-ui/offcanvas` | Inactive Module | "Component reference available" |
-| Pagination | `/admin/base-ui/pagination` | Inactive Module | "Component reference available" |
-| Placeholders | `/admin/base-ui/placeholders` | Inactive Module | "Component reference available" |
-| Popovers | `/admin/base-ui/popovers` | Inactive Module | "Component reference available" |
-| Progress | `/admin/base-ui/progress` | Inactive Module | "Component reference available" |
-| Spinners | `/admin/base-ui/spinners` | Inactive Module | "Component reference available" |
-| Tabs | `/admin/base-ui/tabs` | Inactive Module | "Component reference available" |
-| Tooltips | `/admin/base-ui/tooltips` | Inactive Module | "Component reference available" |
-| Typography | `/admin/base-ui/typography` | Inactive Module | "Component reference available" |
-| Utilities | `/admin/base-ui/utilities` | Inactive Module | "Component reference available" |
-
-**Reusability Intent:** All Base UI components to be preserved as reference implementations.
+**Later Phase Intent:** Operational + Management dashboard with real metrics.
 
 ---
 
-## 5. Forms Module Placeholders
+## 4. Content Module Placeholders
 
-| Module | Route | Placeholder Type | Placeholder Content |
-|--------|-------|------------------|---------------------|
-| Basic Elements | `/admin/forms/basic-elements` | Inactive Module | "Form patterns available" |
-| Advance | `/admin/forms/advance` | Inactive Module | "Advanced form patterns available" |
-| Validation | `/admin/forms/validation` | Inactive Module | "Validation patterns available" |
-| Wizard | `/admin/forms/wizard` | Inactive Module | "Wizard pattern available" |
-| Editors | `/admin/forms/editors` | Inactive Module | "Editor integration available" |
+### 4.1 Blog / News
 
-**Reusability Intent:** Form patterns preserved for future form implementations.
+| Component | Phase 3 State | Placeholder Content |
+|-----------|---------------|---------------------|
+| Blog List | Empty Table | "No blog posts yet" |
 
----
-
-## 6. Tables Module Placeholders
-
-| Module | Route | Placeholder Type | Placeholder Content |
-|--------|-------|------------------|---------------------|
-| Basic Tables | `/admin/tables/basic-tables` | Inactive Module | "Table patterns available" |
-| Grid.js | `/admin/tables/gridjs` | Inactive Module | "Grid.js integration available" |
-
-**Reusability Intent:** Table components preserved for data display.
+**Placeholder Specification:**
+```
+Route: /admin/content/blog
+Title: Blog Posts
+Table Headers: Title, Author, Date, Status, Actions
+Table Body: Empty with "No blog posts yet" message
+Actions: Add New button (visible, inactive)
+```
 
 ---
 
-## 7. Charts Module Placeholders
+### 4.2 Projects / Portfolio
 
-| Module | Route | Placeholder Type | Placeholder Content |
-|--------|-------|------------------|---------------------|
-| ApexCharts | `/admin/charts/apex-charts` | Inactive Module | "Chart library available" |
+| Component | Phase 3 State | Placeholder Content |
+|-----------|---------------|---------------------|
+| Projects List | Empty Table | "No projects yet" |
 
-**Reusability Intent:** ApexCharts wrapper and configurations preserved.
-
----
-
-## 8. Maps Module Placeholders
-
-| Module | Route | Placeholder Type | Placeholder Content |
-|--------|-------|------------------|---------------------|
-| Google Maps | `/admin/maps/google-maps` | Inactive Module | "Google Maps integration available" |
-| Vector Maps | `/admin/maps/vector-maps` | Inactive Module | "Vector maps available" |
-
-**Reusability Intent:** Map components preserved for geographic data display.
+**Placeholder Specification:**
+```
+Route: /admin/content/projects
+Title: Projects
+Table Headers: Title, Category, Date, Status, Actions
+Table Body: Empty with "No projects yet" message
+Actions: Add New button (visible, inactive)
+```
 
 ---
 
-## 9. Icons Module Placeholders
+### 4.3 Pages (Static)
 
-| Module | Route | Placeholder Type | Placeholder Content |
-|--------|-------|------------------|---------------------|
-| Iconify | `/admin/icons/iconify` | Inactive Module | "Icon library reference" |
-| Lucide Icons | `/admin/icons/lucide` | Inactive Module | "Lucide icons available" |
+| Component | Phase 3 State | Placeholder Content |
+|-----------|---------------|---------------------|
+| Pages List | Empty Table | "No pages yet" |
 
-**Reusability Intent:** Icon systems preserved for UI consistency.
+**Placeholder Specification:**
+```
+Route: /admin/content/pages
+Title: Pages
+Table Headers: Title, Slug, Last Updated, Status, Actions
+Table Body: Empty with "No pages yet" message
+Actions: Add New button (visible, inactive)
+```
 
----
-
-## 10. Layouts Module Placeholders
-
-| Variant | Route | Placeholder Type | Placeholder Content |
-|---------|-------|------------------|---------------------|
-| Horizontal | `/admin/layouts/horizontal` | Inactive Module | "Layout variant available" |
-| Detached | `/admin/layouts/detached` | Inactive Module | "Layout variant available" |
-| Full | `/admin/layouts/full` | Inactive Module | "Layout variant available" |
-| Fullscreen | `/admin/layouts/fullscreen` | Inactive Module | "Layout variant available" |
-| Hover Menu | `/admin/layouts/hover-menu` | Inactive Module | "Layout variant available" |
-
-**Reusability Intent:** Layout variants preserved for future configuration options.
+**Note:** Pages + Sections expansion is NOT Phase 3.
 
 ---
 
-## 11. Auth Pages (No Placeholder — Preserved)
+### 4.4 Media Library
+
+| Component | Phase 3 State | Placeholder Content |
+|-----------|---------------|---------------------|
+| Media Grid | Empty Grid | "No media uploaded yet" |
+
+**Placeholder Specification:**
+```
+Route: /admin/content/media
+Title: Media Library
+Content: Empty grid container
+Message: "No media uploaded yet"
+Actions: Upload button (visible, inactive)
+```
+
+---
+
+### 4.5 Testimonials
+
+| Component | Phase 3 State | Placeholder Content |
+|-----------|---------------|---------------------|
+| Testimonials List | Empty Table | "No testimonials yet" |
+
+**Placeholder Specification:**
+```
+Route: /admin/content/testimonials
+Title: Testimonials
+Table Headers: Name, Company, Date, Status, Actions
+Table Body: Empty with "No testimonials yet" message
+Actions: Add New button (visible, inactive)
+```
+
+---
+
+## 5. CRM / Leads Placeholder
+
+| Component | Phase 3 State | Placeholder Content |
+|-----------|---------------|---------------------|
+| Leads List | Empty Table | "No leads captured yet" |
+
+**Placeholder Specification:**
+```
+Route: /admin/crm/leads
+Title: Leads
+Table Headers: Name, Email, Source, Date, Status, Actions
+Table Body: Empty with "No leads captured yet" message
+Actions: View/Export buttons (visible, inactive)
+```
+
+**Source Column Values (Later Phase):**
+- Contact Form
+- Quote Request
+- Newsletter
+
+---
+
+## 6. Analytics Placeholder
+
+| Component | Phase 3 State | Placeholder Content |
+|-----------|---------------|---------------------|
+| Analytics Dashboard | Coming Soon | "Analytics – Coming Soon" |
+
+**Placeholder Specification:**
+```
+Route: /admin/analytics
+Title: Analytics
+Content: 
+  - Centered "Coming Soon" message
+  - Empty chart container outlines (optional)
+  - No demo data, no mock charts
+Visual: Clean, intentional empty state
+```
+
+---
+
+## 7. Settings Placeholder
+
+| Component | Phase 3 State | Placeholder Content |
+|-----------|---------------|---------------------|
+| Settings Page | Coming Soon | "Settings – Coming Soon" |
+
+**Placeholder Specification:**
+```
+Route: /admin/settings
+Title: Settings
+Content:
+  - Centered "Coming Soon" message
+  - Empty form container (optional)
+  - No demo data, no mock settings
+Visual: Clean, intentional empty state
+```
+
+**Later Phase Sections (Documented Only):**
+- Branding (Primary/Secondary colors)
+- SEO Foundations
+- Integrations (Analytics, Ads, Social, Sitemap)
+
+---
+
+## 8. Auth Pages (Preserved — No Placeholder)
 
 | Page | Route | Status |
 |------|-------|--------|
-| Sign In | `/admin/auth/sign-in` | Demo preserved (Phase 4 migration) |
-| Sign Up | `/admin/auth/sign-up` | Demo preserved (Phase 4 migration) |
-| Reset Password | `/admin/auth/reset-password` | Demo preserved (Phase 4 migration) |
-| Lock Screen | `/admin/auth/lock-screen` | Demo preserved (Phase 4 migration) |
+| Sign In | `/admin/auth/sign-in` | Demo preserved |
+| Sign Up | `/admin/auth/sign-up` | Demo preserved |
+| Reset Password | `/admin/auth/reset-password` | Demo preserved |
+| Lock Screen | `/admin/auth/lock-screen` | Demo preserved |
 
-**Note:** Auth pages remain functional with demo backend until Phase 4 Supabase migration.
+**Note:** Auth pages remain functional with demo backend until Supabase migration.
 
 ---
 
-## 12. Data State Requirements
+## 9. Darkone Demo Modules (NOT in Scope)
 
-All placeholders must adhere to:
+The following Darkone demo modules are **NOT Devmart business modules**:
+
+| Module | Status | Reason |
+|--------|--------|--------|
+| Base UI | Hidden | Template reference only |
+| Forms | Hidden | Template reference only |
+| Tables | Hidden | Template reference only |
+| Charts | Hidden | Template reference only |
+| Maps | Hidden | Template reference only |
+| Icons | Hidden | Template reference only |
+| Layouts | Hidden | Template reference only |
+
+**Treatment:**
+- Hidden from Devmart Admin navigation
+- Files remain read-only in template
+- Components may be reused in Devmart modules
+- No placeholders needed (not visible)
+
+---
+
+## 10. Visual Consistency Requirements
+
+All Devmart placeholders must maintain:
+
+| Requirement | Specification |
+|-------------|---------------|
+| Darkone Styling | Colors, typography, spacing from template |
+| Bootstrap Grid | Standard Bootstrap layout structure |
+| Card Containers | Consistent card/panel wrapping |
+| Placeholder Messaging | Consistent "Coming Soon" / "No items yet" patterns |
+| No Demo Data | Zero mock metrics, fake users, sample content |
+
+---
+
+## 11. Data State Requirements
 
 | Requirement | Enforcement |
 |-------------|-------------|
-| No mock data | Demo arrays to be emptied or replaced |
-| No fake metrics | Numbers to show "—" or "0" |
-| No demo users | User lists to show empty state |
-| No sample content | Text to be generic placeholders |
+| No mock data | Demo arrays must not be used |
+| No fake metrics | Numbers show "—" or empty |
+| No demo users | User lists show empty state |
+| No sample content | Text is placeholder only |
 
 ---
 
-## 13. Visual Consistency Requirements
+## Document Control
 
-Placeholders must maintain:
+| Version | Date | Author | Notes |
+|---------|------|--------|-------|
+| 1.0 | 2025-12-21 | Planning Agent | Rewritten for Devmart business modules |
 
-- Darkone styling (colors, typography, spacing)
-- Bootstrap grid structure
-- Card/panel containers
-- Consistent placeholder messaging
+**Supersedes:** Previous version focused on Darkone demo modules.
 
----
-
-*Document Version: 1.0*
-*Last Updated: Phase 3 Planning*
+**Alignment:** Must align with `Admin_Module_Map.md` (authoritative).

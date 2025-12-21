@@ -1,8 +1,11 @@
 # Master PRD — Devmart Platform
 
-**Status:** Draft  
-**Phase:** Planning Only  
-**Execution:** Not Authorized  
+```
+Status: AUTHORITATIVE
+Phase: Phase 3 Alignment Complete
+Execution: Documentation Only — Build Not Authorized
+Last Updated: 2025-12-21
+```
 
 ---
 
@@ -23,7 +26,7 @@ The Devmart platform consists of two isolated applications:
 | Application | Template Source | Purpose |
 |-------------|-----------------|---------|
 | **Public Website** | Finibus React | Client-facing marketing, lead generation, authority positioning |
-| **Admin Portal** | Darkone React | Internal operations, future client dashboards, content management |
+| **Admin Portal** | Darkone React | Internal operations, content management, lead management |
 
 ---
 
@@ -103,15 +106,29 @@ The public website must present:
 - Dashboard module (preserved)
 - Sidebar navigation (preserved)
 - Demo authentication (fake-backend)
-- Demo UI modules (placeholders)
+- Demo UI modules (hidden from navigation)
 
-### 5.2 Future State (Planned)
+### 5.2 Phase 3 State (Placeholder Cleanup)
+
+| Module | Route | State |
+|--------|-------|-------|
+| Dashboard | `/admin/dashboard` | Coming Soon placeholder |
+| Blog | `/admin/content/blog` | Empty table placeholder |
+| Projects | `/admin/content/projects` | Empty table placeholder |
+| Pages | `/admin/content/pages` | Empty table placeholder |
+| Media Library | `/admin/content/media` | Empty grid placeholder |
+| Testimonials | `/admin/content/testimonials` | Empty table placeholder |
+| Leads | `/admin/crm/leads` | Empty table placeholder |
+| Analytics | `/admin/analytics` | Coming Soon placeholder |
+| Settings | `/admin/settings` | Coming Soon placeholder |
+
+### 5.3 Future State (Planned — Not Implemented)
 
 - Real authentication (Supabase)
-- Content management
-- Lead/inquiry management
-- Analytics dashboards
-- Client portal access
+- Full CRUD for content modules
+- Lead management with source tracking
+- Analytics dashboards per module
+- Settings (Branding, SEO, Integrations)
 
 **STATUS: Future state is NOT IMPLEMENTED**
 
@@ -139,26 +156,84 @@ From Website & Brand PRD:
 
 ---
 
-## 8. Out of Scope (This Phase)
+## 8. Explicit Exclusions
 
-- Backend implementation
-- Authentication implementation
-- Database integration
-- Payment processing
-- Client portal features
-- Custom module development
+### 8.1 Permanent Exclusions (This Project)
+
+| Item | Reason | Status |
+|------|--------|--------|
+| Team Management | Not in project scope | ❌ Permanently Excluded |
+| Client Portal | Not in project scope | ❌ Permanently Excluded |
+| Frontend Login/Register | Public site has no auth | ❌ Permanently Excluded |
+
+### 8.2 Client Portal Clarification
+
+The following are **explicitly NOT included** in the Devmart platform:
+
+- No frontend login/register pages for public users
+- No admin client account management
+- No client-facing dashboard
+- No client self-service features
+
+This is a **permanent exclusion** for this project.
+
+### 8.3 Phase 3 Exclusions
+
+| Item | Reason | Future Phase |
+|------|--------|--------------|
+| User/Profile Management | Not visible in Phase 3 | Later phase |
+| CRUD Operations | Placeholder only | Later phase |
+| Database Integration | Not authorized | Later phase |
+| Supabase Auth | Not authorized | Later phase |
+| Pages + Sections Expansion | Not authorized | Later phase |
+| Settings Implementation | Not authorized | Later phase |
+
+### 8.4 Template Exclusions
+
+| Item | Reason |
+|------|--------|
+| Darkone Demo Modules | Hidden from navigation (reference only) |
+| SCSS Modifications | Template locked |
+| Component Rewrites | Template locked |
+| Custom UI Abstraction | Template locked |
 
 ---
 
 ## 9. Success Criteria
 
+### 9.1 Phase 2 (Complete)
+
 Phase 2 is complete when:
 
-1. Public website achieves 1:1 Finibus layout parity
-2. Content reflects Devmart positioning and capabilities
-3. All core pages are functional
-4. Admin portal preserves dashboard/navigation structure
-5. No template customizations beyond content
+1. ✅ Public website achieves 1:1 Finibus layout parity
+2. ✅ Content reflects Devmart positioning and capabilities
+3. ✅ All core pages are functional
+4. ✅ No template customizations beyond content
+
+### 9.2 Phase 3 (Current)
+
+Phase 3 is complete when:
+
+1. All 9 Devmart admin modules have placeholder pages
+2. Dashboard shows "Coming Soon" (no demo data)
+3. Content modules show empty tables (no demo data)
+4. Darkone demo modules hidden from navigation
+5. Demo auth remains functional
+6. All routes resolve without errors
+
+---
+
+## 10. Frontend Style Guide Requirement
+
+**Status:** Required in later phase — NOT Phase 3
+
+A Finibus-based Frontend Style Guide is required to ensure:
+
+- Consistent styling between public frontend and admin
+- Reusable patterns for content creation
+- Typography, spacing, and color standards
+
+**Phase 3 Action:** Document the requirement only. Do NOT create.
 
 ---
 
@@ -167,5 +242,6 @@ Phase 2 is complete when:
 | Version | Date | Author | Notes |
 |---------|------|--------|-------|
 | 0.1 | 2025-01-XX | Planning Agent | Initial draft |
+| 1.0 | 2025-12-21 | Planning Agent | Phase 3 alignment complete |
 
-**Next Review:** After Phase 2 execution approval
+**Next Review:** After Phase 3 build authorization

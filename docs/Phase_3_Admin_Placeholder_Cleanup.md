@@ -1,9 +1,10 @@
-# Phase 3 — Admin Placeholder Cleanup (Darkone)
+# Phase 3 — Admin Placeholder Cleanup (Devmart)
 
 ```
-Status: Draft
-Phase: Planning Only
-Execution: Not Authorized
+Status: AUTHORITATIVE
+Phase: Phase 3 Alignment Complete
+Execution: Documentation Only — Build Not Authorized
+Last Updated: 2025-12-21
 ```
 
 ---
@@ -12,139 +13,248 @@ Execution: Not Authorized
 
 Phase 3 aims to deliver a clean, stable Admin foundation by:
 
-- Documenting demo data and demo flows for removal
-- Preserving all reusable assets (charts, widgets, layouts, inner pages)
-- Defining explicit placeholders for demo screens
-- Ensuring zero loss of future reusability
+- Creating placeholder pages for approved Devmart business modules
+- Establishing navigation structure for approved modules only
+- Defining empty states for content management modules
+- Hiding Darkone demo modules from navigation
+- Ensuring zero functional implementation (placeholders only)
 
-**End-State (Conceptual — Not Yet Implemented):**
+**End-State (When Authorized):**
 
-- Admin appears intentionally empty (no fake data)
-- Structurally complete
-- Safe for future module activation
+- Admin shows Devmart business modules (placeholders)
+- No demo data visible
+- No functional CRUD
+- Structurally complete for future activation
 
 ---
 
-## 2. Hard Constraints (Non-Negotiable)
+## 2. Devmart Admin Modules (Explicit List)
 
-### 2.1 Template Integrity
+### 2.1 Approved Modules for Phase 3
+
+| Section | Module | Route | Placeholder Type |
+|---------|--------|-------|------------------|
+| MAIN | Dashboard | `/admin/dashboard` | Coming Soon |
+| CONTENT | Blog / News | `/admin/content/blog` | Empty Table |
+| CONTENT | Projects / Portfolio | `/admin/content/projects` | Empty Table |
+| CONTENT | Pages (Static) | `/admin/content/pages` | Empty Table |
+| CONTENT | Media Library | `/admin/content/media` | Empty Grid |
+| CONTENT | Testimonials | `/admin/content/testimonials` | Empty Table |
+| CRM | Leads | `/admin/crm/leads` | Empty Table |
+| ANALYTICS | Analytics Dashboard | `/admin/analytics` | Coming Soon |
+| SYSTEM | Settings | `/admin/settings` | Coming Soon |
+
+**Total Modules:** 9
+
+**Authority:** Module list derived from `Admin_Module_Map.md`
+
+---
+
+## 3. Explicit Exclusions
+
+The following are **EXCLUDED** from Phase 3 and the Devmart project:
+
+| Excluded Item | Type | Reason |
+|---------------|------|--------|
+| Team Management | Permanent | Not in project scope |
+| Client Portal | Permanent | Not in project scope |
+| Frontend Login/Register | Permanent | Public site has no auth |
+| User/Profile Management | Phase 3 | Not visible until later phase |
+| Darkone Demo Modules | Navigation | Hidden from sidebar |
+
+### 3.1 Client Portal Clarification
+
+**Explicitly NOT included:**
+- No frontend login/register pages
+- No admin client account management
+- No client-facing dashboard
+- This is a permanent exclusion
+
+### 3.2 User/Profile Clarification
+
+- User management is planned for later phases
+- NOT visible in Phase 3 navigation
+- Will be implemented with Supabase auth migration
+
+---
+
+## 4. Darkone Demo Modules Treatment
+
+### 4.1 Status
+
+| Status | Description |
+|--------|-------------|
+| **HIDDEN** | Not visible in Devmart Admin navigation |
+| **READ-ONLY** | Template files remain unmodified |
+| **REFERENCE** | Available for component reuse |
+
+### 4.2 Hidden Modules
+
+| Module Category | Routes | Devmart Status |
+|-----------------|--------|----------------|
+| Base UI | `/admin/base-ui/*` | Hidden |
+| Forms | `/admin/forms/*` | Hidden |
+| Tables | `/admin/tables/*` | Hidden |
+| Charts | `/admin/charts/*` | Hidden |
+| Maps | `/admin/maps/*` | Hidden |
+| Icons | `/admin/icons/*` | Hidden |
+| Layouts | `/admin/layouts/*` | Hidden |
+
+### 4.3 Reuse Policy
+
+- ✅ Import components for Devmart modules
+- ❌ Modify original template files
+- ❌ Show in Devmart navigation
+- ❌ Modify SCSS
+
+---
+
+## 5. Hard Constraints (Non-Negotiable)
+
+### 5.1 Template Integrity
 
 - Darkone must remain 100% 1:1
 - No SCSS refactors
 - No component rewrites
 - No UI abstraction
-- No removal before mapping is complete
+- No design changes
 
-### 2.2 Asset Protection
-
-- Nothing may be removed until fully mapped in `Darkone_Reusability_Registry.md`
-- All charts, icons, layouts, widgets must be inventoried first
-
-### 2.3 Auth Preservation
+### 5.2 Auth Preservation
 
 - Demo auth backend remains active
-- Supabase Auth is Phase 4 scope only
+- Supabase Auth is later phase scope only
 - No auth changes during Phase 3
 
-### 2.4 Routing Preservation
+### 5.3 Routing Preservation
 
-- No route changes
 - No base path modifications
-- All existing routes must continue to resolve
+- Existing Darkone routes remain functional
+- New Devmart routes are additive only
 
 ---
 
-## 3. Scope Boundaries
+## 6. Scope Boundaries
 
-### 3.1 In Scope (Phase 3)
+### 6.1 In Scope (Phase 3)
 
-| Item | Status |
-|------|--------|
-| Asset mapping and registry | To be completed |
-| Placeholder definitions | To be documented |
-| Demo data identification | To be catalogued |
-| Cleanup plan (conceptual) | To be defined |
-| Verification checklist | To be prepared |
+| Item | Description |
+|------|-------------|
+| Placeholder pages | 9 approved modules with Coming Soon / Empty states |
+| Navigation structure | Sidebar updated for Devmart modules only |
+| Empty table structures | Headers visible, no data rows |
+| Route definitions | Routes without logic |
+| Demo module hiding | Hide Darkone demo modules from navigation |
 
-### 3.2 Out of Scope (Phase 3)
+### 6.2 Out of Scope (Phase 3)
 
 | Item | Reason |
 |------|--------|
-| Code implementation | Not authorized |
-| Supabase integration | Phase 4 |
+| CRUD operations | Not authorized |
+| Database connections | Not authorized |
+| Supabase integration | Later phase |
+| API integrations | Not authorized |
+| Authentication changes | Later phase |
 | SCSS modifications | Template locked |
 | Component rewrites | Template locked |
-| Route changes | Not authorized |
-| Auth migration | Phase 4 |
+| Business logic | Not authorized |
+| Pages + Sections expansion | Later phase |
+| Settings implementation | Later phase |
 
 ---
 
-## 4. Execution Sequence (Conceptual — Not Authorized)
+## 7. Execution Sequence (Conceptual — Not Authorized)
 
-The following sequence describes the planned execution order for when Phase 3 implementation is authorized:
+When Phase 3 build is authorized:
 
-1. **Pre-Execution Verification**
-   - Confirmed: All assets mapped in Reusability Registry
-   - Confirmed: All placeholders defined
-   - Confirmed: All demo data catalogued
+### Step 1: Navigation Update
+- Update sidebar to show Devmart modules only
+- Hide Darkone demo module sections
+- Preserve layout/styling
 
-2. **Dashboard Cleanup** (to be executed when authorized)
-   - Demo card data to be replaced with placeholders
-   - Chart data to be replaced with empty states
-   - User widget to be replaced with placeholder
+### Step 2: Dashboard Placeholder
+- Replace demo dashboard with "Coming Soon" placeholder
+- Remove demo cards, charts, widgets
+- Maintain page structure
 
-3. **Module Skeleton Application** (to be executed when authorized)
-   - Each module to receive appropriate skeleton
-   - Demo content to be neutralized
-   - Structure to be preserved
+### Step 3: Content Module Placeholders
+- Create Blog, Projects, Pages, Media, Testimonials pages
+- Each shows empty table/grid structure
+- No demo data
 
-4. **Post-Execution Verification** (to be executed when authorized)
-   - No asset loss confirmed
-   - No style drift confirmed
-   - All routes functional confirmed
+### Step 4: CRM Placeholder
+- Create Leads page with empty table structure
+- Define columns (Name, Email, Source, Date, Status)
+- No demo data
+
+### Step 5: Analytics Placeholder
+- Create Analytics page with "Coming Soon" message
+- No demo charts
+
+### Step 6: Settings Placeholder
+- Create Settings page with "Coming Soon" message
+- No demo forms
+
+### Step 7: Verification
+- All routes functional
+- No demo data visible
+- No console errors
+- Navigation works correctly
 
 ---
 
-## 5. Dependency Requirements
+## 8. Dependency Requirements
 
-Phase 3 execution depends on completion of:
+Phase 3 execution depends on:
 
 | Document | Purpose | Status |
 |----------|---------|--------|
-| `Darkone_Reusability_Registry.md` | Complete component inventory | Draft |
-| `Admin_Placeholder_Map.md` | Placeholder definitions per module | Draft |
-| `Dashboard_Placeholder_Definition.md` | Dashboard-specific placeholders | Draft |
-| `Admin_Module_Skeletons.md` | Skeleton definitions | Draft |
+| `Admin_Module_Map.md` | Authoritative module list | ✅ Complete |
+| `Admin_Placeholder_Map.md` | Placeholder specifications | ✅ Complete |
+| `Admin_Module_Skeletons.md` | Skeleton definitions | ✅ Updated |
 
 ---
 
-## 6. Verification Checklist
+## 9. Verification Checklist
 
 To be verified after execution (when authorized):
 
-- [ ] No asset loss — All components in Registry remain functional
-- [ ] No style drift — SCSS untouched, Bootstrap intact
-- [ ] No broken routing — All routes resolve correctly
-- [ ] No hidden dependencies removed — All dependencies mapped
-- [ ] Dashboard renders — Structure intact, data neutralized
-- [ ] Sidebar renders — Menu items preserved
-- [ ] TopNav renders — All sub-components functional
-- [ ] Auth flow preserved — Demo auth remains active
+- [ ] All 9 Devmart modules have placeholder pages
+- [ ] Dashboard shows "Coming Soon" (no demo data)
+- [ ] Content modules show empty tables (no demo data)
+- [ ] Leads shows empty table (no demo data)
+- [ ] Analytics shows "Coming Soon" (no demo charts)
+- [ ] Settings shows "Coming Soon" (no demo forms)
+- [ ] Darkone demo modules hidden from navigation
+- [ ] All routes resolve without 404
+- [ ] No console errors
+- [ ] Demo auth still functional
+- [ ] Sidebar navigation works
+- [ ] Theme toggle works
 
 ---
 
-## 7. Related Documents
+## 10. Frontend Style Guide Requirement
 
-- `Admin_Placeholder_Map.md` — Placeholder strategy per module
-- `Darkone_Reusability_Registry.md` — Complete asset registry
-- `Dashboard_Placeholder_Definition.md` — Dashboard placeholders
-- `Admin_Module_Skeletons.md` — Module skeleton definitions
-- `Admin_Cleanup_Plan.md` — Overall cleanup phases
-- `darkone-assets-map.md` — Initial asset mapping
+**Status:** Required in later phase — NOT Phase 3
+
+A Finibus-based Frontend Style Guide is required to ensure consistency between public frontend and admin content creation.
+
+**Phase 3 Action:** Document the requirement only. Do NOT create.
 
 ---
 
-## 8. Explicit Non-Execution Notice
+## 11. Related Documents
+
+- `Admin_Module_Map.md` — Authoritative module definitions
+- `Admin_Placeholder_Map.md` — Placeholder specifications
+- `Admin_Module_Skeletons.md` — Skeleton patterns
+- `Master_PRD.md` — Platform requirements
+- `Architecture.md` — System architecture
+- `Backend.md` — Backend specifications
+
+---
+
+## 12. Explicit Non-Execution Notice
 
 **This document is for planning purposes only.**
 
@@ -154,5 +264,10 @@ All execution requires explicit GO authorization from project leadership.
 
 ---
 
-*Document Version: 1.0*
-*Last Updated: Phase 3 Planning*
+## Document Control
+
+| Version | Date | Author | Notes |
+|---------|------|--------|-------|
+| 1.0 | 2025-12-21 | Planning Agent | Phase 3 alignment complete |
+
+**Supersedes:** Previous version with Darkone demo module focus.
