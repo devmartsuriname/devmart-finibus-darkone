@@ -1,15 +1,22 @@
-import React from 'react'
-import Breadcrumb from '../../common/Breadcrumb'
+import React from "react";
+import Breadcrumb from "../../common/Breadcrumb";
+import WhatWeDoArea from "./WhatWeDoArea";
+import HowWeWorkArea from "./HowWeWorkArea";
+import WhyChooseUsArea from "../../common/WhyChooseUsArea";
+import TestimonialArea from "../../common/TestimonialArea";
+import LetsTalkArea from "../../common/LetsTalkArea";
 
 function ServicesPage() {
   return (
     <>
       <Breadcrumb pageName="Services" />
-      <section className="service-page sec-mar">
-        <div className="container"><h2>Our Services</h2></div>
-      </section>
+      <WhatWeDoArea />
+      <HowWeWorkArea />
+      <WhyChooseUsArea black="" lable="" />
+      <TestimonialArea />
+      <LetsTalkArea />
     </>
-  )
+  );
 }
 
-export default ServicesPage
+export default ServicesPage;
