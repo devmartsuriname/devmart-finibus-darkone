@@ -1,9 +1,3 @@
-/**
- * Breadcrumb Component
- * 
- * Migrated from Finibus to React 18 + react-router-dom v6
- */
-
 import React from 'react'
 import { Link } from 'react-router-dom'
 
@@ -13,27 +7,24 @@ interface BreadcrumbProps {
 
 function Breadcrumb({ pageName }: BreadcrumbProps) {
   return (
-    <div className="breadcrumb-area">
+    <section className="breadcrumbs">
       <div className="container">
         <div className="row">
-          <div className="col-lg-12">
-            <div className="breadcrumb-content">
+          <div className="col-12">
+            <div className="breadcrumb-wrapper">
               <h1>{pageName}</h1>
-              <nav aria-label="breadcrumb">
-                <ol className="breadcrumb">
-                  <li className="breadcrumb-item">
-                    <Link to="/">Home</Link>
-                  </li>
-                  <li className="breadcrumb-item active" aria-current="page">
-                    {pageName}
-                  </li>
-                </ol>
-              </nav>
+              <span>
+                <Link to="/">Home</Link>
+                <i>
+                  <img src="/images/icons/breadcrumb-arrow.svg" alt="images" />
+                </i>
+                {pageName}
+              </span>
             </div>
           </div>
         </div>
       </div>
-    </div>
+    </section>
   )
 }
 
