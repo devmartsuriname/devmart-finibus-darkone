@@ -10,7 +10,7 @@ import HomePage from './components/pages/Home/HomePage'
 import HomePage2 from './components/pages/Home2/HomePage2'
 import AboutPage from './components/pages/aboutUs/AboutPage'
 import ServicesPage from './components/pages/service/ServicesPage'
-import ServiceDetails from './components/pages/ServiceDetails/ServiceDetails'
+import ServiceDetailsPage from './components/pages/ServiceDetails/ServiceDetailsPage'
 import ProjectsPage from './components/pages/projects/ProjectsPage'
 import ProjectDetailsPage from './components/pages/projectDetails/ProjectDetailsPage'
 import BlogPage from './components/pages/blog/BlogPage'
@@ -110,7 +110,7 @@ function App() {
       <Route element={<MainLayout />}>
         <Route path="/about" element={<AboutPage />} />
         <Route path="/service" element={<ServicesPage />} />
-        <Route path="/service-details" element={<ServiceDetails />} />
+        <Route path="/service-details" element={<ServiceDetailsPage />} />
         <Route path="/project" element={<ProjectsPage />} />
         <Route path="/project-details" element={<ProjectDetailsPage />} />
         <Route path="/blog" element={<BlogPage />} />
