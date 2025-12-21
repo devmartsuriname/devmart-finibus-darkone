@@ -6,7 +6,34 @@
 
 ---
 
-## 1. Monorepo Structure
+## 1. Current Repository Structure (As-Is)
+
+```
+/
+├── Darkone-React_v1.0/      # Admin template (running, demo state)
+│   ├── src/
+│   ├── public/
+│   ├── package.json
+│   └── vite.config.ts
+│
+├── finibus/                  # Public template (baseline imported)
+│   ├── src/
+│   ├── public/
+│   └── package.json
+│
+├── src/                      # Lovable wrapper (entry point)
+│
+├── docs/                     # Documentation (this directory)
+└── README.md
+```
+
+> **No restructuring is approved in any phase unless explicitly authorized.**
+
+---
+
+## 2. Future Target Structure (Optional — Not Authorized)
+
+The following structure is a conceptual target only. It is **NOT AUTHORIZED** for implementation.
 
 ```
 devmart/
@@ -23,25 +50,27 @@ devmart/
 │       ├── package.json
 │       └── vite.config.ts
 │
-├── docs/                # Documentation (this directory)
+├── docs/                # Documentation
 ├── package.json         # Root workspace config
 └── README.md
 ```
 
+> **STATUS: This structure is conceptual only. No migration or restructuring is authorized.**
+
 ---
 
-## 2. Application Isolation
+## 3. Application Isolation
 
-### 2.1 Build Isolation
+### 3.1 Build Isolation (Current State)
 
-| Aspect | Public App | Admin App |
-|--------|------------|-----------|
-| Entry point | `apps/public/src/main.tsx` | `apps/admin/src/main.tsx` |
-| Build output | `apps/public/dist/` | `apps/admin/dist/` |
-| Dev port | 3000 | 8080 |
-| Base path | `/` | `/admin` |
+| Aspect | Public App (Finibus) | Admin App (Darkone) |
+|--------|----------------------|---------------------|
+| Location | `/finibus/` | `/Darkone-React_v1.0/` |
+| Entry point | `finibus/src/main.tsx` | `Darkone-React_v1.0/src/main.tsx` |
+| Dev port | TBD | 8080 |
+| Base path | `/` | `/admin` (TBD) |
 
-### 2.2 Dependency Isolation
+### 3.2 Dependency Isolation
 
 - Each app maintains its own `package.json`
 - No shared runtime dependencies
@@ -50,23 +79,23 @@ devmart/
 
 ---
 
-## 3. SCSS Isolation Rules
+## 4. SCSS Isolation Rules
 
-### 3.1 Strict Separation
+### 4.1 Strict Separation (Current Paths)
 
 ```
-apps/public/src/assets/scss/    # Finibus styles ONLY
-apps/admin/src/assets/scss/     # Darkone styles ONLY
+finibus/src/assets/scss/              # Finibus styles ONLY
+Darkone-React_v1.0/src/assets/scss/   # Darkone styles ONLY
 ```
 
-### 3.2 Prohibited Actions
+### 4.2 Prohibited Actions
 
 - ❌ No cross-importing SCSS between apps
 - ❌ No shared SCSS tokens or variables
 - ❌ No Bootstrap version mixing
 - ❌ No custom theme modifications
 
-### 3.3 Rationale
+### 4.3 Rationale
 
 - Finibus uses its own Bootstrap customization
 - Darkone uses its own Bootstrap customization
@@ -177,21 +206,21 @@ OR
 
 ---
 
-## 7. Asset Isolation
+## 8. Asset Isolation (Current Paths)
 
-### 7.1 Images
+### 8.1 Images
 
 ```
-apps/public/src/assets/images/   # Public website images
-apps/admin/src/assets/images/    # Admin portal images
+finibus/src/assets/images/              # Public website images
+Darkone-React_v1.0/src/assets/images/   # Admin portal images
 ```
 
-### 7.2 Fonts
+### 8.2 Fonts
 
 - Each app bundles its own fonts
 - No shared font loading
 
-### 7.3 Icons
+### 8.3 Icons
 
 - Public: Finibus icon set
 - Admin: Iconify + Solar/Box icons

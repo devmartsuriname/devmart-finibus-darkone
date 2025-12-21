@@ -230,6 +230,21 @@ Both apps follow Bootstrap 5 breakpoints:
 
 ---
 
+## 8. Explicit Non-Goals (All Phases)
+
+The following are explicitly out of scope for ALL phases unless separately authorized:
+
+| Non-Goal | Rationale |
+|----------|-----------|
+| No shared component library | Public and Admin apps remain isolated; no cross-app component sharing |
+| No Tailwind or alternative styling systems | Both apps use Bootstrap 5 + SCSS as provided by templates |
+| No SCSS refactors | Template SCSS structure must remain untouched |
+| No design abstraction | No design tokens, theme systems, or style abstractions beyond template defaults |
+| No CMS logic | Content management is a future-phase consideration only |
+| No SEO tooling beyond template defaults | SEO relies on template-provided meta tags and structure only |
+
+---
+
 ## Document Control
 
 | Version | Date | Author | Notes |
