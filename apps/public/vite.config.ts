@@ -16,6 +16,11 @@ export default defineConfig({
     }
   },
   css: {
+    postcss: {
+      plugins: [
+        require('autoprefixer')
+      ]
+    },
     preprocessorOptions: {
       scss: {
         // Ensure SCSS compiles only within this app
