@@ -385,6 +385,37 @@ Key customizable variables:
 
 ---
 
+## 16. Reusable Registry
+
+| Category | Recommended Components | Path | Notes/Constraints |
+|----------|------------------------|------|-------------------|
+| Charts | `Chart.tsx` | `src/components/Chart.tsx` | Generic ApexChart wrapper; safe to reuse |
+| Icons | `IconifyIcon.tsx` | `src/components/IconifyIcon.tsx` | Universal icon wrapper; safe to reuse |
+| Layout | `AdminLayout.tsx` | `src/layouts/AdminLayout.tsx` | Core admin wrapper; preserve structure |
+| Layout | `AuthLayout.tsx` | `src/layouts/AuthLayout.tsx` | Auth pages wrapper; requires auth migration |
+| Navigation | `TopNavigationBar/` | `src/components/TopNavigationBar/` | Top header; demo data must be neutralized |
+| Navigation | `VerticalNavigationBar/` | `src/components/VerticalNavigationBar/` | Sidebar; menu items can be updated |
+| Navigation | `AppMenu.tsx` | `src/components/VerticalNavigationBar/AppMenu.tsx` | Menu rendering; safe to reuse |
+| Navigation | `Footer.tsx` | `src/components/Footer.tsx` | Footer; safe to reuse |
+| Wrappers | `LogoBox.tsx` | `src/components/LogoBox.tsx` | Logo display; safe to reuse |
+| Wrappers | `SimplebarReactClient.tsx` | `src/components/SimplebarReactClient.tsx` | Scrollbar; safe to reuse |
+| Wrappers | `AppProvidersWrapper.tsx` | `src/components/AppProvidersWrapper.tsx` | Context providers; safe to reuse |
+| Utility | `PageTitle.tsx` | `src/components/PageTitle.tsx` | Page titles; safe to reuse |
+| Utility | `Preloader.tsx` | `src/components/Preloader.tsx` | Loading screen; safe to reuse |
+| Utility | `Spinner.tsx` | `src/components/Spinner.tsx` | Loading indicator; safe to reuse |
+| Hooks | `useToggle.ts` | `src/hooks/useToggle.ts` | Boolean toggle; safe to reuse |
+| Hooks | `useViewPort.ts` | `src/hooks/useViewPort.ts` | Viewport detection; safe to reuse |
+| Hooks | `useModal.ts` | `src/hooks/useModal.ts` | Modal state; safe to reuse |
+| Hooks | `useLocalStorage.ts` | `src/hooks/useLocalStorage.ts` | Storage wrapper; safe to reuse |
+| Context | `useLayoutContext.tsx` | `src/context/useLayoutContext.tsx` | Layout settings; safe to reuse |
+| Context | `useNotificationContext.tsx` | `src/context/useNotificationContext.tsx` | Notifications; demo data must be neutralized |
+| Context | `useAuthContext.tsx` | `src/context/useAuthContext.tsx` | Auth; requires Supabase migration (Phase 4) |
+| Maps | `BaseVectorMap.tsx` | `src/components/VectorMap/BaseVectorMap.tsx` | Vector maps; safe to reuse |
+| Tables | Grid.js integration | `src/app/tables/grid-js/` | Pattern only; demo data must be neutralized |
+| Forms | react-hook-form + yup/zod | Various | Pattern only; safe to reuse |
+
+---
+
 ## Document Control
 
 | Version | Date | Author | Notes |

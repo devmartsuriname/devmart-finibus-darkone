@@ -46,7 +46,7 @@
 |-------|-------|
 | **Phase** | 2.2 |
 | **Description** | Implement header component matching Finibus header variants |
-| **Acceptance Criteria** | - Header renders correctly<br>- Navigation links functional<br>- Mobile menu works<br>- Visual parity with reference |
+| **Acceptance Criteria** | - Matches reference behavior exactly<br>- Layout and structure identical to Finibus reference |
 | **Hard Stop** | Await approval before proceeding to 2.2.2 |
 
 #### Task 2.2.2: Footer Integration
@@ -55,7 +55,7 @@
 |-------|-------|
 | **Phase** | 2.2 |
 | **Description** | Implement footer component matching Finibus footer |
-| **Acceptance Criteria** | - Footer renders correctly<br>- Links functional<br>- Social icons present<br>- Newsletter form present (non-functional) |
+| **Acceptance Criteria** | - Matches reference behavior exactly<br>- Layout and structure identical to Finibus reference |
 | **Hard Stop** | Await approval before proceeding to 2.2.3 |
 
 #### Task 2.2.3: Breadcrumb Integration
@@ -64,7 +64,7 @@
 |-------|-------|
 | **Phase** | 2.2 |
 | **Description** | Implement breadcrumb component for inner pages |
-| **Acceptance Criteria** | - Breadcrumb renders on inner pages<br>- Dynamic path display<br>- Visual parity with reference |
+| **Acceptance Criteria** | - Matches reference behavior exactly<br>- Layout and structure identical to Finibus reference |
 | **Hard Stop** | Await approval before proceeding to 2.3 |
 
 ---
@@ -77,7 +77,7 @@
 |-------|-------|
 | **Phase** | 2.3 |
 | **Description** | Implement Homepage Variant A (Agency style) |
-| **Acceptance Criteria** | - All sections rendered<br>- Section order matches reference<br>- Animations functional<br>- CTAs present<br>- Responsive behavior correct |
+| **Acceptance Criteria** | - Matches reference behavior exactly<br>- All sections, ordering, and interactions identical to Finibus reference |
 | **Hard Stop** | Await approval before proceeding to 2.3.2 |
 
 #### Task 2.3.2: Homepage Variant B
@@ -86,7 +86,7 @@
 |-------|-------|
 | **Phase** | 2.3 |
 | **Description** | Implement Homepage Variant B (Creative style) |
-| **Acceptance Criteria** | - All sections rendered<br>- Section order matches reference<br>- Animations functional<br>- CTAs present<br>- Responsive behavior correct |
+| **Acceptance Criteria** | - Matches reference behavior exactly<br>- All sections, ordering, and interactions identical to Finibus reference |
 | **Hard Stop** | Await approval before proceeding to 2.4 |
 
 ---
@@ -99,7 +99,7 @@
 |-------|-------|
 | **Phase** | 2.4 |
 | **Description** | Implement About page matching Finibus reference |
-| **Acceptance Criteria** | - Layout matches reference<br>- Team section functional<br>- Counter animations work<br>- Responsive behavior correct |
+| **Acceptance Criteria** | - Matches reference behavior exactly<br>- Layout and all interactions identical to Finibus reference |
 | **Hard Stop** | Await approval before proceeding to 2.4.2 |
 
 #### Task 2.4.2: Services Page
@@ -108,7 +108,7 @@
 |-------|-------|
 | **Phase** | 2.4 |
 | **Description** | Implement Services page with capability framework content |
-| **Acceptance Criteria** | - Service cards rendered<br>- Capability tiers presented<br>- Layout matches reference<br>- CTAs functional |
+| **Acceptance Criteria** | - Matches reference behavior exactly<br>- Layout and all interactions identical to Finibus reference |
 | **Hard Stop** | Await approval before proceeding to 2.4.3 |
 
 #### Task 2.4.3: Projects Page
@@ -117,7 +117,7 @@
 |-------|-------|
 | **Phase** | 2.4 |
 | **Description** | Implement Projects/Portfolio page |
-| **Acceptance Criteria** | - Project grid rendered<br>- Filter functionality (if in reference)<br>- Project cards functional<br>- Lightbox/modal works |
+| **Acceptance Criteria** | - Matches reference behavior exactly<br>- Layout and all interactions identical to Finibus reference |
 | **Hard Stop** | Await approval before proceeding to 2.4.4 |
 
 #### Task 2.4.4: Blog Pages
@@ -126,7 +126,7 @@
 |-------|-------|
 | **Phase** | 2.4 |
 | **Description** | Implement Blog listing and detail pages |
-| **Acceptance Criteria** | - Blog listing renders<br>- Blog detail renders<br>- Sidebar functional<br>- Pagination works |
+| **Acceptance Criteria** | - Matches reference behavior exactly<br>- Layout and all interactions identical to Finibus reference |
 | **Hard Stop** | Await approval before proceeding to 2.4.5 |
 
 #### Task 2.4.5: Contact Page
@@ -135,7 +135,7 @@
 |-------|-------|
 | **Phase** | 2.4 |
 | **Description** | Implement Contact page |
-| **Acceptance Criteria** | - Contact form renders<br>- Form validation works (client-side)<br>- Map component (if in reference)<br>- Contact info displayed |
+| **Acceptance Criteria** | - Matches reference behavior exactly<br>- Layout and all interactions identical to Finibus reference |
 | **Hard Stop** | Await approval before proceeding to 2.5 |
 
 ---
@@ -148,7 +148,7 @@
 |-------|-------|
 | **Phase** | 2.5 |
 | **Description** | Implement carousel/slider components |
-| **Acceptance Criteria** | - Testimonial slider works<br>- Project slider works<br>- Touch gestures functional<br>- Autoplay configurable |
+| **Acceptance Criteria** | - Matches reference behavior exactly<br>- All slider interactions identical to Finibus reference |
 | **Hard Stop** | Await approval before proceeding to 2.5.2 |
 
 #### Task 2.5.2: Counter Components
@@ -157,7 +157,7 @@
 |-------|-------|
 | **Phase** | 2.5 |
 | **Description** | Implement animated counter components |
-| **Acceptance Criteria** | - Numbers animate on scroll<br>- Animation timing matches reference<br>- Responsive display |
+| **Acceptance Criteria** | - Matches reference behavior exactly<br>- Animation timing identical to Finibus reference |
 | **Hard Stop** | Await approval before proceeding to 2.5.3 |
 
 #### Task 2.5.3: Accordion Components
@@ -166,7 +166,7 @@
 |-------|-------|
 | **Phase** | 2.5 |
 | **Description** | Implement accordion/FAQ components |
-| **Acceptance Criteria** | - Expand/collapse works<br>- Animation smooth<br>- Accessibility correct |
+| **Acceptance Criteria** | - Matches reference behavior exactly<br>- All interactions identical to Finibus reference |
 | **Hard Stop** | Await approval before proceeding to 2.5.4 |
 
 #### Task 2.5.4: Modal Components
@@ -175,7 +175,7 @@
 |-------|-------|
 | **Phase** | 2.5 |
 | **Description** | Implement modal/lightbox components |
-| **Acceptance Criteria** | - Modals open/close correctly<br>- Backdrop functional<br>- Image lightbox works<br>- Keyboard navigation |
+| **Acceptance Criteria** | - Matches reference behavior exactly<br>- All interactions identical to Finibus reference |
 | **Hard Stop** | Await approval — Phase 2 Complete |
 
 ---
@@ -189,8 +189,8 @@ All of the following must be true:
 - [ ] Visual parity verified against Finibus reference
 - [ ] Responsive behavior verified on all breakpoints
 - [ ] No custom modifications beyond content
-- [ ] Performance targets met
-- [ ] Accessibility baseline met
+
+> **Note:** Performance and accessibility targets are measured after parity; not enforced via template changes in Phase 2.
 
 ---
 

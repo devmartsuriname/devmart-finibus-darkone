@@ -228,18 +228,33 @@ const ModulePlaceholder = ({ moduleName }: { moduleName: string }) => (
 
 ---
 
-## 8. Cleanup Execution Order
+## 8. Phased Execution Plan
 
-When authorized, execute in this order:
+### Phase 3 — Placeholders + Demo Neutralization
+
+> **STATUS: Planned — Not Authorized for Execution**
+
+When Phase 3 is authorized, execute in this order:
 
 1. Create placeholder component
 2. Replace demo modules with placeholders
-3. Update menu items
-4. Remove demo data files
-5. Update auth context for Supabase
-6. Remove fake-backend.ts
-7. Test all navigation paths
-8. Verify dashboard renders
+3. Update menu items (labels only)
+4. Neutralize demo data files (replace with static placeholders)
+5. Test all navigation paths
+6. Verify dashboard renders
+
+### Phase 4 — Supabase Auth Migration
+
+> **STATUS: Planned — Not Authorized for Execution**
+
+When Phase 4 is authorized, execute in this order:
+
+1. Enable Lovable Cloud / Supabase
+2. Update auth context for Supabase
+3. Replace fake-backend.ts with Supabase client
+4. Implement real session management
+5. Test auth flows end-to-end
+6. Remove demo auth artifacts
 
 ---
 

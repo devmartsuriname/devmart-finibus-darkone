@@ -162,9 +162,11 @@ mock.onPost('/login').reply(...)
 
 ## 4. API Design
 
-> **STATUS: Planned — Not Implemented**
+> **STATUS: Optional / Conceptual — Not Implemented**
+>
+> **Supabase-first is assumed; custom API is not assumed.**
 
-### 4.1 Authentication Endpoints
+### 4.1 Authentication Endpoints (Conceptual)
 
 | Endpoint | Method | Purpose |
 |----------|--------|---------|
@@ -174,13 +176,15 @@ mock.onPost('/login').reply(...)
 | `/auth/reset-password` | POST | Password reset |
 | `/auth/refresh` | POST | Token refresh |
 
-### 4.2 Data Endpoints
+### 4.2 Data Endpoints (Conceptual)
 
 | Endpoint | Method | Purpose |
 |----------|--------|---------|
 | `/api/leads` | GET/POST | Lead management |
 | `/api/content` | GET/POST/PUT/DELETE | Content management |
 | `/api/uploads` | POST | File uploads |
+
+> These endpoints are conceptual only. Supabase client SDK will be used directly where possible.
 
 ---
 

@@ -31,7 +31,7 @@ The Devmart platform consists of two isolated applications:
 
 ### 3.1 Authority Statement (from Strategic Positioning)
 
-> "Devmart is the authority in outcome-driven digital solutions — trusted by enterprises and scale-ups to transform complexity into competitive advantage."
+> "We design, build and operate critical digital systems."
 
 All public-facing content must reinforce this positioning.
 
@@ -47,9 +47,20 @@ The public website must present:
 
 | Goal | Priority |
 |------|----------|
-| Consultation booking | Primary |
+| Request a Proposal / Offerte + Strategic Conversation | Primary |
 | Lead capture | Secondary |
-| Content engagement | Tertiary |
+
+### 3.4 Priority Sectors
+
+| Sector | Priority | Timeline |
+|--------|----------|----------|
+| Government | 2026 Priority | Immediate focus |
+
+### 3.5 Geographic Positioning
+
+| Region | Status |
+|--------|--------|
+| Caribbean | Immediate positioning (not phase-2 narrative) |
 
 ---
 
