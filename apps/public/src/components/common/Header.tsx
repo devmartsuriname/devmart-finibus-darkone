@@ -8,7 +8,8 @@
  */
 
 import React, { useEffect, useState, useReducer } from 'react'
-import { Link, NavLink, useNavigate } from 'react-router-dom'
+import { Link, NavLink } from 'react-router-dom'
+import AnimatedCursor from 'react-animated-cursor'
 
 // Menu state reducer
 const initialState = { activeMenu: '' }
@@ -60,6 +61,28 @@ function Header() {
 
   return (
     <>
+      <AnimatedCursor
+        innerSize={8}
+        outerSize={30}
+        color="217, 10, 44"
+        outerAlpha={0.5}
+        innerScale={0.7}
+        outerScale={1.5}
+        clickables={[
+          'a',
+          'i',
+          'input[type="text"]',
+          'input[type="email"]',
+          'input[type="number"]',
+          'input[type="submit"]',
+          'input[type="image"]',
+          'label[for]',
+          'select',
+          'textarea',
+          'button',
+          '.link',
+        ]}
+      />
       <header className="position_top">
         <div className="container-fluid">
           <div className="row align-items-center">
