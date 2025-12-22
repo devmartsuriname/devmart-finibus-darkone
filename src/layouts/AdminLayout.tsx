@@ -1,5 +1,7 @@
 import AnimationStar from '@/components/AnimationStar'
 import Footer from '@/components/layout/Footer'
+import LoadingFallback from '@/components/LoadingFallback'
+import ErrorBoundary from '@/components/ErrorBoundary'
 import { ChildrenType } from '@/types/component-props'
 import { lazy, Suspense } from 'react'
 import { Container } from 'react-bootstrap'
@@ -10,13 +12,21 @@ const VerticalNavigationBar = lazy(() => import('@/components/layout/VerticalNav
 const AdminLayout = ({ children }: ChildrenType) => {
   return (
     <div className="wrapper">
-      <Suspense>
+      <Suspense fallback={<div className="topbar" />}>
         <TopNavigationBar />
       </Suspense>
-      <VerticalNavigationBar />
+      <Suspense fallback={<div className="app-sidebar" />}>
+        <VerticalNavigationBar />
+      </Suspense>
       <AnimationStar />
       <div className="page-content">
-        <Container fluid>{children}</Container>
+        <Container fluid>
+          <ErrorBoundary>
+            <Suspense fallback={<LoadingFallback message="Loading page..." />}>
+              {children}
+            </Suspense>
+          </ErrorBoundary>
+        </Container>
         <Footer />
       </div>
     </div>

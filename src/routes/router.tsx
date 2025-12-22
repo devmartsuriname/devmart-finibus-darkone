@@ -1,9 +1,12 @@
 import { Navigate, Route, Routes, type RouteProps } from 'react-router-dom'
+import { Suspense } from 'react'
 import AdminLayout from '@/layouts/AdminLayout'
 import AuthLayout from '@/layouts/AuthLayout'
 import { appRoutes, authRoutes } from '@/routes/index'
 import { useAuthContext } from '@/context/useAuthContext'
 import AccessDenied from '@/components/AccessDenied'
+import ErrorBoundary from '@/components/ErrorBoundary'
+import LoadingFallback from '@/components/LoadingFallback'
 
 const AppRouter = (props: RouteProps) => {
   const { isAuthenticated, isAdmin, isLoading } = useAuthContext()
@@ -20,34 +23,38 @@ const AppRouter = (props: RouteProps) => {
   }
 
   return (
-    <Routes>
-      {(authRoutes || []).map((route, idx) => (
-        <Route key={idx + route.name} path={route.path} element={<AuthLayout {...props}>{route.element}</AuthLayout>} />
-      ))}
+    <ErrorBoundary>
+      <Suspense fallback={<LoadingFallback message="Loading application..." />}>
+        <Routes>
+          {(authRoutes || []).map((route, idx) => (
+            <Route key={idx + route.name} path={route.path} element={<AuthLayout {...props}>{route.element}</AuthLayout>} />
+          ))}
 
-      {(appRoutes || []).map((route, idx) => (
-        <Route
-          key={idx + route.name}
-          path={route.path}
-          element={
-            isAuthenticated ? (
-              isAdmin ? (
-                <AdminLayout {...props}>{route.element}</AdminLayout>
-              ) : (
-                <AccessDenied />
-              )
-            ) : (
-              <Navigate
-                to={{
-                  pathname: '/auth/sign-in',
-                  search: 'redirectTo=' + route.path,
-                }}
-              />
-            )
-          }
-        />
-      ))}
-    </Routes>
+          {(appRoutes || []).map((route, idx) => (
+            <Route
+              key={idx + route.name}
+              path={route.path}
+              element={
+                isAuthenticated ? (
+                  isAdmin ? (
+                    <AdminLayout {...props}>{route.element}</AdminLayout>
+                  ) : (
+                    <AccessDenied />
+                  )
+                ) : (
+                  <Navigate
+                    to={{
+                      pathname: '/auth/sign-in',
+                      search: 'redirectTo=' + route.path,
+                    }}
+                  />
+                )
+              }
+            />
+          ))}
+        </Routes>
+      </Suspense>
+    </ErrorBoundary>
   )
 }
 
