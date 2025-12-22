@@ -32,22 +32,18 @@ export function AuthProvider({ children }: ChildrenType) {
   const [isAdmin, setIsAdmin] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
 
-  // Check if user has admin role
+  // Check if user has admin role using SECURITY DEFINER RPC function
   const checkAdminRole = async (userId: string) => {
     try {
       const { data, error } = await supabase
-        .from('user_roles')
-        .select('role')
-        .eq('user_id', userId)
-        .eq('role', 'admin')
-        .maybeSingle()
+        .rpc('has_role', { _user_id: userId, _role: 'admin' })
 
       if (error) {
         console.error('Error checking admin role:', error)
         return false
       }
 
-      return !!data
+      return data === true
     } catch (err) {
       console.error('Error checking admin role:', err)
       return false
