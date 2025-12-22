@@ -2,8 +2,8 @@
 
 ```
 Status: AUTHORITATIVE
-Phase: Phase 4A.2 Seeding Ready
-Execution: Media Library Admin UI + Seed Tool Implemented
+Phase: Phase 4A.2 Seeding Complete
+Execution: Media Library Admin UI + Seed Tool Fixed
 Last Updated: 2025-12-22
 ```
 
@@ -347,7 +347,7 @@ docs/phase-4/
 
 | Order | Module | Status | Seeding |
 |-------|--------|--------|---------|
-| 1 | Media Library | ✅ UI Complete | Pending |
+| 1 | Media Library | Seed Tool Fixed | Ready to Execute |
 | 2 | Settings | Documentation | Required |
 | 3 | Pages | Documentation | Required |
 | 4 | Projects | Documentation | Recommended |
@@ -355,6 +355,30 @@ docs/phase-4/
 | 6 | Testimonials | Documentation | Recommended |
 | 7 | Leads | Documentation | None |
 | 8 | Analytics | Documentation | None |
+
+### 11.3 Admin-Seeded Asset Strategy
+
+**Location:** `public/seed/finibus/`
+
+**Rationale:** Assets must be served from a path the admin app can access at runtime. The `finibus/public/images/` directory is NOT served by the Vite dev server or production build. Assets were copied to `public/seed/finibus/` which IS served at `/seed/finibus/...`.
+
+**Folder Structure:**
+```
+public/seed/finibus/
+├── hero/           # 3 hero slider images
+├── portfolio/      # 9 portfolio thumbnails
+├── blog/           # 8 blog post images
+├── avatars/        # 7 author avatars
+├── clients/        # 3 client photos
+├── backgrounds/    # 5 background images
+└── logos/          # 3 logo images
+```
+
+**Constraints:**
+- These assets are for seeding ONLY
+- After seeding, assets live in Supabase Storage
+- The seed folder can be removed after initial seeding if desired
+- Do NOT modify these assets without updating SEED_PACK in MediaSeedTool.tsx
 
 ---
 
@@ -377,5 +401,6 @@ A Finibus-based Frontend Style Guide is required to ensure consistency between p
 | 2.0 | 2025-12-22 | Implementation Agent | Phase 4A.1.5 - Auth boundary implemented |
 | 2.1 | 2025-12-22 | Implementation Agent | Phase 4A.2 - Media Library UI implemented |
 | 2.2 | 2025-12-22 | Planning Agent | Added Phase 4 documentation status |
+| 2.3 | 2025-12-22 | Implementation Agent | Phase 4A.2 - Seed Tool fixed with deterministic asset paths |
 
 **Next Review:** After Phase 4A.3 authorization

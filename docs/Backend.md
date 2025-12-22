@@ -2,8 +2,8 @@
 
 ```
 Status: AUTHORITATIVE
-Phase: Phase 4A.2 Seeding Ready
-Execution: Admin Auth + Media Library + Seed Tool Implemented
+Phase: Phase 4A.2 Seeding Complete
+Execution: Admin Auth + Media Library + Seed Tool Fixed
 Last Updated: 2025-12-22
 ```
 
@@ -275,7 +275,7 @@ See: `docs/phase-4/Phase_4_Overview.md` for complete seeding policy.
 
 | Module | Seeding Required | Method |
 |--------|------------------|--------|
-| Media Library | **YES** | Manual upload (30+ assets) |
+| Media Library | **YES** | Seed Tool (38 assets from public/seed/finibus/) |
 | Settings | **YES** | SQL migration |
 | Pages | **YES** | SQL migration |
 | Blog | Recommended | Manual via UI |
@@ -283,6 +283,34 @@ See: `docs/phase-4/Phase_4_Overview.md` for complete seeding policy.
 | Testimonials | Recommended | Manual via UI |
 | Leads | NO | Form submissions |
 | Analytics | NO | Aggregates other data |
+
+### 8.3 Media Seed Tool Implementation
+
+**Asset Source:** `public/seed/finibus/` (deterministic runtime path)
+
+**Categories:**
+- Hero (3 images)
+- Portfolio (9 images)
+- Blog (8 images)
+- Avatars (7 images)
+- Clients (3 images)
+- Backgrounds (5 images)
+- Logos (3 images)
+
+**How seeding works:**
+1. Admin navigates to `/content/media`
+2. Seed Tool appears when media table is empty
+3. Click "Start Seeding" button
+4. Tool fetches files from `/seed/finibus/...` paths
+5. Uploads to Supabase Storage bucket `media`
+6. Inserts metadata rows into `public.media` table
+7. Uses upsert with `storage_path` unique constraint for idempotency
+
+**Re-running safely:**
+- Tool uses `upsert` with `onConflict: 'storage_path'`
+- Duplicate uploads overwrite existing files
+- Duplicate rows update instead of insert
+- Safe to re-run without creating duplicates
 
 ---
 
@@ -309,5 +337,6 @@ See: `docs/phase-4/Phase_4_Overview.md` for complete seeding policy.
 | 2.0 | 2025-12-22 | Implementation Agent | Phase 4A.1.5 - Supabase Auth implemented |
 | 2.1 | 2025-12-22 | Implementation Agent | Phase 4A.2 - Media Library UI implemented |
 | 2.2 | 2025-12-22 | Planning Agent | Added Phase 4 seeding policy reference |
+| 2.3 | 2025-12-22 | Implementation Agent | Phase 4A.2 - Seed Tool fixed: deterministic paths, text-only UI |
 
 **Next Review:** After Phase 4A.3 authorization
