@@ -4,7 +4,7 @@
 Status: Draft
 Phase: Documentation Only
 Execution: Not Authorized
-Last Updated: 2025-12-21
+Last Updated: 2025-12-22
 ```
 
 ---
@@ -16,7 +16,7 @@ Last Updated: 2025-12-21
 | Module Name | Media Library |
 | Admin Route | `/content/media` |
 | Public Routes | N/A (asset storage) |
-| Current State | Empty grid placeholder |
+| Current State | ✅ Admin UI Implemented (Phase 4A.2) |
 | Priority | 1 (enables other modules) |
 
 ---
@@ -50,7 +50,7 @@ Media Library has **no public-facing route**. It serves as the central asset sto
 
 ---
 
-## 3. Data Model Proposal (MVP)
+## 3. Data Model (Implemented)
 
 ### 3.1 Table: `media`
 
@@ -68,94 +68,156 @@ Media Library has **no public-facing route**. It serves as the central asset sto
 | `created_at` | timestamptz | No | now() | Upload timestamp |
 | `updated_at` | timestamptz | No | now() | Last modified |
 
-### 3.2 Indexes
-
-| Index | Columns | Purpose |
-|-------|---------|---------|
-| `media_pkey` | `id` | Primary key |
-| `media_file_type_idx` | `file_type` | Filter by type |
-| `media_created_at_idx` | `created_at` | Sort by date |
-
-### 3.3 RLS Considerations (High-Level)
-
-| Policy | Rule |
-|--------|------|
-| SELECT | Authenticated users can view all media |
-| INSERT | Authenticated users can upload |
-| UPDATE | Owner or admin can modify metadata |
-| DELETE | Admin only |
-
-### 3.4 Storage Bucket Configuration
+### 3.2 Storage Bucket Configuration
 
 | Bucket | Access | Purpose |
 |--------|--------|---------|
-| `public` | Public read | Public website assets |
-| `private` | Authenticated only | Internal documents |
-| `uploads` | Authenticated write | Temporary uploads |
+| `media` | **PUBLIC** | Media library files |
 
-### 3.5 Seed Data
+**Important:** Bucket is PUBLIC. Files have permanent public URLs via `getPublicUrl()`.
 
-**Required**: No
-**Reason**: Media is uploaded via admin UI; existing Finibus images remain static in public folder.
+### 3.3 RLS Policies (Active)
+
+| Policy | Operation | Condition |
+|--------|-----------|-----------|
+| Public read | SELECT | `true` |
+| Authenticated insert | INSERT | Authenticated |
+| Owner update | UPDATE | `auth.uid() = uploaded_by` |
+| Admin delete | DELETE | `has_role(auth.uid(), 'admin')` |
 
 ---
 
-## 4. Admin UI Requirements
+## 4. Seeding Plan
 
-### 4.1 Screens
+### 4.1 Seed Data Requirement
 
-| Screen | Route | Description |
-|--------|-------|-------------|
-| List/Grid | `/content/media` | Display all media in grid view |
-| Upload Modal | (modal) | Dropzone for file upload |
-| Detail Modal | (modal) | View/edit metadata |
+| Attribute | Value |
+|-----------|-------|
+| **Required** | **YES** |
+| **Reason** | Media must be seeded first so Blog, Projects, Testimonials, and Pages can reference image sources consistently. |
 
-### 4.2 List View Features
+### 4.2 Media Seed Pack Definition
 
-| Feature | MVP | Later |
-|---------|-----|-------|
-| Grid display with thumbnails | ✅ | — |
-| Filter by file type | ✅ | — |
-| Search by filename/title | ✅ | — |
-| Sort by date | ✅ | — |
-| Pagination | ✅ | — |
-| Bulk delete | — | ✅ |
-| Folder organization | — | ✅ |
+**Source:** Finibus template assets ONLY (`apps/public/src/assets/images/`)
 
-### 4.3 Upload Features
+**Folder Convention (Canonical):**
 
-| Feature | MVP | Later |
-|---------|-----|-------|
-| Drag-and-drop upload | ✅ | — |
-| Multiple file upload | ✅ | — |
-| Progress indicator | ✅ | — |
-| File type validation | ✅ | — |
-| Size limit enforcement | ✅ | — |
-| Auto-thumbnail generation | — | ✅ |
-| Image resizing | — | ✅ |
+| Folder | Purpose | Source Directory |
+|--------|---------|------------------|
+| `finibus/hero/` | Homepage hero section | `/images/hero/` |
+| `finibus/blog/` | Blog featured images | `/images/post/` |
+| `finibus/portfolio/` | Project thumbnails | `/images/portfolio/` |
+| `finibus/masonary/` | Portfolio grid | `/images/masonary/` |
+| `finibus/avatars/` | Author and client photos | `/images/author/` |
+| `finibus/clients/` | Testimonial client photos | `/images/client/` |
+| `finibus/icons/` | Service icons | `/images/icons/` |
+| `finibus/backgrounds/` | Page backgrounds | `/images/backgrounds/` |
+| `finibus/logos/` | Brand assets | `/images/logo/` |
 
-### 4.4 Detail View Features
+### 4.3 Minimum Asset Count
 
-| Feature | MVP | Later |
-|---------|-----|-------|
-| View full image | ✅ | — |
-| Edit alt text | ✅ | — |
-| Edit title | ✅ | — |
-| Copy public URL | ✅ | — |
-| Delete file | ✅ | — |
-| View usage (which content uses this) | — | ✅ |
+| Category | Minimum Count | Priority |
+|----------|---------------|----------|
+| Hero Images | 3 | High |
+| Blog Featured | 8 | High |
+| Portfolio | 9 | High |
+| Masonary | 12 | Medium |
+| Avatars | 7 | High |
+| Client Photos | 3 | High |
+| Service Icons | 7 | Medium |
+| Backgrounds | 4 | Low |
+| Logos | 3 | High |
+| **TOTAL** | **56** | — |
 
-### 4.5 Empty State
+**Hard Minimum:** 30 assets (covering high-priority categories)
 
-**Current (Phase 3)**: "No media files yet"
+### 4.4 Naming Convention
 
-**Phase 4 MVP**: Same message with "Upload" button
+```
+{category}-{number}.{ext}
+```
 
-### 4.6 Validation Rules
+Examples:
+- `hero-1.jpg`
+- `blog-post-1.jpg`
+- `portfolio-1.jpg`
+- `avatar-author-1.jpg`
+- `client-1.jpg`
+- `service-icon-1.png`
+
+### 4.5 Required Metadata
+
+| Field | Required | Rule |
+|-------|----------|------|
+| `filename` | Yes | Original filename preserved |
+| `alt_text` | **Yes** | Descriptive text for accessibility (must not be empty) |
+| `title` | Recommended | Display-friendly name |
+| `file_type` | Yes | MIME type (auto-detected) |
+| `storage_path` | Yes | Folder convention + filename |
+| `public_url` | Yes | Generated by Supabase |
+
+### 4.6 Seeding Method
+
+**Recommended:** Manual upload via Admin UI
+
+**Rationale:**
+- Validates upload flow
+- Ensures RLS policies work
+- Admin enters alt_text for each asset
+- No migration scripts to maintain
+
+**Alternative (if volume is too high):** SQL seed migration with pre-defined metadata. Requires explicit authorization.
+
+### 4.7 Acceptance Criteria
+
+- [ ] At least 30 assets uploaded to Supabase Storage
+- [ ] All assets organized by folder convention (`finibus/{category}/`)
+- [ ] All assets appear in Media Library list
+- [ ] Each asset has `alt_text` populated (not null or empty)
+- [ ] Each asset has correct `file_type` (MIME)
+- [ ] `public_url` resolves correctly in browser
+- [ ] At least one asset can be successfully deleted (admin permission verified)
+- [ ] Assets can be referenced by other modules (Blog, Projects, Testimonials)
+
+---
+
+## 5. Admin UI Requirements
+
+### 5.1 Screens (Implemented)
+
+| Screen | Route | Description | Status |
+|--------|-------|-------------|--------|
+| List | `/content/media` | Display all media in table view | ✅ |
+| Upload Modal | (modal) | Dropzone for file upload | ✅ |
+| Delete Modal | (modal) | Confirm deletion | ✅ |
+
+### 5.2 List View Features
+
+| Feature | MVP | Status |
+|---------|-----|--------|
+| Table with thumbnails | ✅ | Implemented |
+| Filter by file type | ✅ | UI only |
+| Search by filename/title | ✅ | UI only |
+| Sort by date | ✅ | Implemented |
+| Pagination | ✅ | Not yet |
+| Bulk delete | — | Later |
+| Folder organization | — | Later |
+
+### 5.3 Upload Features
+
+| Feature | MVP | Status |
+|---------|-----|--------|
+| Drag-and-drop upload | ✅ | Implemented |
+| Single file upload | ✅ | Implemented |
+| Progress indicator | ✅ | Implemented |
+| File type validation | ✅ | Implemented |
+| Size limit enforcement | ✅ | Implemented (10MB) |
+
+### 5.4 Validation Rules
 
 | Rule | Constraint |
 |------|------------|
-| File types | image/jpeg, image/png, image/svg+xml, image/webp, application/pdf |
+| File types | image/jpeg, image/png, image/gif, image/webp, application/pdf |
 | Max file size | 10MB per file |
 | Filename | Sanitized on upload (alphanumeric, hyphens, underscores) |
 | Alt text | Max 255 characters |
@@ -163,58 +225,40 @@ Media Library has **no public-facing route**. It serves as the central asset sto
 
 ---
 
-## 5. Phase Gate
+## 6. Phase Gate
 
-### 5.1 Implementation Steps (Future)
+### 6.1 Implementation Status
 
-| Step | Scope | Authorization |
-|------|-------|---------------|
-| Step 1 | Create `media` table, storage buckets, RLS policies | Separate authorization required |
-| Step 2 | Admin CRUD: upload, list, edit metadata, delete | Separate authorization required |
-| Step 3 | Integration: Media picker component for other modules | Separate authorization required |
+| Step | Scope | Status |
+|------|-------|--------|
+| Step 1 | Create `media` table, storage bucket, RLS policies | ✅ Complete |
+| Step 2 | Admin CRUD: upload, list, delete | ✅ Complete |
+| Step 3 | Seeding: Upload Media Seed Pack | ⏳ Pending authorization |
+| Step 4 | Integration: Media picker component for other modules | ⏳ Pending |
 
-### 5.2 Stop Condition
+### 6.2 Current Stop Condition
 
-Before proceeding to Step 2:
-- [ ] `media` table created
-- [ ] Storage buckets configured
-- [ ] RLS policies applied
-- [ ] Upload functionality tested
-- [ ] Explicit authorization received
-
-### 5.3 Verification Checklist (Per Step)
-
-**Step 1 (DB Foundation)**:
-- [ ] Table exists with correct schema
-- [ ] Indexes created
-- [ ] RLS policies active
-- [ ] Storage buckets accessible
-
-**Step 2 (Admin CRUD)**:
-- [ ] Grid view renders correctly
-- [ ] Upload works via dropzone
-- [ ] Metadata editing saves correctly
-- [ ] Delete removes file and record
-- [ ] Empty state displays when no files
-
-**Step 3 (Integration)**:
-- [ ] Media picker modal available
-- [ ] Other modules can reference media IDs
-- [ ] URLs resolve correctly on public site
+Before proceeding to seeding (Step 3):
+- [x] `media` table created
+- [x] Storage bucket configured (PUBLIC)
+- [x] RLS policies applied
+- [x] Upload functionality tested
+- [x] Admin UI implemented
+- [ ] Explicit seeding authorization received
 
 ---
 
-## 6. Dependencies
+## 7. Dependencies
 
-### 6.1 Required Before This Module
+### 7.1 Required Before This Module
 
 | Dependency | Status |
 |------------|--------|
-| Supabase Cloud enabled | Not yet |
-| Storage configured | Not yet |
-| Admin auth working | Demo only |
+| Supabase Cloud enabled | ✅ Active |
+| Storage configured | ✅ Active |
+| Admin auth working | ✅ Active |
 
-### 6.2 Modules Dependent on This
+### 7.2 Modules Dependent on This
 
 | Module | Dependency Type |
 |--------|-----------------|
@@ -225,24 +269,17 @@ Before proceeding to Step 2:
 
 ---
 
-## 7. MVP vs Later Summary
+## 8. Admin UI Standard Reference
 
-### 7.1 MVP Scope
+See: `Phase_4_Admin_UI_Standard.md`
 
-- Single `media` table
-- File upload with basic metadata
-- Grid view with type filter and search
-- Public URL generation
-- Basic CRUD operations
-
-### 7.2 Later Phase Scope
-
-- Folder organization
-- Auto-thumbnail generation
-- Image resizing/cropping
-- Bulk operations
-- Usage tracking (which content uses this file)
-- CDN optimization
+This module follows all patterns defined in the Admin UI Standard:
+- Page header with "Add Media" button at top-right
+- Table with thumbnail, filename, type, size, date, actions columns
+- Empty state with icon, message, and CTA
+- Upload modal with dropzone
+- Delete confirmation modal
+- Toast notifications for success/error
 
 ---
 
@@ -251,5 +288,6 @@ Before proceeding to Step 2:
 | Version | Date | Author | Notes |
 |---------|------|--------|-------|
 | 0.1 | 2025-12-21 | Planning Agent | Initial draft |
+| 1.0 | 2025-12-22 | Planning Agent | Added Seeding Plan (REQUIRED) |
 
-**Next Review:** After authorization for Step 1
+**Next Review:** After seeding authorization

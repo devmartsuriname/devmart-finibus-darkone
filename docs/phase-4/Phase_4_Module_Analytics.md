@@ -4,7 +4,7 @@
 Status: Draft
 Phase: Documentation Only
 Execution: Not Authorized
-Last Updated: 2025-12-21
+Last Updated: 2025-12-22
 ```
 
 ---
@@ -17,7 +17,7 @@ Last Updated: 2025-12-21
 | Admin Route | `/analytics` |
 | Public Routes | N/A |
 | Current State | Coming Soon placeholder |
-| Priority | 7 (placeholder requirements only) |
+| Priority | 8 (last module - requires all source tables) |
 
 ---
 
@@ -45,98 +45,51 @@ Last Updated: 2025-12-21
 
 | Module | Metrics |
 |--------|---------|
-| **Blog** | Total posts, Published posts, Views per post (TBD), Posts per month |
-| **Projects** | Total projects, Published projects, Featured count, Projects per category |
+| **Blog** | Total posts, Published posts, Posts per month |
+| **Projects** | Total projects, Published projects, Featured count |
 | **Testimonials** | Total testimonials, Active count |
 | **Pages** | Published pages count |
 | **Leads** | Total leads, Leads by status, Leads by source, Leads per day/week/month |
 
 ### 3.2 Dashboard Cards (Conceptual)
 
-| Card | Value | Trend | Module |
-|------|-------|-------|--------|
-| Total Leads | Count | +/- vs last period | CRM |
-| New Leads | Count (status=new) | — | CRM |
-| Published Posts | Count | +/- vs last period | Content |
-| Published Projects | Count | — | Content |
-| Active Testimonials | Count | — | Content |
-
-### 3.3 Charts (Conceptual)
-
-| Chart Type | Data | Purpose |
-|------------|------|---------|
-| Line chart | Leads over time | Trend analysis |
-| Bar chart | Leads by source | Source comparison |
-| Pie chart | Leads by status | Status distribution |
-| Bar chart | Posts by category | Content distribution |
-| Bar chart | Projects by category | Portfolio distribution |
+| Card | Value | Module |
+|------|-------|--------|
+| Total Leads | Count | CRM |
+| New Leads | Count (status=new) | CRM |
+| Published Posts | Count | Content |
+| Published Projects | Count | Content |
+| Active Testimonials | Count | Content |
 
 ---
 
-## 4. Dashboard Wireframe (Descriptive)
+## 4. Seeding Plan
 
-```
-┌─────────────────────────────────────────────────────────────┐
-│  Analytics Dashboard                                         │
-├─────────────────────────────────────────────────────────────┤
-│                                                              │
-│  ┌───────────┐  ┌───────────┐  ┌───────────┐  ┌───────────┐│
-│  │ Total     │  │ New       │  │ Published │  │ Published ││
-│  │ Leads     │  │ Leads     │  │ Posts     │  │ Projects  ││
-│  │   42      │  │   8       │  │   15      │  │   12      ││
-│  │  +12%     │  │           │  │   +3      │  │           ││
-│  └───────────┘  └───────────┘  └───────────┘  └───────────┘│
-│                                                              │
-│  ┌─────────────────────────────────────────────────────────┐│
-│  │  Leads Over Time (Line Chart)                            ││
-│  │                                                          ││
-│  │  [Chart placeholder]                                     ││
-│  │                                                          ││
-│  └─────────────────────────────────────────────────────────┘│
-│                                                              │
-│  ┌────────────────────────┐  ┌────────────────────────────┐ │
-│  │  Leads by Source       │  │  Leads by Status           │ │
-│  │  (Bar Chart)           │  │  (Pie Chart)               │ │
-│  │                        │  │                            │ │
-│  │  [Chart placeholder]   │  │  [Chart placeholder]       │ │
-│  │                        │  │                            │ │
-│  └────────────────────────┘  └────────────────────────────┘ │
-│                                                              │
-└─────────────────────────────────────────────────────────────┘
-```
+### 4.1 Seed Data Requirement
+
+| Attribute | Value |
+|-----------|-------|
+| **Required** | **NO** |
+| **Reason** | Analytics aggregates data from other tables. No dedicated seeding needed. |
+
+### 4.2 Data Sources
+
+Analytics derives data from:
+- `blog_posts` table
+- `projects` table
+- `testimonials` table
+- `pages` table
+- `leads` table
+
+### 4.3 Prerequisite
+
+All source tables must exist and contain data before Analytics can display meaningful information.
 
 ---
 
-## 5. Data Sources (Conceptual)
+## 5. Technology Considerations
 
-### 5.1 Database Queries
-
-| Metric | Query Type | Source Table |
-|--------|------------|--------------|
-| Total Leads | COUNT(*) | `leads` |
-| New Leads | COUNT(*) WHERE status='new' | `leads` |
-| Leads by Source | GROUP BY source | `leads` |
-| Leads by Status | GROUP BY status | `leads` |
-| Leads Over Time | GROUP BY date | `leads` |
-| Published Posts | COUNT(*) WHERE status='published' | `blog_posts` |
-| Published Projects | COUNT(*) WHERE status='published' | `projects` |
-| Active Testimonials | COUNT(*) WHERE is_active=true | `testimonials` |
-
-### 5.2 Aggregation Options
-
-| Option | Description |
-|--------|-------------|
-| Real-time | Query on page load |
-| Cached | Periodic materialized view refresh |
-| Scheduled | Daily/hourly aggregation job |
-
-**Recommendation**: Real-time for MVP (low volume); cached for scale
-
----
-
-## 6. Technology Considerations
-
-### 6.1 Chart Library
+### 5.1 Chart Library
 
 Current in Darkone: **ApexCharts** (react-apexcharts)
 
@@ -149,9 +102,16 @@ Current in Darkone: **ApexCharts** (react-apexcharts)
 | Responsive | ✅ |
 | Theming | ✅ |
 
-### 6.2 Dashboard Widgets
+---
 
-Darkone template includes dashboard widgets that can be repurposed.
+## 6. Admin UI Standard Reference
+
+See: `Phase_4_Admin_UI_Standard.md`
+
+Analytics uses a dashboard layout (cards + charts) but MUST follow:
+- PageTitle with breadcrumb
+- Card containers for widgets
+- Consistent styling with Darkone patterns
 
 ---
 
@@ -174,47 +134,6 @@ Darkone template includes dashboard widgets that can be repurposed.
 | Projects table | Project metrics |
 | Testimonials table | Testimonial metrics |
 
-### 7.3 Stop Condition
-
-Before proceeding to implementation:
-- [ ] All source tables exist
-- [ ] Aggregation queries defined
-- [ ] Dashboard layout approved
-- [ ] Explicit authorization received
-
----
-
-## 8. MVP vs Later Summary
-
-### 8.1 MVP Scope (Future Implementation)
-
-- Summary cards with counts
-- Basic charts (leads over time, by source, by status)
-- No date range filters
-- Real-time queries
-
-### 8.2 Later Phase Scope
-
-- Date range filters
-- Export to PDF/image
-- Scheduled email reports
-- Custom dashboards
-- Goal tracking
-- Conversion funnels
-- Page view analytics (requires tracking)
-
----
-
-## 9. TBD Items
-
-| Item | Decision Required |
-|------|-------------------|
-| Page view tracking | Include in analytics? (requires tracking pixel) |
-| Goal/target setting | Include goals vs actuals? |
-| Custom date ranges | Include in MVP or later? |
-| Export functionality | Include in MVP or later? |
-| Refresh frequency | Real-time or cached? |
-
 ---
 
 ## Document Control
@@ -222,5 +141,6 @@ Before proceeding to implementation:
 | Version | Date | Author | Notes |
 |---------|------|--------|-------|
 | 0.1 | 2025-12-21 | Planning Agent | Initial draft (placeholder requirements only) |
+| 1.0 | 2025-12-22 | Planning Agent | Added Seeding Plan (NO seeding required) |
 
 **Next Review:** After Leads module implementation

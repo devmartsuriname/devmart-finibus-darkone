@@ -4,7 +4,7 @@
 Status: Draft
 Phase: Documentation Only
 Execution: Not Authorized
-Last Updated: 2025-12-21
+Last Updated: 2025-12-22
 ```
 
 ---
@@ -17,7 +17,7 @@ Last Updated: 2025-12-21
 | Admin Route | `/content/pages` |
 | Public Routes | `/about`, `/service`, `/service-details`, `/contact` |
 | Current State | Empty table placeholder |
-| Priority | 5 (after Testimonials) |
+| Priority | 3 (after Settings) |
 
 ---
 
@@ -31,17 +31,7 @@ Last Updated: 2025-12-21
 | Pages + Sections Editor | **LATER PHASE** | NOT Phase 4 |
 | Dynamic Page Builder | **LATER PHASE** | NOT Phase 4 |
 
-### 2.2 What "Pages + Sections" Means (Future)
-
-A Pages + Sections editor would allow:
-- Creating new pages dynamically
-- Adding/removing sections to pages
-- Reordering sections
-- Configuring section content per page
-
-**This is explicitly NOT included in Phase 4.**
-
-### 2.3 MVP Scope (Phase 4)
+### 2.2 MVP Scope (Phase 4)
 
 Phase 4 Pages module is LIMITED to:
 - Managing metadata for existing static pages
@@ -53,11 +43,7 @@ Phase 4 Pages module is LIMITED to:
 
 ## 3. Frontend Reference
 
-### 3.1 Mapping Index Reference
-
-See: `Phase_4_Frontend_Mapping_Index.md` (various sections)
-
-### 3.2 Static Pages in Finibus
+### 3.1 Static Pages in Finibus
 
 | Route | Component | Sections |
 |-------|-----------|----------|
@@ -65,17 +51,6 @@ See: `Phase_4_Frontend_Mapping_Index.md` (various sections)
 | `/service` | ServicesPage | WhatWeDoArea, HowWeWorkArea, ServicePrice |
 | `/service-details` | ServiceDetails | Service detail content |
 | `/contact` | ContactPage | ContactUsArea, ContactForm |
-
-### 3.3 Page Content Analysis
-
-| Page | Content Type | CMS Required |
-|------|--------------|--------------|
-| About | Static text, images | TBD |
-| Services | Service list, pricing | TBD |
-| Service Details | Service description | TBD |
-| Contact | Contact info, form | Leads capture only |
-
-**Note**: Most page content in Finibus is hardcoded. Making it dynamic is complex and deferred.
 
 ---
 
@@ -94,65 +69,86 @@ See: `Phase_4_Frontend_Mapping_Index.md` (various sections)
 | `created_at` | timestamptz | No | now() | Creation timestamp |
 | `updated_at` | timestamptz | No | now() | Last modified |
 
-### 4.2 Indexes
-
-| Index | Columns | Purpose |
-|-------|---------|---------|
-| `pages_pkey` | `id` | Primary key |
-| `pages_slug_key` | `slug` | Unique constraint |
-
-### 4.3 Pre-defined Pages (Seed Data)
-
-| Slug | Title | Notes |
-|------|-------|-------|
-| `about` | About Us | Static page |
-| `services` | Services | Static page |
-| `contact` | Contact Us | Static page |
-| `blog` | Blog | Listing page |
-| `projects` | Projects | Listing page |
-
-### 4.4 RLS Considerations (High-Level)
+### 4.2 RLS Considerations (High-Level)
 
 **Public Access (SELECT)**:
 - Only pages with `is_published = true`
 
-**Admin Access (ALL)**:
+**Admin Access (UPDATE only)**:
 - Authenticated users can update metadata
-
-| Policy | Rule |
-|--------|------|
-| public_read | `is_published = true` |
-| admin_update | `auth.role() = 'authenticated'` |
-
-**Note**: Admin cannot CREATE/DELETE pages in MVP (routes are fixed)
-
-### 4.5 Seed Data
-
-**Required**: Yes — pre-populate with existing static pages
+- Admin cannot CREATE/DELETE pages in MVP (routes are fixed)
 
 ---
 
-## 5. Admin UI Requirements
+## 5. Seeding Plan
 
-### 5.1 Screens
+### 5.1 Seed Data Requirement
+
+| Attribute | Value |
+|-----------|-------|
+| **Required** | **YES** |
+| **Reason** | Pre-populate with existing static pages so admin can edit SEO metadata |
+
+### 5.2 Seed Dataset
+
+| Slug | Title | Meta Title | Status |
+|------|-------|------------|--------|
+| `about` | About Us | About Us - Devmart | Published |
+| `services` | Services | Our Services - Devmart | Published |
+| `service-details` | Service Details | Service Details - Devmart | Published |
+| `contact` | Contact Us | Contact Us - Devmart | Published |
+| `blog` | Blog | Blog - Devmart | Published |
+| `projects` | Projects | Our Projects - Devmart | Published |
+
+**Count:** 6 pages (fixed set)
+
+### 5.3 Seeding Method
+
+**Recommended:** SQL seed migration
+
+**Rationale:**
+- Pages are pre-defined (no user input needed)
+- Simple INSERT statements
+- Consistent across environments
+- One-time setup
+
+### 5.4 Sample Seed SQL
+
+```sql
+INSERT INTO public.pages (slug, title, meta_title, meta_description, is_published)
+VALUES
+  ('about', 'About Us', 'About Us - Devmart', 'Learn about Devmart and our mission.', true),
+  ('services', 'Services', 'Our Services - Devmart', 'Explore our range of professional services.', true),
+  ('service-details', 'Service Details', 'Service Details - Devmart', NULL, true),
+  ('contact', 'Contact Us', 'Contact Us - Devmart', 'Get in touch with our team.', true),
+  ('blog', 'Blog', 'Blog - Devmart', 'Read our latest news and articles.', true),
+  ('projects', 'Projects', 'Our Projects - Devmart', 'View our portfolio of completed projects.', true);
+```
+
+### 5.5 Acceptance Criteria
+
+- [ ] All 6 pages exist in database
+- [ ] Each page has correct slug matching public route
+- [ ] Admin can view list of pages
+- [ ] Admin can edit meta_title and meta_description
+- [ ] Admin can toggle is_published
+- [ ] Slug is read-only (cannot be edited)
+- [ ] No Create or Delete buttons visible
+
+---
+
+## 6. Admin UI Requirements
+
+### 6.1 Screens
 
 | Screen | Route | Description |
 |--------|-------|-------------|
 | List | `/content/pages` | Table of all pages |
-| Edit | `/content/pages/:id` or modal | Edit page metadata |
+| Edit | Modal | Edit page metadata |
 
 **Note**: No Create screen — pages are predefined
 
-### 5.2 List View Features
-
-| Feature | MVP | Later |
-|---------|-----|-------|
-| Table with columns | ✅ | — |
-| Published filter | ✅ | — |
-| View on site link | ✅ | — |
-| Bulk publish/unpublish | — | ✅ |
-
-### 5.3 List View Columns
+### 6.2 List View Columns
 
 | Column | Sortable | Filterable |
 |--------|----------|------------|
@@ -162,7 +158,7 @@ See: `Phase_4_Frontend_Mapping_Index.md` (various sections)
 | Last Updated | Yes | No |
 | Actions | N/A | N/A |
 
-### 5.4 Edit Form Fields (MVP Only)
+### 6.3 Edit Form Fields (MVP Only)
 
 | Field | Type | Required | Validation |
 |-------|------|----------|------------|
@@ -172,27 +168,21 @@ See: `Phase_4_Frontend_Mapping_Index.md` (various sections)
 | Meta Description | Textarea | No | Max 160 chars |
 | Published | Toggle | Yes | Boolean |
 
-**Note**: Slug is NOT editable in MVP (fixed routes)
+---
 
-### 5.5 Empty State
+## 7. Admin UI Standard Reference
 
-**Current (Phase 3)**: Empty table with columns
+See: `Phase_4_Admin_UI_Standard.md`
 
-**Phase 4 MVP**: Pre-populated with static pages
-
-### 5.6 Validation Rules
-
-| Rule | Constraint |
-|------|------------|
-| Title | Required, max 100 characters |
-| Meta Title | Max 70 characters (SEO best practice) |
-| Meta Description | Max 160 characters (SEO best practice) |
+This module MUST follow all patterns defined in the Admin UI Standard, with exceptions:
+- No "Add" button (pages are pre-defined)
+- No Delete action
 
 ---
 
-## 6. Phase Gate
+## 8. Phase Gate
 
-### 6.1 Implementation Steps (Future)
+### 8.1 Implementation Steps (Future)
 
 | Step | Scope | Authorization |
 |------|-------|---------------|
@@ -200,103 +190,11 @@ See: `Phase_4_Frontend_Mapping_Index.md` (various sections)
 | Step 2 | Admin UI: list, edit metadata | Separate authorization required |
 | Step 3 | Public rendering: meta tag integration | Separate authorization required |
 
-### 6.2 Dependencies
+### 8.2 Dependencies
 
 | Dependency | Required For |
 |------------|--------------|
 | None | — |
-
-### 6.3 Stop Condition
-
-Before proceeding to Step 2:
-- [ ] `pages` table created with schema
-- [ ] Seed data inserted
-- [ ] RLS policies active
-- [ ] Explicit authorization received
-
-### 6.4 Verification Checklist (Per Step)
-
-**Step 1 (DB Foundation)**:
-- [ ] Table exists with correct schema
-- [ ] Seed data includes all static pages
-- [ ] Slug uniqueness enforced
-- [ ] RLS policies active
-
-**Step 2 (Admin UI)**:
-- [ ] List view shows all pages
-- [ ] Edit form loads and saves
-- [ ] Meta fields update correctly
-- [ ] Published toggle works
-- [ ] Create/Delete are disabled
-
-**Step 3 (Public Rendering)**:
-- [ ] Meta title renders in `<title>` tag
-- [ ] Meta description renders in `<meta>` tag
-- [ ] Unpublished pages return 404
-
----
-
-## 7. Future Milestone: Pages + Sections Editor
-
-### 7.1 Scope (NOT Phase 4)
-
-| Feature | Description |
-|---------|-------------|
-| Section types | Hero, Content, Gallery, CTA, etc. |
-| Section ordering | Drag-and-drop reorder |
-| Section configuration | Per-section content fields |
-| Page creation | Create new pages with custom slugs |
-| Page deletion | Remove custom pages |
-
-### 7.2 Data Model (Conceptual Only)
-
-```
-pages
-├── id
-├── slug
-├── title
-└── sections (one-to-many)
-    ├── id
-    ├── page_id (FK)
-    ├── section_type
-    ├── content (JSONB)
-    └── display_order
-```
-
-### 7.3 Timeline
-
-**Status**: DEFERRED — Not included in Phase 4 planning
-
----
-
-## 8. MVP vs Later Summary
-
-### 8.1 MVP Scope
-
-- Single `pages` table for metadata
-- Pre-defined pages only (no creation)
-- SEO fields (meta title, description)
-- Published toggle
-- Read-only slugs
-
-### 8.2 Later Phase Scope
-
-- Pages + Sections editor
-- Dynamic page creation
-- Custom slugs
-- Section types library
-- Drag-and-drop section ordering
-- Per-section content management
-
----
-
-## 9. TBD Items
-
-| Item | Decision Required |
-|------|-------------------|
-| Services as separate module | Separate from Pages? |
-| Contact info management | Include in Settings instead? |
-| Additional meta fields | OG tags, Twitter cards? |
 
 ---
 
@@ -305,5 +203,6 @@ pages
 | Version | Date | Author | Notes |
 |---------|------|--------|-------|
 | 0.1 | 2025-12-21 | Planning Agent | Initial draft |
+| 1.0 | 2025-12-22 | Planning Agent | Added Seeding Plan (REQUIRED), updated priority |
 
-**Next Review:** After Testimonials module implementation
+**Next Review:** After Settings module implementation
