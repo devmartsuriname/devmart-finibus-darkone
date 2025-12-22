@@ -83,6 +83,7 @@ const MediaSeedTool = ({ onComplete }: { onComplete: () => void }) => {
   const [currentFile, setCurrentFile] = useState('')
   const [statusMessage, setStatusMessage] = useState('')
   const [dbRowCount, setDbRowCount] = useState<number | null>(null)
+  const [storageStats, setStorageStats] = useState({ uploaded: 0, skipped: 0 })
 
   const getMimeType = (filename: string): string => {
     const ext = filename.split('.').pop()?.toLowerCase()
@@ -142,6 +143,25 @@ const MediaSeedTool = ({ onComplete }: { onComplete: () => void }) => {
     return count ?? 0
   }
 
+  /**
+   * Check if a file already exists in storage
+   */
+  const checkStorageFileExists = async (storagePath: string): Promise<boolean> => {
+    const folder = storagePath.substring(0, storagePath.lastIndexOf('/'))
+    const filename = storagePath.substring(storagePath.lastIndexOf('/') + 1)
+    
+    const { data, error } = await supabase.storage
+      .from('media')
+      .list(folder, { search: filename })
+    
+    if (error) {
+      console.warn(`Storage list check failed for ${storagePath}:`, error)
+      return false
+    }
+    
+    return data?.some(f => f.name === filename) ?? false
+  }
+
   const seedMedia = async () => {
     // Step 1: Get current user (required for RLS)
     const { data: { user }, error: userError } = await supabase.auth.getUser()
@@ -161,32 +181,49 @@ const MediaSeedTool = ({ onComplete }: { onComplete: () => void }) => {
     setStatus('seeding')
     setProgress(0)
     setResults([])
+    setStorageStats({ uploaded: 0, skipped: 0 })
 
     const totalItems = SEED_PACK.length
     const newResults: SeedResult[] = []
+    let storageUploaded = 0
+    let storageSkipped = 0
 
     for (let i = 0; i < SEED_PACK.length; i++) {
       const item = SEED_PACK[i]
       setCurrentFile(item.filename)
-      setStatusMessage(`Uploading: ${item.filename} (${i + 1}/${totalItems})`)
-
+      
       try {
-        // Fetch the file from the public path
-        const response = await fetch(item.sourcePath)
-        if (!response.ok) {
-          throw new Error(`Fetch failed: HTTP ${response.status} - ${item.sourcePath}`)
-        }
+        // Check if file already exists in storage
+        const fileExists = await checkStorageFileExists(item.storagePath)
+        let fileSize = 0
+        
+        if (fileExists) {
+          // File exists - skip upload, just get size estimate
+          storageSkipped++
+          setStatusMessage(`Skipping upload (exists): ${item.filename} (${i + 1}/${totalItems})`)
+          fileSize = 1024 // Estimate for existing files
+        } else {
+          // File doesn't exist - fetch and upload
+          setStatusMessage(`Uploading: ${item.filename} (${i + 1}/${totalItems})`)
+          
+          const response = await fetch(item.sourcePath)
+          if (!response.ok) {
+            throw new Error(`Fetch failed: HTTP ${response.status} - ${item.sourcePath}`)
+          }
 
-        const blob = await response.blob()
-        const file = new File([blob], item.filename, { type: getMimeType(item.filename) })
+          const blob = await response.blob()
+          const file = new File([blob], item.filename, { type: getMimeType(item.filename) })
+          fileSize = file.size
 
-        // Upload to Supabase Storage (upsert)
-        const { error: uploadError } = await supabase.storage
-          .from('media')
-          .upload(item.storagePath, file, { upsert: true })
+          // Upload to Supabase Storage
+          const { error: uploadError } = await supabase.storage
+            .from('media')
+            .upload(item.storagePath, file, { upsert: true })
 
-        if (uploadError) {
-          throw new Error(`Storage error: ${uploadError.message}`)
+          if (uploadError) {
+            throw new Error(`Storage error: ${uploadError.message}`)
+          }
+          storageUploaded++
         }
 
         // Get public URL
@@ -194,8 +231,7 @@ const MediaSeedTool = ({ onComplete }: { onComplete: () => void }) => {
           .from('media')
           .getPublicUrl(item.storagePath)
 
-        // Insert metadata row (upsert based on storage_path)
-        // Use current user ID to satisfy RLS policy
+        // Upsert metadata row - always do this to ensure DB is in sync
         const { error: insertError } = await supabase
           .from('media')
           .upsert({
@@ -203,10 +239,10 @@ const MediaSeedTool = ({ onComplete }: { onComplete: () => void }) => {
             storage_path: item.storagePath,
             public_url: urlData.publicUrl,
             file_type: getMimeType(item.filename),
-            file_size: file.size,
+            file_size: fileSize,
             alt_text: item.altText,
             title: item.title,
-            uploaded_by: user.id, // Use current admin user ID for RLS compliance
+            uploaded_by: user.id,
           }, { 
             onConflict: 'storage_path',
             ignoreDuplicates: false 
@@ -225,7 +261,11 @@ const MediaSeedTool = ({ onComplete }: { onComplete: () => void }) => {
 
       setProgress(Math.round(((i + 1) / totalItems) * 100))
       setResults([...newResults])
+      setStorageStats({ uploaded: storageUploaded, skipped: storageSkipped })
     }
+
+    // Log storage stats
+    console.log(`Storage: ${storageUploaded} uploaded, ${storageSkipped} skipped (already existed)`)
 
     // Step 4: Verify DB row count
     const rowCount = await verifyDbRowCount()
@@ -236,7 +276,7 @@ const MediaSeedTool = ({ onComplete }: { onComplete: () => void }) => {
 
     if (failCount === 0) {
       setStatus('complete')
-      setStatusMessage(`Seeding complete: ${successCount} files uploaded successfully.`)
+      setStatusMessage(`Seeding complete: ${successCount} files processed successfully.`)
     } else if (successCount > 0) {
       setStatus('complete')
       setStatusMessage(`Seeding finished: ${successCount} succeeded, ${failCount} failed.`)
@@ -300,6 +340,7 @@ const MediaSeedTool = ({ onComplete }: { onComplete: () => void }) => {
             />
             <small className="text-muted mt-2 d-block">
               {results.length} / {SEED_PACK.length} files processed
+              {storageStats.skipped > 0 && ` (${storageStats.skipped} already in storage)`}
             </small>
           </div>
         )}
@@ -316,10 +357,12 @@ const MediaSeedTool = ({ onComplete }: { onComplete: () => void }) => {
                   <span>Failed: {failCount} files</span>
                 </>
               )}
+              <br />
+              <span>Storage: {storageStats.uploaded} uploaded, {storageStats.skipped} skipped (existed)</span>
               {dbRowCount !== null && (
                 <>
                   <br />
-                  <strong>DB Verification:</strong> {dbRowCount} rows in media table
+                  <strong>DB rows in media: {dbRowCount}</strong>
                 </>
               )}
             </Alert>

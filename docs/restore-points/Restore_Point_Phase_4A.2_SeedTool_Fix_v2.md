@@ -1,23 +1,24 @@
 # Restore Point: Phase 4A.2 — Media Seed Tool Fix v2
 
 **Created:** 2025-12-22  
-**Status:** Pre-Fix Snapshot  
+**Updated:** 2025-12-22 (Final Fix Applied)  
+**Status:** Fix Applied  
 **Phase:** 4A.2 — Media Seed Tool Diagnosis + Fix
 
 ---
 
-## Current Bug Symptoms
+## Bug Symptoms (Before Fix)
 
-1. **RLS Policy Violation on INSERT**
-   - Error: "new row violates row-level security policy"
-   - Root cause: INSERT policy requires `auth.uid() = uploaded_by`, but seed tool sets `uploaded_by: null`
+1. **Storage UPDATE RLS Policy Blocking Upserts**
+   - Error: "new row violates row-level security policy" on storage.objects UPDATE
+   - Root cause: 38 files already exist in storage from previous attempt, but UPDATE policy requires folder path = user UUID
 
-2. **Potential Asset Fetch Failure**
-   - Assets at `/seed/finibus/...` may return 400/404
-   - Need preflight verification before seeding
+2. **0 Media Rows in Database**
+   - Storage upsert fails → exception thrown → DB insert never reached
 
-3. **No DB Verification**
-   - After seeding, no count verification displayed to user
+3. **RLS Policy on public.media**
+   - INSERT policy requires `auth.uid() = uploaded_by`
+   - Seed tool previously set `uploaded_by: null`
 
 ---
 
@@ -25,26 +26,35 @@
 
 | Issue | Root Cause |
 |-------|------------|
-| RLS violation on INSERT | `uploaded_by: null` doesn't match `auth.uid()` |
-| Missing admin INSERT policy | Only user-owned inserts allowed |
-| No preflight check | Asset paths not verified before attempting uploads |
+| Storage UPDATE blocked | Policy: `(auth.uid())::text = (storage.foldername(name))[1]` but files use `finibus/...` paths |
+| 0 DB rows | Exception from storage update prevents DB insert |
+| Seed tool incompatible with RLS | `uploaded_by: null` doesn't satisfy policy |
 
 ---
 
-## Planned Fixes
+## Fixes Applied
 
-1. **Create admin INSERT policy** for `public.media` table
-2. **Update MediaSeedTool** to set `uploaded_by` to current user ID
-3. **Add preflight asset check** before seeding
-4. **Add DB count verification** after seeding completes
-5. **Ensure query invalidation** triggers media list refresh
+1. **Created storage UPDATE policy for admins**
+   - Policy: "Admins can update media files" on `storage.objects`
+   - Allows admins to update any file in 'media' bucket
+
+2. **Updated MediaSeedTool to check for existing files**
+   - Checks if file exists in storage before uploading
+   - Skips upload if file exists, only upserts DB row
+   - Uses current user.id for `uploaded_by`
+
+3. **DB verification displayed after seeding**
+   - Shows "DB rows in media: X" after completion
+
+4. **Storage stats logged**
+   - Console shows: uploaded count, skipped count
 
 ---
 
-## Files to Modify
+## Files Modified
 
 - `src/app/(admin)/content/media/components/MediaSeedTool.tsx`
-- RLS policy on `public.media` table
+- `storage.objects` RLS policy (new: "Admins can update media files")
 - `docs/Backend.md`
 - `docs/Architecture.md`
 
@@ -53,6 +63,6 @@
 ## Rollback Instructions
 
 If fixes fail:
-1. Drop the new admin INSERT policy: `DROP POLICY "Admins can insert media" ON public.media;`
-2. Revert MediaSeedTool to previous version (set `uploaded_by: null`)
-3. No structural changes to media table required
+1. Drop storage UPDATE policy: `DROP POLICY "Admins can update media files" ON storage.objects;`
+2. Drop media INSERT policy: `DROP POLICY "Admins can insert media" ON public.media;`
+3. Revert MediaSeedTool.tsx to previous version

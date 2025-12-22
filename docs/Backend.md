@@ -2,8 +2,8 @@
 
 ```
 Status: AUTHORITATIVE
-Phase: Phase 4A.2 Seeding Complete (v2 Fix)
-Execution: Admin Auth + Media Library + Seed Tool RLS Fixed
+Phase: Phase 4A.2 Seeding Complete (v2 Final Fix)
+Execution: Admin Auth + Media Library + Seed Tool Storage+DB RLS Fixed
 Last Updated: 2025-12-22
 ```
 
@@ -135,7 +135,10 @@ ALTER TABLE public.media ADD CONSTRAINT media_storage_path_unique UNIQUE (storag
 | Public read | SELECT | Anyone |
 | Authenticated upload | INSERT | Authenticated users (own folder) |
 | Owner update | UPDATE | File owner only |
+| **Admins can update media files** | UPDATE | `has_role(auth.uid(), 'admin')` |
 | Admin delete | DELETE | Admin role required |
+
+> **Note (Phase 4A.2 v2):** The "Admins can update media files" storage policy was added to allow seed tool to upsert files that already exist in storage. Without this, the UPDATE operation fails when re-running the seed tool.
 
 ---
 
