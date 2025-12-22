@@ -2,8 +2,8 @@
 
 ```
 Status: AUTHORITATIVE
-Phase: Phase 4A.2 Seeding Complete
-Execution: Admin Auth + Media Library + Seed Tool Fixed
+Phase: Phase 4A.2 Seeding Complete (v2 Fix)
+Execution: Admin Auth + Media Library + Seed Tool RLS Fixed
 Last Updated: 2025-12-22
 ```
 
@@ -153,9 +153,12 @@ ALTER TABLE public.media ADD CONSTRAINT media_storage_path_unique UNIQUE (storag
 | Policy | Operation | Condition |
 |--------|-----------|-----------|
 | Public read | SELECT | `true` |
-| Authenticated insert | INSERT | Authenticated |
+| Authenticated insert | INSERT | `auth.uid() = uploaded_by` |
+| **Admins can insert media** | INSERT | `has_role(auth.uid(), 'admin')` |
 | Owner update | UPDATE | `auth.uid() = uploaded_by` |
 | Admin delete | DELETE | `has_role(auth.uid(), 'admin')` |
+
+> **Note:** The "Admins can insert media" policy was added in Phase 4A.2 v2 to allow admin seeding with any `uploaded_by` value.
 
 ---
 
@@ -301,16 +304,23 @@ See: `docs/phase-4/Phase_4_Overview.md` for complete seeding policy.
 1. Admin navigates to `/content/media`
 2. Seed Tool appears when media table is empty
 3. Click "Start Seeding" button
-4. Tool fetches files from `/seed/finibus/...` paths
-5. Uploads to Supabase Storage bucket `media`
-6. Inserts metadata rows into `public.media` table
-7. Uses upsert with `storage_path` unique constraint for idempotency
+4. **Preflight check:** Tool fetches one test asset to verify paths are accessible
+5. Tool fetches files from `/seed/finibus/...` paths
+6. Uploads to Supabase Storage bucket `media`
+7. Inserts metadata rows into `public.media` table with `uploaded_by = current user ID`
+8. Uses upsert with `storage_path` unique constraint for idempotency
+9. **DB Verification:** Displays row count after seeding completes
 
 **Re-running safely:**
 - Tool uses `upsert` with `onConflict: 'storage_path'`
 - Duplicate uploads overwrite existing files
 - Duplicate rows update instead of insert
 - Safe to re-run without creating duplicates
+
+**RLS Requirements:**
+- Seeding requires admin role (checked via `has_role()`)
+- The "Admins can insert media" policy allows admins to insert with any `uploaded_by`
+- The seed tool now sets `uploaded_by` to the current admin's user ID
 
 ---
 
@@ -338,5 +348,6 @@ See: `docs/phase-4/Phase_4_Overview.md` for complete seeding policy.
 | 2.1 | 2025-12-22 | Implementation Agent | Phase 4A.2 - Media Library UI implemented |
 | 2.2 | 2025-12-22 | Planning Agent | Added Phase 4 seeding policy reference |
 | 2.3 | 2025-12-22 | Implementation Agent | Phase 4A.2 - Seed Tool fixed: deterministic paths, text-only UI |
+| 2.4 | 2025-12-22 | Implementation Agent | Phase 4A.2 v2 - RLS fix: admin INSERT policy, uploaded_by = user.id, preflight check, DB verification |
 
 **Next Review:** After Phase 4A.3 authorization

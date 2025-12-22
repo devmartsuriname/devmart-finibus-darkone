@@ -68,7 +68,7 @@ const SEED_PACK: Array<{
   { filename: 'cto-founder-dark.png', sourcePath: '/seed/finibus/logos/cto-founder-dark.png', storagePath: 'finibus/logos/cto-founder-dark.png', category: 'logos', altText: 'CTO Founder signature image dark', title: 'CTO Founder Dark' },
 ]
 
-type SeedStatus = 'idle' | 'seeding' | 'complete' | 'error'
+type SeedStatus = 'idle' | 'preflight' | 'seeding' | 'complete' | 'error'
 
 interface SeedResult {
   filename: string
@@ -82,6 +82,7 @@ const MediaSeedTool = ({ onComplete }: { onComplete: () => void }) => {
   const [results, setResults] = useState<SeedResult[]>([])
   const [currentFile, setCurrentFile] = useState('')
   const [statusMessage, setStatusMessage] = useState('')
+  const [dbRowCount, setDbRowCount] = useState<number | null>(null)
 
   const getMimeType = (filename: string): string => {
     const ext = filename.split('.').pop()?.toLowerCase()
@@ -102,11 +103,64 @@ const MediaSeedTool = ({ onComplete }: { onComplete: () => void }) => {
     }
   }
 
+  /**
+   * Preflight check: verify asset paths are accessible
+   */
+  const runPreflightCheck = async (): Promise<boolean> => {
+    setStatus('preflight')
+    setStatusMessage('Preflight: Checking asset availability...')
+
+    const testAsset = SEED_PACK[0]
+    try {
+      const response = await fetch(testAsset.sourcePath, { method: 'HEAD' })
+      if (!response.ok) {
+        setStatus('error')
+        setStatusMessage(`Preflight FAILED: Asset path not accessible. HTTP ${response.status} for ${testAsset.sourcePath}. Ensure seed assets exist in public/seed/finibus/.`)
+        return false
+      }
+      setStatusMessage('Preflight: Assets accessible. Starting upload...')
+      return true
+    } catch (err) {
+      setStatus('error')
+      setStatusMessage(`Preflight FAILED: Network error fetching ${testAsset.sourcePath}. Check that assets exist in public/seed/finibus/.`)
+      return false
+    }
+  }
+
+  /**
+   * Verify DB row count after seeding
+   */
+  const verifyDbRowCount = async (): Promise<number> => {
+    const { count, error } = await supabase
+      .from('media')
+      .select('*', { count: 'exact', head: true })
+
+    if (error) {
+      console.error('DB count verification error:', error)
+      return -1
+    }
+    return count ?? 0
+  }
+
   const seedMedia = async () => {
+    // Step 1: Get current user (required for RLS)
+    const { data: { user }, error: userError } = await supabase.auth.getUser()
+    if (userError || !user) {
+      setStatus('error')
+      setStatusMessage('Error: You must be logged in as admin to seed media.')
+      return
+    }
+
+    // Step 2: Preflight check
+    const preflightPassed = await runPreflightCheck()
+    if (!preflightPassed) {
+      return
+    }
+
+    // Step 3: Begin seeding
     setStatus('seeding')
     setProgress(0)
     setResults([])
-    setStatusMessage('Starting seeding process...')
 
     const totalItems = SEED_PACK.length
     const newResults: SeedResult[] = []
@@ -141,6 +195,7 @@ const MediaSeedTool = ({ onComplete }: { onComplete: () => void }) => {
           .getPublicUrl(item.storagePath)
 
         // Insert metadata row (upsert based on storage_path)
+        // Use current user ID to satisfy RLS policy
         const { error: insertError } = await supabase
           .from('media')
           .upsert({
@@ -151,7 +206,7 @@ const MediaSeedTool = ({ onComplete }: { onComplete: () => void }) => {
             file_size: file.size,
             alt_text: item.altText,
             title: item.title,
-            uploaded_by: null, // System seeded
+            uploaded_by: user.id, // Use current admin user ID for RLS compliance
           }, { 
             onConflict: 'storage_path',
             ignoreDuplicates: false 
@@ -172,6 +227,10 @@ const MediaSeedTool = ({ onComplete }: { onComplete: () => void }) => {
       setResults([...newResults])
     }
 
+    // Step 4: Verify DB row count
+    const rowCount = await verifyDbRowCount()
+    setDbRowCount(rowCount)
+
     const successCount = newResults.filter(r => r.success).length
     const failCount = newResults.filter(r => !r.success).length
 
@@ -186,6 +245,7 @@ const MediaSeedTool = ({ onComplete }: { onComplete: () => void }) => {
       setStatusMessage('Seeding failed: No files were uploaded. Check console for details.')
     }
 
+    // Trigger parent refresh
     onComplete()
   }
 
@@ -209,6 +269,21 @@ const MediaSeedTool = ({ onComplete }: { onComplete: () => void }) => {
           <Button variant="warning" onClick={seedMedia}>
             Start Seeding
           </Button>
+        )}
+
+        {status === 'preflight' && (
+          <div>
+            <p className="mb-2">
+              <strong>Status:</strong> {statusMessage}
+            </p>
+            <ProgressBar 
+              now={10} 
+              label="Checking..." 
+              animated 
+              striped 
+              variant="info"
+            />
+          </div>
         )}
 
         {status === 'seeding' && (
@@ -239,6 +314,12 @@ const MediaSeedTool = ({ onComplete }: { onComplete: () => void }) => {
                 <>
                   <br />
                   <span>Failed: {failCount} files</span>
+                </>
+              )}
+              {dbRowCount !== null && (
+                <>
+                  <br />
+                  <strong>DB Verification:</strong> {dbRowCount} rows in media table
                 </>
               )}
             </Alert>
