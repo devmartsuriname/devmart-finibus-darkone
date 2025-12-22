@@ -1,7 +1,7 @@
 import { Icon, type IconProps } from '@iconify/react'
 
-const IconifyIcon = (props: IconProps) => {
-  return <Icon {...props} />
+const IconifyIcon = ({ width = '1em', height = '1em', ...props }: IconProps) => {
+  return <Icon width={width} height={height} {...props} />
 }
 
 export default IconifyIcon
