@@ -17,56 +17,56 @@ const SEED_PACK: Array<{
   title: string
 }> = [
   // Hero Images (3)
-  { filename: 'hero-slider-1.jpg', sourcePath: '/finibus/public/images/hero-slider-1.jpg', storagePath: 'finibus/hero/hero-slider-1.jpg', category: 'hero', altText: 'Hero slider image 1 - Modern agency showcase', title: 'Hero Slider 1' },
-  { filename: 'hero-slider-2.png', sourcePath: '/finibus/public/images/hero-slider-2.png', storagePath: 'finibus/hero/hero-slider-2.png', category: 'hero', altText: 'Hero slider image 2 - Creative agency design', title: 'Hero Slider 2' },
-  { filename: 'hero-slider-3.png', sourcePath: '/finibus/public/images/hero-slider-3.png', storagePath: 'finibus/hero/hero-slider-3.png', category: 'hero', altText: 'Hero slider image 3 - Digital solutions visual', title: 'Hero Slider 3' },
+  { filename: 'hero-slider-1.jpg', sourcePath: '/finibus/images/hero-slider-1.jpg', storagePath: 'finibus/hero/hero-slider-1.jpg', category: 'hero', altText: 'Hero slider image 1 - Modern agency showcase', title: 'Hero Slider 1' },
+  { filename: 'hero-slider-2.png', sourcePath: '/finibus/images/hero-slider-2.png', storagePath: 'finibus/hero/hero-slider-2.png', category: 'hero', altText: 'Hero slider image 2 - Creative agency design', title: 'Hero Slider 2' },
+  { filename: 'hero-slider-3.png', sourcePath: '/finibus/images/hero-slider-3.png', storagePath: 'finibus/hero/hero-slider-3.png', category: 'hero', altText: 'Hero slider image 3 - Digital solutions visual', title: 'Hero Slider 3' },
 
   // Portfolio Images (9)
-  { filename: 'portfolio-1.jpg', sourcePath: '/finibus/public/images/portfolio-1.jpg', storagePath: 'finibus/portfolio/portfolio-1.jpg', category: 'portfolio', altText: 'Portfolio project 1 thumbnail', title: 'Portfolio 1' },
-  { filename: 'portfolio-2.jpg', sourcePath: '/finibus/public/images/portfolio-2.jpg', storagePath: 'finibus/portfolio/portfolio-2.jpg', category: 'portfolio', altText: 'Portfolio project 2 thumbnail', title: 'Portfolio 2' },
-  { filename: 'portfolio-3.jpg', sourcePath: '/finibus/public/images/portfolio-3.jpg', storagePath: 'finibus/portfolio/portfolio-3.jpg', category: 'portfolio', altText: 'Portfolio project 3 thumbnail', title: 'Portfolio 3' },
-  { filename: 'portfolio-4.jpg', sourcePath: '/finibus/public/images/portfolio-4.jpg', storagePath: 'finibus/portfolio/portfolio-4.jpg', category: 'portfolio', altText: 'Portfolio project 4 thumbnail', title: 'Portfolio 4' },
-  { filename: 'portfolio-5.jpg', sourcePath: '/finibus/public/images/portfolio-5.jpg', storagePath: 'finibus/portfolio/portfolio-5.jpg', category: 'portfolio', altText: 'Portfolio project 5 thumbnail', title: 'Portfolio 5' },
-  { filename: 'portfolio-6.jpg', sourcePath: '/finibus/public/images/portfolio-6.jpg', storagePath: 'finibus/portfolio/portfolio-6.jpg', category: 'portfolio', altText: 'Portfolio project 6 thumbnail', title: 'Portfolio 6' },
-  { filename: 'portfolio-7.jpg', sourcePath: '/finibus/public/images/portfolio-7.jpg', storagePath: 'finibus/portfolio/portfolio-7.jpg', category: 'portfolio', altText: 'Portfolio project 7 thumbnail', title: 'Portfolio 7' },
-  { filename: 'portfolio-8.jpg', sourcePath: '/finibus/public/images/portfolio-8.jpg', storagePath: 'finibus/portfolio/portfolio-8.jpg', category: 'portfolio', altText: 'Portfolio project 8 thumbnail', title: 'Portfolio 8' },
-  { filename: 'portfolio-9.jpg', sourcePath: '/finibus/public/images/portfolio-9.jpg', storagePath: 'finibus/portfolio/portfolio-9.jpg', category: 'portfolio', altText: 'Portfolio project 9 thumbnail', title: 'Portfolio 9' },
+  { filename: 'portfolio-1.jpg', sourcePath: '/finibus/images/portfolio-1.jpg', storagePath: 'finibus/portfolio/portfolio-1.jpg', category: 'portfolio', altText: 'Portfolio project 1 thumbnail', title: 'Portfolio 1' },
+  { filename: 'portfolio-2.jpg', sourcePath: '/finibus/images/portfolio-2.jpg', storagePath: 'finibus/portfolio/portfolio-2.jpg', category: 'portfolio', altText: 'Portfolio project 2 thumbnail', title: 'Portfolio 2' },
+  { filename: 'portfolio-3.jpg', sourcePath: '/finibus/images/portfolio-3.jpg', storagePath: 'finibus/portfolio/portfolio-3.jpg', category: 'portfolio', altText: 'Portfolio project 3 thumbnail', title: 'Portfolio 3' },
+  { filename: 'portfolio-4.jpg', sourcePath: '/finibus/images/portfolio-4.jpg', storagePath: 'finibus/portfolio/portfolio-4.jpg', category: 'portfolio', altText: 'Portfolio project 4 thumbnail', title: 'Portfolio 4' },
+  { filename: 'portfolio-5.jpg', sourcePath: '/finibus/images/portfolio-5.jpg', storagePath: 'finibus/portfolio/portfolio-5.jpg', category: 'portfolio', altText: 'Portfolio project 5 thumbnail', title: 'Portfolio 5' },
+  { filename: 'portfolio-6.jpg', sourcePath: '/finibus/images/portfolio-6.jpg', storagePath: 'finibus/portfolio/portfolio-6.jpg', category: 'portfolio', altText: 'Portfolio project 6 thumbnail', title: 'Portfolio 6' },
+  { filename: 'portfolio-7.jpg', sourcePath: '/finibus/images/portfolio-7.jpg', storagePath: 'finibus/portfolio/portfolio-7.jpg', category: 'portfolio', altText: 'Portfolio project 7 thumbnail', title: 'Portfolio 7' },
+  { filename: 'portfolio-8.jpg', sourcePath: '/finibus/images/portfolio-8.jpg', storagePath: 'finibus/portfolio/portfolio-8.jpg', category: 'portfolio', altText: 'Portfolio project 8 thumbnail', title: 'Portfolio 8' },
+  { filename: 'portfolio-9.jpg', sourcePath: '/finibus/images/portfolio-9.jpg', storagePath: 'finibus/portfolio/portfolio-9.jpg', category: 'portfolio', altText: 'Portfolio project 9 thumbnail', title: 'Portfolio 9' },
 
   // Blog Post Images (8)
-  { filename: 'post-1.jpg', sourcePath: '/finibus/public/images/post/post-1.jpg', storagePath: 'finibus/blog/post-1.jpg', category: 'blog', altText: 'Blog post featured image 1', title: 'Blog Post 1' },
-  { filename: 'post-2.jpg', sourcePath: '/finibus/public/images/post/post-2.jpg', storagePath: 'finibus/blog/post-2.jpg', category: 'blog', altText: 'Blog post featured image 2', title: 'Blog Post 2' },
-  { filename: 'post-3.jpg', sourcePath: '/finibus/public/images/post/post-3.jpg', storagePath: 'finibus/blog/post-3.jpg', category: 'blog', altText: 'Blog post featured image 3', title: 'Blog Post 3' },
-  { filename: 'post-4.jpg', sourcePath: '/finibus/public/images/post/post-4.jpg', storagePath: 'finibus/blog/post-4.jpg', category: 'blog', altText: 'Blog post featured image 4', title: 'Blog Post 4' },
-  { filename: 'post-5.jpg', sourcePath: '/finibus/public/images/post/post-5.jpg', storagePath: 'finibus/blog/post-5.jpg', category: 'blog', altText: 'Blog post featured image 5', title: 'Blog Post 5' },
-  { filename: 'post-6.jpg', sourcePath: '/finibus/public/images/post/post-6.jpg', storagePath: 'finibus/blog/post-6.jpg', category: 'blog', altText: 'Blog post featured image 6', title: 'Blog Post 6' },
-  { filename: 'post-7.jpg', sourcePath: '/finibus/public/images/post/post-7.jpg', storagePath: 'finibus/blog/post-7.jpg', category: 'blog', altText: 'Blog post featured image 7', title: 'Blog Post 7' },
-  { filename: 'post-8.jpg', sourcePath: '/finibus/public/images/post/post-8.jpg', storagePath: 'finibus/blog/post-8.jpg', category: 'blog', altText: 'Blog post featured image 8', title: 'Blog Post 8' },
+  { filename: 'post-1.jpg', sourcePath: '/finibus/images/post/post-1.jpg', storagePath: 'finibus/blog/post-1.jpg', category: 'blog', altText: 'Blog post featured image 1', title: 'Blog Post 1' },
+  { filename: 'post-2.jpg', sourcePath: '/finibus/images/post/post-2.jpg', storagePath: 'finibus/blog/post-2.jpg', category: 'blog', altText: 'Blog post featured image 2', title: 'Blog Post 2' },
+  { filename: 'post-3.jpg', sourcePath: '/finibus/images/post/post-3.jpg', storagePath: 'finibus/blog/post-3.jpg', category: 'blog', altText: 'Blog post featured image 3', title: 'Blog Post 3' },
+  { filename: 'post-4.jpg', sourcePath: '/finibus/images/post/post-4.jpg', storagePath: 'finibus/blog/post-4.jpg', category: 'blog', altText: 'Blog post featured image 4', title: 'Blog Post 4' },
+  { filename: 'post-5.jpg', sourcePath: '/finibus/images/post/post-5.jpg', storagePath: 'finibus/blog/post-5.jpg', category: 'blog', altText: 'Blog post featured image 5', title: 'Blog Post 5' },
+  { filename: 'post-6.jpg', sourcePath: '/finibus/images/post/post-6.jpg', storagePath: 'finibus/blog/post-6.jpg', category: 'blog', altText: 'Blog post featured image 6', title: 'Blog Post 6' },
+  { filename: 'post-7.jpg', sourcePath: '/finibus/images/post/post-7.jpg', storagePath: 'finibus/blog/post-7.jpg', category: 'blog', altText: 'Blog post featured image 7', title: 'Blog Post 7' },
+  { filename: 'post-8.jpg', sourcePath: '/finibus/images/post/post-8.jpg', storagePath: 'finibus/blog/post-8.jpg', category: 'blog', altText: 'Blog post featured image 8', title: 'Blog Post 8' },
 
   // Author Avatars (7)
-  { filename: 'author-1.jpg', sourcePath: '/finibus/public/images/author/author-1.jpg', storagePath: 'finibus/avatars/author-1.jpg', category: 'avatars', altText: 'Author avatar 1', title: 'Author 1' },
-  { filename: 'author-2.jpg', sourcePath: '/finibus/public/images/author/author-2.jpg', storagePath: 'finibus/avatars/author-2.jpg', category: 'avatars', altText: 'Author avatar 2', title: 'Author 2' },
-  { filename: 'author-3.jpg', sourcePath: '/finibus/public/images/author/author-3.jpg', storagePath: 'finibus/avatars/author-3.jpg', category: 'avatars', altText: 'Author avatar 3', title: 'Author 3' },
-  { filename: 'author-4.jpg', sourcePath: '/finibus/public/images/author/author-4.jpg', storagePath: 'finibus/avatars/author-4.jpg', category: 'avatars', altText: 'Author avatar 4', title: 'Author 4' },
-  { filename: 'author-5.jpg', sourcePath: '/finibus/public/images/author/author-5.jpg', storagePath: 'finibus/avatars/author-5.jpg', category: 'avatars', altText: 'Author avatar 5', title: 'Author 5' },
-  { filename: 'authoe-6.jpg', sourcePath: '/finibus/public/images/author/authoe-6.jpg', storagePath: 'finibus/avatars/author-6.jpg', category: 'avatars', altText: 'Author avatar 6', title: 'Author 6' },
-  { filename: 'author-7.jpg', sourcePath: '/finibus/public/images/author/author-7.jpg', storagePath: 'finibus/avatars/author-7.jpg', category: 'avatars', altText: 'Author avatar 7', title: 'Author 7' },
+  { filename: 'author-1.jpg', sourcePath: '/finibus/images/author/author-1.jpg', storagePath: 'finibus/avatars/author-1.jpg', category: 'avatars', altText: 'Author avatar 1', title: 'Author 1' },
+  { filename: 'author-2.jpg', sourcePath: '/finibus/images/author/author-2.jpg', storagePath: 'finibus/avatars/author-2.jpg', category: 'avatars', altText: 'Author avatar 2', title: 'Author 2' },
+  { filename: 'author-3.jpg', sourcePath: '/finibus/images/author/author-3.jpg', storagePath: 'finibus/avatars/author-3.jpg', category: 'avatars', altText: 'Author avatar 3', title: 'Author 3' },
+  { filename: 'author-4.jpg', sourcePath: '/finibus/images/author/author-4.jpg', storagePath: 'finibus/avatars/author-4.jpg', category: 'avatars', altText: 'Author avatar 4', title: 'Author 4' },
+  { filename: 'author-5.jpg', sourcePath: '/finibus/images/author/author-5.jpg', storagePath: 'finibus/avatars/author-5.jpg', category: 'avatars', altText: 'Author avatar 5', title: 'Author 5' },
+  { filename: 'authoe-6.jpg', sourcePath: '/finibus/images/author/authoe-6.jpg', storagePath: 'finibus/avatars/author-6.jpg', category: 'avatars', altText: 'Author avatar 6', title: 'Author 6' },
+  { filename: 'author-7.jpg', sourcePath: '/finibus/images/author/author-7.jpg', storagePath: 'finibus/avatars/author-7.jpg', category: 'avatars', altText: 'Author avatar 7', title: 'Author 7' },
 
   // Client Photos (3)
-  { filename: 'client.jpg', sourcePath: '/finibus/public/images/client.jpg', storagePath: 'finibus/clients/client-1.jpg', category: 'clients', altText: 'Client testimonial photo 1', title: 'Client 1' },
-  { filename: 'client-2.jpg', sourcePath: '/finibus/public/images/client-2.jpg', storagePath: 'finibus/clients/client-2.jpg', category: 'clients', altText: 'Client testimonial photo 2', title: 'Client 2' },
-  { filename: 'client-3.jpg', sourcePath: '/finibus/public/images/client-3.jpg', storagePath: 'finibus/clients/client-3.jpg', category: 'clients', altText: 'Client testimonial photo 3', title: 'Client 3' },
+  { filename: 'client.jpg', sourcePath: '/finibus/images/client.jpg', storagePath: 'finibus/clients/client-1.jpg', category: 'clients', altText: 'Client testimonial photo 1', title: 'Client 1' },
+  { filename: 'client-2.jpg', sourcePath: '/finibus/images/client-2.jpg', storagePath: 'finibus/clients/client-2.jpg', category: 'clients', altText: 'Client testimonial photo 2', title: 'Client 2' },
+  { filename: 'client-3.jpg', sourcePath: '/finibus/images/client-3.jpg', storagePath: 'finibus/clients/client-3.jpg', category: 'clients', altText: 'Client testimonial photo 3', title: 'Client 3' },
 
   // Background Images (5)
-  { filename: 'counter-bg.png', sourcePath: '/finibus/public/images/counter-bg.png', storagePath: 'finibus/backgrounds/counter-bg.png', category: 'backgrounds', altText: 'Counter section background', title: 'Counter Background' },
-  { filename: 'footer-bg.png', sourcePath: '/finibus/public/images/footer-bg.png', storagePath: 'finibus/backgrounds/footer-bg.png', category: 'backgrounds', altText: 'Footer section background', title: 'Footer Background' },
-  { filename: 'hero-bg.png', sourcePath: '/finibus/public/images/hero-bg.png', storagePath: 'finibus/backgrounds/hero-bg.png', category: 'backgrounds', altText: 'Hero section background pattern', title: 'Hero Background' },
-  { filename: 'testimonial-bg.png', sourcePath: '/finibus/public/images/testimonial-bg.png', storagePath: 'finibus/backgrounds/testimonial-bg.png', category: 'backgrounds', altText: 'Testimonial section background', title: 'Testimonial Background' },
-  { filename: 'breadcrumbs-bg.png', sourcePath: '/finibus/public/images/breadcrumbs-bg.png', storagePath: 'finibus/backgrounds/breadcrumbs-bg.png', category: 'backgrounds', altText: 'Breadcrumbs banner background', title: 'Breadcrumbs Background' },
+  { filename: 'counter-bg.png', sourcePath: '/finibus/images/counter-bg.png', storagePath: 'finibus/backgrounds/counter-bg.png', category: 'backgrounds', altText: 'Counter section background', title: 'Counter Background' },
+  { filename: 'footer-bg.png', sourcePath: '/finibus/images/footer-bg.png', storagePath: 'finibus/backgrounds/footer-bg.png', category: 'backgrounds', altText: 'Footer section background', title: 'Footer Background' },
+  { filename: 'hero-bg.png', sourcePath: '/finibus/images/hero-bg.png', storagePath: 'finibus/backgrounds/hero-bg.png', category: 'backgrounds', altText: 'Hero section background pattern', title: 'Hero Background' },
+  { filename: 'testimonial-bg.png', sourcePath: '/finibus/images/testimonial-bg.png', storagePath: 'finibus/backgrounds/testimonial-bg.png', category: 'backgrounds', altText: 'Testimonial section background', title: 'Testimonial Background' },
+  { filename: 'breadcrumbs-bg.png', sourcePath: '/finibus/images/breadcrumbs-bg.png', storagePath: 'finibus/backgrounds/breadcrumbs-bg.png', category: 'backgrounds', altText: 'Breadcrumbs banner background', title: 'Breadcrumbs Background' },
 
   // Logos (3)
-  { filename: 'logo.png', sourcePath: '/finibus/public/images/logo.png', storagePath: 'finibus/logos/logo.png', category: 'logos', altText: 'Finibus main logo', title: 'Main Logo' },
-  { filename: 'ctoFounder.png', sourcePath: '/finibus/public/images/ctoFounder.png', storagePath: 'finibus/logos/cto-founder.png', category: 'logos', altText: 'CTO Founder signature image', title: 'CTO Founder' },
-  { filename: 'ctoFounder-dark.png', sourcePath: '/finibus/public/images/ctoFounder-dark.png', storagePath: 'finibus/logos/cto-founder-dark.png', category: 'logos', altText: 'CTO Founder signature image dark', title: 'CTO Founder Dark' },
+  { filename: 'logo.png', sourcePath: '/finibus/images/logo.png', storagePath: 'finibus/logos/logo.png', category: 'logos', altText: 'Finibus main logo', title: 'Main Logo' },
+  { filename: 'ctoFounder.png', sourcePath: '/finibus/images/ctoFounder.png', storagePath: 'finibus/logos/cto-founder.png', category: 'logos', altText: 'CTO Founder signature image', title: 'CTO Founder' },
+  { filename: 'ctoFounder-dark.png', sourcePath: '/finibus/images/ctoFounder-dark.png', storagePath: 'finibus/logos/cto-founder-dark.png', category: 'logos', altText: 'CTO Founder signature image dark', title: 'CTO Founder Dark' },
 ]
 
 type SeedStatus = 'idle' | 'seeding' | 'complete' | 'error'
