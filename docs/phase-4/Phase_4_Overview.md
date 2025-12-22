@@ -4,14 +4,14 @@
 Status: Draft
 Phase: Documentation Only
 Execution: Not Authorized
-Last Updated: 2025-12-21
+Last Updated: 2025-12-22
 ```
 
 ---
 
 ## 1. Purpose
 
-Phase 4 defines the data foundation and integration planning for Devmart's content management system. This phase is **DOCUMENTATION ONLY** — no implementation, database tables, or code changes are authorized.
+Phase 4 defines the data foundation and integration planning for Devmart's content management system. This phase is **DOCUMENTATION ONLY** — no implementation, database tables, or code changes are authorized until explicitly approved per module.
 
 ---
 
@@ -22,6 +22,7 @@ Phase 4 defines the data foundation and integration planning for Devmart's conte
 | Frontend Mapping | Document all public frontend content blocks requiring CMS data |
 | Data Model Design | Define MVP database schemas per module |
 | Admin UI Planning | Describe admin CRUD screens (list, create, edit, detail) |
+| Seeding Policy | Define required seed data per module |
 | Phase Gating | Establish clear stop conditions per module |
 
 ---
@@ -44,53 +45,84 @@ Each module documents:
 Phase 4 implementation will be authorized **ONE MODULE AT A TIME**.
 Each module has explicit STOP conditions before proceeding.
 
+### 3.4 Seeding is Required
+
+Data seeding is **REQUIRED** for applicable modules. Each module document includes a Seeding Plan section.
+
 ---
 
 ## 4. Modules in Scope
 
 ### 4.1 Content Modules
 
-| Module | Route | Admin Route |
-|--------|-------|-------------|
-| Blog / News | `/blog`, `/blog-details` | `/content/blog` |
-| Projects / Portfolio | `/project`, `/project-details` | `/content/projects` |
-| Pages (Static) | Various | `/content/pages` |
-| Media Library | N/A (asset storage) | `/content/media` |
-| Testimonials | Homepage section | `/content/testimonials` |
+| Module | Route | Admin Route | Seeding |
+|--------|-------|-------------|---------|
+| Media Library | N/A (asset storage) | `/content/media` | **REQUIRED** |
+| Blog / News | `/blog`, `/blog-details` | `/content/blog` | Recommended |
+| Projects / Portfolio | `/project`, `/project-details` | `/content/projects` | Recommended |
+| Pages (Static) | Various | `/content/pages` | **REQUIRED** |
+| Testimonials | Homepage section | `/content/testimonials` | Recommended |
 
 ### 4.2 CRM Modules
 
-| Module | Public Route | Admin Route |
-|--------|--------------|-------------|
-| Leads | `/contact` (form source) | `/crm/leads` |
+| Module | Public Route | Admin Route | Seeding |
+|--------|--------------|-------------|---------|
+| Leads | `/contact` (form source) | `/crm/leads` | NO |
 
-### 4.3 System Modules (Placeholder Only)
+### 4.3 System Modules
 
-| Module | Admin Route | Phase 4 Status |
-|--------|-------------|----------------|
-| Analytics | `/analytics` | Placeholder definition only |
-| Settings | `/settings` | Placeholder definition only |
-
----
-
-## 5. Proposed Module Execution Sequence
-
-| Order | Module | Justification |
-|-------|--------|---------------|
-| 1 | Media Library | Enables image storage for all other modules |
-| 2 | Blog | Most complex content module; validates patterns |
-| 3 | Projects | Portfolio rendering with categories |
-| 4 | Testimonials | Simple content with carousel display |
-| 5 | Pages | Static pages (MVP only; Pages+Sections is later) |
-| 6 | Leads | Schema planning for form submissions |
-| 7 | Analytics | Placeholder requirements only |
-| 8 | Settings | Placeholder requirements only |
+| Module | Admin Route | Phase 4 Status | Seeding |
+|--------|-------------|----------------|---------|
+| Settings | `/settings` | Placeholder + defaults | **REQUIRED** |
+| Analytics | `/analytics` | Placeholder only | NO |
 
 ---
 
-## 6. Explicit Exclusions
+## 5. Phase 4 Module Execution Order (Dependency-First)
 
-### 6.1 Permanent Exclusions (This Project)
+| Order | Module | Rationale | Seeding |
+|-------|--------|-----------|---------|
+| 1 | **Media Library** | ✅ UI Complete — Foundation for all image-using modules | **REQUIRED** (30+ assets) |
+| 2 | **Settings** | Site identity, SEO baseline before content | **REQUIRED** (defaults) |
+| 3 | **Pages** | Page structure to match Finibus routes | **REQUIRED** (6 pages) |
+| 4 | **Projects** | Portfolio with category filtering (simpler than Blog) | Recommended (6-9) |
+| 5 | **Blog** | Most complex content module with rich text | Recommended (5-8) |
+| 6 | **Testimonials** | Simple content with carousel display | Recommended (3-5) |
+| 7 | **Leads** | CRM capture (depends on form integration) | NO |
+| 8 | **Analytics** | Dashboard requires all source tables to exist | NO |
+
+---
+
+## 6. Seeding Policy Summary
+
+### 6.1 Required Seeding
+
+| Module | What Gets Seeded | Count | Method |
+|--------|------------------|-------|--------|
+| Media Library | Storage files + DB rows | 30+ assets | Manual upload |
+| Settings | Default configuration | 11 settings | SQL migration |
+| Pages | Page metadata | 6 pages | SQL migration |
+
+### 6.2 Recommended Seeding
+
+| Module | What Gets Seeded | Count | Method |
+|--------|------------------|-------|--------|
+| Blog | Posts + featured images | 5-8 posts | Manual via UI |
+| Projects | Projects + thumbnails | 6-9 projects | Manual via UI |
+| Testimonials | Testimonials + photos | 3-5 entries | Manual via UI |
+
+### 6.3 No Seeding Required
+
+| Module | Reason |
+|--------|--------|
+| Leads | Data comes from public form submissions |
+| Analytics | Aggregates data from other modules |
+
+---
+
+## 7. Explicit Exclusions
+
+### 7.1 Permanent Exclusions (This Project)
 
 | Item | Reason |
 |------|--------|
@@ -98,60 +130,64 @@ Each module has explicit STOP conditions before proceeding.
 | Client Portal | Not in project scope |
 | Frontend Login/Register | Public site has no auth |
 
-### 6.2 Deferred Beyond Phase 4
+### 7.2 Deferred Beyond Phase 4
 
 | Item | Reason |
 |------|--------|
 | Pages + Sections Editor | Complex page builder; separate phase |
 | User/Profile Management | Future auth phase |
 | Analytics Implementation | Future dashboard phase |
-| Settings Implementation | Future branding/SEO phase |
+| Branding Settings | Requires template modification |
 
 ---
 
-## 7. Documentation Structure
+## 8. Documentation Structure
 
 ```
 docs/phase-4/
-├── Phase_4_Overview.md              (this document)
+├── Phase_4_Overview.md                    (this document)
+├── Phase_4_Admin_UI_Standard.md           (shared UI patterns)
 ├── Phase_4_Frontend_Mapping_Index.md
 ├── Phase_4_Module_Media_Library.md
-├── Phase_4_Module_Blog.md
-├── Phase_4_Module_Projects.md
-├── Phase_4_Module_Testimonials.md
+├── Phase_4_Module_Settings.md
 ├── Phase_4_Module_Pages.md
+├── Phase_4_Module_Projects.md
+├── Phase_4_Module_Blog.md
+├── Phase_4_Module_Testimonials.md
 ├── Phase_4_Module_Leads.md
 ├── Phase_4_Module_Analytics.md
-├── Phase_4_Module_Settings.md
+└── Restore_Point_Phase_4A.2.md
 ```
 
 ---
 
-## 8. Cross-References
+## 9. Cross-References
 
 | Document | Purpose |
 |----------|---------|
+| `Phase_4_Admin_UI_Standard.md` | Shared UI patterns for all modules |
 | `docs/Master_PRD.md` | Strategic alignment |
 | `docs/Architecture.md` | System architecture |
 | `docs/Backend.md` | Backend specifications |
 | `docs/Frontend.md` | Frontend specifications |
-| `docs/Public_App_Setup_Plan.md` | Finibus frontend structure |
 
 ---
 
-## 9. Phase Gate Rules
+## 10. Phase Gate Rules
 
-### 9.1 Per-Module Authorization
+### 10.1 Per-Module Authorization
 
 Each module requires explicit GO authorization before:
 1. Database table creation
 2. Admin CRUD implementation
 3. Public rendering integration
+4. Seeding execution
 
-### 9.2 Stop Conditions
+### 10.2 Stop Conditions
 
 Before proceeding to next module:
 - [ ] All documentation complete for current module
+- [ ] Seeding complete (if required)
 - [ ] Explicit authorization received
 - [ ] Previous module verified (if applicable)
 
@@ -162,5 +198,6 @@ Before proceeding to next module:
 | Version | Date | Author | Notes |
 |---------|------|--------|-------|
 | 0.1 | 2025-12-21 | Planning Agent | Initial draft |
+| 1.0 | 2025-12-22 | Planning Agent | Added execution order, seeding policy |
 
-**Next Review:** After Frontend Mapping Index completion
+**Next Review:** After Media Library seeding authorization

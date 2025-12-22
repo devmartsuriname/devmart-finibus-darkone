@@ -4,7 +4,7 @@
 Status: Draft
 Phase: Documentation Only
 Execution: Not Authorized
-Last Updated: 2025-12-21
+Last Updated: 2025-12-22
 ```
 
 ---
@@ -17,7 +17,7 @@ Last Updated: 2025-12-21
 | Admin Route | `/content/testimonials` |
 | Public Routes | Homepage (carousel section) |
 | Current State | Empty table placeholder |
-| Priority | 4 (after Projects) |
+| Priority | 6 (after Blog) |
 
 ---
 
@@ -53,17 +53,6 @@ See: `Phase_4_Frontend_Mapping_Index.md` Section 3.7
 | Nailong Jeso | CTO Founder | 5 stars |
 | Gautam Yamni | Designer Head | 5 stars |
 
-### 2.5 Display Configuration
-
-| Setting | Value |
-|---------|-------|
-| Carousel type | Swiper |
-| Slides per view | 1 |
-| Loop | Yes |
-| Autoplay | 5000ms delay |
-| Navigation | Prev/Next arrows |
-| Pagination | Fraction type |
-
 ---
 
 ## 3. Data Model Proposal (MVP)
@@ -84,14 +73,7 @@ See: `Phase_4_Frontend_Mapping_Index.md` Section 3.7
 | `created_at` | timestamptz | No | now() | Creation timestamp |
 | `updated_at` | timestamptz | No | now() | Last modified |
 
-### 3.2 Indexes
-
-| Index | Columns | Purpose |
-|-------|---------|---------|
-| `testimonials_pkey` | `id` | Primary key |
-| `testimonials_active_order_idx` | `is_active, display_order` | Carousel query |
-
-### 3.3 RLS Considerations (High-Level)
+### 3.2 RLS Considerations (High-Level)
 
 **Public Access (SELECT)**:
 - Only testimonials with `is_active = true`
@@ -99,40 +81,68 @@ See: `Phase_4_Frontend_Mapping_Index.md` Section 3.7
 **Admin Access (ALL)**:
 - Authenticated users can CRUD all testimonials
 
-| Policy | Rule |
-|--------|------|
-| public_read | `is_active = true` |
-| admin_all | `auth.role() = 'authenticated'` |
+---
 
-### 3.4 Seed Data
+## 4. Seeding Plan
 
-**Required**: No
+### 4.1 Seed Data Requirement
 
-**Recommended**: 3 sample testimonials matching current static data for visual parity testing
+| Attribute | Value |
+|-----------|-------|
+| **Required** | Recommended |
+| **Reason** | Sample testimonials matching current static data for visual parity testing |
+
+### 4.2 Seed Dataset
+
+| Item | Count | Source |
+|------|-------|--------|
+| Testimonials | 3-5 | Match current Finibus static data |
+| Client Photos | 3-5 | From Media Library (`finibus/clients/`) |
+
+### 4.3 Sample Testimonial Structure
+
+| Field | Sample Value |
+|-------|--------------|
+| client_name | "Savannah Nguyen" |
+| client_title | "Executive CEO" |
+| client_company | "TechCorp" |
+| client_image | Reference to `finibus/clients/client-1.jpg` |
+| quote_text | "Working with Devmart has been an incredible experience..." |
+| rating | 5 |
+| display_order | 1 |
+| is_active | true |
+
+### 4.4 Seeding Method
+
+**Recommended:** Manual entry via Admin UI after Testimonials module is built
+
+**Rationale:**
+- Validates CRUD operations
+- Tests Media Library integration for client photos
+- Confirms carousel display on homepage
+
+### 4.5 Acceptance Criteria
+
+- [ ] At least 3 testimonials created matching current static data
+- [ ] Each testimonial has a client photo from Media Library
+- [ ] All testimonials have 5-star rating (matching Finibus)
+- [ ] Active testimonials visible in homepage carousel
+- [ ] Carousel navigation works correctly
+- [ ] Display order controls carousel sequence
 
 ---
 
-## 4. Admin UI Requirements
+## 5. Admin UI Requirements
 
-### 4.1 Screens
+### 5.1 Screens
 
 | Screen | Route | Description |
 |--------|-------|-------------|
 | List | `/content/testimonials` | Table of all testimonials |
-| Create | `/content/testimonials/new` or modal | New testimonial form |
-| Edit | `/content/testimonials/:id` or modal | Edit existing testimonial |
+| Create | Modal | New testimonial form |
+| Edit | Modal | Edit existing testimonial |
 
-### 4.2 List View Features
-
-| Feature | MVP | Later |
-|---------|-----|-------|
-| Table with columns | ✅ | — |
-| Active filter | ✅ | — |
-| Sort by order | ✅ | — |
-| Drag reorder | — | ✅ |
-| Bulk activate/deactivate | — | ✅ |
-
-### 4.3 List View Columns
+### 5.2 List View Columns
 
 | Column | Sortable | Filterable |
 |--------|----------|------------|
@@ -144,119 +154,32 @@ See: `Phase_4_Frontend_Mapping_Index.md` Section 3.7
 | Active | No | Yes |
 | Actions | N/A | N/A |
 
-### 4.4 Create/Edit Form Fields
+---
 
-| Field | Type | Required | Validation |
-|-------|------|----------|------------|
-| Client Name | Text input | Yes | Max 100 chars |
-| Client Title | Text input | Yes | Max 100 chars |
-| Client Company | Text input | No | Max 100 chars |
-| Client Photo | Media picker | No | Must be image |
-| Quote Text | Textarea | Yes | Max 500 chars |
-| Rating | Star selector / Number | Yes | 1-5 |
-| Display Order | Number input | Yes | Integer |
-| Active | Toggle | Yes | Boolean |
+## 6. Admin UI Standard Reference
 
-### 4.5 Empty State
+See: `Phase_4_Admin_UI_Standard.md`
 
-**Current (Phase 3)**: Empty table with columns
-
-**Phase 4 MVP**: Same table with "Add Testimonial" button
-
-### 4.6 Validation Rules
-
-| Rule | Constraint |
-|------|------------|
-| Client Name | Required, max 100 characters |
-| Client Title | Required, max 100 characters |
-| Quote Text | Required, max 500 characters |
-| Rating | Required, integer 1-5 |
-| Display Order | Required, integer |
+This module MUST follow all patterns defined in the Admin UI Standard.
 
 ---
 
-## 5. Phase Gate
+## 7. Phase Gate
 
-### 5.1 Implementation Steps (Future)
+### 7.1 Implementation Steps (Future)
 
 | Step | Scope | Authorization |
 |------|-------|---------------|
 | Step 1 | Create `testimonials` table, indexes, RLS | Separate authorization required |
 | Step 2 | Admin CRUD: list, create, edit, delete | Separate authorization required |
 | Step 3 | Public rendering: carousel integration | Separate authorization required |
+| Step 4 | Seeding: Create sample testimonials | After Step 2 |
 
-### 5.2 Dependencies
+### 7.2 Dependencies
 
 | Dependency | Required For |
 |------------|--------------|
-| Media Library (Step 3) | Client photo picker |
-
-### 5.3 Stop Condition
-
-Before proceeding to Step 2:
-- [ ] `testimonials` table created with schema
-- [ ] Indexes created
-- [ ] RLS policies active
-- [ ] Media Library available
-- [ ] Explicit authorization received
-
-### 5.4 Verification Checklist (Per Step)
-
-**Step 1 (DB Foundation)**:
-- [ ] Table exists with correct schema
-- [ ] Rating constraint enforces 1-5 range
-- [ ] RLS restricts public to active only
-- [ ] Order index enables sorted queries
-
-**Step 2 (Admin CRUD)**:
-- [ ] List view shows all testimonials
-- [ ] Active filter works
-- [ ] Order column sorts correctly
-- [ ] Create form saves correctly
-- [ ] Edit form loads and saves
-- [ ] Delete removes testimonial
-- [ ] Rating input validates range
-
-**Step 3 (Public Rendering)**:
-- [ ] Homepage carousel shows active testimonials only
-- [ ] Testimonials ordered by display_order
-- [ ] Client photo displays (or placeholder)
-- [ ] Rating stars render correctly
-- [ ] Swiper navigation works
-
----
-
-## 6. MVP vs Later Summary
-
-### 6.1 MVP Scope
-
-- Single `testimonials` table
-- Basic CRUD with text fields
-- Star rating (1-5)
-- Client photo via Media Library
-- Active/inactive toggle
-- Display order for carousel
-
-### 6.2 Later Phase Scope
-
-- Video testimonials
-- Logo/company image
-- Link to case study/project
-- Date of testimonial
-- Verification badge
-- Multiple carousel locations
-- Testimonial categories/tags
-
----
-
-## 7. TBD Items
-
-| Item | Decision Required |
-|------|-------------------|
-| Company logo | Include company logo separate from photo? |
-| Project link | Link testimonial to specific project? |
-| Video support | Include video testimonials in MVP? |
-| Multiple locations | Same carousel on other pages? |
+| Media Library (Complete) | Client photo picker |
 
 ---
 
@@ -265,5 +188,6 @@ Before proceeding to Step 2:
 | Version | Date | Author | Notes |
 |---------|------|--------|-------|
 | 0.1 | 2025-12-21 | Planning Agent | Initial draft |
+| 1.0 | 2025-12-22 | Planning Agent | Added Seeding Plan |
 
-**Next Review:** After Projects module implementation
+**Next Review:** After Blog module implementation

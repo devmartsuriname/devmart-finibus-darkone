@@ -2,8 +2,8 @@
 
 ```
 Status: AUTHORITATIVE
-Phase: Phase 4A.1.5 Complete
-Execution: Admin Auth Foundation Implemented
+Phase: Phase 4A.2 Complete
+Execution: Admin Auth Foundation + Media Library Implemented
 Last Updated: 2025-12-22
 ```
 
@@ -123,7 +123,7 @@ CREATE TABLE public.media (
 
 | Bucket | Access | Purpose |
 |--------|--------|---------|
-| `media` | Public read | Media library files |
+| `media` | **PUBLIC** | Media library files |
 
 ### 3.2 Storage RLS Policies
 
@@ -260,9 +260,32 @@ media/{user_id}/{timestamp}-{sanitized_filename}
 
 ---
 
-## 8. Explicit Exclusions
+## 8. Phase 4 Seeding Policy
 
-### 8.1 Phase 4A Scope
+### 8.1 Overview
+
+Data seeding is **REQUIRED** for applicable modules per Phase 4 governance.
+
+### 8.2 Seeding Reference
+
+See: `docs/phase-4/Phase_4_Overview.md` for complete seeding policy.
+
+| Module | Seeding Required | Method |
+|--------|------------------|--------|
+| Media Library | **YES** | Manual upload (30+ assets) |
+| Settings | **YES** | SQL migration |
+| Pages | **YES** | SQL migration |
+| Blog | Recommended | Manual via UI |
+| Projects | Recommended | Manual via UI |
+| Testimonials | Recommended | Manual via UI |
+| Leads | NO | Form submissions |
+| Analytics | NO | Aggregates other data |
+
+---
+
+## 9. Explicit Exclusions
+
+### 9.1 Phase 4A Scope
 
 | Item | Status |
 |------|--------|
@@ -282,5 +305,6 @@ media/{user_id}/{timestamp}-{sanitized_filename}
 | 1.0 | 2025-12-21 | Planning Agent | Phase 3 alignment complete |
 | 2.0 | 2025-12-22 | Implementation Agent | Phase 4A.1.5 - Supabase Auth implemented |
 | 2.1 | 2025-12-22 | Implementation Agent | Phase 4A.2 - Media Library UI implemented |
+| 2.2 | 2025-12-22 | Planning Agent | Added Phase 4 seeding policy reference |
 
 **Next Review:** After Phase 4A.3 authorization
