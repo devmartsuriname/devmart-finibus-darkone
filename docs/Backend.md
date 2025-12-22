@@ -2,8 +2,8 @@
 
 ```
 Status: AUTHORITATIVE
-Phase: Phase 4A.2 Complete
-Execution: Admin Auth Foundation + Media Library Implemented
+Phase: Phase 4A.2 Seeding Ready
+Execution: Admin Auth + Media Library + Seed Tool Implemented
 Last Updated: 2025-12-22
 ```
 
@@ -96,7 +96,7 @@ CREATE TABLE public.user_roles (
 CREATE TABLE public.media (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     filename TEXT NOT NULL,
-    storage_path TEXT NOT NULL,
+    storage_path TEXT NOT NULL UNIQUE,  -- Added unique constraint for upsert
     public_url TEXT NOT NULL,
     file_type TEXT NOT NULL,
     file_size INTEGER NOT NULL,
@@ -106,6 +106,9 @@ CREATE TABLE public.media (
     created_at TIMESTAMP WITH TIME ZONE DEFAULT now(),
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT now()
 );
+
+-- Unique constraint for seeding upsert support
+ALTER TABLE public.media ADD CONSTRAINT media_storage_path_unique UNIQUE (storage_path);
 ```
 
 ### 2.4 Database Functions

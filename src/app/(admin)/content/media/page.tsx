@@ -6,12 +6,13 @@ import IconifyIcon from '@/components/wrapper/IconifyIcon'
 import { useMediaLibrary, formatFileSize } from './hooks/useMediaLibrary'
 import AddMediaModal from './components/AddMediaModal'
 import DeleteMediaModal from './components/DeleteMediaModal'
+import MediaSeedTool from './components/MediaSeedTool'
 import type { Tables } from '@/integrations/supabase/types'
 
 type MediaItem = Tables<'media'>
 
 const MediaPage = () => {
-  const { media, isLoading, error, uploadMedia, deleteMedia, copyToClipboard } = useMediaLibrary()
+  const { media, isLoading, error, uploadMedia, deleteMedia, copyToClipboard, refetch } = useMediaLibrary()
   const [showAddModal, setShowAddModal] = useState(false)
   const [showDeleteModal, setShowDeleteModal] = useState(false)
   const [selectedMedia, setSelectedMedia] = useState<MediaItem | null>(null)
@@ -52,6 +53,11 @@ const MediaPage = () => {
   return (
     <>
       <PageTitle subName="Content" title="Media Library" />
+
+      {/* Seed Tool - Show only when no media exists */}
+      {!isLoading && media.length === 0 && (
+        <MediaSeedTool onComplete={refetch} />
+      )}
 
       <Row>
         <Col xs={12}>
