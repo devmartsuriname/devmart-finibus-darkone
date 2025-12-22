@@ -82,6 +82,7 @@ const MediaSeedTool = ({ onComplete }: { onComplete: () => void }) => {
   const [progress, setProgress] = useState(0)
   const [results, setResults] = useState<SeedResult[]>([])
   const [currentFile, setCurrentFile] = useState('')
+  const [errorMessage, setErrorMessage] = useState('')
 
   const getMimeType = (filename: string): string => {
     const ext = filename.split('.').pop()?.toLowerCase()
@@ -106,6 +107,16 @@ const MediaSeedTool = ({ onComplete }: { onComplete: () => void }) => {
     setStatus('seeding')
     setProgress(0)
     setResults([])
+    setErrorMessage('')
+
+    // Get current authenticated user
+    const { data: { user }, error: authError } = await supabase.auth.getUser()
+    
+    if (authError || !user) {
+      setStatus('error')
+      setErrorMessage('Authentication required. Please sign in to seed media.')
+      return
+    }
 
     const totalItems = SEED_PACK.length
     const newResults: SeedResult[] = []
@@ -149,7 +160,7 @@ const MediaSeedTool = ({ onComplete }: { onComplete: () => void }) => {
             file_size: file.size,
             alt_text: item.altText,
             title: item.title,
-            uploaded_by: null, // System seeded
+            uploaded_by: user.id, // Set to authenticated user's ID
           }, { 
             onConflict: 'storage_path',
             ignoreDuplicates: false 
@@ -161,9 +172,9 @@ const MediaSeedTool = ({ onComplete }: { onComplete: () => void }) => {
 
         newResults.push({ filename: item.filename, success: true })
       } catch (err) {
-        const errorMessage = err instanceof Error ? err.message : 'Unknown error'
+        const errMsg = err instanceof Error ? err.message : 'Unknown error'
         console.error(`Failed to seed ${item.filename}:`, err)
-        newResults.push({ filename: item.filename, success: false, error: errorMessage })
+        newResults.push({ filename: item.filename, success: false, error: errMsg })
       }
 
       setProgress(Math.round(((i + 1) / totalItems) * 100))
@@ -193,10 +204,7 @@ const MediaSeedTool = ({ onComplete }: { onComplete: () => void }) => {
   return (
     <Card className="border-warning mb-4">
       <CardBody>
-        <div className="d-flex align-items-center mb-3">
-          <IconifyIcon icon="bx:package" className="text-warning me-2" style={{ fontSize: '24px' }} />
-          <h5 className="mb-0">Media Seed Tool</h5>
-        </div>
+        <h5 className="mb-3">📦 Media Seed Tool</h5>
 
         <Alert variant="info" className="mb-3">
           <strong>Seed Pack:</strong> {SEED_PACK.length} Finibus template assets
@@ -207,16 +215,18 @@ const MediaSeedTool = ({ onComplete }: { onComplete: () => void }) => {
         </Alert>
 
         {status === 'idle' && (
-          <Button variant="warning" onClick={seedMedia}>
-            <IconifyIcon icon="bx:upload" className="me-1" />
-            Start Seeding
-          </Button>
+          <div>
+            <p className="text-muted mb-2">Ready to seed {SEED_PACK.length} Finibus assets</p>
+            <Button variant="warning" onClick={seedMedia}>
+              Start Seeding
+            </Button>
+          </div>
         )}
 
         {status === 'seeding' && (
           <div>
             <p className="mb-2">
-              <strong>Uploading:</strong> {currentFile}
+              Uploading: <strong>{currentFile}</strong> ({results.length + 1}/{SEED_PACK.length})
             </p>
             <ProgressBar 
               now={progress} 
@@ -225,18 +235,15 @@ const MediaSeedTool = ({ onComplete }: { onComplete: () => void }) => {
               striped 
               variant="warning"
             />
-            <small className="text-muted mt-2 d-block">
-              {results.length} / {SEED_PACK.length} files processed
-            </small>
           </div>
         )}
 
         {status === 'complete' && (
           <div>
-            <Alert variant="success">
-              <strong>Seeding Complete!</strong>
+            <Alert variant={failCount > 0 ? 'warning' : 'success'}>
+              <strong>✅ Seeding Complete!</strong>
               <br />
-              ✅ {successCount} files uploaded successfully
+              {successCount} files uploaded successfully
               {failCount > 0 && (
                 <>
                   <br />
@@ -259,9 +266,9 @@ const MediaSeedTool = ({ onComplete }: { onComplete: () => void }) => {
 
         {status === 'error' && (
           <Alert variant="danger">
-            <strong>Seeding Failed</strong>
+            <strong>❌ Seeding Failed</strong>
             <br />
-            No files were successfully uploaded. Check console for details.
+            {errorMessage || 'No files were successfully uploaded. Check console for details.'}
             <br />
             <Button variant="outline-danger" size="sm" className="mt-2" onClick={seedMedia}>
               Retry
