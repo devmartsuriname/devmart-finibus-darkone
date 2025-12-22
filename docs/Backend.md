@@ -77,6 +77,7 @@ The Devmart admin portal now uses **Supabase Auth** for real authentication. The
 |-------|---------|--------|
 | `user_roles` | Role assignments | ✅ Implemented |
 | `media` | Media library entries | ✅ Implemented |
+| `settings` | Site configuration key-value store | ✅ Implemented (Phase 4A.3) |
 
 ### 2.2 user_roles Table
 
@@ -111,7 +112,31 @@ CREATE TABLE public.media (
 ALTER TABLE public.media ADD CONSTRAINT media_storage_path_unique UNIQUE (storage_path);
 ```
 
-### 2.4 Database Functions
+### 2.4 settings Table (Phase 4A.3)
+
+```sql
+CREATE TABLE public.settings (
+    key TEXT PRIMARY KEY,
+    value TEXT NOT NULL DEFAULT '',
+    category TEXT NOT NULL,
+    description TEXT,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+    updated_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+    updated_by UUID REFERENCES auth.users(id) ON DELETE SET NULL
+);
+```
+
+**Categories:** general, seo, social, branding
+
+**Keys (14 total):**
+- General: site_name, site_tagline, contact_email, contact_phone, contact_address
+- SEO: default_meta_title, default_meta_description, default_og_image_media_id
+- Social: facebook_url, instagram_url, linkedin_url, youtube_url
+- Branding: logo_media_id, favicon_media_id
+
+**Media References:** default_og_image_media_id, logo_media_id, favicon_media_id store Media Library UUIDs (not URLs).
+
+### 2.5 Database Functions
 
 | Function | Purpose |
 |----------|---------|
@@ -161,7 +186,14 @@ ALTER TABLE public.media ADD CONSTRAINT media_storage_path_unique UNIQUE (storag
 | Owner update | UPDATE | `auth.uid() = uploaded_by` |
 | Admin delete | DELETE | `has_role(auth.uid(), 'admin')` |
 
-> **Note:** The "Admins can insert media" policy was added in Phase 4A.2 v2 to allow admin seeding with any `uploaded_by` value.
+### 4.3 settings (Phase 4A.3)
+
+| Policy | Operation | Condition |
+|--------|-----------|-----------|
+| Public can read settings | SELECT | `true` |
+| Admins can insert settings | INSERT | `has_role(auth.uid(), 'admin')` |
+| Admins can update settings | UPDATE | `has_role(auth.uid(), 'admin')` |
+| Admins can delete settings | DELETE | `has_role(auth.uid(), 'admin')` |
 
 ---
 
