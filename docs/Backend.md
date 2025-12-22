@@ -214,9 +214,55 @@ CREATE TABLE public.media (
 
 ---
 
-## 7. Explicit Exclusions
+## 7. Media Library Implementation (Phase 4A.2)
 
-### 7.1 Phase 4A.1.5 Scope
+### 7.1 Overview
+
+The Media Library provides admin-only file upload, management, and deletion capabilities.
+
+### 7.2 Upload Flow
+
+```
+1. Admin clicks "Add Media" button
+2. Modal opens with dropzone
+3. File validated (type, size)
+4. File uploaded to Supabase Storage: media/{userId}/{timestamp}-{filename}
+5. Public URL generated (bucket is PUBLIC)
+6. Metadata row inserted into media table
+7. List refreshes on success
+```
+
+### 7.3 Storage Path Format
+
+```
+media/{user_id}/{timestamp}-{sanitized_filename}
+```
+
+- Files are organized by user ID
+- Timestamp prevents filename collisions
+- Filename sanitized to remove special characters
+
+### 7.4 File Validation
+
+| Constraint | Value |
+|------------|-------|
+| Max file size | 10MB |
+| Allowed types | image/jpeg, image/png, image/gif, image/webp, application/pdf |
+
+### 7.5 RLS Behavior
+
+| Action | Policy | Behavior |
+|--------|--------|----------|
+| View | Public read | Anyone can view uploaded media |
+| Upload | Authenticated insert | Authenticated users can upload (own folder) |
+| Update | Owner update | Only file owner can update metadata |
+| Delete | Admin delete | Only admins can delete files |
+
+---
+
+## 8. Explicit Exclusions
+
+### 8.1 Phase 4A Scope
 
 | Item | Status |
 |------|--------|
@@ -235,5 +281,6 @@ CREATE TABLE public.media (
 | 0.1 | 2025-01-XX | Planning Agent | Initial draft |
 | 1.0 | 2025-12-21 | Planning Agent | Phase 3 alignment complete |
 | 2.0 | 2025-12-22 | Implementation Agent | Phase 4A.1.5 - Supabase Auth implemented |
+| 2.1 | 2025-12-22 | Implementation Agent | Phase 4A.2 - Media Library UI implemented |
 
-**Next Review:** After Phase 4A.2 build authorization
+**Next Review:** After Phase 4A.3 authorization
