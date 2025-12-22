@@ -77,6 +77,7 @@ The Devmart admin portal now uses **Supabase Auth** for real authentication. The
 |-------|---------|--------|
 | `user_roles` | Role assignments | ✅ Implemented |
 | `media` | Media library entries | ✅ Implemented |
+| `blog_posts` | Blog post entries | ✅ Implemented (Phase 4A.4) |
 | `settings` | Site configuration key-value store | ✅ Implemented (Phase 4A.3) |
 
 ### 2.2 user_roles Table
@@ -136,7 +137,27 @@ CREATE TABLE public.settings (
 
 **Media References:** default_og_image_media_id, logo_media_id, favicon_media_id store Media Library UUIDs (not URLs).
 
-### 2.5 Database Functions
+### 2.5 blog_posts Table (Phase 4A.4)
+
+```sql
+CREATE TABLE public.blog_posts (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    title TEXT NOT NULL,
+    slug TEXT NOT NULL UNIQUE,
+    excerpt TEXT,
+    content TEXT NOT NULL,
+    featured_image_media_id UUID REFERENCES public.media(id) ON DELETE SET NULL,
+    status TEXT NOT NULL DEFAULT 'draft' CHECK (status IN ('draft', 'published')),
+    published_at TIMESTAMPTZ,
+    author_id UUID NOT NULL,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+    updated_at TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+```
+
+**RLS:** Admin-only access (no public access in this phase).
+
+### 2.6 Database Functions
 
 | Function | Purpose |
 |----------|---------|
@@ -195,7 +216,16 @@ CREATE TABLE public.settings (
 | Admins can update settings | UPDATE | `has_role(auth.uid(), 'admin')` |
 | Admins can delete settings | DELETE | `has_role(auth.uid(), 'admin')` |
 
----
+### 4.4 blog_posts (Phase 4A.4 — ADMIN-ONLY)
+
+| Policy | Operation | Condition |
+|--------|-----------|-----------|
+| Admins can view all posts | SELECT | `has_role(auth.uid(), 'admin')` |
+| Admins can create posts | INSERT | `has_role(auth.uid(), 'admin')` |
+| Admins can update posts | UPDATE | `has_role(auth.uid(), 'admin')` |
+| Admins can delete posts | DELETE | `has_role(auth.uid(), 'admin')` |
+
+**Note:** Public SELECT access will be added in a future phase when public blog rendering is authorized.
 
 ## 5. Authentication Flow
 
