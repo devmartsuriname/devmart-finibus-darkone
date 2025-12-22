@@ -341,6 +341,38 @@ See: `docs/phase-4/Phase_4_Overview.md` for complete seeding policy.
 
 ---
 
+---
+
+## 10. Error Handling & Stability (Phase 4A.2)
+
+### 10.1 Error Boundaries
+
+The admin application uses React Error Boundaries to catch runtime errors and prevent blank screens.
+
+| Component | File | Purpose |
+|-----------|------|---------|
+| ErrorBoundary | `src/components/ErrorBoundary.tsx` | Catches errors, shows recovery UI |
+| LoadingFallback | `src/components/LoadingFallback.tsx` | Loading spinner for Suspense |
+
+### 10.2 Error Recovery
+
+When an error occurs:
+1. ErrorBoundary catches the error
+2. Error card displays with message
+3. User can click "Try Again" to reset state
+4. User can click "Reload Page" for full refresh
+
+### 10.3 Suspense Strategy
+
+| Location | Fallback |
+|----------|----------|
+| Router level | Full-page loading spinner |
+| AdminLayout children | Page-level loading spinner |
+| TopNavigationBar | Empty div placeholder |
+| VerticalNavigationBar | Empty div placeholder |
+
+---
+
 ## Document Control
 
 | Version | Date | Author | Notes |
@@ -352,5 +384,6 @@ See: `docs/phase-4/Phase_4_Overview.md` for complete seeding policy.
 | 2.2 | 2025-12-22 | Planning Agent | Added Phase 4 seeding policy reference |
 | 2.3 | 2025-12-22 | Implementation Agent | Phase 4A.2 - Seed Tool fixed: deterministic paths, text-only UI |
 | 2.4 | 2025-12-22 | Implementation Agent | Phase 4A.2 v2 - RLS fix: admin INSERT policy, uploaded_by = user.id, preflight check, DB verification |
+| 2.5 | 2025-12-22 | Implementation Agent | Phase 4A.2 - Error boundaries + Suspense fallbacks added |
 
 **Next Review:** After Phase 4A.3 authorization

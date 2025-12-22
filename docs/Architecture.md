@@ -403,5 +403,6 @@ A Finibus-based Frontend Style Guide is required to ensure consistency between p
 | 2.2 | 2025-12-22 | Planning Agent | Added Phase 4 documentation status |
 | 2.3 | 2025-12-22 | Implementation Agent | Phase 4A.2 - Seed Tool fixed with deterministic asset paths |
 | 2.4 | 2025-12-22 | Implementation Agent | Phase 4A.2 v2 - RLS policy fix, preflight check, DB verification |
+| 2.5 | 2025-12-22 | Implementation Agent | Phase 4A.2 - Error boundaries + Suspense fallbacks for routing stability |
 
 **Next Review:** After Phase 4A.3 authorization
