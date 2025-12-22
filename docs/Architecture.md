@@ -2,9 +2,9 @@
 
 ```
 Status: AUTHORITATIVE
-Phase: Phase 3 Alignment Complete
-Execution: Documentation Only — Build Not Authorized
-Last Updated: 2025-12-21
+Phase: Phase 4A.1.5 Complete
+Execution: Admin Auth Foundation Implemented
+Last Updated: 2025-12-22
 ```
 
 ---
@@ -50,9 +50,9 @@ Last Updated: 2025-12-21
 | Attribute | Value |
 |-----------|-------|
 | Template | Darkone React |
-| Status | Phase 3 — Placeholder Cleanup |
-| Phase | Phase 3 (Documentation Complete) |
-| Build | ❌ Not Authorized |
+| Status | Phase 4A.1.5 — Auth Foundation Complete |
+| Phase | Phase 4A (Media Library in progress) |
+| Build | ✅ Auth Implemented |
 
 ---
 
@@ -115,30 +115,30 @@ apps/admin/src/assets/scss/     # Darkone styles ONLY
 /contact            # Contact page
 ```
 
-### 5.2 Admin App Routes (Phase 3)
+### 5.2 Admin App Routes (Phase 4A)
 
 **Devmart Business Routes:**
 
-| Route | Module | Phase 3 State |
+| Route | Module | Current State |
 |-------|--------|---------------|
 | `/admin/dashboard` | Dashboard | Coming Soon |
 | `/admin/content/blog` | Blog | Empty table |
 | `/admin/content/projects` | Projects | Empty table |
 | `/admin/content/pages` | Pages | Empty table |
-| `/admin/content/media` | Media | Empty grid |
+| `/admin/content/media` | Media | Phase 4A.2 pending |
 | `/admin/content/testimonials` | Testimonials | Empty table |
 | `/admin/crm/leads` | Leads | Empty table |
 | `/admin/analytics` | Analytics | Coming Soon |
 | `/admin/settings` | Settings | Coming Soon |
 
-**Auth Routes (Preserved):**
+**Auth Routes (Implemented):**
 
-| Route | Purpose |
-|-------|---------|
-| `/admin/auth/sign-in` | Login (demo) |
-| `/admin/auth/sign-up` | Registration (demo) |
-| `/admin/auth/reset-password` | Password reset (demo) |
-| `/admin/auth/lock-screen` | Lock screen (demo) |
+| Route | Purpose | Status |
+|-------|---------|--------|
+| `/admin/auth/sign-in` | Login | ✅ Supabase Auth |
+| `/admin/auth/sign-up` | Registration | ❌ Removed from MVP |
+| `/admin/auth/reset-password` | Password reset | ❌ Removed from MVP |
+| `/admin/auth/lock-screen` | Lock screen | Preserved (demo) |
 
 **Darkone Demo Routes (Hidden from Navigation):**
 
@@ -162,41 +162,60 @@ apps/admin/src/assets/scss/     # Darkone styles ONLY
 
 ## 6. Authentication Boundary
 
-### 6.1 Current State (Demo)
+### 6.1 Current State (Supabase Auth - Implemented)
 
-**Darkone Admin Only:**
+**Admin App Authentication:**
 
 | Component | Location | Purpose |
 |-----------|----------|---------|
-| `fake-backend.ts` | `src/helpers/` | Axios mock adapter |
-| `useAuthContext.tsx` | `src/context/` | Session management |
-| Cookie key | `_DARKONE_AUTH_KEY_` | Session storage |
-| Demo users | `fakeUsers` array | Hardcoded credentials |
+| Supabase Client | `src/integrations/supabase/client.ts` | Auth SDK |
+| Auth Context | `src/context/useAuthContext.tsx` | Session management |
+| Route Guard | `src/routes/router.tsx` | Auth + Role check |
+| Access Denied | `src/components/AccessDenied.tsx` | Non-admin block |
+
+**Authentication Flow:**
+
+```
+┌─────────────────┐
+│  User Request   │
+└────────┬────────┘
+         │
+         ▼
+┌─────────────────┐     No      ┌─────────────────┐
+│ isAuthenticated?├────────────►│ /auth/sign-in   │
+└────────┬────────┘             └─────────────────┘
+         │ Yes
+         ▼
+┌─────────────────┐     No      ┌─────────────────┐
+│    isAdmin?     ├────────────►│  AccessDenied   │
+└────────┬────────┘             └─────────────────┘
+         │ Yes
+         ▼
+┌─────────────────┐
+│  Admin Content  │
+└─────────────────┘
+```
+
+**Role Enforcement:**
+
+| Role | Access | Check Method |
+|------|--------|--------------|
+| `admin` | Full admin | `user_roles` table via `has_role()` |
+| Others | Blocked | Shows AccessDenied component |
 
 **Public App:**
 - No authentication
 - No protected routes
 - All pages publicly accessible
 
-### 6.2 Future State (Supabase)
-
-**Planned Architecture:**
+### 6.2 Supabase Integration
 
 | Component | Purpose | Status |
 |-----------|---------|--------|
-| Supabase Auth | User authentication | NOT IMPLEMENTED |
-| Supabase Database | Data persistence | NOT IMPLEMENTED |
-| Supabase Storage | File storage | NOT IMPLEMENTED |
-| Edge Functions | Server-side logic | NOT IMPLEMENTED |
-
-**Migration Path:**
-
-1. Replace `fake-backend.ts` with Supabase client
-2. Replace `useAuthContext.tsx` with Supabase auth hooks
-3. Add RLS policies for data access
-4. Implement session management
-
-**STATUS: Future authentication is NOT IMPLEMENTED**
+| Supabase Auth | User authentication | ✅ Implemented |
+| Supabase Database | Data persistence | ✅ Tables created |
+| Supabase Storage | File storage | ✅ Bucket created |
+| Edge Functions | Server-side logic | Not implemented |
 
 ---
 
@@ -250,24 +269,22 @@ apps/admin/src/assets/images/     # Admin portal images
 
 ## 9. Environment Variables
 
-### 9.1 Current
-
-No environment variables in use (demo mode).
-
-### 9.2 Future
+### 9.1 Current (Active)
 
 ```
-# Public App
-VITE_SUPABASE_URL=
-VITE_SUPABASE_ANON_KEY=
-
-# Admin App
-VITE_SUPABASE_URL=
-VITE_SUPABASE_ANON_KEY=
-VITE_ADMIN_API_URL=
+# Supabase (via Lovable integration)
+VITE_SUPABASE_URL=https://hwrlkrrdqbtgyjpsrijh.supabase.co
+VITE_SUPABASE_PUBLISHABLE_KEY=eyJhbG...
 ```
 
-**STATUS: Environment configuration NOT IMPLEMENTED**
+### 9.2 Secrets Configured
+
+| Secret | Purpose | Status |
+|--------|---------|--------|
+| SUPABASE_URL | Database URL | ✅ Set |
+| SUPABASE_PUBLISHABLE_KEY | Anon key | ✅ Set |
+| SUPABASE_SERVICE_ROLE_KEY | Admin key | ✅ Set |
+| SUPABASE_DB_URL | Direct DB | ✅ Set |
 
 ---
 
@@ -307,11 +324,11 @@ VITE_ADMIN_API_URL=
 
 ## 11. Frontend Style Guide Requirement
 
-**Status:** Required in later phase — NOT Phase 3
+**Status:** Required in later phase — NOT Phase 4A
 
 A Finibus-based Frontend Style Guide is required to ensure consistency between public frontend and admin content creation.
 
-**Phase 3 Action:** Document the requirement only.
+**Phase 4A Action:** Document the requirement only.
 
 ---
 
@@ -321,5 +338,6 @@ A Finibus-based Frontend Style Guide is required to ensure consistency between p
 |---------|------|--------|-------|
 | 0.1 | 2025-01-XX | Planning Agent | Initial draft |
 | 1.0 | 2025-12-21 | Planning Agent | Phase 3 alignment complete |
+| 2.0 | 2025-12-22 | Implementation Agent | Phase 4A.1.5 - Auth boundary implemented |
 
-**Next Review:** After Phase 3 build authorization
+**Next Review:** After Phase 4A.2 build authorization

@@ -1,5 +1,4 @@
 import { yupResolver } from '@hookform/resolvers/yup'
-import type { AxiosResponse } from 'axios'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { useNavigate, useSearchParams } from 'react-router-dom'
@@ -7,14 +6,12 @@ import * as yup from 'yup'
 
 import { useAuthContext } from '@/context/useAuthContext'
 import { useNotificationContext } from '@/context/useNotificationContext'
-import httpClient from '@/helpers/httpClient'
-import type { UserType } from '@/types/auth'
 
 const useSignIn = () => {
   const [loading, setLoading] = useState(false)
   const navigate = useNavigate()
 
-  const { saveSession } = useAuthContext()
+  const { signIn } = useAuthContext()
   const [searchParams] = useSearchParams()
 
   const { showNotification } = useNotificationContext()
@@ -27,8 +24,8 @@ const useSignIn = () => {
   const { control, handleSubmit } = useForm({
     resolver: yupResolver(loginFormSchema),
     defaultValues: {
-      email: 'user@demo.com',
-      password: '123456',
+      email: '',
+      password: '',
     },
   })
 
@@ -41,21 +38,19 @@ const useSignIn = () => {
   }
 
   const login = handleSubmit(async (values: LoginFormFields) => {
+    setLoading(true)
     try {
-      const res: AxiosResponse<UserType> = await httpClient.post('/login', values)
-      if (res.data.token) {
-        saveSession({
-          ...(res.data ?? {}),
-          token: res.data.token,
-        })
-        redirectUser()
+      const { error } = await signIn(values.email, values.password)
+      
+      if (error) {
+        showNotification({ message: error.message, variant: 'danger' })
+      } else {
         showNotification({ message: 'Successfully logged in. Redirecting....', variant: 'success' })
+        redirectUser()
       }
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    } catch (e: any) {
-      if (e.response?.data?.error) {
-        showNotification({ message: e.response?.data?.error, variant: 'danger' })
-      }
+    } catch (e: unknown) {
+      const errorMessage = e instanceof Error ? e.message : 'An unexpected error occurred'
+      showNotification({ message: errorMessage, variant: 'danger' })
     } finally {
       setLoading(false)
     }

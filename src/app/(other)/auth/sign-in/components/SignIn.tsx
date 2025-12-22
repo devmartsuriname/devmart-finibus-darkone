@@ -34,17 +34,14 @@ const SignIn = () => {
                       </Link>
                     </div>
                     <h4 className="fw-bold text-dark mb-2">Welcome Back!</h4>
-                    <p className="text-muted">Sign in to your account to continue</p>
+                    <p className="text-muted">Sign in to your admin account</p>
                   </div>
                   <form onSubmit={login} className="mt-4">
                     <div className="mb-3">
                       <TextFormInput control={control} name="email" placeholder="Enter your email" className="form-control" label="Email Address" />
                     </div>
                     <div className="mb-3">
-                      <Link to="/auth/reset-password" className="float-end text-muted  ms-1">
-                        Forgot password?
-                      </Link>
-                      <TextFormInput control={control} name="password" placeholder="Enter your password" className="form-control" label="Password" />
+                      <TextFormInput control={control} name="password" type="password" placeholder="Enter your password" className="form-control" label="Password" />
                     </div>
 
                     <div className="form-check mb-3">
@@ -55,18 +52,12 @@ const SignIn = () => {
                     </div>
                     <div className="d-grid">
                       <button disabled={loading} className="btn btn-dark btn-lg fw-medium" type="submit">
-                        Sign In
+                        {loading ? 'Signing in...' : 'Sign In'}
                       </button>
                     </div>
                   </form>
                 </CardBody>
               </Card>
-              <p className="text-center mt-4 text-white text-opacity-50">
-                Don&apos;t have an account?
-                <Link to="/auth/sign-up" className="text-decoration-none text-white fw-bold">
-                  Sign Up
-                </Link>
-              </p>
             </Col>
           </Row>
         </div>
