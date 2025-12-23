@@ -270,56 +270,126 @@ export type Database = {
         }
         Relationships: []
       }
+      project_process_steps: {
+        Row: {
+          created_at: string
+          description: string | null
+          id: string
+          image_media_id: string | null
+          project_id: string
+          step_number: number
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          image_media_id?: string | null
+          project_id: string
+          step_number: number
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          image_media_id?: string | null
+          project_id?: string
+          step_number?: number
+          title?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "project_process_steps_image_media_id_fkey"
+            columns: ["image_media_id"]
+            isOneToOne: false
+            referencedRelation: "media"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "project_process_steps_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "projects"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       projects: {
         Row: {
           category: string
+          check_launch_content: string | null
+          check_launch_image_media_id: string | null
           client: string | null
           created_at: string
           description: string | null
           display_order: number | null
+          end_date: string | null
           featured_image_media_id: string | null
           heading: string
           id: string
           image_media_id: string | null
           is_featured: boolean
           slug: string
+          start_date: string | null
           status: string
           title: string
           updated_at: string
+          website: string | null
         }
         Insert: {
           category: string
+          check_launch_content?: string | null
+          check_launch_image_media_id?: string | null
           client?: string | null
           created_at?: string
           description?: string | null
           display_order?: number | null
+          end_date?: string | null
           featured_image_media_id?: string | null
           heading: string
           id?: string
           image_media_id?: string | null
           is_featured?: boolean
           slug: string
+          start_date?: string | null
           status?: string
           title: string
           updated_at?: string
+          website?: string | null
         }
         Update: {
           category?: string
+          check_launch_content?: string | null
+          check_launch_image_media_id?: string | null
           client?: string | null
           created_at?: string
           description?: string | null
           display_order?: number | null
+          end_date?: string | null
           featured_image_media_id?: string | null
           heading?: string
           id?: string
           image_media_id?: string | null
           is_featured?: boolean
           slug?: string
+          start_date?: string | null
           status?: string
           title?: string
           updated_at?: string
+          website?: string | null
         }
         Relationships: [
+          {
+            foreignKeyName: "projects_check_launch_image_media_id_fkey"
+            columns: ["check_launch_image_media_id"]
+            isOneToOne: false
+            referencedRelation: "media"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "projects_featured_image_media_id_fkey"
             columns: ["featured_image_media_id"]
