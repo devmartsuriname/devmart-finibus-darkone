@@ -234,7 +234,36 @@ CREATE TABLE public.projects (
 
 **RLS:** Admin-only access (no public access in this phase).
 
-### 2.10 Database Functions
+### 2.10 testimonials Table (Phase 4A.6)
+
+```sql
+CREATE TABLE public.testimonials (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    author_name TEXT NOT NULL,
+    author_title TEXT,
+    company TEXT,
+    quote TEXT NOT NULL,
+    rating INTEGER CHECK (rating >= 1 AND rating <= 5),
+    avatar_media_id UUID REFERENCES public.media(id) ON DELETE SET NULL,
+    featured BOOLEAN NOT NULL DEFAULT false,
+    status TEXT NOT NULL DEFAULT 'draft' CHECK (status IN ('draft', 'published')),
+    display_order INTEGER,
+    published_at TIMESTAMPTZ,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+    updated_at TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+```
+
+**Indexes:**
+- `testimonials_status_idx` ON (status)
+- `testimonials_featured_idx` ON (featured, display_order)
+
+**Trigger:**
+- `update_testimonials_updated_at` → calls `update_updated_at_column()`
+
+**RLS:** Admin full CRUD + Public SELECT for published testimonials.
+
+### 2.11 Database Functions
 
 | Function | Purpose |
 |----------|---------|
@@ -340,6 +369,16 @@ CREATE TABLE public.projects (
 | Admins can delete projects | DELETE | `has_role(auth.uid(), 'admin')` |
 
 **Note:** Public SELECT access may be added in a future phase when public portfolio rendering is authorized.
+
+### 4.9 testimonials (Phase 4A.6)
+
+| Policy | Operation | Condition |
+|--------|-----------|-----------|
+| Admins can view all testimonials | SELECT | `has_role(auth.uid(), 'admin')` |
+| Admins can create testimonials | INSERT | `has_role(auth.uid(), 'admin')` |
+| Admins can update testimonials | UPDATE | `has_role(auth.uid(), 'admin')` |
+| Admins can delete testimonials | DELETE | `has_role(auth.uid(), 'admin')` |
+| Public can view published testimonials | SELECT | `status = 'published'` |
 
 ## 5. Authentication Flow
 
@@ -563,5 +602,6 @@ When an error occurs:
 | 2.5 | 2025-12-22 | Implementation Agent | Phase 4A.2 - Error boundaries + Suspense fallbacks added |
 | 2.6 | 2025-12-23 | Implementation Agent | Phase 4A.4B - Blog seeding: tags, post-tags, comments tables + seed data |
 | 2.7 | 2025-12-23 | Implementation Agent | Phase 4A.5 - Projects module: table, indexes, RLS, trigger, seed data (8 projects) |
+| 2.8 | 2025-12-23 | Implementation Agent | Phase 4A.6 - Testimonials module: table, RLS, seed data (6 testimonials) |
 
-**Next Review:** After Phase 4A.6 authorization
+**Next Review:** After Phase 4A.7 authorization
