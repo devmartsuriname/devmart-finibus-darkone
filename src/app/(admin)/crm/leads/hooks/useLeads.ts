@@ -1,0 +1,110 @@
+import { useState, useEffect, useCallback } from 'react'
+import { supabase } from '@/integrations/supabase/client'
+import { toast } from 'react-toastify'
+
+export type LeadStatus = 'new' | 'contacted' | 'qualified' | 'closed'
+
+export interface Lead {
+  id: string
+  name: string
+  email: string
+  subject: string | null
+  message: string | null
+  source: string
+  status: LeadStatus
+  notes: string | null
+  created_at: string
+  updated_at: string
+}
+
+export interface LeadUpdateInput {
+  status?: LeadStatus
+  notes?: string | null
+}
+
+export const useLeads = () => {
+  const [leads, setLeads] = useState<Lead[]>([])
+  const [isLoading, setIsLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
+
+  const fetchLeads = useCallback(async () => {
+    try {
+      setIsLoading(true)
+      setError(null)
+
+      const { data, error: fetchError } = await supabase
+        .from('leads')
+        .select('*')
+        .order('created_at', { ascending: false })
+
+      if (fetchError) {
+        throw fetchError
+      }
+
+      // Type assertion to handle the status field properly
+      const typedData: Lead[] = (data || []).map((lead: any) => ({
+        ...lead,
+        status: lead.status as LeadStatus,
+      }))
+
+      setLeads(typedData)
+    } catch (err) {
+      const message = err instanceof Error ? err.message : 'Failed to fetch leads'
+      setError(message)
+      console.error('Error fetching leads:', err)
+    } finally {
+      setIsLoading(false)
+    }
+  }, [])
+
+  useEffect(() => {
+    fetchLeads()
+  }, [fetchLeads])
+
+  const updateLead = useCallback(async (id: string, input: LeadUpdateInput): Promise<boolean> => {
+    try {
+      const updateData: Record<string, unknown> = {}
+
+      if (input.status !== undefined) {
+        updateData.status = input.status
+      }
+      if (input.notes !== undefined) {
+        updateData.notes = input.notes
+      }
+
+      if (Object.keys(updateData).length === 0) {
+        toast.info('No changes to save')
+        return true
+      }
+
+      const { error: updateError } = await supabase
+        .from('leads')
+        .update(updateData)
+        .eq('id', id)
+
+      if (updateError) {
+        throw updateError
+      }
+
+      toast.success('Lead updated successfully')
+      await fetchLeads()
+      return true
+    } catch (err) {
+      const message = err instanceof Error ? err.message : 'Failed to update lead'
+      toast.error(`Error updating lead: ${message}`)
+      console.error('Error updating lead:', err)
+      return false
+    }
+  }, [fetchLeads])
+
+  // Note: No createLead function - leads come from public forms only
+  // Note: No deleteLead function - MVP restriction per Phase_4_Module_Leads.md
+
+  return {
+    leads,
+    isLoading,
+    error,
+    updateLead,
+    refetch: fetchLeads,
+  }
+}
