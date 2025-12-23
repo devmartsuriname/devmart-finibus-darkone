@@ -70,7 +70,7 @@ const LeadDetailModal = ({ show, onClose, onUpdate, lead }: LeadDetailModalProps
   if (!lead) return null
 
   return (
-    <Modal show={show} onHide={handleClose} centered size="lg">
+    <Modal show={show} onHide={handleClose} centered size="xl">
       <Modal.Header closeButton className="border-bottom">
         <Modal.Title as="h5">Lead Details</Modal.Title>
       </Modal.Header>

@@ -1053,15 +1053,23 @@ For multi-section content (e.g., Services, Projects):
 
 ### 14.5 Components Using This Standard
 
-| Module | Status |
-|--------|--------|
-| Services | ✅ Reference implementation |
-| Projects | ✅ Updated (Phase 5.4+ Hotfix) |
-| Blog | ⏳ To be updated |
-| Testimonials | ⏳ To be updated |
-| Pages | ⏳ To be updated |
+| Module | Modal File | Status |
+|--------|------------|--------|
+| Services | `ServiceModal.tsx` | ✅ Reference implementation |
+| Projects | `ProjectModal.tsx` | ✅ Compliant |
+| Pages | `PageEditModal.tsx` | ✅ Updated (Modal Standardization Hotfix) |
+| Testimonials | `TestimonialModal.tsx` | ✅ Updated (Modal Standardization Hotfix) |
+| Leads | `LeadDetailModal.tsx` | ✅ Updated (Modal Standardization Hotfix) |
+| Blog | `BlogPostModal.tsx` | ⏳ Pending (Blog wiring phase) |
 
-### 14.6 MediaPicker Consistency
+### 14.6 Excluded Modules
+
+| Module | Reason |
+|--------|--------|
+| Media Library | Explicitly excluded per guardrails |
+| Settings | Not modal-based (tab page) |
+
+### 14.7 MediaPicker Consistency
 
 All media selection fields should use the `MediaPicker` component with consistent styling:
 - Trigger shows preview thumbnail if selected

@@ -69,9 +69,9 @@ const PageEditModal = ({ show, page, loading, onClose, onSave }: PageEditModalPr
   if (!page) return null
 
   return (
-    <Modal show={show} onHide={onClose} centered size="lg">
+    <Modal show={show} onHide={onClose} centered size="xl">
       <Modal.Header closeButton className="border-bottom">
-        <Modal.Title>Edit Page</Modal.Title>
+        <Modal.Title as="h5">Edit Page</Modal.Title>
       </Modal.Header>
       <Form onSubmit={handleSubmit}>
         <Modal.Body>

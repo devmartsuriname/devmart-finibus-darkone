@@ -127,7 +127,7 @@ const TestimonialModal = ({ show, onClose, onSave, onUpdate, testimonial }: Test
   }
 
   return (
-    <Modal show={show} onHide={handleClose} centered size="lg">
+    <Modal show={show} onHide={handleClose} centered size="xl">
       <Modal.Header closeButton className="border-bottom">
         <Modal.Title as="h5">{isEditMode ? 'Edit Testimonial' : 'Add Testimonial'}</Modal.Title>
       </Modal.Header>
