@@ -133,6 +133,9 @@ function App() {
       <Route element={<MainLayout />}>
         <Route path="/about" element={<AboutPage />} />
         <Route path="/service" element={<ServicesPage />} />
+        {/* Dynamic service details with slug parameter */}
+        <Route path="/service-details/:slug" element={<ServiceDetailsPage />} />
+        {/* Fallback for /service-details without slug - redirects to services list */}
         <Route path="/service-details" element={<ServiceDetailsPage />} />
         <Route path="/project" element={<ProjectsPage />} />
         <Route path="/project-details" element={<ProjectDetailsPage />} />
