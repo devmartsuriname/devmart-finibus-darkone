@@ -2,8 +2,8 @@
 
 ```
 Status: AUTHORITATIVE
-Phase: Phase 4A.7 Pages Module Complete
-Execution: Admin Auth + Media Library + Settings + Blog + Blog Seeding + Projects + Testimonials + Pages
+Phase: Phase 4 CRM/Leads Module Complete
+Execution: Admin Auth + Media Library + Settings + Blog + Blog Seeding + Projects + Testimonials + Pages + Leads
 Last Updated: 2025-12-23
 ```
 
@@ -83,6 +83,9 @@ The Devmart admin portal now uses **Supabase Auth** for real authentication. The
 | `blog_comments` | Blog comments | ✅ Implemented (Phase 4A.4B) |
 | `settings` | Site configuration key-value store | ✅ Implemented (Phase 4A.3) |
 | `projects` | Portfolio projects | ✅ Implemented (Phase 4A.5) |
+| `testimonials` | Client testimonials | ✅ Implemented (Phase 4A.6) |
+| `pages` | Page metadata (edit-only) | ✅ Implemented (Phase 4A.7) |
+| `leads` | CRM lead capture | ✅ Implemented (Phase 4) |
 
 ### 2.2 user_roles Table
 
@@ -294,12 +297,42 @@ CREATE TABLE public.pages (
 **Seed Data (6 pre-defined pages):**
 - about, services, service-details, contact, blog, projects
 
-### 2.12 Database Functions
+### 2.12 leads Table (Phase 4 CRM)
+
+```sql
+CREATE TABLE public.leads (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    name TEXT NOT NULL,
+    email TEXT NOT NULL,
+    subject TEXT,
+    message TEXT,
+    source TEXT NOT NULL DEFAULT 'contact_form',
+    status TEXT NOT NULL DEFAULT 'new' CHECK (status IN ('new', 'contacted', 'qualified', 'closed')),
+    notes TEXT,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+    updated_at TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+```
+
+**Indexes:**
+- `leads_status_idx` ON (status)
+- `leads_created_at_idx` ON (created_at DESC)
+- `leads_source_idx` ON (source)
+
+**Trigger:**
+- `update_leads_updated_at` → calls `update_updated_at_column()`
+
+**RLS:** Public INSERT only (anon). Admin SELECT + UPDATE only (NO INSERT/DELETE per MVP).
+
+**Seeding:** None — leads are captured via public form submissions.
+
+### 2.13 Database Functions
 
 | Function | Purpose |
 |----------|---------|
 | `has_role(_user_id, _role)` | Check if user has specific role (SECURITY DEFINER) |
 | `update_updated_at_column()` | Trigger function for updated_at |
+| `prevent_slug_change()` | Trigger function for slug immutability (pages) |
 
 ---
 
@@ -420,6 +453,21 @@ CREATE TABLE public.pages (
 | Public can view published pages | SELECT | `is_published = true` |
 
 **Note:** No INSERT or DELETE policies. Pages are pre-defined and slug-immutable per Phase_4_Module_Pages.md.
+
+### 4.11 leads (Phase 4 CRM)
+
+| Policy | Operation | Condition |
+|--------|-----------|-----------|
+| Public can submit leads | INSERT | `true` (anon, for contact form) |
+| Admins can view all leads | SELECT | `has_role(auth.uid(), 'admin')` |
+| Admins can update leads | UPDATE | `has_role(auth.uid(), 'admin')` |
+
+**Explicitly NOT created (by design):**
+- Public SELECT — leads are private
+- Public UPDATE — leads are private
+- Public DELETE — leads are private
+- Admin INSERT — leads come from public forms only
+- Admin DELETE — MVP restriction per Phase_4_Module_Leads.md
 
 ## 5. Authentication Flow
 
@@ -645,5 +693,6 @@ When an error occurs:
 | 2.7 | 2025-12-23 | Implementation Agent | Phase 4A.5 - Projects module: table, indexes, RLS, trigger, seed data (8 projects) |
 | 2.8 | 2025-12-23 | Implementation Agent | Phase 4A.6 - Testimonials module: table, RLS, seed data (6 testimonials) |
 | 2.9 | 2025-12-23 | Implementation Agent | Phase 4A.7 - Pages module: table, slug immutability trigger, RLS (SELECT+UPDATE only), seed data (6 pages) |
+| 3.0 | 2025-12-23 | Implementation Agent | Phase 4 CRM - Leads module: table, RLS (Public INSERT, Admin SELECT+UPDATE), no seeding |
 
-**Next Review:** After Phase 4A.8 authorization
+**Next Review:** After Analytics module authorization
