@@ -2,8 +2,8 @@
 
 ```
 Status: AUTHORITATIVE
-Phase: Phase 4A.5 Projects Module Complete
-Execution: Admin Auth + Media Library + Settings + Blog + Blog Seeding + Projects
+Phase: Phase 4A.7 Pages Module Complete
+Execution: Admin Auth + Media Library + Settings + Blog + Blog Seeding + Projects + Testimonials + Pages
 Last Updated: 2025-12-23
 ```
 
@@ -263,7 +263,38 @@ CREATE TABLE public.testimonials (
 
 **RLS:** Admin full CRUD + Public SELECT for published testimonials.
 
-### 2.11 Database Functions
+### 2.11 pages Table (Phase 4A.7)
+
+```sql
+CREATE TABLE public.pages (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    slug TEXT NOT NULL UNIQUE,
+    title TEXT NOT NULL,
+    meta_title TEXT,
+    meta_description TEXT,
+    is_published BOOLEAN NOT NULL DEFAULT false,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+    updated_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+    CONSTRAINT pages_title_max_length CHECK (char_length(title) <= 100),
+    CONSTRAINT pages_meta_title_max_length CHECK (meta_title IS NULL OR char_length(meta_title) <= 70),
+    CONSTRAINT pages_meta_description_max_length CHECK (meta_description IS NULL OR char_length(meta_description) <= 160)
+);
+```
+
+**Indexes:**
+- `pages_is_published_idx` ON (is_published)
+- Unique constraint on slug
+
+**Triggers:**
+- `update_pages_updated_at` → calls `update_updated_at_column()`
+- `pages_prevent_slug_change` → calls `prevent_slug_change()` (enforces slug immutability)
+
+**RLS:** Admin SELECT + UPDATE only (NO INSERT/DELETE). Public SELECT for published pages.
+
+**Seed Data (6 pre-defined pages):**
+- about, services, service-details, contact, blog, projects
+
+### 2.12 Database Functions
 
 | Function | Purpose |
 |----------|---------|
@@ -379,6 +410,16 @@ CREATE TABLE public.testimonials (
 | Admins can update testimonials | UPDATE | `has_role(auth.uid(), 'admin')` |
 | Admins can delete testimonials | DELETE | `has_role(auth.uid(), 'admin')` |
 | Public can view published testimonials | SELECT | `status = 'published'` |
+
+### 4.10 pages (Phase 4A.7 — EDIT-ONLY)
+
+| Policy | Operation | Condition |
+|--------|-----------|-----------|
+| Admins can view all pages | SELECT | `has_role(auth.uid(), 'admin')` |
+| Admins can update pages | UPDATE | `has_role(auth.uid(), 'admin')` |
+| Public can view published pages | SELECT | `is_published = true` |
+
+**Note:** No INSERT or DELETE policies. Pages are pre-defined and slug-immutable per Phase_4_Module_Pages.md.
 
 ## 5. Authentication Flow
 
@@ -603,5 +644,6 @@ When an error occurs:
 | 2.6 | 2025-12-23 | Implementation Agent | Phase 4A.4B - Blog seeding: tags, post-tags, comments tables + seed data |
 | 2.7 | 2025-12-23 | Implementation Agent | Phase 4A.5 - Projects module: table, indexes, RLS, trigger, seed data (8 projects) |
 | 2.8 | 2025-12-23 | Implementation Agent | Phase 4A.6 - Testimonials module: table, RLS, seed data (6 testimonials) |
+| 2.9 | 2025-12-23 | Implementation Agent | Phase 4A.7 - Pages module: table, slug immutability trigger, RLS (SELECT+UPDATE only), seed data (6 pages) |
 
-**Next Review:** After Phase 4A.7 authorization
+**Next Review:** After Phase 4A.8 authorization
