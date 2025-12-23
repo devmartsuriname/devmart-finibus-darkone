@@ -1,10 +1,18 @@
 # Restore Point: Phase 5.2 Complete (Services Page)
 
 ```
-Status: CHECKPOINT
+Status: CHECKPOINT (CORRECTED)
 Created: 2025-12-23
 Phase: 5.2 Complete
 ```
+
+---
+
+## Correction Applied
+
+**Issue:** Fallback icon logic violated guardian rule (masking missing data).
+**Fix:** Removed `getIconUrl()` function. Services without linked `icon_media` now render empty `<i></i>` container.
+**Loading skeleton:** Retained hardcoded icons (acceptable - indicates loading state, not masking missing DB data).
 
 ---
 
