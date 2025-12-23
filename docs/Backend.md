@@ -2,9 +2,9 @@
 
 ```
 Status: AUTHORITATIVE
-Phase: Phase 4A.2 Seeding Complete (v2 Final Fix)
-Execution: Admin Auth + Media Library + Seed Tool Storage+DB RLS Fixed
-Last Updated: 2025-12-22
+Phase: Phase 4A.4B Blog Seeding Complete
+Execution: Admin Auth + Media Library + Settings + Blog + Blog Seeding
+Last Updated: 2025-12-23
 ```
 
 ---
@@ -78,6 +78,9 @@ The Devmart admin portal now uses **Supabase Auth** for real authentication. The
 | `user_roles` | Role assignments | ✅ Implemented |
 | `media` | Media library entries | ✅ Implemented |
 | `blog_posts` | Blog post entries | ✅ Implemented (Phase 4A.4) |
+| `blog_tags` | Blog tag storage | ✅ Implemented (Phase 4A.4B) |
+| `blog_post_tags` | Post-tag relationships | ✅ Implemented (Phase 4A.4B) |
+| `blog_comments` | Blog comments | ✅ Implemented (Phase 4A.4B) |
 | `settings` | Site configuration key-value store | ✅ Implemented (Phase 4A.3) |
 
 ### 2.2 user_roles Table
@@ -150,6 +153,7 @@ CREATE TABLE public.blog_posts (
     status TEXT NOT NULL DEFAULT 'draft' CHECK (status IN ('draft', 'published')),
     published_at TIMESTAMPTZ,
     author_id UUID NOT NULL,
+    category TEXT,  -- Added in Phase 4A.4B
     created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
     updated_at TIMESTAMPTZ NOT NULL DEFAULT now()
 );
@@ -157,7 +161,48 @@ CREATE TABLE public.blog_posts (
 
 **RLS:** Admin-only access (no public access in this phase).
 
-### 2.6 Database Functions
+### 2.6 blog_tags Table (Phase 4A.4B)
+
+```sql
+CREATE TABLE public.blog_tags (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    name TEXT NOT NULL UNIQUE,
+    slug TEXT NOT NULL UNIQUE,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+```
+
+**RLS:** Admin-only access.
+
+### 2.7 blog_post_tags Table (Phase 4A.4B)
+
+```sql
+CREATE TABLE public.blog_post_tags (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    post_id UUID NOT NULL REFERENCES public.blog_posts(id) ON DELETE CASCADE,
+    tag_id UUID NOT NULL REFERENCES public.blog_tags(id) ON DELETE CASCADE,
+    UNIQUE(post_id, tag_id)
+);
+```
+
+**RLS:** Admin-only access.
+
+### 2.8 blog_comments Table (Phase 4A.4B)
+
+```sql
+CREATE TABLE public.blog_comments (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    post_id UUID NOT NULL REFERENCES public.blog_posts(id) ON DELETE CASCADE,
+    commenter_name TEXT NOT NULL,
+    commenter_email TEXT,
+    body TEXT NOT NULL,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+```
+
+**RLS:** Admin-only access.
+
+### 2.9 Database Functions
 
 | Function | Purpose |
 |----------|---------|
@@ -226,6 +271,32 @@ CREATE TABLE public.blog_posts (
 | Admins can delete posts | DELETE | `has_role(auth.uid(), 'admin')` |
 
 **Note:** Public SELECT access will be added in a future phase when public blog rendering is authorized.
+
+### 4.5 blog_tags (Phase 4A.4B — ADMIN-ONLY)
+
+| Policy | Operation | Condition |
+|--------|-----------|-----------|
+| Admins can view all tags | SELECT | `has_role(auth.uid(), 'admin')` |
+| Admins can create tags | INSERT | `has_role(auth.uid(), 'admin')` |
+| Admins can update tags | UPDATE | `has_role(auth.uid(), 'admin')` |
+| Admins can delete tags | DELETE | `has_role(auth.uid(), 'admin')` |
+
+### 4.6 blog_post_tags (Phase 4A.4B — ADMIN-ONLY)
+
+| Policy | Operation | Condition |
+|--------|-----------|-----------|
+| Admins can view all post tags | SELECT | `has_role(auth.uid(), 'admin')` |
+| Admins can create post tags | INSERT | `has_role(auth.uid(), 'admin')` |
+| Admins can delete post tags | DELETE | `has_role(auth.uid(), 'admin')` |
+
+### 4.7 blog_comments (Phase 4A.4B — ADMIN-ONLY)
+
+| Policy | Operation | Condition |
+|--------|-----------|-----------|
+| Admins can view all comments | SELECT | `has_role(auth.uid(), 'admin')` |
+| Admins can create comments | INSERT | `has_role(auth.uid(), 'admin')` |
+| Admins can update comments | UPDATE | `has_role(auth.uid(), 'admin')` |
+| Admins can delete comments | DELETE | `has_role(auth.uid(), 'admin')` |
 
 ## 5. Authentication Flow
 
@@ -447,5 +518,6 @@ When an error occurs:
 | 2.3 | 2025-12-22 | Implementation Agent | Phase 4A.2 - Seed Tool fixed: deterministic paths, text-only UI |
 | 2.4 | 2025-12-22 | Implementation Agent | Phase 4A.2 v2 - RLS fix: admin INSERT policy, uploaded_by = user.id, preflight check, DB verification |
 | 2.5 | 2025-12-22 | Implementation Agent | Phase 4A.2 - Error boundaries + Suspense fallbacks added |
+| 2.6 | 2025-12-23 | Implementation Agent | Phase 4A.4B - Blog seeding: tags, post-tags, comments tables + seed data |
 
-**Next Review:** After Phase 4A.3 authorization
+**Next Review:** After Phase 4A.5 authorization
