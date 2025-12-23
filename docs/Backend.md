@@ -232,7 +232,7 @@ CREATE TABLE public.blog_comments (
 
 **RLS:** Admin-only access.
 
-### 2.9 projects Table (Phase 4A.5)
+### 2.9 projects Table (Phase 4A.5 + Phase 5.4+ Hotfix)
 
 ```sql
 CREATE TABLE public.projects (
@@ -248,6 +248,12 @@ CREATE TABLE public.projects (
     display_order INTEGER,
     status TEXT NOT NULL DEFAULT 'draft' CHECK (status IN ('draft', 'published', 'archived')),
     client TEXT,
+    -- Phase 5.4+ Hotfix additions
+    website TEXT,
+    start_date DATE,
+    end_date DATE,
+    check_launch_content TEXT,
+    check_launch_image_media_id UUID REFERENCES public.media(id) ON DELETE SET NULL,
     created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
     updated_at TIMESTAMPTZ NOT NULL DEFAULT now()
 );
@@ -261,7 +267,35 @@ CREATE TABLE public.projects (
 **Trigger:**
 - `update_projects_updated_at` → calls `update_updated_at_column()`
 
-**RLS:** Admin-only access (no public access in this phase).
+**RLS:**
+- Admin-only CRUD access
+- Public SELECT access for published projects (Phase 5.4+ Hotfix)
+
+### 2.9.1 project_process_steps Table (Phase 5.4+ Hotfix)
+
+```sql
+CREATE TABLE public.project_process_steps (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    project_id UUID NOT NULL REFERENCES public.projects(id) ON DELETE CASCADE,
+    step_number INTEGER NOT NULL,
+    title TEXT NOT NULL,
+    description TEXT,
+    image_media_id UUID REFERENCES public.media(id) ON DELETE SET NULL,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+    updated_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+    UNIQUE(project_id, step_number)
+);
+```
+
+**Indexes:**
+- `idx_project_process_steps_project_id` ON (project_id)
+
+**Trigger:**
+- `update_project_process_steps_updated_at` → calls `update_updated_at_column()`
+
+**RLS:**
+- Admin full CRUD access
+- Public SELECT access for steps of published projects (via parent join)
 
 ### 2.10 testimonials Table (Phase 4A.6)
 
@@ -535,7 +569,7 @@ CREATE TABLE public.service_pricing_plans (
 | Admins can update comments | UPDATE | `has_role(auth.uid(), 'admin')` |
 | Admins can delete comments | DELETE | `has_role(auth.uid(), 'admin')` |
 
-### 4.8 projects (Phase 4A.5 — ADMIN-ONLY)
+### 4.8 projects (Phase 4A.5 + Phase 5.4+ Hotfix)
 
 | Policy | Operation | Condition |
 |--------|-----------|-----------|
@@ -543,8 +577,14 @@ CREATE TABLE public.service_pricing_plans (
 | Admins can create projects | INSERT | `has_role(auth.uid(), 'admin')` |
 | Admins can update projects | UPDATE | `has_role(auth.uid(), 'admin')` |
 | Admins can delete projects | DELETE | `has_role(auth.uid(), 'admin')` |
+| **Public can view published projects** | SELECT | `status = 'published'` |
 
-**Note:** Public SELECT access may be added in a future phase when public portfolio rendering is authorized.
+### 4.8.1 project_process_steps (Phase 5.4+ Hotfix)
+
+| Policy | Operation | Condition |
+|--------|-----------|-----------|
+| Admins can manage project steps | ALL | `has_role(auth.uid(), 'admin')` |
+| Public can view steps of published projects | SELECT | Parent `project.status = 'published'` (via EXISTS subquery) |
 
 ### 4.9 testimonials (Phase 4A.6)
 
@@ -837,8 +877,9 @@ When an error occurs:
 | 2.9 | 2025-12-23 | Implementation Agent | Phase 4A.7 - Pages module: table, slug immutability trigger, RLS (SELECT+UPDATE only), seed data (6 pages) |
 | 3.0 | 2025-12-23 | Implementation Agent | Phase 4 CRM - Leads module: table, RLS (Public INSERT, Admin SELECT+UPDATE), no seeding |
 | 3.1 | 2025-12-23 | Implementation Agent | Phase 4 Services - Media seeder utility added for icon/step image import |
+| 3.2 | 2025-12-23 | Implementation Agent | Phase 5.4+ Hotfix - Projects parity: new fields, process_steps table, public RLS, modal standardization |
 
-**Next Review:** After Analytics module authorization
+**Next Review:** After Phase 5.5 authorization
 
 ---
 
@@ -935,43 +976,94 @@ Phase 5 wires the public frontend (`apps/public`) to read data from Supabase ins
 - Future: Quote/Offer Wizard integration
 - NO Stripe, NO checkout, NO payments
 
-### 13.3 Projects Detail + List (Phase 5.4) — IMPLEMENTED
+### 13.3 Projects Detail + List (Phase 5.4 + Phase 5.4+ Hotfix) — IMPLEMENTED
 
 | Component | Status |
 |-----------|--------|
 | Route: `/project-details/:slug` | ✅ Dynamic route |
 | Route: `/project-details` (no slug) | ✅ ErrorPage |
 | Route: `/project` | ✅ Uses DB data via hook |
-| Hook: `useProjects.ts` | ✅ Fetches published projects |
-| Hook: `useProjectDetails.ts` | ✅ Fetches project + related projects |
+| Hook: `useProjects.ts` | ✅ Fetches published projects with new fields |
+| Hook: `useProjectDetails.ts` | ✅ Fetches project + process steps + related projects |
 | Wrapper: `ProjectWrapper.tsx` | ✅ DB-driven content |
 | CartFilter: `CartFilter.tsx` | ✅ Presentational, receives projects as prop |
-| Process: `ProjectProcess.tsx` | ✅ DB-driven (client, category, images) |
+| Process: `ProjectProcess.tsx` | ✅ **Fully DB-driven** (all fields bound) |
 | Related: `ReletedProject.tsx` | ✅ DB-driven slider |
 
-#### Data Contract
+#### Data Contract (Updated Phase 5.4+ Hotfix)
 
 | Entity | Fields | Filter |
 |--------|--------|--------|
-| Project | title, heading, slug, description, category, client | `status = 'published'` |
+| Project | title, heading, slug, description, category, client, **website, start_date, end_date, check_launch_content** | `status = 'published'` |
 | Featured Image | public_url, alt_text | via `featured_image_media_id` |
 | Overview Image | public_url, alt_text | via `image_media_id` |
+| **Check Launch Image** | public_url, alt_text | via `check_launch_image_media_id` |
+| **Process Steps** | step_number, title, description, image | via `project_process_steps` table |
 | Related Projects | Same as Project | Exclude current, limit 6 |
 
 #### RLS Access Pattern
 
 - **Read-only** public anon access
-- Project: `status = 'published'` (admin-only RLS, anon can still read via policy)
+- Project: `status = 'published'` (public SELECT policy added Phase 5.4+ Hotfix)
+- Process Steps: Parent project `status = 'published'` (via EXISTS subquery)
 
 #### Media Rendering Rule
 
-- Featured and overview images render ONLY if `media.public_url` exists
+- Featured, overview, check_launch, and step images render ONLY if `media.public_url` exists
 - If no DB image, fallback to template static image (for parity)
 - No broken img tags
 
-#### Static Template Fields (Not in DB)
+#### Dynamic Fields (Now in DB)
 
-- Website: Shows "www.devmart.com" (static)
-- Start Date: Shows template date (static)
-- End Date: Shows template date (static)
-- Project Process Steps: Template static content (projects don't have steps like services)
+- Website: Rendered from `projects.website` (if present)
+- Start Date: Rendered from `projects.start_date` (formatted DD.MM.YYYY)
+- End Date: Rendered from `projects.end_date` (formatted DD.MM.YYYY)
+- Process Steps: Rendered from `project_process_steps` table (4 steps per project)
+- Check & Launch: Rendered from `projects.check_launch_content` + `check_launch_image`
+
+---
+
+## 14. Admin Modal Consistency Standard (Phase 5.4+ Hotfix)
+
+### 14.1 Overview
+
+All admin content CRUD modals MUST follow a consistent sizing and layout standard based on the Services modal pattern.
+
+### 14.2 Modal Sizing
+
+| Modal Type | Size | Pattern |
+|------------|------|---------|
+| Content CRUD (Services, Projects, Blog, etc.) | `size="xl"` | Full-width with tabs |
+| Simple Dialogs (Confirm, Alert) | `size="sm"` or default | Centered minimal |
+
+### 14.3 Tab Layout Pattern
+
+For multi-section content (e.g., Services, Projects):
+- Use `Tabs` component with `TabsList` / `TabsTrigger` / `TabsContent`
+- Tab 1: "Basic Info" (required fields)
+- Tab 2: "Process Steps" (if applicable)
+- Tab 3: Additional content tabs (pricing, etc.)
+
+### 14.4 Footer Button Pattern
+
+| Position | Element | Variant |
+|----------|---------|---------|
+| Left | "Cancel" button | `variant="outline"` |
+| Right | "Save Changes" / "Add [Entity]" button | `variant="default"` (primary) |
+
+### 14.5 Components Using This Standard
+
+| Module | Status |
+|--------|--------|
+| Services | ✅ Reference implementation |
+| Projects | ✅ Updated (Phase 5.4+ Hotfix) |
+| Blog | ⏳ To be updated |
+| Testimonials | ⏳ To be updated |
+| Pages | ⏳ To be updated |
+
+### 14.6 MediaPicker Consistency
+
+All media selection fields should use the `MediaPicker` component with consistent styling:
+- Trigger shows preview thumbnail if selected
+- Modal allows browsing/filtering Media Library
+- Selection callback updates form state

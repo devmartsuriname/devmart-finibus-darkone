@@ -403,6 +403,30 @@ A Finibus-based Frontend Style Guide is required to ensure consistency between p
 
 ---
 
+---
+
+## 13. Admin Modal Consistency Standard
+
+All admin content CRUD modals must follow the Services modal as the reference implementation:
+
+| Attribute | Standard |
+|-----------|----------|
+| Modal Size | `size="xl"` |
+| Tab Layout | Basic Info → Process Steps → [Additional] |
+| Footer Buttons | Cancel (outline, left) + Save (primary, right) |
+| MediaPicker | Consistent usage across all media fields |
+
+**Reference:** See `docs/Backend.md` Section 14 for full standard.
+
+**Status:**
+- ✅ Services: Reference implementation
+- ✅ Projects: Updated (Phase 5.4+ Hotfix)
+- ⏳ Blog: To be updated
+- ⏳ Testimonials: To be updated
+- ⏳ Pages: To be updated
+
+---
+
 ## Document Control
 
 | Version | Date | Author | Notes |
@@ -422,5 +446,6 @@ A Finibus-based Frontend Style Guide is required to ensure consistency between p
 | 3.0 | 2025-12-23 | Implementation Agent | Phase 4 Services - Services module complete (7 services, 21 steps, 42 pricing plans) |
 | 3.1 | 2025-12-23 | Implementation Agent | Phase 5.3 - Service Details public wiring complete |
 | 3.2 | 2025-12-23 | Implementation Agent | Phase 5.4 - Projects Detail + List public wiring complete |
+| 3.3 | 2025-12-23 | Implementation Agent | Phase 5.4+ Hotfix - Projects parity complete (new fields, process_steps, public RLS, modal standardization) |
 
 **Next Review:** After Phase 5.5 authorization
