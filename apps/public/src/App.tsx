@@ -138,7 +138,10 @@ function App() {
         {/* Fallback for /service-details without slug - redirects to services list */}
         <Route path="/service-details" element={<ServiceDetailsPage />} />
         <Route path="/project" element={<ProjectsPage />} />
-        <Route path="/project-details" element={<ProjectDetailsPage />} />
+        {/* Dynamic project details with slug parameter */}
+        <Route path="/project-details/:slug" element={<ProjectDetailsPage />} />
+        {/* Fallback for /project-details without slug - shows ErrorPage */}
+        <Route path="/project-details" element={<ErrorPage />} />
         <Route path="/blog" element={<BlogPage />} />
         <Route path="/blog-standard" element={<BlogStandardPage />} />
         <Route path="/blog-details" element={<BlogDetailsPage />} />

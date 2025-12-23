@@ -2,11 +2,70 @@
  * ProjectProcess Component
  * 
  * Migrated from Finibus to React 18 - Exact 1:1 parity
+ * Phase 5.4: Wired to Supabase data
+ * 
+ * DB fields used: client, category, description, featured_image, image
+ * Static template text kept for: Website, Start Date, End Date (not in DB)
+ * Process steps section: Template static (projects don't have steps like services)
  */
 
 import React from "react";
+import { ProjectWithMedia } from "../../../hooks/useProjects";
 
-function ProjectProcess() {
+interface ProjectProcessProps {
+  project: ProjectWithMedia | null;
+  loading: boolean;
+}
+
+function ProjectProcess({ project, loading }: ProjectProcessProps) {
+  // Loading skeleton - preserve layout spacing
+  if (loading) {
+    return (
+      <>
+        <div className="project-process">
+          <div className="row justify-content-between">
+            <div className="col">
+              <div className="process-step">
+                <h4>Client:</h4>
+                <span>Loading...</span>
+              </div>
+            </div>
+            <div className="col">
+              <div className="process-step">
+                <h4>Services:</h4>
+                <span>Loading...</span>
+              </div>
+            </div>
+            <div className="col">
+              <div className="process-step">
+                <h4>Website:</h4>
+                <span>Loading...</span>
+              </div>
+            </div>
+            <div className="col">
+              <div className="process-step">
+                <h4>Start Date:</h4>
+                <span>Loading...</span>
+              </div>
+            </div>
+            <div className="col">
+              <div className="process-step">
+                <h4>end Date:</h4>
+                <span>Loading...</span>
+              </div>
+            </div>
+          </div>
+          <div className="row">
+            <div className="col-12">
+              <div className="process-banner" style={{ minHeight: '300px', background: '#f0f0f0' }}>
+              </div>
+            </div>
+          </div>
+        </div>
+      </>
+    );
+  }
+
   return (
     <>
       <div className="project-process">
@@ -14,19 +73,19 @@ function ProjectProcess() {
           <div className="col">
             <div className="process-step">
               <h4>Client:</h4>
-              <span>Adoptory Marlowner</span>
+              <span>{project?.client || "Devmart Client"}</span>
             </div>
           </div>
           <div className="col">
             <div className="process-step">
               <h4>Services:</h4>
-              <span>UI/UX Design,Developing</span>
+              <span>{project?.category || "Design & Development"}</span>
             </div>
           </div>
           <div className="col">
             <div className="process-step">
               <h4>Website:</h4>
-              <span>www.egenslab.com</span>
+              <span>www.devmart.com</span>
             </div>
           </div>
           <div className="col">
@@ -45,10 +104,17 @@ function ProjectProcess() {
         <div className="row">
           <div className="col-12">
             <div className="process-banner">
-              <img
-                src="/images/process-banner.jpg"
-                alt="images"
-              />
+              {project?.featured_image?.public_url ? (
+                <img
+                  src={project.featured_image.public_url}
+                  alt={project.featured_image.alt_text || project.title}
+                />
+              ) : (
+                <img
+                  src="/images/process-banner.jpg"
+                  alt="images"
+                />
+              )}
             </div>
           </div>
         </div>
@@ -57,17 +123,24 @@ function ProjectProcess() {
           <div className="row">
             <div className="col-md-5 col-lg-5 col-xl-5">
               <div className="overview-img">
-                <img
-                  src="/images/overview-1.jpg"
-                  alt="images"
-                />
+                {project?.image?.public_url ? (
+                  <img
+                    src={project.image.public_url}
+                    alt={project.image.alt_text || project.title}
+                  />
+                ) : (
+                  <img
+                    src="/images/overview-1.jpg"
+                    alt="images"
+                  />
+                )}
               </div>
             </div>
             <div className="col-md-7 col-lg-7 col-xl-7">
               <div className="overview-content">
-                <h3>Our Client Work Brief</h3>
+                <h3>{project?.heading || "Our Client Work Brief"}</h3>
                 <p>
-                  In euismod lacinia rhoncus. Morbi ornare, lectus quis mattis
+                  {project?.description || `In euismod lacinia rhoncus. Morbi ornare, lectus quis mattis
                   finibus, metus sapien venenatis orci, eget lacinia magna justo
                   vehicula metus. Morbi sit amet erat faucibus, sagittis libero
                   sed, condimentum tortor. Aenean ac nunc dolor. Quisque
@@ -80,12 +153,13 @@ function ProjectProcess() {
                   urna, sit amet viverra elit neque a lectus.Etiam semper enim
                   sapien, nec consequat lectus. neque non pretium. Etiam leo
                   risus, consectetur sagittis ullamcorper scelerisque, blandit
-                  vitae sem. Etiam semper enim sapien
+                  vitae sem. Etiam semper enim sapien`}
                 </p>
               </div>
             </div>
           </div>
         </div>
+        {/* Project Process Steps - Template static content (projects don't have steps like services) */}
         <div className="project-overview right">
           <h3>PROJECT PROCESS</h3>
           <div className="row">

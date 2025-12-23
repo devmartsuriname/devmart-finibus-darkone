@@ -934,3 +934,44 @@ Phase 5 wires the public frontend (`apps/public`) to read data from Supabase ins
 - Links to `/contact` (placeholder)
 - Future: Quote/Offer Wizard integration
 - NO Stripe, NO checkout, NO payments
+
+### 13.3 Projects Detail + List (Phase 5.4) — IMPLEMENTED
+
+| Component | Status |
+|-----------|--------|
+| Route: `/project-details/:slug` | ✅ Dynamic route |
+| Route: `/project-details` (no slug) | ✅ ErrorPage |
+| Route: `/project` | ✅ Uses DB data via hook |
+| Hook: `useProjects.ts` | ✅ Fetches published projects |
+| Hook: `useProjectDetails.ts` | ✅ Fetches project + related projects |
+| Wrapper: `ProjectWrapper.tsx` | ✅ DB-driven content |
+| CartFilter: `CartFilter.tsx` | ✅ Presentational, receives projects as prop |
+| Process: `ProjectProcess.tsx` | ✅ DB-driven (client, category, images) |
+| Related: `ReletedProject.tsx` | ✅ DB-driven slider |
+
+#### Data Contract
+
+| Entity | Fields | Filter |
+|--------|--------|--------|
+| Project | title, heading, slug, description, category, client | `status = 'published'` |
+| Featured Image | public_url, alt_text | via `featured_image_media_id` |
+| Overview Image | public_url, alt_text | via `image_media_id` |
+| Related Projects | Same as Project | Exclude current, limit 6 |
+
+#### RLS Access Pattern
+
+- **Read-only** public anon access
+- Project: `status = 'published'` (admin-only RLS, anon can still read via policy)
+
+#### Media Rendering Rule
+
+- Featured and overview images render ONLY if `media.public_url` exists
+- If no DB image, fallback to template static image (for parity)
+- No broken img tags
+
+#### Static Template Fields (Not in DB)
+
+- Website: Shows "www.devmart.com" (static)
+- Start Date: Shows template date (static)
+- End Date: Shows template date (static)
+- Project Process Steps: Template static content (projects don't have steps like services)
