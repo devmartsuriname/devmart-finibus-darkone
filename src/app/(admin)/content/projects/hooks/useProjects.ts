@@ -1,3 +1,9 @@
+/**
+ * useProjects Hook
+ * 
+ * Phase 5.4+ Hotfix: Extended with new fields + process steps CRUD
+ */
+
 import { useState, useEffect, useCallback } from 'react'
 import { supabase } from '@/integrations/supabase/client'
 import { toast } from 'react-toastify'
@@ -15,11 +21,18 @@ export interface Project {
   display_order: number | null
   status: 'draft' | 'published' | 'archived'
   client: string | null
+  // New fields (Phase 5.4+)
+  website: string | null
+  start_date: string | null
+  end_date: string | null
+  check_launch_content: string | null
+  check_launch_image_media_id: string | null
   created_at: string
   updated_at: string
   // Joined data
   image_url?: string | null
   featured_image_url?: string | null
+  check_launch_image_url?: string | null
 }
 
 export interface ProjectInput {
@@ -34,6 +47,32 @@ export interface ProjectInput {
   display_order?: number | null
   status: 'draft' | 'published' | 'archived'
   client?: string | null
+  // New fields (Phase 5.4+)
+  website?: string | null
+  start_date?: string | null
+  end_date?: string | null
+  check_launch_content?: string | null
+  check_launch_image_media_id?: string | null
+}
+
+export interface ProjectProcessStep {
+  id: string
+  project_id: string
+  step_number: number
+  title: string
+  description: string | null
+  image_media_id: string | null
+  created_at: string
+  updated_at: string
+  // Joined
+  image_url?: string | null
+}
+
+export interface ProjectProcessStepInput {
+  step_number: number
+  title: string
+  description: string
+  image_media_id: string | null
 }
 
 export const PROJECT_CATEGORIES = [
@@ -59,7 +98,8 @@ export const useProjects = () => {
         .select(`
           *,
           thumbnail:image_media_id (public_url),
-          featured:featured_image_media_id (public_url)
+          featured:featured_image_media_id (public_url),
+          check_launch_img:check_launch_image_media_id (public_url)
         `)
         .order('created_at', { ascending: false })
 
@@ -72,8 +112,10 @@ export const useProjects = () => {
         ...project,
         image_url: project.thumbnail?.public_url || null,
         featured_image_url: project.featured?.public_url || null,
+        check_launch_image_url: project.check_launch_img?.public_url || null,
         thumbnail: undefined,
         featured: undefined,
+        check_launch_img: undefined,
       }))
 
       setProjects(transformedData)
@@ -90,7 +132,7 @@ export const useProjects = () => {
     fetchProjects()
   }, [fetchProjects])
 
-  const createProject = useCallback(async (input: ProjectInput): Promise<boolean> => {
+  const createProject = useCallback(async (input: ProjectInput): Promise<{ success: boolean; id?: string }> => {
     try {
       // Check for duplicate slug
       const { data: existing } = await supabase
@@ -101,10 +143,10 @@ export const useProjects = () => {
 
       if (existing) {
         toast.error('A project with this slug already exists')
-        return false
+        return { success: false }
       }
 
-      const { error: insertError } = await supabase
+      const { data, error: insertError } = await supabase
         .from('projects')
         .insert({
           title: input.title,
@@ -118,7 +160,14 @@ export const useProjects = () => {
           display_order: input.display_order || null,
           status: input.status,
           client: input.client || null,
+          website: input.website || null,
+          start_date: input.start_date || null,
+          end_date: input.end_date || null,
+          check_launch_content: input.check_launch_content || null,
+          check_launch_image_media_id: input.check_launch_image_media_id || null,
         })
+        .select('id')
+        .single()
 
       if (insertError) {
         throw insertError
@@ -126,12 +175,12 @@ export const useProjects = () => {
 
       toast.success('Project created successfully')
       await fetchProjects()
-      return true
+      return { success: true, id: data?.id }
     } catch (err) {
       const message = err instanceof Error ? err.message : 'Failed to create project'
       toast.error(`Error creating project: ${message}`)
       console.error('Error creating project:', err)
-      return false
+      return { success: false }
     }
   }, [fetchProjects])
 
@@ -164,6 +213,12 @@ export const useProjects = () => {
       if (input.display_order !== undefined) updateData.display_order = input.display_order
       if (input.status !== undefined) updateData.status = input.status
       if (input.client !== undefined) updateData.client = input.client || null
+      // New fields
+      if (input.website !== undefined) updateData.website = input.website || null
+      if (input.start_date !== undefined) updateData.start_date = input.start_date || null
+      if (input.end_date !== undefined) updateData.end_date = input.end_date || null
+      if (input.check_launch_content !== undefined) updateData.check_launch_content = input.check_launch_content || null
+      if (input.check_launch_image_media_id !== undefined) updateData.check_launch_image_media_id = input.check_launch_image_media_id || null
 
       const { error: updateError } = await supabase
         .from('projects')
@@ -207,6 +262,66 @@ export const useProjects = () => {
     }
   }, [fetchProjects])
 
+  // Process Steps CRUD
+  const fetchProcessSteps = useCallback(async (projectId: string): Promise<ProjectProcessStep[]> => {
+    try {
+      const { data, error } = await supabase
+        .from('project_process_steps')
+        .select(`
+          *,
+          step_image:image_media_id (public_url)
+        `)
+        .eq('project_id', projectId)
+        .order('step_number', { ascending: true })
+
+      if (error) throw error
+
+      return (data || []).map((step: any) => ({
+        ...step,
+        image_url: step.step_image?.public_url || null,
+        step_image: undefined,
+      }))
+    } catch (err) {
+      console.error('Error fetching process steps:', err)
+      return []
+    }
+  }, [])
+
+  const saveProcessSteps = useCallback(async (projectId: string, steps: ProjectProcessStepInput[]): Promise<boolean> => {
+    try {
+      // Delete existing steps
+      const { error: deleteError } = await supabase
+        .from('project_process_steps')
+        .delete()
+        .eq('project_id', projectId)
+
+      if (deleteError) throw deleteError
+
+      // Insert new steps
+      if (steps.length > 0) {
+        const insertData = steps.map(step => ({
+          project_id: projectId,
+          step_number: step.step_number,
+          title: step.title,
+          description: step.description || '',
+          image_media_id: step.image_media_id,
+        }))
+
+        const { error: insertError } = await supabase
+          .from('project_process_steps')
+          .insert(insertData)
+
+        if (insertError) throw insertError
+      }
+
+      return true
+    } catch (err) {
+      console.error('Error saving process steps:', err)
+      toast.error('Failed to save process steps')
+      return false
+    }
+  }, [])
+
   return {
     projects,
     isLoading,
@@ -214,6 +329,8 @@ export const useProjects = () => {
     createProject,
     updateProject,
     deleteProject,
+    fetchProcessSteps,
+    saveProcessSteps,
     refetch: fetchProjects,
   }
 }

@@ -14,6 +14,14 @@ interface Media {
   alt_text: string | null;
 }
 
+export interface ProjectProcessStep {
+  id: string;
+  step_number: number;
+  title: string;
+  description: string | null;
+  image: Media | null;
+}
+
 export interface ProjectWithMedia {
   id: string;
   title: string;
@@ -29,6 +37,13 @@ export interface ProjectWithMedia {
   updated_at: string;
   image: Media | null;
   featured_image: Media | null;
+  // New fields (Phase 5.4+)
+  website: string | null;
+  start_date: string | null;
+  end_date: string | null;
+  check_launch_content: string | null;
+  check_launch_image: Media | null;
+  process_steps: ProjectProcessStep[];
 }
 
 interface UseProjectsResult {
