@@ -1,10 +1,70 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import ServicePrice from "./ServicePrice";
+import type { Service, ServiceProcessStep, ServicePricingPlan, Media } from "../../../types/database";
 
-function ServiceDetailsWrapper() {
+interface ServiceWithIcon extends Service {
+  icon: Media | null;
+}
+
+interface ProcessStepWithImage extends ServiceProcessStep {
+  image: Media | null;
+}
+
+interface ServiceDetailsWrapperProps {
+  service: ServiceWithIcon | null;
+  processSteps: ProcessStepWithImage[];
+  pricingPlans: ServicePricingPlan[];
+  allServices: ServiceWithIcon[];
+  loading: boolean;
+}
+
+function ServiceDetailsWrapper({
+  service,
+  processSteps,
+  pricingPlans,
+  allServices,
+  loading,
+}: ServiceDetailsWrapperProps) {
   const scrollTop = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
+
+  // Loading skeleton
+  if (loading) {
+    return (
+      <section className="service-details sec-mar">
+        <div className="container">
+          <div className="row">
+            <div className="col-md-6 col-lg-8 col-xl-8 or2">
+              <div className="signle-service-details">
+                <h3 className="placeholder-glow">
+                  <span className="placeholder col-6"></span>
+                </h3>
+                <p className="placeholder-glow">
+                  <span className="placeholder col-12"></span>
+                  <span className="placeholder col-12"></span>
+                  <span className="placeholder col-8"></span>
+                </p>
+              </div>
+            </div>
+            <div className="col-md-6 col-lg-4 col-xl-4 or1">
+              <div className="sidebar-widget">
+                <h4>Services</h4>
+                <ul className="service-list placeholder-glow">
+                  {[1, 2, 3, 4, 5].map((i) => (
+                    <li key={i}>
+                      <span className="placeholder col-10"></span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    );
+  }
 
   return (
     <>
@@ -14,37 +74,16 @@ function ServiceDetailsWrapper() {
             <div className="col-md-6 col-lg-8 col-xl-8 or2">
               <div className="signle-service-details">
                 <h3>
-                  <img
-                    src="/images/icons/service-details-icon.svg"
-                    alt="images"
-                  />
-                  Web Design
+                  {service?.icon?.public_url && (
+                    <img
+                      src={service.icon.public_url}
+                      alt={service.icon.alt_text || service.title}
+                    />
+                  )}
+                  {service?.title || "Service"}
                 </h3>
                 <p>
-                  In euismod lacinia rhoncus. Morbi ornare, lectus quis mattis
-                  finibus, metus sapien venenatis orci,in eget lacinia magna
-                  justo vehicula metus. Morbi sit amet erat faucibus, sagittis
-                  libero sed, thatenigr condimentum tortor. Aenean ac nunc
-                  dolor. Quisque vestibulum mollis nisi, vel dictum nisi. nangol
-                  Vestibulum tempor tristique neque non pretium. Etiam leo
-                  risus, consectetur sagittis ullamcorper scelerisque, blandit
-                  vitae sem. Etiam semper enim sapien, nec consequat lectus
-                  pellentesque sit amet. Curabitur viverra ac tortor a
-                  porttitor. Donec tristique, dui at molestie facilisis, justo
-                  dolor on dapibus urna, sit amet viverra elit neque a
-                  lectus.Etiam semper enim sapien, nec consequat lectus
-                  pellentesque sit amet.Fusce mollis faucibus malesuada.
-                  Curabitur et enim auctor, rhoncus elit then fermentum, luctus
-                  tortor. Curabitur quam nisi, ornare elementum tellus eget,
-                  nangol Vestibulum tempor tristique neque non pretium. Etiam
-                  leo risus, consectetur sagittis ullamcorper scelerisque,
-                  blandit vitae sem. Etiam semper enim sapien, nec consequat
-                  lectus pellentesque sit amet. Curabitur viverra ac tortor a
-                  porttitor. Donec tristique, dui at molestie facilisis, justo
-                  dolor on dapibus urna, sit amet viverra elit neque a lectus.
-                  luctus maximus fore lectus. Sed egestas facilisis convallis.
-                  Proin dapibus magna vitae dolor accumsan, a egestas velitEtiam
-                  semper enim sapien.
+                  {service?.full_description || service?.short_description || ""}
                 </p>
               </div>
             </div>
@@ -68,162 +107,93 @@ function ServiceDetailsWrapper() {
               <div className="sidebar-widget">
                 <h4>Services</h4>
                 <ul className="service-list">
-                  <li>
-                    <Link onClick={scrollTop} to="/service-details">
-                      <i>
-                        <img
-                          src="/images/icons/dash-circle-icon.svg"
-                          alt="images"
-                        />
-                      </i>
-                      Web Design <span>(15)</span>
-                    </Link>
-                  </li>
-                  <li>
-                    <Link onClick={scrollTop} to="/service-details">
-                      <i>
-                        <img
-                          src="/images/icons/dash-circle-icon.svg"
-                          alt="images"
-                        />
-                      </i>
-                      Apps Development <span>(18)</span>
-                    </Link>
-                  </li>
-                  <li>
-                    <Link onClick={scrollTop} to="/service-details">
-                      <i>
-                        <img
-                          src="/images/icons/dash-circle-icon.svg"
-                          alt="images"
-                        />
-                      </i>
-                      Software Development <span>(21)</span>
-                    </Link>
-                  </li>
-                  <li>
-                    <Link onClick={scrollTop} to="/service-details">
-                      <i>
-                        <img
-                          src="/images/icons/dash-circle-icon.svg"
-                          alt="images"
-                        />
-                      </i>
-                      Motion Graphics <span>(25)</span>
-                    </Link>
-                  </li>
-                  <li>
-                    <Link onClick={scrollTop} to="/service-details">
-                      <i>
-                        <img
-                          src="/images/icons/dash-circle-icon.svg"
-                          alt="images"
-                        />
-                      </i>
-                      UI/UX Design <span>(29)</span>
-                    </Link>
-                  </li>
-                  <li>
-                    <Link onClick={scrollTop} to="/service-details">
-                      <i>
-                        <img
-                          src="/images/icons/dash-circle-icon.svg"
-                          alt="images"
-                        />
-                      </i>
-                      Graphic Design <span>(31)</span>
-                    </Link>
-                  </li>
+                  {allServices.map((svc) => (
+                    <li key={svc.id}>
+                      <Link onClick={scrollTop} to={`/service-details/${svc.slug}`}>
+                        <i>
+                          <img
+                            src="/images/icons/dash-circle-icon.svg"
+                            alt="service icon"
+                          />
+                        </i>
+                        {svc.title}
+                      </Link>
+                    </li>
+                  ))}
                 </ul>
               </div>
             </div>
           </div>
-          <div className="single-service-work-process">
-            <h3>How We Work in our services</h3>
-            <div className="single-step">
-              <div className="row">
-                <div className="col-md-8 col-xl-8 or2">
-                  <div className="step">
-                    <div className="step-count">
-                      <span>01</span>
+
+          {/* Process Steps Section */}
+          {processSteps.length > 0 && (
+            <div className="single-service-work-process">
+              <h3>How We Work in our services</h3>
+              {processSteps.map((step, index) => {
+                const isOdd = step.step_number % 2 === 1;
+                const stepNumber = String(step.step_number).padStart(2, "0");
+
+                return (
+                  <div className="single-step" key={step.id}>
+                    <div className="row">
+                      {isOdd ? (
+                        <>
+                          {/* Odd steps: content left, image right */}
+                          <div className="col-md-8 col-xl-8 or2">
+                            <div className="step">
+                              <div className="step-count">
+                                <span>{stepNumber}</span>
+                              </div>
+                              <h4>{step.title}</h4>
+                              <p>{step.description}</p>
+                            </div>
+                          </div>
+                          <div className="col-md-4 col-xl-4 or1">
+                            {step.image?.public_url && (
+                              <div className="step-img">
+                                <img
+                                  src={step.image.public_url}
+                                  alt={step.image.alt_text || step.title}
+                                />
+                              </div>
+                            )}
+                          </div>
+                        </>
+                      ) : (
+                        <>
+                          {/* Even steps: image left, content right */}
+                          <div className="col-md-4 col-xl-4">
+                            {step.image?.public_url && (
+                              <div className="step-img">
+                                <img
+                                  src={step.image.public_url}
+                                  alt={step.image.alt_text || step.title}
+                                />
+                              </div>
+                            )}
+                          </div>
+                          <div className="col-md-8 col-xl-8">
+                            <div className="step">
+                              <div className="step-count">
+                                <span>{stepNumber}</span>
+                              </div>
+                              <h4>{step.title}</h4>
+                              <p>{step.description}</p>
+                            </div>
+                          </div>
+                        </>
+                      )}
                     </div>
-                    <h4>Wireframe &amp; Design</h4>
-                    <p>
-                      In euismod lacinia rhoncus. Morbi ornare, lectus quis
-                      mattis finibus, metus sapien venenatis orci, eget lacinia
-                      magna justo vehiculametus. Morbi sit amet erat faucibus,
-                      sagittis libero sed, condimentum tortor. Aenean ac nunc
-                      dolor. Quisque vestibulum mollis nisi, vel dictum nisi.
-                      Vestibulum tempor tristique neque non pretium. Etiam leo
-                      risus, consectetur sagittis ullamcorper scelerisque,
-                      blandit vitae sem.
-                    </p>
                   </div>
-                </div>
-                <div className="col-md-4 col-xl-4 or1">
-                  <div className="step-img">
-                    <img src="/images/step-1.png" alt="images" />
-                  </div>
-                </div>
-              </div>
+                );
+              })}
             </div>
-            <div className="single-step">
-              <div className="row">
-                <div className="col-md-4 col-xl-4">
-                  <div className="step-img">
-                    <img src="/images/step-2.jpg" alt="images" />
-                  </div>
-                </div>
-                <div className="col-md-8 col-xl-8">
-                  <div className="step">
-                    <div className="step-count">
-                      <span>02</span>
-                    </div>
-                    <h4>Developing</h4>
-                    <p>
-                      In euismod lacinia rhoncus. Morbi ornare, lectus quis
-                      mattis finibus, metus sapien venenatis orci, eget lacinia
-                      magna justo vehiculametus. Morbi sit amet erat faucibus,
-                      sagittis libero sed, condimentum tortor. Aenean ac nunc
-                      dolor. Quisque vestibulum mollis nisi, vel dictum nisi.
-                      Vestibulum tempor tristique neque non pretium. Etiam leo
-                      risus, consectetur sagittis ullamcorper scelerisque,
-                      blandit vitae sem.
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className="single-step">
-              <div className="row">
-                <div className="col-md-8 col-xl-8 or2">
-                  <div className="step">
-                    <div className="step-count">
-                      <span>03</span>
-                    </div>
-                    <h4>Checkup &amp; Launch</h4>
-                    <p>
-                      In euismod lacinia rhoncus. Morbi ornare, lectus quis
-                      mattis finibus, metus sapien venenatis orci, eget lacinia
-                      magna justo vehiculametus. Morbi sit amet erat faucibus,
-                      sagittis libero sed, condimentum tortor. Aenean ac nunc
-                      dolor. Quisque vestibulum mollis nisi, vel dictum nisi.
-                      Vestibulum tempor tristique neque non pretium. Etiam leo
-                      risus, consectetur sagittis ullamcorper scelerisque,
-                      blandit vitae sem.
-                    </p>
-                  </div>
-                </div>
-                <div className="col-md-4 col-xl-4 or1">
-                  <div className="step-img">
-                    <img src="/images/step-3.jpg" alt="images" />
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+          )}
         </div>
       </section>
+
+      {/* Pricing Section */}
+      <ServicePrice pricingPlans={pricingPlans} />
     </>
   );
 }

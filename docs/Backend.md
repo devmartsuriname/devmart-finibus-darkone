@@ -888,3 +888,49 @@ After running the seeder:
 - 7 services have `icon_media_id` linked to corresponding icon
 - 21 process steps have `image_media_id` linked to corresponding step image
 - All media records created in `media` table with proper public URLs
+
+---
+
+## 13. Phase 5 — Public → DB Integration
+
+### 13.1 Overview
+
+Phase 5 wires the public frontend (`apps/public`) to read data from Supabase instead of hardcoded content.
+
+### 13.2 Service Details (Phase 5.3) — IMPLEMENTED
+
+| Component | Status |
+|-----------|--------|
+| Route: `/service-details/:slug` | ✅ Dynamic route |
+| Route: `/service-details` (no slug) | ✅ Redirects to `/service` |
+| Hook: `useServiceDetails.ts` | ✅ Fetches service + steps + pricing |
+| Wrapper: `ServiceDetailsWrapper.tsx` | ✅ DB-driven content |
+| Pricing: `ServicePrice.tsx` + `PriceBox.tsx` | ✅ Display-only (no Stripe) |
+
+#### Data Contract
+
+| Entity | Fields | Filter |
+|--------|--------|--------|
+| Service | title, slug, short_description, full_description, icon | `status = 'published'` |
+| Process Steps | step_number, title, description, image | Ordered by step_number |
+| Pricing Plans | billing_period, plan_name, price_amount, features | `status = 'published'` |
+| Sidebar Services | All published services | For navigation |
+
+#### RLS Access Pattern
+
+- **Read-only** public anon access
+- Service: `status = 'published'`
+- Steps: Parent service `status = 'published'`
+- Plans: Own `status = 'published'` AND parent service `status = 'published'`
+
+#### Media Rendering Rule
+
+- Icons and step images render ONLY if `media.public_url` exists
+- No fallback icons or placeholder images
+- If media not linked, element not rendered
+
+#### Pricing CTA
+
+- Links to `/contact` (placeholder)
+- Future: Quote/Offer Wizard integration
+- NO Stripe, NO checkout, NO payments
