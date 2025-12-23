@@ -407,23 +407,57 @@ A Finibus-based Frontend Style Guide is required to ensure consistency between p
 
 ## 13. Admin Modal Consistency Standard
 
-All admin content CRUD modals must follow the Services modal as the reference implementation:
+All admin content CRUD modals must follow the Services modal as the single source of truth.
 
-| Attribute | Standard |
-|-----------|----------|
+### 13.1 Gold Standard Reference
+
+**File:** `src/app/(admin)/content/services/components/ServiceModal.tsx`
+
+### 13.2 Required Modal Shell Pattern
+
+```tsx
+<Modal show={show} onHide={handleClose} centered size="xl">
+  <Modal.Header closeButton className="border-bottom">
+    <Modal.Title as="h5">{title}</Modal.Title>
+  </Modal.Header>
+  <Modal.Body>{/* Form content */}</Modal.Body>
+  <Modal.Footer className="border-top">
+    <Button variant="secondary" onClick={handleClose} disabled={isSaving}>Cancel</Button>
+    <Button variant="primary" onClick={handleSubmit} disabled={isSaving}>Save Changes</Button>
+  </Modal.Footer>
+</Modal>
+```
+
+### 13.3 Required Attributes
+
+| Attribute | Required Value |
+|-----------|----------------|
 | Modal Size | `size="xl"` |
-| Tab Layout | Basic Info → Process Steps → [Additional] |
-| Footer Buttons | Cancel (outline, left) + Save (primary, right) |
-| MediaPicker | Consistent usage across all media fields |
+| Header | `closeButton className="border-bottom"` |
+| Title | `as="h5"` |
+| Footer | `className="border-top"` |
+| Cancel Button | `variant="secondary"` (left position) |
+| Save Button | `variant="primary"` (right position) |
+| Button Order | Cancel → Save (left to right) |
+| Spinner | `<Spinner size="sm" className="me-1" />` during save |
 
-**Reference:** See `docs/Backend.md` Section 14 for full standard.
+### 13.4 Compliance Status
 
-**Status:**
-- ✅ Services: Reference implementation
-- ✅ Projects: Updated (Phase 5.4+ Hotfix)
-- ⏳ Blog: To be updated
-- ⏳ Testimonials: To be updated
-- ⏳ Pages: To be updated
+| Module | Modal File | Status |
+|--------|------------|--------|
+| Services | `ServiceModal.tsx` | ✅ Reference implementation |
+| Projects | `ProjectModal.tsx` | ✅ Compliant |
+| Pages | `PageEditModal.tsx` | ✅ Updated (Modal Standardization Hotfix) |
+| Testimonials | `TestimonialModal.tsx` | ✅ Updated (Modal Standardization Hotfix) |
+| Leads | `LeadDetailModal.tsx` | ✅ Updated (Modal Standardization Hotfix) |
+| Blog | `BlogPostModal.tsx` | ⏳ Pending (Blog wiring phase) |
+
+### 13.5 Excluded Modules
+
+| Module | Reason |
+|--------|--------|
+| Media Library | Explicitly excluded per guardrails |
+| Settings | Not modal-based (tab page)
 
 ---
 
