@@ -114,7 +114,7 @@ export const useServices = () => {
     fetchServices()
   }, [fetchServices])
 
-  const createService = useCallback(async (input: ServiceInput): Promise<boolean> => {
+  const createService = useCallback(async (input: ServiceInput): Promise<{ success: boolean; id?: string }> => {
     try {
       const { data: existing } = await supabase
         .from('services')
@@ -124,10 +124,10 @@ export const useServices = () => {
 
       if (existing) {
         toast.error('A service with this slug already exists')
-        return false
+        return { success: false }
       }
 
-      const { error: insertError } = await supabase
+      const { data: inserted, error: insertError } = await supabase
         .from('services')
         .insert({
           title: input.title,
@@ -138,17 +138,19 @@ export const useServices = () => {
           display_order: input.display_order,
           status: input.status,
         })
+        .select('id')
+        .single()
 
       if (insertError) throw insertError
 
       toast.success('Service created successfully')
       await fetchServices()
-      return true
+      return { success: true, id: inserted.id }
     } catch (err) {
       const message = err instanceof Error ? err.message : 'Failed to create service'
       toast.error(`Error creating service: ${message}`)
       console.error('Error creating service:', err)
-      return false
+      return { success: false }
     }
   }, [fetchServices])
 
