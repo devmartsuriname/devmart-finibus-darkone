@@ -421,5 +421,6 @@ A Finibus-based Frontend Style Guide is required to ensure consistency between p
 | 2.9 | 2025-12-23 | Implementation Agent | Phase 4 CRM - Leads module complete (admin list + status/notes edit, no add/delete) |
 | 3.0 | 2025-12-23 | Implementation Agent | Phase 4 Services - Services module complete (7 services, 21 steps, 42 pricing plans) |
 | 3.1 | 2025-12-23 | Implementation Agent | Phase 5.3 - Service Details public wiring complete |
+| 3.2 | 2025-12-23 | Implementation Agent | Phase 5.4 - Projects Detail + List public wiring complete |
 
-**Next Review:** After Phase 5.4 authorization
+**Next Review:** After Phase 5.5 authorization
