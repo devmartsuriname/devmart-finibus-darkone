@@ -2,8 +2,8 @@
 
 ```
 Status: AUTHORITATIVE
-Phase: Phase 4 CRM/Leads Module Complete
-Execution: Admin Auth + Media Library + Settings + Blog + Blog Seeding + Projects + Testimonials + Pages + Leads
+Phase: Phase 4 Services Module Complete
+Execution: Admin Auth + Media Library + Settings + Blog + Blog Seeding + Projects + Testimonials + Pages + Leads + Services
 Last Updated: 2025-12-23
 ```
 
@@ -86,6 +86,9 @@ The Devmart admin portal now uses **Supabase Auth** for real authentication. The
 | `testimonials` | Client testimonials | ✅ Implemented (Phase 4A.6) |
 | `pages` | Page metadata (edit-only) | ✅ Implemented (Phase 4A.7) |
 | `leads` | CRM lead capture | ✅ Implemented (Phase 4) |
+| `services` | Service offerings | ✅ Implemented (Phase 4 Services) |
+| `service_process_steps` | Service work process steps | ✅ Implemented (Phase 4 Services) |
+| `service_pricing_plans` | Service pricing plans | ✅ Implemented (Phase 4 Services) |
 
 ### 2.2 user_roles Table
 
@@ -326,7 +329,93 @@ CREATE TABLE public.leads (
 
 **Seeding:** None — leads are captured via public form submissions.
 
-### 2.13 Database Functions
+### 2.13 services Table (Phase 4 Services)
+
+```sql
+CREATE TABLE public.services (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    title TEXT NOT NULL,
+    slug TEXT NOT NULL UNIQUE,
+    short_description TEXT NOT NULL,
+    full_description TEXT,
+    icon_media_id UUID REFERENCES public.media(id) ON DELETE SET NULL,
+    display_order INTEGER NOT NULL DEFAULT 0,
+    status TEXT NOT NULL DEFAULT 'draft' CHECK (status IN ('draft', 'published')),
+    created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+    updated_at TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+```
+
+**Indexes:**
+- `idx_services_status` ON (status)
+- `idx_services_display_order` ON (display_order)
+
+**Trigger:**
+- `update_services_updated_at` → calls `update_updated_at_column()`
+
+**RLS:** Admin full CRUD + Public SELECT for published services.
+
+**Seed Data:** 7 services matching Finibus template.
+
+### 2.14 service_process_steps Table (Phase 4 Services)
+
+```sql
+CREATE TABLE public.service_process_steps (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    service_id UUID NOT NULL REFERENCES public.services(id) ON DELETE CASCADE,
+    step_number INTEGER NOT NULL,
+    title TEXT NOT NULL,
+    description TEXT NOT NULL,
+    image_media_id UUID REFERENCES public.media(id) ON DELETE SET NULL,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+    updated_at TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+```
+
+**Indexes:**
+- `idx_service_process_steps_service_id` ON (service_id)
+- `idx_service_process_steps_step_number` ON (step_number)
+
+**Trigger:**
+- `update_service_process_steps_updated_at` → calls `update_updated_at_column()`
+
+**RLS:** Admin full CRUD + Public SELECT for steps of published services.
+
+**Seed Data:** 3 steps per service (21 total).
+
+### 2.15 service_pricing_plans Table (Phase 4 Services)
+
+```sql
+CREATE TABLE public.service_pricing_plans (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    service_id UUID NOT NULL REFERENCES public.services(id) ON DELETE CASCADE,
+    billing_period TEXT NOT NULL CHECK (billing_period IN ('monthly', 'yearly')),
+    plan_name TEXT NOT NULL,
+    plan_subtitle TEXT,
+    price_amount NUMERIC(10,2) NOT NULL,
+    currency TEXT NOT NULL DEFAULT 'USD',
+    features JSONB NOT NULL DEFAULT '[]'::jsonb,
+    cta_label TEXT NOT NULL DEFAULT 'Get Started',
+    display_order INTEGER NOT NULL DEFAULT 0,
+    status TEXT NOT NULL DEFAULT 'draft' CHECK (status IN ('draft', 'published')),
+    created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+    updated_at TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+```
+
+**Indexes:**
+- `idx_service_pricing_plans_service_id` ON (service_id)
+- `idx_service_pricing_plans_billing_period` ON (billing_period)
+- `idx_service_pricing_plans_status` ON (status)
+
+**Trigger:**
+- `update_service_pricing_plans_updated_at` → calls `update_updated_at_column()`
+
+**RLS:** Admin full CRUD + Public SELECT for published plans of published services.
+
+**Seed Data:** 6 plans per service (42 total: 3 monthly + 3 yearly).
+
+### 2.16 Database Functions
 
 | Function | Purpose |
 |----------|---------|
@@ -468,6 +557,36 @@ CREATE TABLE public.leads (
 - Public DELETE — leads are private
 - Admin INSERT — leads come from public forms only
 - Admin DELETE — MVP restriction per Phase_4_Module_Leads.md
+
+### 4.12 services (Phase 4 Services)
+
+| Policy | Operation | Condition |
+|--------|-----------|-----------|
+| Public can view published services | SELECT | `status = 'published'` |
+| Admins can view all services | SELECT | `has_role(auth.uid(), 'admin')` |
+| Admins can create services | INSERT | `has_role(auth.uid(), 'admin')` |
+| Admins can update services | UPDATE | `has_role(auth.uid(), 'admin')` |
+| Admins can delete services | DELETE | `has_role(auth.uid(), 'admin')` |
+
+### 4.13 service_process_steps (Phase 4 Services)
+
+| Policy | Operation | Condition |
+|--------|-----------|-----------|
+| Public can view steps of published services | SELECT | `service.status = 'published'` (via join) |
+| Admins can view all steps | SELECT | `has_role(auth.uid(), 'admin')` |
+| Admins can create steps | INSERT | `has_role(auth.uid(), 'admin')` |
+| Admins can update steps | UPDATE | `has_role(auth.uid(), 'admin')` |
+| Admins can delete steps | DELETE | `has_role(auth.uid(), 'admin')` |
+
+### 4.14 service_pricing_plans (Phase 4 Services)
+
+| Policy | Operation | Condition |
+|--------|-----------|-----------|
+| Public can view published plans of published services | SELECT | `status = 'published' AND service.status = 'published'` |
+| Admins can view all plans | SELECT | `has_role(auth.uid(), 'admin')` |
+| Admins can create plans | INSERT | `has_role(auth.uid(), 'admin')` |
+| Admins can update plans | UPDATE | `has_role(auth.uid(), 'admin')` |
+| Admins can delete plans | DELETE | `has_role(auth.uid(), 'admin')` |
 
 ## 5. Authentication Flow
 
