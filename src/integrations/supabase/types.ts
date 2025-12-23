@@ -14,9 +14,78 @@ export type Database = {
   }
   public: {
     Tables: {
+      blog_comments: {
+        Row: {
+          body: string
+          commenter_email: string | null
+          commenter_name: string
+          created_at: string
+          id: string
+          post_id: string
+        }
+        Insert: {
+          body: string
+          commenter_email?: string | null
+          commenter_name: string
+          created_at?: string
+          id?: string
+          post_id: string
+        }
+        Update: {
+          body?: string
+          commenter_email?: string | null
+          commenter_name?: string
+          created_at?: string
+          id?: string
+          post_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "blog_comments_post_id_fkey"
+            columns: ["post_id"]
+            isOneToOne: false
+            referencedRelation: "blog_posts"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      blog_post_tags: {
+        Row: {
+          id: string
+          post_id: string
+          tag_id: string
+        }
+        Insert: {
+          id?: string
+          post_id: string
+          tag_id: string
+        }
+        Update: {
+          id?: string
+          post_id?: string
+          tag_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "blog_post_tags_post_id_fkey"
+            columns: ["post_id"]
+            isOneToOne: false
+            referencedRelation: "blog_posts"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "blog_post_tags_tag_id_fkey"
+            columns: ["tag_id"]
+            isOneToOne: false
+            referencedRelation: "blog_tags"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       blog_posts: {
         Row: {
           author_id: string
+          category: string | null
           content: string
           created_at: string
           excerpt: string | null
@@ -30,6 +99,7 @@ export type Database = {
         }
         Insert: {
           author_id: string
+          category?: string | null
           content: string
           created_at?: string
           excerpt?: string | null
@@ -43,6 +113,7 @@ export type Database = {
         }
         Update: {
           author_id?: string
+          category?: string | null
           content?: string
           created_at?: string
           excerpt?: string | null
@@ -63,6 +134,27 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      blog_tags: {
+        Row: {
+          created_at: string
+          id: string
+          name: string
+          slug: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          name: string
+          slug: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          name?: string
+          slug?: string
+        }
+        Relationships: []
       }
       media: {
         Row: {
