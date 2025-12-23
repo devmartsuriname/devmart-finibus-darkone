@@ -8,7 +8,7 @@ import PricingPlansEditor from './PricingPlansEditor'
 interface ServiceModalProps {
   show: boolean
   onClose: () => void
-  onSave: (input: ServiceInput) => Promise<boolean>
+  onSave: (input: ServiceInput) => Promise<{ success: boolean; id?: string }>
   onUpdate?: (id: string, input: Partial<ServiceInput>) => Promise<boolean>
   service?: Service | null
 }
@@ -167,8 +167,12 @@ const ServiceModal = ({ show, onClose, onSave, onUpdate, service }: ServiceModal
     if (isEditMode && onUpdate && service) {
       success = await onUpdate(service.id, input)
     } else {
-      // For create, we need to get the new ID
-      success = await onSave(input)
+      // For create, get the new ID from the result
+      const result = await onSave(input)
+      success = result.success
+      if (result.id) {
+        serviceId = result.id
+      }
     }
 
     // Save related data if we have a service ID

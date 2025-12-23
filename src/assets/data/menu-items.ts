@@ -55,6 +55,12 @@ export const MENU_ITEMS: MenuItemType[] = [
         url: '/content/testimonials',
         parentKey: 'content',
       },
+      {
+        key: 'services',
+        label: 'Services',
+        url: '/content/services',
+        parentKey: 'content',
+      },
     ],
   },
 
