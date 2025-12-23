@@ -336,6 +336,157 @@ export type Database = {
           },
         ]
       }
+      service_pricing_plans: {
+        Row: {
+          billing_period: string
+          created_at: string
+          cta_label: string
+          currency: string
+          display_order: number
+          features: Json
+          id: string
+          plan_name: string
+          plan_subtitle: string | null
+          price_amount: number
+          service_id: string
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          billing_period: string
+          created_at?: string
+          cta_label?: string
+          currency?: string
+          display_order?: number
+          features?: Json
+          id?: string
+          plan_name: string
+          plan_subtitle?: string | null
+          price_amount: number
+          service_id: string
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          billing_period?: string
+          created_at?: string
+          cta_label?: string
+          currency?: string
+          display_order?: number
+          features?: Json
+          id?: string
+          plan_name?: string
+          plan_subtitle?: string | null
+          price_amount?: number
+          service_id?: string
+          status?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "service_pricing_plans_service_id_fkey"
+            columns: ["service_id"]
+            isOneToOne: false
+            referencedRelation: "services"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      service_process_steps: {
+        Row: {
+          created_at: string
+          description: string
+          id: string
+          image_media_id: string | null
+          service_id: string
+          step_number: number
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          description: string
+          id?: string
+          image_media_id?: string | null
+          service_id: string
+          step_number: number
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          description?: string
+          id?: string
+          image_media_id?: string | null
+          service_id?: string
+          step_number?: number
+          title?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "service_process_steps_image_media_id_fkey"
+            columns: ["image_media_id"]
+            isOneToOne: false
+            referencedRelation: "media"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "service_process_steps_service_id_fkey"
+            columns: ["service_id"]
+            isOneToOne: false
+            referencedRelation: "services"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      services: {
+        Row: {
+          created_at: string
+          display_order: number
+          full_description: string | null
+          icon_media_id: string | null
+          id: string
+          short_description: string
+          slug: string
+          status: string
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          display_order?: number
+          full_description?: string | null
+          icon_media_id?: string | null
+          id?: string
+          short_description: string
+          slug: string
+          status?: string
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          display_order?: number
+          full_description?: string | null
+          icon_media_id?: string | null
+          id?: string
+          short_description?: string
+          slug?: string
+          status?: string
+          title?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "services_icon_media_id_fkey"
+            columns: ["icon_media_id"]
+            isOneToOne: false
+            referencedRelation: "media"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       settings: {
         Row: {
           category: string
