@@ -447,5 +447,33 @@ All admin content CRUD modals must follow the Services modal as the reference im
 | 3.1 | 2025-12-23 | Implementation Agent | Phase 5.3 - Service Details public wiring complete |
 | 3.2 | 2025-12-23 | Implementation Agent | Phase 5.4 - Projects Detail + List public wiring complete |
 | 3.3 | 2025-12-23 | Implementation Agent | Phase 5.4+ Hotfix - Projects parity complete (new fields, process_steps, public RLS, modal standardization) |
+| 3.4 | 2025-12-23 | Implementation Agent | Phase 5.4+ Parity Restore - Fixed stretched images by adding landscape media + correcting project media assignments |
+
+---
+
+## 14. Phase 5.4+ Parity Restoration Notes
+
+### 14.1 Problem Identified
+
+Project Details page displayed stretched images because square portfolio thumbnails were assigned to slots that require landscape images.
+
+### 14.2 Root Cause
+
+- Finibus template landscape images (`process-banner.jpg`, `overview-1.jpg`, `overview-2.jpg`) were never added to Media Library
+- Backfill incorrectly reused square portfolio thumbnails for all image slots
+
+### 14.3 Fix Applied
+
+1. **Added 3 landscape template images** to `media` table with known UUIDs
+2. **Updated all 8 projects** to use correct landscape images for:
+   - `featured_image_media_id` → `process-banner.jpg`
+   - `image_media_id` → `overview-1.jpg`  
+   - `check_launch_image_media_id` → `overview-2.jpg`
+
+### 14.4 Verification
+
+- Project Details page renders without image stretching
+- Hero banner, overview, and check & launch sections use landscape images
+- No layout/CSS changes were made (data-only fix)
 
 **Next Review:** After Phase 5.5 authorization
