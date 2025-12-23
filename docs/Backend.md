@@ -2,11 +2,33 @@
 
 ```
 Status: AUTHORITATIVE
-Phase: Phase 4 COMPLETE | Phase 5 AUTHORIZED
+Phase: Phase 4 COMPLETE | Phase 5 IN PROGRESS
 Auth: IMPLEMENTED (Supabase JWT + Roles + RLS Active)
-Execution: All 8 Admin Modules Complete | Public → DB Integration Next
+Execution: All 8 Admin Modules Complete | Public → DB Integration Active
 Last Updated: 2025-12-23
 ```
+
+---
+
+## 0. Public App Supabase Client (Phase 5 Hotfix)
+
+### 0.1 Dependency
+
+| App | Package | Version | Status |
+|-----|---------|---------|--------|
+| apps/public | @supabase/supabase-js | ^2.89.0 | ✅ Added |
+
+### 0.2 Client Location
+
+| File | Purpose |
+|------|---------|
+| `apps/public/src/lib/supabase.ts` | Public app Supabase client |
+
+### 0.3 Access Pattern
+
+- **Read-only** access to published content (services, projects, testimonials, blog)
+- **INSERT-only** for leads table (contact form submissions)
+- Uses same Supabase project as admin app (hwrlkrrdqbtgyjpsrijh)
 
 ---
 

@@ -2,9 +2,9 @@
 
 ```
 Status: AUTHORITATIVE
-Phase: Phase 4 COMPLETE | Phase 5 AUTHORIZED
+Phase: Phase 4 COMPLETE | Phase 5 IN PROGRESS
 Auth: IMPLEMENTED (Supabase JWT + Roles + RLS)
-Execution: All 8 Admin Modules Complete | Public → DB Integration Next
+Execution: All 8 Admin Modules Complete | Public → DB Integration Active
 Last Updated: 2025-12-23
 ```
 
@@ -75,6 +75,14 @@ Last Updated: 2025-12-23
 - No shared runtime dependencies
 - No cross-app imports
 - Shared tooling only at root level (if needed)
+
+### 3.3 Public App Dependencies (Phase 5 Hotfix)
+
+| Package | Version | Purpose |
+|---------|---------|---------|
+| @supabase/supabase-js | ^2.89.0 | Database access for public pages |
+
+**Install command:** `cd apps/public && bun install` (or npm/pnpm)
 
 ---
 
