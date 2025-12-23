@@ -203,7 +203,38 @@ CREATE TABLE public.blog_comments (
 
 **RLS:** Admin-only access.
 
-### 2.9 Database Functions
+### 2.9 projects Table (Phase 4A.5)
+
+```sql
+CREATE TABLE public.projects (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    title TEXT NOT NULL,
+    heading TEXT NOT NULL,
+    slug TEXT NOT NULL UNIQUE,
+    description TEXT,
+    image_media_id UUID REFERENCES public.media(id) ON DELETE SET NULL,
+    featured_image_media_id UUID REFERENCES public.media(id) ON DELETE SET NULL,
+    category TEXT NOT NULL,
+    is_featured BOOLEAN NOT NULL DEFAULT false,
+    display_order INTEGER,
+    status TEXT NOT NULL DEFAULT 'draft' CHECK (status IN ('draft', 'published', 'archived')),
+    client TEXT,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+    updated_at TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+```
+
+**Indexes:**
+- `projects_category_idx` ON (category)
+- `projects_status_idx` ON (status)
+- `projects_featured_idx` ON (is_featured, display_order)
+
+**Trigger:**
+- `update_projects_updated_at` → calls `update_updated_at_column()`
+
+**RLS:** Admin-only access (no public access in this phase).
+
+### 2.10 Database Functions
 
 | Function | Purpose |
 |----------|---------|
@@ -298,6 +329,17 @@ CREATE TABLE public.blog_comments (
 | Admins can create comments | INSERT | `has_role(auth.uid(), 'admin')` |
 | Admins can update comments | UPDATE | `has_role(auth.uid(), 'admin')` |
 | Admins can delete comments | DELETE | `has_role(auth.uid(), 'admin')` |
+
+### 4.8 projects (Phase 4A.5 — ADMIN-ONLY)
+
+| Policy | Operation | Condition |
+|--------|-----------|-----------|
+| Admins can view all projects | SELECT | `has_role(auth.uid(), 'admin')` |
+| Admins can create projects | INSERT | `has_role(auth.uid(), 'admin')` |
+| Admins can update projects | UPDATE | `has_role(auth.uid(), 'admin')` |
+| Admins can delete projects | DELETE | `has_role(auth.uid(), 'admin')` |
+
+**Note:** Public SELECT access may be added in a future phase when public portfolio rendering is authorized.
 
 ## 5. Authentication Flow
 
@@ -520,5 +562,6 @@ When an error occurs:
 | 2.4 | 2025-12-22 | Implementation Agent | Phase 4A.2 v2 - RLS fix: admin INSERT policy, uploaded_by = user.id, preflight check, DB verification |
 | 2.5 | 2025-12-22 | Implementation Agent | Phase 4A.2 - Error boundaries + Suspense fallbacks added |
 | 2.6 | 2025-12-23 | Implementation Agent | Phase 4A.4B - Blog seeding: tags, post-tags, comments tables + seed data |
+| 2.7 | 2025-12-23 | Implementation Agent | Phase 4A.5 - Projects module: table, indexes, RLS, trigger, seed data (8 projects) |
 
-**Next Review:** After Phase 4A.5 authorization
+**Next Review:** After Phase 4A.6 authorization
