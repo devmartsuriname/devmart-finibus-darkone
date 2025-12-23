@@ -12,15 +12,6 @@ function WhatWeDoArea() {
     });
   };
 
-  // Fallback icon if no media is linked
-  const getIconUrl = (service: typeof services[0], index: number): string => {
-    if (service.icon?.public_url) {
-      return service.icon.public_url;
-    }
-    // Fallback to default icon pattern
-    return `/images/icons/service-icon-${index + 1}.png`;
-  };
-
   // Format count with leading zero
   const formatCount = (index: number): string => {
     return String(index + 1).padStart(2, '0');
@@ -102,10 +93,12 @@ function WhatWeDoArea() {
                       <span className="count">{formatCount(index)}</span>
                       <div className="service-icon">
                         <i>
-                          <img 
-                            src={getIconUrl(service, index)} 
-                            alt={service.icon?.alt_text || service.title} 
-                          />
+                          {service.icon?.public_url && (
+                            <img 
+                              src={service.icon.public_url} 
+                              alt={service.icon.alt_text || ''} 
+                            />
+                          )}
                         </i>
                       </div>
                       <div className="service-content">
@@ -127,10 +120,12 @@ function WhatWeDoArea() {
                   <span className="count">{formatCount(index + 4)}</span>
                   <div className="service-icon">
                     <i>
-                      <img 
-                        src={getIconUrl(service, index + 4)} 
-                        alt={service.icon?.alt_text || service.title} 
-                      />
+                      {service.icon?.public_url && (
+                        <img 
+                          src={service.icon.public_url} 
+                          alt={service.icon.alt_text || ''} 
+                        />
+                      )}
                     </i>
                   </div>
                   <div className="service-content">
