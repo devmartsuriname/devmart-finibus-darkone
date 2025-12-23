@@ -1067,3 +1067,34 @@ All media selection fields should use the `MediaPicker` component with consisten
 - Trigger shows preview thumbnail if selected
 - Modal allows browsing/filtering Media Library
 - Selection callback updates form state
+
+---
+
+## 15. Project Details Media Requirements (Phase 5.4+ Parity Hotfix)
+
+### 15.1 Overview
+
+The Project Details page requires **landscape-oriented images** for certain slots. Using square/portrait images causes visual stretching.
+
+### 15.2 Image Slots and Requirements
+
+| Slot | DB Field | Required Aspect | Template Reference |
+|------|----------|-----------------|-------------------|
+| Hero/Banner | `featured_image_media_id` | Landscape (~3:1) | `process-banner.jpg` |
+| Overview Section | `image_media_id` | Landscape | `overview-1.jpg` |
+| Check & Launch | `check_launch_image_media_id` | Landscape | `overview-2.jpg` |
+| Card Thumbnail | (uses `image_media_id` on list) | Any | `portfolio-X.jpg` |
+
+### 15.3 Template Landscape Images (Seeded)
+
+| Filename | Media ID | Purpose |
+|----------|----------|---------|
+| `process-banner.jpg` | `f1a1a1a1-1111-1111-1111-111111111111` | Hero/featured banner |
+| `overview-1.jpg` | `f2a2a2a2-2222-2222-2222-222222222222` | Overview section |
+| `overview-2.jpg` | `f3a3a3a3-3333-3333-3333-333333333333` | Check & Launch section |
+
+### 15.4 Parity Rule
+
+- **DO NOT** assign square portfolio thumbnails to detail-page image slots
+- **Portfolio images** should be used for card/grid thumbnails ONLY
+- **Landscape images** must be used for featured_image, image, and check_launch_image fields on Project Details
