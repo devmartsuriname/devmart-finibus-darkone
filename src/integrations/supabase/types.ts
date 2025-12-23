@@ -294,6 +294,62 @@ export type Database = {
         }
         Relationships: []
       }
+      testimonials: {
+        Row: {
+          author_name: string
+          author_title: string | null
+          avatar_media_id: string | null
+          company: string | null
+          created_at: string
+          display_order: number | null
+          featured: boolean
+          id: string
+          published_at: string | null
+          quote: string
+          rating: number | null
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          author_name: string
+          author_title?: string | null
+          avatar_media_id?: string | null
+          company?: string | null
+          created_at?: string
+          display_order?: number | null
+          featured?: boolean
+          id?: string
+          published_at?: string | null
+          quote: string
+          rating?: number | null
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          author_name?: string
+          author_title?: string | null
+          avatar_media_id?: string | null
+          company?: string | null
+          created_at?: string
+          display_order?: number | null
+          featured?: boolean
+          id?: string
+          published_at?: string | null
+          quote?: string
+          rating?: number | null
+          status?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "testimonials_avatar_media_id_fkey"
+            columns: ["avatar_media_id"]
+            isOneToOne: false
+            referencedRelation: "media"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       user_roles: {
         Row: {
           created_at: string
