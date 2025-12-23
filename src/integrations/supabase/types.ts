@@ -198,6 +198,72 @@ export type Database = {
         }
         Relationships: []
       }
+      projects: {
+        Row: {
+          category: string
+          client: string | null
+          created_at: string
+          description: string | null
+          display_order: number | null
+          featured_image_media_id: string | null
+          heading: string
+          id: string
+          image_media_id: string | null
+          is_featured: boolean
+          slug: string
+          status: string
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          category: string
+          client?: string | null
+          created_at?: string
+          description?: string | null
+          display_order?: number | null
+          featured_image_media_id?: string | null
+          heading: string
+          id?: string
+          image_media_id?: string | null
+          is_featured?: boolean
+          slug: string
+          status?: string
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          category?: string
+          client?: string | null
+          created_at?: string
+          description?: string | null
+          display_order?: number | null
+          featured_image_media_id?: string | null
+          heading?: string
+          id?: string
+          image_media_id?: string | null
+          is_featured?: boolean
+          slug?: string
+          status?: string
+          title?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "projects_featured_image_media_id_fkey"
+            columns: ["featured_image_media_id"]
+            isOneToOne: false
+            referencedRelation: "media"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "projects_image_media_id_fkey"
+            columns: ["image_media_id"]
+            isOneToOne: false
+            referencedRelation: "media"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       settings: {
         Row: {
           category: string

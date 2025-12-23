@@ -2,8 +2,8 @@
 
 ```
 Status: AUTHORITATIVE
-Phase: Phase 4A.4B Blog Seeding Complete
-Execution: Admin Auth + Media Library + Settings + Blog + Blog Seeding
+Phase: Phase 4A.5 Projects Module Complete
+Execution: Admin Auth + Media Library + Settings + Blog + Blog Seeding + Projects
 Last Updated: 2025-12-23
 ```
 
@@ -82,6 +82,7 @@ The Devmart admin portal now uses **Supabase Auth** for real authentication. The
 | `blog_post_tags` | Post-tag relationships | ✅ Implemented (Phase 4A.4B) |
 | `blog_comments` | Blog comments | ✅ Implemented (Phase 4A.4B) |
 | `settings` | Site configuration key-value store | ✅ Implemented (Phase 4A.3) |
+| `projects` | Portfolio projects | ✅ Implemented (Phase 4A.5) |
 
 ### 2.2 user_roles Table
 
