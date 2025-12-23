@@ -6,6 +6,7 @@ import IconifyIcon from '@/components/wrapper/IconifyIcon'
 import { useServices, Service } from './hooks/useServices'
 import ServiceModal from './components/ServiceModal'
 import DeleteServiceModal from './components/DeleteServiceModal'
+import { ServiceMediaSeeder } from './components/ServiceMediaSeeder'
 
 const ServicesPage = () => {
   const { services, isLoading, error, createService, updateService, deleteService } = useServices()
@@ -38,9 +39,21 @@ const ServicesPage = () => {
     }
   }
 
+  // Check if any service has a missing icon
+  const hasMissingMedia = services.some((s) => !s.icon_url)
+
   return (
     <>
       <PageTitle subName="Content" title="Services" />
+
+      {/* Show seeder if media is missing */}
+      {hasMissingMedia && !isLoading && (
+        <Row className="mb-3">
+          <Col xs={12}>
+            <ServiceMediaSeeder />
+          </Col>
+        </Row>
+      )}
 
       <Row>
         <Col xs={12}>

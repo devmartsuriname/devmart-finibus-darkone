@@ -813,5 +813,55 @@ When an error occurs:
 | 2.8 | 2025-12-23 | Implementation Agent | Phase 4A.6 - Testimonials module: table, RLS, seed data (6 testimonials) |
 | 2.9 | 2025-12-23 | Implementation Agent | Phase 4A.7 - Pages module: table, slug immutability trigger, RLS (SELECT+UPDATE only), seed data (6 pages) |
 | 3.0 | 2025-12-23 | Implementation Agent | Phase 4 CRM - Leads module: table, RLS (Public INSERT, Admin SELECT+UPDATE), no seeding |
+| 3.1 | 2025-12-23 | Implementation Agent | Phase 4 Services - Media seeder utility added for icon/step image import |
 
 **Next Review:** After Analytics module authorization
+
+---
+
+## 12. Services Media Dependencies (Phase 4 Services Fix)
+
+### 12.1 Required Media Assets
+
+The Services module requires the following media assets to achieve 1:1 Finibus parity:
+
+| Asset Type | Count | Source Path | Storage Path |
+|------------|-------|-------------|--------------|
+| Service Icons | 7 | `finibus/public/images/icons/service-icon-{1-7}.png` | `finibus/icons/service-icon-{1-7}.png` |
+| Process Step Images | 3 | `finibus/public/images/step-{1-3}.{png,jpg}` | `finibus/services/step-{1-3}.{png,jpg}` |
+
+### 12.2 Asset-to-Service Mapping
+
+| Service (display_order) | Icon Filename |
+|------------------------|---------------|
+| Web Design (1) | service-icon-1.png |
+| App Design (2) | service-icon-2.png |
+| Developing (3) | service-icon-3.png |
+| Graphic Design (4) | service-icon-4.png |
+| Video Animation (5) | service-icon-5.png |
+| 3D Design (6) | service-icon-6.png |
+| UI/UX Design (7) | service-icon-7.png |
+
+### 12.3 Process Step Image Mapping
+
+| Step Number | Image Filename |
+|-------------|----------------|
+| 1 | step-1.png |
+| 2 | step-2.jpg |
+| 3 | step-3.jpg |
+
+### 12.4 Seeder Utility
+
+A one-time admin seeder utility is provided at `/content/services`:
+
+- **Component:** `ServiceMediaSeeder.tsx`
+- **Utility:** `seedServiceMedia.ts`
+- **Purpose:** Upload Finibus assets to Media Library and link to services/process steps
+- **Trigger:** Shown automatically when any service is missing an icon
+
+### 12.5 Post-Seeding State
+
+After running the seeder:
+- 7 services have `icon_media_id` linked to corresponding icon
+- 21 process steps have `image_media_id` linked to corresponding step image
+- All media records created in `media` table with proper public URLs
