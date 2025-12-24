@@ -450,7 +450,7 @@ All admin content CRUD modals must follow the Services modal as the single sourc
 | Pages | `PageEditModal.tsx` | ✅ Updated (Modal Standardization Hotfix) |
 | Testimonials | `TestimonialModal.tsx` | ✅ Updated (Modal Standardization Hotfix) |
 | Leads | `LeadDetailModal.tsx` | ✅ Updated (Modal Standardization Hotfix) |
-| Blog | `BlogPostModal.tsx` | ⏳ Pending (Blog wiring phase) |
+| Blog | `BlogPostModal.tsx` | ✅ Updated (Phase 5.5 Blog Wiring) |
 
 ### 13.5 Excluded Modules
 
@@ -482,7 +482,7 @@ All admin content CRUD modals must follow the Services modal as the single sourc
 | 3.2 | 2025-12-23 | Implementation Agent | Phase 5.4 - Projects Detail + List public wiring complete |
 | 3.3 | 2025-12-23 | Implementation Agent | Phase 5.4+ Hotfix - Projects parity complete (new fields, process_steps, public RLS, modal standardization) |
 | 3.4 | 2025-12-23 | Implementation Agent | Phase 5.4+ Parity Restore - Fixed stretched images by adding landscape media + correcting project media assignments |
-
+| 3.5 | 2025-12-24 | Implementation Agent | Phase 5.5 - Blog public wiring complete (list + details + RLS + modal parity) |
 ---
 
 ## 14. Phase 5.4+ Parity Restoration Notes
@@ -510,4 +510,54 @@ Project Details page displayed stretched images because square portfolio thumbna
 - Hero banner, overview, and check & launch sections use landscape images
 - No layout/CSS changes were made (data-only fix)
 
-**Next Review:** After Phase 5.5 authorization
+---
+
+## 15. Phase 5.5: Blog Public Wiring
+
+### 15.1 Overview
+
+Wired Finibus public blog pages to Supabase database while maintaining 1:1 template parity.
+
+### 15.2 Components Created
+
+| File | Purpose |
+|------|---------|
+| `apps/public/src/hooks/useBlogPosts.ts` | Fetch published blog posts for list page |
+| `apps/public/src/hooks/useBlogDetails.ts` | Fetch single blog post by slug |
+
+### 15.3 Components Modified
+
+| File | Change |
+|------|--------|
+| `apps/public/src/App.tsx` | Added route `/blog-details/:slug` |
+| `apps/public/src/components/pages/blog/BlogPage.tsx` | Wired to DB via useBlogPosts hook |
+| `apps/public/src/components/pages/blog/BlogCart.tsx` | Accepts dynamic props for DB data |
+| `apps/public/src/components/pages/blogDetails/BlogDetailsPage.tsx` | Reads slug from URL, fetches via hook |
+| `apps/public/src/components/pages/blogDetails/BlogDetailsWrapper.tsx` | Renders DB content, supports HTML |
+| `src/app/(admin)/content/blog/components/BlogPostModal.tsx` | Updated to `size="xl"` |
+
+### 15.4 RLS Policy Added
+
+```sql
+CREATE POLICY "Public can view published posts"
+ON public.blog_posts FOR SELECT
+USING (status = 'published');
+```
+
+### 15.5 Route Pattern
+
+| Route | Page | Data Source |
+|-------|------|-------------|
+| `/blog` | Blog list | `blog_posts` where status='published' |
+| `/blog-details/:slug` | Blog detail | Single post by slug where status='published' |
+| `/blog-details` (no slug) | Error page | Fallback route |
+
+### 15.6 Finibus Parity
+
+- NO layout changes
+- NO typography changes
+- NO spacing changes  
+- NO className/CSS refactors
+- Data binding ONLY (replace static content with DB data)
+
+**Next Review:** After Phase 6 authorization

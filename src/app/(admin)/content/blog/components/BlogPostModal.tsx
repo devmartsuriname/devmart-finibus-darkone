@@ -135,7 +135,7 @@ const BlogPostModal = ({ show, onClose, onSave, onUpdate, post }: BlogPostModalP
   }
 
   return (
-    <Modal show={show} onHide={handleClose} centered size="lg">
+    <Modal show={show} onHide={handleClose} centered size="xl">
       <Modal.Header closeButton className="border-bottom">
         <Modal.Title as="h5">{isEditMode ? 'Edit Post' : 'Create New Post'}</Modal.Title>
       </Modal.Header>

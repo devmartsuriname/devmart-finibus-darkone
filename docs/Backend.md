@@ -532,7 +532,7 @@ CREATE TABLE public.service_pricing_plans (
 | Admins can update settings | UPDATE | `has_role(auth.uid(), 'admin')` |
 | Admins can delete settings | DELETE | `has_role(auth.uid(), 'admin')` |
 
-### 4.4 blog_posts (Phase 4A.4 — ADMIN-ONLY)
+### 4.4 blog_posts (Phase 4A.4 + Phase 5.5 Public Wiring)
 
 | Policy | Operation | Condition |
 |--------|-----------|-----------|
@@ -540,8 +540,9 @@ CREATE TABLE public.service_pricing_plans (
 | Admins can create posts | INSERT | `has_role(auth.uid(), 'admin')` |
 | Admins can update posts | UPDATE | `has_role(auth.uid(), 'admin')` |
 | Admins can delete posts | DELETE | `has_role(auth.uid(), 'admin')` |
+| **Public can view published posts** | SELECT | `status = 'published'` |
 
-**Note:** Public SELECT access will be added in a future phase when public blog rendering is authorized.
+**Note (Phase 5.5):** Public SELECT policy added to enable public blog rendering. Only posts with `status = 'published'` are visible to anonymous users.
 
 ### 4.5 blog_tags (Phase 4A.4B — ADMIN-ONLY)
 
