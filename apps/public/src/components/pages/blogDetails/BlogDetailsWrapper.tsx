@@ -62,7 +62,7 @@ function BlogDetailsWrapper({
           </div>
         </div>
         
-        {/* Render DB content if available, otherwise show template content */}
+        {/* Render DB content paragraphs */}
         {content ? (
           <div 
             className="blog-content"
@@ -97,31 +97,37 @@ function BlogDetailsWrapper({
               metus dolor eu juVivamus pharetra ullamcorper efficitur. Vestibulum at
               ex in massa consequat faucibus.
             </p>
-            <div className="blog-quate">
-              <blockquote>
-                <div className="quote-left">
-                  <i className="bi bi-quote" />
-                </div>
-                <p>
-                  Donec bibendum enim ut elit porta ullamcorper. met eitye gueni
-                  iaculis vitae nulla. Morbi mattis nec mi ac mollis. Nam etjinanan
-                  consequat tellus, a varius magna. Vestibulum and <br />
-                  <b>Ambrela Jwe</b>
-                </p>
-                <div className="quote-right">
-                  <i className="bi bi-quote" />
-                </div>
-              </blockquote>
+          </>
+        )}
+
+        {/* ALWAYS render template quote block for demo parity */}
+        <div className="blog-quate">
+          <blockquote>
+            <div className="quote-left">
+              <i className="bi bi-quote" />
             </div>
             <p>
-              Donec bibendum enim ut elit porta ullamcorper. Vestibulum quam nulla,
-              venenatis eget dapibus ac iaculis vitae nulla. Morbi mattis nec mi ac
-              mollis. Nam et consequat tellus, a varius magna. Curabitu iaculis,
-              ligula vitae commodo blandit, augue urna accumsan sapien, at accumsan
-              metus dolor eu ju Vivamus pharetra ullamcorper efficitur. Vestibulum
-              at ex in massa consequat faucibus.
+              Donec bibendum enim ut elit porta ullamcorper. met eitye gueni
+              iaculis vitae nulla. Morbi mattis nec mi ac mollis. Nam etjinanan
+              consequat tellus, a varius magna. Vestibulum and <br />
+              <b>Ambrela Jwe</b>
             </p>
-          </>
+            <div className="quote-right">
+              <i className="bi bi-quote" />
+            </div>
+          </blockquote>
+        </div>
+
+        {/* Post-quote paragraph for template parity */}
+        {!content && (
+          <p>
+            Donec bibendum enim ut elit porta ullamcorper. Vestibulum quam nulla,
+            venenatis eget dapibus ac iaculis vitae nulla. Morbi mattis nec mi ac
+            mollis. Nam et consequat tellus, a varius magna. Curabitu iaculis,
+            ligula vitae commodo blandit, augue urna accumsan sapien, at accumsan
+            metus dolor eu ju Vivamus pharetra ullamcorper efficitur. Vestibulum
+            at ex in massa consequat faucibus.
+          </p>
         )}
 
         <div className="blog-banner">

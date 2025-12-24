@@ -560,4 +560,66 @@ USING (status = 'published');
 - NO className/CSS refactors
 - Data binding ONLY (replace static content with DB data)
 
-**Next Review:** After Phase 6 authorization
+---
+
+## 16. Phase 5.5 Blog Parity Hotfix
+
+### 16.1 Problem Identified
+
+When DB content was rendered, the Finibus template quote block (`.blog-quate`) was not displayed because the conditional rendering only showed either DB content OR template fallback.
+
+### 16.2 Fix Applied
+
+Modified `BlogDetailsWrapper.tsx` to ALWAYS render the template quote block and banner sections for demo parity, regardless of whether DB content is present.
+
+**Rendering Strategy:**
+```
+1. If content exists → render via dangerouslySetInnerHTML
+2. Else → render template paragraph placeholders
+3. ALWAYS → render .blog-quate quote block
+4. ALWAYS → render blog-banner section
+```
+
+### 16.3 Seed Data Backfill
+
+Updated all 6 blog posts with Finibus-style lorem ipsum content:
+- Titles match demo visual density
+- Excerpts are properly formatted
+- Categories assigned (Website, Software Design, UI/UX Design, etc.)
+- Featured images assigned from Media Library
+
+### 16.4 Verification
+
+| Check | Status |
+|-------|--------|
+| Quote block visible | ✅ Always rendered |
+| Blog banner visible | ✅ Always rendered |
+| Dynamic title per slug | ✅ Working |
+| No layout shift | ✅ Confirmed |
+| No CSS changes | ✅ Confirmed |
+
+---
+
+## Document Control
+
+| Version | Date | Author | Notes |
+|---------|------|--------|-------|
+| 0.1 | 2025-01-XX | Planning Agent | Initial draft |
+| 1.0 | 2025-12-21 | Planning Agent | Phase 3 alignment complete |
+| 2.0 | 2025-12-22 | Implementation Agent | Phase 4A.1.5 - Auth boundary implemented |
+| 2.1 | 2025-12-22 | Implementation Agent | Phase 4A.2 - Media Library UI implemented |
+| 2.2 | 2025-12-22 | Planning Agent | Added Phase 4 documentation status |
+| 2.3 | 2025-12-22 | Implementation Agent | Phase 4A.2 - Seed Tool fixed with deterministic asset paths |
+| 2.4 | 2025-12-22 | Implementation Agent | Phase 4A.2 v2 - RLS policy fix, preflight check, DB verification |
+| 2.5 | 2025-12-22 | Implementation Agent | Phase 4A.2 - Error boundaries + Suspense fallbacks for routing stability |
+| 2.6 | 2025-12-23 | Implementation Agent | Phase 4A.4B - Blog seeding complete |
+| 2.7 | 2025-12-23 | Implementation Agent | Phase 4A.6 - Testimonials module complete |
+| 2.8 | 2025-12-23 | Implementation Agent | Phase 4A.7 - Pages module complete (edit-only, slug-immutable, 6 pages seeded) |
+| 2.9 | 2025-12-23 | Implementation Agent | Phase 4 CRM - Leads module complete (admin list + status/notes edit, no add/delete) |
+| 3.0 | 2025-12-23 | Implementation Agent | Phase 4 Services - Services module complete (7 services, 21 steps, 42 pricing plans) |
+| 3.1 | 2025-12-23 | Implementation Agent | Phase 5.3 - Service Details public wiring complete |
+| 3.2 | 2025-12-23 | Implementation Agent | Phase 5.4 - Projects Detail + List public wiring complete |
+| 3.3 | 2025-12-23 | Implementation Agent | Phase 5.4+ Hotfix - Projects parity complete (new fields, process_steps, public RLS, modal standardization) |
+| 3.4 | 2025-12-23 | Implementation Agent | Phase 5.4+ Parity Restore - Fixed stretched images by adding landscape media + correcting project media assignments |
+| 3.5 | 2025-12-24 | Implementation Agent | Phase 5.5 - Blog public wiring complete (list + details + RLS + modal parity) |
+| 3.6 | 2025-12-24 | Implementation Agent | Phase 5.5 Blog Parity Hotfix - Quote block always rendered, seed data backfilled |

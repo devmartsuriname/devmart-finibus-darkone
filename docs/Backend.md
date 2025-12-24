@@ -189,7 +189,24 @@ CREATE TABLE public.blog_posts (
 );
 ```
 
-**RLS:** Admin-only access (no public access in this phase).
+**RLS Policies:**
+- Admin full CRUD access
+- **Public SELECT** for published posts only (Phase 5.5):
+  ```sql
+  CREATE POLICY "Public can view published posts"
+  ON public.blog_posts FOR SELECT
+  USING (status = 'published');
+  ```
+
+**Public Read Model (Phase 5.5):**
+- `/blog` list page: Fetches all posts where `status = 'published'`, ordered by `published_at DESC`
+- `/blog-details/:slug`: Fetches single post where `slug = :slug` AND `status = 'published'`
+- Joins `media` table for `featured_image_media_id` to get `public_url`
+
+**Content Rendering Strategy (Phase 5.5 Parity Hotfix):**
+- Blog post `content` is stored as HTML and rendered via `dangerouslySetInnerHTML`
+- Template quote block (`.blog-quate`) and banner sections are ALWAYS rendered for demo parity
+- This hybrid approach ensures visual consistency even when DB content lacks template structure
 
 ### 2.6 blog_tags Table (Phase 4A.4B)
 
