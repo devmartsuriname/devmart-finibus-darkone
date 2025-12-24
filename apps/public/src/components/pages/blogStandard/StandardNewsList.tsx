@@ -10,7 +10,7 @@ function StandardNewsList() {
         <div className="col-12">
           <div className="signle-news-list">
             <div className="post-img">
-              <Link to="/blog-details" onClick={scrollTop}>
+              <Link to="/blog" onClick={scrollTop}>
                 <img src="/images/post/blog-list-3.jpg" alt="images" />
               </Link>
             </div>
@@ -35,13 +35,13 @@ function StandardNewsList() {
                 </Link>
               </div>
               <h3>
-                <Link to="/blog-details" onClick={scrollTop}>
+                <Link to="/blog" onClick={scrollTop}>
                   Morbi quis mi sed sem ullamcorper rutrum eget eget laci
                   antenica Vitaen Praesent eget mi eget mauris.
                 </Link>
               </h3>
               <div className="view-btn">
-                <Link to="/blog-details" onClick={scrollTop}>
+                <Link to="/blog" onClick={scrollTop}>
                   View details
                 </Link>
               </div>
@@ -51,7 +51,7 @@ function StandardNewsList() {
         <div className="col-12">
           <div className="signle-news-list">
             <div className="post-img">
-              <Link to="/blog-details" onClick={scrollTop}>
+              <Link to="/blog" onClick={scrollTop}>
                 <img src="/images/post/blog-list-1.jpg" alt="images" />
               </Link>
             </div>
@@ -76,13 +76,13 @@ function StandardNewsList() {
                 </Link>
               </div>
               <h3>
-                <Link to="/blog-details" onClick={scrollTop}>
+                <Link to="/blog" onClick={scrollTop}>
                   Suspendisse quis scelerisque elit. Aliquam erat volutpata
                   Quisque suscipit vel felis quis pharetra.
                 </Link>
               </h3>
               <div className="view-btn">
-                <Link to="/blog-details" onClick={scrollTop}>
+                <Link to="/blog" onClick={scrollTop}>
                   View details
                 </Link>
               </div>
@@ -92,7 +92,7 @@ function StandardNewsList() {
         <div className="col-12">
           <div className="signle-news-list">
             <div className="post-img">
-              <Link to="/blog-details" onClick={scrollTop}>
+              <Link to="/blog" onClick={scrollTop}>
                 <img src="/images/post/blog-list-2.jpg" alt="images" />
               </Link>
             </div>
@@ -117,13 +117,13 @@ function StandardNewsList() {
                 </Link>
               </div>
               <h3>
-                <Link to="/blog-details" onClick={scrollTop}>
+                <Link to="/blog" onClick={scrollTop}>
                   Nunc ipsum nunc, varius non est in, sollicitudin facilisisai
                   velit. Ut nec urna in eros rutrum varius
                 </Link>
               </h3>
               <div className="view-btn">
-                <Link to="/blog-details" onClick={scrollTop}>
+                <Link to="/blog" onClick={scrollTop}>
                   View details
                 </Link>
               </div>

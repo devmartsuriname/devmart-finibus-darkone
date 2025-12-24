@@ -26,7 +26,7 @@ function NewsLatterArea({ black = "" }: NewsLatterAreaProps) {
                   </Link>
                 </div>
                 <div className="post-img">
-                  <Link onClick={scrollTop} to="/blog-details">
+                  <Link onClick={scrollTop} to="/blog">
                     <img
                       src="/images/post/post-1.jpg"
                       alt="img"
@@ -47,7 +47,7 @@ function NewsLatterArea({ black = "" }: NewsLatterAreaProps) {
                     </div>
                   </div>
                   <h3>
-                    <Link onClick={scrollTop} to="/blog-details">
+                    <Link onClick={scrollTop} to="/blog">
                       Donec a porttitor phari sod tellus Nunc quis erosn.
                     </Link>
                   </h3>
@@ -57,7 +57,7 @@ function NewsLatterArea({ black = "" }: NewsLatterAreaProps) {
                     ex.
                   </p>
                   <div className="view-btn">
-                    <Link onClick={scrollTop} to="/blog-details">
+                    <Link onClick={scrollTop} to="/blog">
                       View details
                     </Link>
                   </div>
@@ -72,7 +72,7 @@ function NewsLatterArea({ black = "" }: NewsLatterAreaProps) {
                   </Link>
                 </div>
                 <div className="post-img">
-                  <Link onClick={scrollTop} to="/blog-details">
+                  <Link onClick={scrollTop} to="/blog">
                     <img
                       src="/images/post/post-2.jpg"
                       alt="images"
@@ -93,7 +93,7 @@ function NewsLatterArea({ black = "" }: NewsLatterAreaProps) {
                     </div>
                   </div>
                   <h3>
-                    <Link onClick={scrollTop} to="/blog-details">
+                    <Link onClick={scrollTop} to="/blog">
                       Mekusa a porttitor phari sod tellus algo quis ksro.
                     </Link>
                   </h3>
@@ -103,7 +103,7 @@ function NewsLatterArea({ black = "" }: NewsLatterAreaProps) {
                     ex.
                   </p>
                   <div className="view-btn">
-                    <Link onClick={scrollTop} to="/blog-details">
+                    <Link onClick={scrollTop} to="/blog">
                       View details
                     </Link>
                   </div>
