@@ -8,8 +8,22 @@ import PopularTag from "./PopularTag";
 import BannerWiget from "./BannerWiget";
 import Pagination from "../../common/Pagination";
 import LetsTalkArea from "../../common/LetsTalkArea";
+import { useBlogPosts } from "../../../hooks/useBlogPosts";
 
 function BlogPage() {
+  const { posts, loading, error } = useBlogPosts();
+
+  // Format date for display
+  const formatDate = (dateString: string | null): string => {
+    if (!dateString) return '';
+    const date = new Date(dateString);
+    return date.toLocaleDateString('en-US', { 
+      day: '2-digit', 
+      month: 'long', 
+      year: 'numeric' 
+    });
+  };
+
   return (
     <>
       <Breadcrumb pageName="Blog" />
@@ -26,46 +40,36 @@ function BlogPage() {
               </div>
               <div className="col-md-6 col-lg-8 col-xl-8">
                 <div className="row g-4">
-                  <BlogCart
-                    tag="Web Design"
-                    postImg="/images/post/post-1.jpg"
-                    authorIMG="/images/author/author-1.jpg"
-                  />
-                  <BlogCart
-                    tag="Software"
-                    postImg="/images/post/post-2.jpg"
-                    authorIMG="/images/author/author-2.jpg"
-                  />
-                  <BlogCart
-                    tag="UI/UX Design"
-                    postImg="/images/post/post-3.jpg"
-                    authorIMG="/images/author/author-3.jpg"
-                  />
-                  <BlogCart
-                    tag="Development"
-                    postImg="/images/post/post-4.jpg"
-                    authorIMG="/images/author/author-4.jpg"
-                  />
-                  <BlogCart
-                    tag="3D Design"
-                    postImg="/images/post/post-5.jpg"
-                    authorIMG="/images/author/author-5.jpg"
-                  />
-                  <BlogCart
-                    tag="Motion Graphi"
-                    postImg="/images/post/post-6.jpg"
-                    authorIMG="/images/author/author-1.jpg"
-                  />
-                  <BlogCart
-                    tag="App Design"
-                    postImg="/images/post/post-7.jpg"
-                    authorIMG="/images/author/author-7.jpg"
-                  />
-                  <BlogCart
-                    tag="Graphic Design"
-                    postImg="/images/post/post-8.jpg"
-                    authorIMG="/images/author/author-1.jpg"
-                  />
+                  {loading && (
+                    <div className="col-12 text-center py-5">
+                      <div className="spinner-border" role="status">
+                        <span className="visually-hidden">Loading...</span>
+                      </div>
+                    </div>
+                  )}
+                  {error && (
+                    <div className="col-12">
+                      <div className="alert alert-danger">{error}</div>
+                    </div>
+                  )}
+                  {!loading && !error && posts.length === 0 && (
+                    <div className="col-12">
+                      <p className="text-center">No blog posts available.</p>
+                    </div>
+                  )}
+                  {!loading && !error && posts.map((post) => (
+                    <BlogCart
+                      key={post.id}
+                      slug={post.slug}
+                      title={post.title}
+                      excerpt={post.excerpt || undefined}
+                      tag={post.category || "General"}
+                      postImg={post.featured_image?.public_url || "/images/post/post-1.jpg"}
+                      authorIMG="/images/author/author-1.jpg"
+                      authorName="Devmart Team"
+                      publishedAt={formatDate(post.published_at)}
+                    />
+                  ))}
                   <Pagination />
                 </div>
               </div>

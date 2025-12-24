@@ -144,7 +144,10 @@ function App() {
         <Route path="/project-details" element={<ErrorPage />} />
         <Route path="/blog" element={<BlogPage />} />
         <Route path="/blog-standard" element={<BlogStandardPage />} />
-        <Route path="/blog-details" element={<BlogDetailsPage />} />
+        {/* Dynamic blog details with slug parameter */}
+        <Route path="/blog-details/:slug" element={<BlogDetailsPage />} />
+        {/* Fallback for /blog-details without slug - shows ErrorPage */}
+        <Route path="/blog-details" element={<ErrorPage />} />
         <Route path="/contact" element={<ContactPage />} />
         <Route path="/error" element={<ErrorPage />} />
       </Route>

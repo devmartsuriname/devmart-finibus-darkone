@@ -5,10 +5,34 @@ interface BlogCartProps {
   tag: string;
   postImg: string;
   authorIMG: string;
+  // Dynamic props from DB
+  slug?: string;
+  title?: string;
+  excerpt?: string;
+  authorName?: string;
+  publishedAt?: string;
 }
 
-function BlogCart({ tag, postImg, authorIMG }: BlogCartProps) {
+function BlogCart({ 
+  tag, 
+  postImg, 
+  authorIMG,
+  slug,
+  title,
+  excerpt,
+  authorName,
+  publishedAt
+}: BlogCartProps) {
   const scrollTop = () => window.scrollTo({ top: 0, behavior: "smooth" });
+  
+  // Use slug-based URL if slug provided, otherwise fallback to static
+  const detailUrl = slug ? `/blog-details/${slug}` : "/blog-details";
+  
+  // Default values for template parity
+  const displayTitle = title || "Donec a porttitor phari sod tellus Nunc quis erosn.";
+  const displayExcerpt = excerpt || "Aptent taciti sociosqu ad litora torquent pi himenaeos. Praesent nec neque at dolor ti venenatis consectetur eu quis ex.";
+  const displayAuthor = authorName || "Alen Jodge";
+  const displayDate = publishedAt || "05 January, 2022";
   
   return (
     <>
@@ -20,7 +44,7 @@ function BlogCart({ tag, postImg, authorIMG }: BlogCartProps) {
             </Link>
           </div>
           <div className="post-img">
-            <Link onClick={scrollTop} to="/blog-details">
+            <Link onClick={scrollTop} to={detailUrl}>
               <img src={postImg} alt="blog images" />
             </Link>
           </div>
@@ -30,21 +54,20 @@ function BlogCart({ tag, postImg, authorIMG }: BlogCartProps) {
                 <img src={authorIMG} alt="blog images" />
               </div>
               <div className="author-info">
-                <h5>Posted by, Alen Jodge</h5>
-                <span>05 January, 2022</span>
+                <h5>Posted by, {displayAuthor}</h5>
+                <span>{displayDate}</span>
               </div>
             </div>
             <h3>
-              <Link onClick={scrollTop} to="/blog-details">
-                Donec a porttitor phari sod tellus Nunc quis erosn.
+              <Link onClick={scrollTop} to={detailUrl}>
+                {displayTitle}
               </Link>
             </h3>
             <p>
-              Aptent taciti sociosqu ad litora torquent pi himenaeos. Praesent
-              nec neque at dolor ti venenatis consectetur eu quis ex.
+              {displayExcerpt}
             </p>
             <div className="view-btn">
-              <Link onClick={scrollTop} to="/blog-details">
+              <Link onClick={scrollTop} to={detailUrl}>
                 View details
               </Link>
             </div>
