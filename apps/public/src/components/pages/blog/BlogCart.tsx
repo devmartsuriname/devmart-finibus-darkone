@@ -26,7 +26,7 @@ function BlogCart({
   const scrollTop = () => window.scrollTo({ top: 0, behavior: "smooth" });
   
   // Use slug-based URL if slug provided, otherwise fallback to static
-  const detailUrl = slug ? `/blog-details/${slug}` : "/blog-details";
+  const detailUrl = slug ? `/blog/${slug}` : "/blog";
   
   // Default values for template parity
   const displayTitle = title || "Donec a porttitor phari sod tellus Nunc quis erosn.";

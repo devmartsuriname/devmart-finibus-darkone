@@ -112,9 +112,9 @@ function Home2Layout() {
  * - /service-details -> ServiceDetails
  * - /project -> ProjectsPage
  * - /project-details -> ProjectDetailsPage
- * - /blog -> BlogPage
+ * - /blog -> BlogPage (listing)
+ * - /blog/:slug -> BlogDetailsPage (detail)
  * - /blog-standard -> BlogStandardPage
- * - /blog-details -> BlogDetailsPage
  * - /contact -> ContactPage
  * - /commingsoon -> CommingSoonPage (standalone)
  * - /error -> ErrorPage
@@ -143,11 +143,9 @@ function App() {
         {/* Fallback for /project-details without slug - shows ErrorPage */}
         <Route path="/project-details" element={<ErrorPage />} />
         <Route path="/blog" element={<BlogPage />} />
-        <Route path="/blog-standard" element={<BlogStandardPage />} />
         {/* Dynamic blog details with slug parameter */}
-        <Route path="/blog-details/:slug" element={<BlogDetailsPage />} />
-        {/* Fallback for /blog-details without slug - shows ErrorPage */}
-        <Route path="/blog-details" element={<ErrorPage />} />
+        <Route path="/blog/:slug" element={<BlogDetailsPage />} />
+        <Route path="/blog-standard" element={<BlogStandardPage />} />
         <Route path="/contact" element={<ContactPage />} />
         <Route path="/error" element={<ErrorPage />} />
       </Route>

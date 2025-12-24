@@ -16,7 +16,7 @@ function BlogDetailsPage() {
 
   return (
     <>
-      <Breadcrumb pageName="Blog Details" />
+      <Breadcrumb pageName={post?.title || "Blog Details"} />
       <div className="blog-news sec-mar">
         <div className="container">
           <div className="blog-wrapper">

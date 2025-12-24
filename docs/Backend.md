@@ -200,8 +200,9 @@ CREATE TABLE public.blog_posts (
 
 **Public Read Model (Phase 5.5):**
 - `/blog` list page: Fetches all posts where `status = 'published'`, ordered by `published_at DESC`
-- `/blog-details/:slug`: Fetches single post where `slug = :slug` AND `status = 'published'`
+- `/blog/:slug`: Fetches single post where `slug = :slug` AND `status = 'published'`
 - Joins `media` table for `featured_image_media_id` to get `public_url`
+- Breadcrumb title dynamically shows the post title (Phase 5.5 Title Fix)
 
 **Content Rendering Strategy (Phase 5.5 Parity Hotfix):**
 - Blog post `content` is stored as HTML and rendered via `dangerouslySetInnerHTML`

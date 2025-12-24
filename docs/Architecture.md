@@ -483,6 +483,7 @@ All admin content CRUD modals must follow the Services modal as the single sourc
 | 3.3 | 2025-12-23 | Implementation Agent | Phase 5.4+ Hotfix - Projects parity complete (new fields, process_steps, public RLS, modal standardization) |
 | 3.4 | 2025-12-23 | Implementation Agent | Phase 5.4+ Parity Restore - Fixed stretched images by adding landscape media + correcting project media assignments |
 | 3.5 | 2025-12-24 | Implementation Agent | Phase 5.5 - Blog public wiring complete (list + details + RLS + modal parity) |
+| 3.6 | 2025-12-24 | Implementation Agent | Phase 5.5 Title + Route Fix - Dynamic breadcrumb title, route changed from /blog-details/:slug to /blog/:slug |
 ---
 
 ## 14. Phase 5.4+ Parity Restoration Notes
