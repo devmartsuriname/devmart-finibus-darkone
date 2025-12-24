@@ -400,9 +400,35 @@ CREATE TABLE public.leads (
 **Trigger:**
 - `update_leads_updated_at` → calls `update_updated_at_column()`
 
-**RLS:** Public INSERT only (anon). Admin SELECT + UPDATE only (NO INSERT/DELETE per MVP).
+**RLS:** 
+- `Public can submit leads` — INSERT with `WITH CHECK (true)` — allows anon users to insert
+- `Admins can view all leads` — SELECT with `USING (has_role(auth.uid(), 'admin'))` — admin-only read
+- `Admins can update leads` — UPDATE with `USING (has_role(auth.uid(), 'admin'))` — admin-only update
+- No public SELECT policy — leads are not readable by anonymous users
 
 **Seeding:** None — leads are captured via public form submissions.
+
+### 2.12.1 Public Contact Form → Leads Integration (Phase 6)
+
+**Component:** `apps/public/src/components/pages/contact/ContactForm.tsx`
+
+**Flow:**
+1. User fills out contact form (name, email, subject, message)
+2. Client-side validation (required fields, email format)
+3. Honeypot anti-spam check (hidden field, if filled → silent success, no DB insert)
+4. INSERT into `leads` table with `source: 'contact_form'`, `status: 'new'` (default)
+5. Success/error message displayed inline (no layout shift)
+6. Button disabled during submission to prevent double-submit
+
+**Anti-Spam:**
+- Honeypot field (`name="website"`) hidden via inline CSS
+- If filled by bots, shows success but does NOT insert into DB
+
+**Validation:**
+- `name` required (trimmed, non-empty)
+- `email` required (basic regex: `/^[^\s@]+@[^\s@]+\.[^\s@]+$/`)
+- `message` required (trimmed, non-empty)
+- `subject` optional
 
 ### 2.13 services Table (Phase 4 Services)
 
