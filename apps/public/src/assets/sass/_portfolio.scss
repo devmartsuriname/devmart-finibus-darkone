@@ -109,10 +109,26 @@
         border-radius: 10px;
 
         a {
+            display: block;
+            height: 350px;
+            
+            @media #{$lg} {
+                height: 300px;
+            }
+            
+            @media #{$md} {
+                height: 280px;
+            }
+            
+            @media #{$xs} {
+                height: 320px;
+            }
+            
             img {
                 border-radius: 10px;
                 width: 100%;
-                max-height: 500px;
+                height: 100%;
+                object-fit: cover;
             }
         }
 

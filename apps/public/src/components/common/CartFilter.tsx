@@ -117,8 +117,8 @@ function CartFilter({ active, projects = [], loading = false }: CartFilterProps)
         {items.map((element) => {
           const { id, title, slug, heading, category, featured_image, image } = element
           
-          // Use featured_image if available, fallback to image
-          const imageUrl = featured_image?.public_url || image?.public_url
+          // Use image (thumbnail) if available, fallback to featured_image
+          const imageUrl = image?.public_url || featured_image?.public_url
           const imageAlt = featured_image?.alt_text || image?.alt_text || heading
 
           return (
