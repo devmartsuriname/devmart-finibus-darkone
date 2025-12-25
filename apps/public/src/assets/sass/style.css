@@ -2461,10 +2461,31 @@ header {
   border-radius: 10px;
 }
 
+.single-portfolio .portfolio-data a {
+  display: block;
+  height: 350px;
+}
+@media (max-width: 1199px) {
+  .single-portfolio .portfolio-data a {
+    height: 300px;
+  }
+}
+@media (max-width: 991px) {
+  .single-portfolio .portfolio-data a {
+    height: 280px;
+  }
+}
+@media (max-width: 767px) {
+  .single-portfolio .portfolio-data a {
+    height: 320px;
+  }
+}
+
 .single-portfolio .portfolio-data a img {
   border-radius: 10px;
   width: 100%;
-  max-height: 500px;
+  height: 100%;
+  object-fit: cover;
 }
 
 .single-portfolio .portfolio-data:before {

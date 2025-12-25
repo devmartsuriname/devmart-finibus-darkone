@@ -27,7 +27,7 @@ function PortfolioArea({ black = "" }: PortfolioAreaProps) {
         id: p.id,
         category: p.category,
         title: p.title,
-        image: p.featured_image?.public_url || p.image?.public_url || STATIC_PROJECTS[i % 6].image,
+        image: p.image?.public_url || p.featured_image?.public_url || STATIC_PROJECTS[i % 6].image,
         slug: p.slug
       }))
     : STATIC_PROJECTS;

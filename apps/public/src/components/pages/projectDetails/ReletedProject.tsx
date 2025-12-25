@@ -99,9 +99,9 @@ function ReletedProject({ projects, loading }: ReletedProjectProps) {
             className="swiper-wrapper"
           >
             {projects.map((project) => {
-              // Determine image URL - use featured_image if available, fallback to image
-              const imageUrl = project.featured_image?.public_url || project.image?.public_url;
-              const imageAlt = project.featured_image?.alt_text || project.image?.alt_text || project.title;
+              // Determine image URL - use image (thumbnail) if available, fallback to featured_image
+              const imageUrl = project.image?.public_url || project.featured_image?.public_url;
+              const imageAlt = project.image?.alt_text || project.featured_image?.alt_text || project.title;
               
               return (
                 <SwiperSlide key={project.id} className="swiper-slide">
