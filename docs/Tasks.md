@@ -1,8 +1,8 @@
 # Tasks — Devmart Implementation Tracker
 
 **Status:** Verified  
-**Current Phase:** Phase 4 COMPLETE — Phase 5 PLANNED  
-**Last Updated:** 2025-01-20  
+**Current Phase:** Phase 6.1 COMPLETE — MVP Baseline Established  
+**Last Updated:** 2025-12-25  
 
 ---
 
@@ -14,8 +14,10 @@
 | Phase 2 | ✅ Complete | Finibus Template Parity |
 | Phase 3 | ✅ Complete | Supabase Auth Implementation |
 | Phase 4 | ✅ Complete | Admin Modules (All 8 modules) |
-| Phase 5 | 📋 Planned | Public → DB Integration |
-| Phase 6 | ⏸️ Deferred | Analytics (not authorized) |
+| Phase 5 | ✅ Complete | Public → DB Integration (Inner Pages) |
+| Phase 6.1 | ✅ Complete | Contact/Leads Pipeline + Settings Wiring |
+| Phase 6.2 | ⏸️ Deferred | Homepage DB Wiring (not authorized) |
+| Phase 7 | ⏸️ Deferred | Analytics (not authorized) |
 
 ---
 
@@ -33,196 +35,106 @@ All modules implemented with Supabase + RLS:
 
 ---
 
-## Phase 5 — Public → DB Integration (📋 PLANNED)
+## Phase 5 — Public → DB Integration (✅ COMPLETE)
 
-See: `docs/phase-5/Phase_5_Plan.md`
+### Inner Pages Wiring Status
 
-### Task Breakdown
+| Page | Status | Data Source |
+|------|--------|-------------|
+| Services List | ✅ Wired | `services` table |
+| Service Details | ✅ Wired | `services` + `service_process_steps` + `service_pricing_plans` |
+| Projects List | ✅ Wired | `projects` table |
+| Project Details | ✅ Wired | `projects` + `project_process_steps` |
+| Blog List | ✅ Wired | `blog_posts` table (published only) |
+| Blog Details | ✅ Wired | `blog_posts` + `media` join |
 
-#### Task 2.1.1: Verify Public App Shell
+### Homepage Wiring Status — STATIC BY DESIGN (Phase-Locked)
 
-| Field | Value |
-|-------|-------|
-| **Phase** | 2.1 |
-| **Description** | Verify `apps/public` directory structure based on Finibus template baseline |
-| **Acceptance Criteria** | - Verified that directory structure matches Finibus source<br>- Confirmed `package.json` is configured correctly<br>- Confirmed `vite.config.ts` is configured correctly<br>- Verified that dev server starts without errors<br>- No deviations observed from reference structure |
-| **Hard Stop** | Await approval before proceeding to 2.1.2 |
-
-#### Task 2.1.2: Verify Dependencies
-
-| Field | Value |
-|-------|-------|
-| **Phase** | 2.1 |
-| **Description** | Verify all Finibus dependencies are installed correctly |
-| **Acceptance Criteria** | - Verified that all dependencies are installed<br>- Confirmed no version conflicts exist<br>- Verified that build completes without errors<br>- No deviations observed from reference dependencies |
-| **Hard Stop** | Await approval before proceeding to 2.2 |
+See: Section "Homepage Sections — Deferred" below.
 
 ---
 
-### Phase 2.2 — Global Layout Parity
+## Phase 6.1 — Contact/Leads + Settings (✅ COMPLETE)
 
-#### Task 2.2.1: Verify Header Parity
+| Task | Status | Notes |
+|------|--------|-------|
+| Contact form → leads INSERT | ✅ Complete | Honeypot anti-spam, client validation |
+| RLS for leads INSERT | ✅ Complete | Anonymous INSERT allowed |
+| Settings fetch hook | ✅ Complete | `usePublicSettings.ts` with fallbacks |
+| Footer settings wiring | ✅ Complete | Email, phone, address, social URLs |
+| ContactUsArea settings | ✅ Complete | Email, phone, address display |
+| Admin Leads view | ✅ Complete | List + status/notes edit |
 
-| Field | Value |
-|-------|-------|
-| **Phase** | 2.2 |
-| **Description** | Verify header component matches Finibus header variants |
-| **Acceptance Criteria** | - Verified that header renders identically to Finibus reference<br>- Confirmed parity with reference layout and structure<br>- No deviations observed in navigation or mobile behavior |
-| **Hard Stop** | Await approval before proceeding to 2.2.2 |
+### Known Limitation — Lovable Preview
 
-#### Task 2.2.2: Verify Footer Parity
+**Issue:** Contact form does not work in Lovable Preview.
 
-| Field | Value |
-|-------|-------|
-| **Phase** | 2.2 |
-| **Description** | Verify footer component matches Finibus footer |
-| **Acceptance Criteria** | - Verified that footer renders identically to Finibus reference<br>- Confirmed parity with reference layout and structure<br>- No deviations observed |
-| **Hard Stop** | Await approval before proceeding to 2.2.3 |
+**Reason:** The Lovable Preview runs the Admin app from `/src`, NOT the Public app from `apps/public`. The Public app is a separate Vite application.
 
-#### Task 2.2.3: Verify Breadcrumb Parity
+**Works In:** Local development, production deployment.
 
-| Field | Value |
-|-------|-------|
-| **Phase** | 2.2 |
-| **Description** | Verify breadcrumb component for inner pages |
-| **Acceptance Criteria** | - Verified that breadcrumb renders identically to Finibus reference<br>- Confirmed parity with reference layout and structure<br>- No deviations observed |
-| **Hard Stop** | Await approval before proceeding to 2.3 |
+**Decision:** Deferred. No architecture change authorized. Documented in `docs/restore-points/Restore_Point_Phase_6_Contact_Leads_Settings_Wiring.md`.
 
 ---
 
-### Phase 2.3 — Homepage Parity
+## Deferred Items
 
-#### Task 2.3.1: Verify Homepage Variant A Parity
+### Phase 6.2 — Homepage DB Wiring (⏸️ DEFERRED)
 
-| Field | Value |
-|-------|-------|
-| **Phase** | 2.3 |
-| **Description** | Verify Homepage Variant A (Agency style) matches Finibus reference |
-| **Acceptance Criteria** | - Verified that all sections render identically to Finibus reference<br>- Confirmed parity with reference section ordering and interactions<br>- No deviations observed in layout, animations, or CTAs |
-| **Hard Stop** | Await approval before proceeding to 2.3.2 |
+| Section | Current State | Reason |
+|---------|---------------|--------|
+| Hero Slider | Static | Not authorized |
+| Services Section | Static | Not authorized |
+| About Section | Static | Not authorized |
+| Partners Section | Static | Not authorized |
+| Portfolio Section | Static | Not authorized |
+| Why Choose Us | Static | Not authorized |
+| Testimonials Section | Static | Not authorized |
+| Latest Blog Posts | Static | Not authorized |
+| Let's Talk CTA | Static | Not authorized |
 
-#### Task 2.3.2: Verify Homepage Variant B Parity
+**Authorization Required:** Explicit GO decision to wire Homepage sections to database.
 
-| Field | Value |
-|-------|-------|
-| **Phase** | 2.3 |
-| **Description** | Verify Homepage Variant B (Creative style) matches Finibus reference |
-| **Acceptance Criteria** | - Verified that all sections render identically to Finibus reference<br>- Confirmed parity with reference section ordering and interactions<br>- No deviations observed in layout, animations, or CTAs |
-| **Hard Stop** | Await approval before proceeding to 2.4 |
+### Phase 7 — Analytics (⏸️ DEFERRED)
 
----
-
-### Phase 2.4 — Inner Pages Parity
-
-#### Task 2.4.1: Verify About Page Parity
-
-| Field | Value |
-|-------|-------|
-| **Phase** | 2.4 |
-| **Description** | Verify About page matches Finibus reference |
-| **Acceptance Criteria** | - Verified that page renders identically to Finibus reference<br>- Confirmed parity with reference layout and all interactions<br>- No deviations observed |
-| **Hard Stop** | Await approval before proceeding to 2.4.2 |
-
-#### Task 2.4.2: Verify Services Page Parity
-
-| Field | Value |
-|-------|-------|
-| **Phase** | 2.4 |
-| **Description** | Verify Services page with capability framework content |
-| **Acceptance Criteria** | - Verified that page renders identically to Finibus reference<br>- Confirmed parity with reference layout and all interactions<br>- No deviations observed |
-| **Hard Stop** | Await approval before proceeding to 2.4.3 |
-
-#### Task 2.4.3: Verify Projects Page Parity
-
-| Field | Value |
-|-------|-------|
-| **Phase** | 2.4 |
-| **Description** | Verify Projects/Portfolio page matches Finibus reference |
-| **Acceptance Criteria** | - Verified that page renders identically to Finibus reference<br>- Confirmed parity with reference layout and all interactions<br>- No deviations observed |
-| **Hard Stop** | Await approval before proceeding to 2.4.4 |
-
-#### Task 2.4.4: Verify Blog Pages Parity
-
-| Field | Value |
-|-------|-------|
-| **Phase** | 2.4 |
-| **Description** | Verify Blog listing and detail pages match Finibus reference |
-| **Acceptance Criteria** | - Verified that pages render identically to Finibus reference<br>- Confirmed parity with reference layout and all interactions<br>- No deviations observed |
-| **Hard Stop** | Await approval before proceeding to 2.4.5 |
-
-#### Task 2.4.5: Verify Contact Page Parity
-
-| Field | Value |
-|-------|-------|
-| **Phase** | 2.4 |
-| **Description** | Verify Contact page matches Finibus reference |
-| **Acceptance Criteria** | - Verified that page renders identically to Finibus reference<br>- Confirmed parity with reference layout and all interactions<br>- No deviations observed |
-| **Hard Stop** | Await approval before proceeding to 2.5 |
+| Item | Reason |
+|------|--------|
+| Dashboard widgets | Not authorized |
+| Usage metrics | Not authorized |
+| Traffic analytics | Not authorized |
 
 ---
 
-### Phase 2.5 — UI Modules Parity
+## Partial Items
 
-#### Task 2.5.1: Verify Slider Components Parity
-
-| Field | Value |
-|-------|-------|
-| **Phase** | 2.5 |
-| **Description** | Verify carousel/slider components match Finibus reference |
-| **Acceptance Criteria** | - Verified that sliders render identically to Finibus reference<br>- Confirmed parity with reference interactions and timing<br>- No deviations observed |
-| **Hard Stop** | Await approval before proceeding to 2.5.2 |
-
-#### Task 2.5.2: Verify Counter Components Parity
-
-| Field | Value |
-|-------|-------|
-| **Phase** | 2.5 |
-| **Description** | Verify animated counter components match Finibus reference |
-| **Acceptance Criteria** | - Verified that counters render identically to Finibus reference<br>- Confirmed parity with reference animation timing<br>- No deviations observed |
-| **Hard Stop** | Await approval before proceeding to 2.5.3 |
-
-#### Task 2.5.3: Verify Accordion Components Parity
-
-| Field | Value |
-|-------|-------|
-| **Phase** | 2.5 |
-| **Description** | Verify accordion/FAQ components match Finibus reference |
-| **Acceptance Criteria** | - Verified that accordions render identically to Finibus reference<br>- Confirmed parity with reference interactions<br>- No deviations observed |
-| **Hard Stop** | Await approval before proceeding to 2.5.4 |
-
-#### Task 2.5.4: Verify Modal Components Parity
-
-| Field | Value |
-|-------|-------|
-| **Phase** | 2.5 |
-| **Description** | Verify modal/lightbox components match Finibus reference |
-| **Acceptance Criteria** | - Verified that modals render identically to Finibus reference<br>- Confirmed parity with reference interactions<br>- No deviations observed |
-| **Hard Stop** | Await approval — Phase 2 Complete |
+| Item | Status | Notes |
+|------|--------|-------|
+| Testimonials public display | 🔶 Partial | Admin CRUD complete, Homepage section static |
+| Google Maps embed | 🔶 Partial | Contact page has placeholder, Settings key not implemented |
 
 ---
 
-## Phase 2 Completion Criteria
+## MVP Status Summary
 
-All of the following must be verified:
+### MVP COMPLETE ✅
 
-- [ ] Verified that public app runs without errors
-- [ ] Confirmed that all pages render correctly
-- [ ] Verified visual parity against Finibus reference
-- [ ] Confirmed responsive behavior on all breakpoints
-- [ ] Verified no custom modifications beyond content
-- [ ] No deviations observed from reference template
+- Authentication (Supabase JWT + Roles + RLS)
+- All 8 Admin Modules (Media, Settings, Pages, Blog, Projects, Services, Testimonials, Leads)
+- Inner page wiring (Services, Projects, Blog)
+- Contact form → Leads pipeline
+- Settings → Footer/Contact wiring
 
-> **Note:** Performance and accessibility targets are measured after parity; not enforced via template changes in Phase 2.
+### MVP PARTIAL 🔶
 
----
+- Testimonials public carousel (admin done, homepage static)
+- Maps in Settings (not implemented)
 
-## Post-Phase 2
+### MVP DEFERRED ⏸️
 
-After Phase 2 completion, await authorization for:
-
-- Phase 3: Admin cleanup and placeholder implementation
-- Phase 4: Supabase integration
-- Phase 5: Feature development
+- Homepage DB wiring (all 9 sections)
+- Analytics dashboard
+- Public app in Lovable Preview (architecture limitation)
+- User self-registration (SMTP-dependent)
 
 ---
 
@@ -231,5 +143,6 @@ After Phase 2 completion, await authorization for:
 | Version | Date | Author | Notes |
 |---------|------|--------|-------|
 | 0.1 | 2025-01-XX | Planning Agent | Initial draft |
+| 1.0 | 2025-12-25 | Implementation Agent | Phase 5 + 6.1 complete, MVP baseline |
 
-**Next Review:** Before Phase 2.1 execution
+**Next Review:** Before Phase 6.2 authorization
