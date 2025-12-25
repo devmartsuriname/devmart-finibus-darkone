@@ -1,8 +1,8 @@
 # Tasks — Devmart Implementation Tracker
 
 **Status:** Verified  
-**Current Phase:** Phase 7 IN PROGRESS — Homepage Dynamic Wiring  
-**Last Updated:** 2025-12-25  
+**Current Phase:** Phase 7.2 COMPLETE | Phase 7 Remaining IN PROGRESS  
+**Last Updated:** 2025-12-25
 
 ---
 
@@ -77,6 +77,36 @@ See: Section "Homepage Sections — Deferred" below.
 
 ---
 
+## Phase 7.2 — Routing + 404 Parity + Image Fix (✅ COMPLETE)
+
+**Completed:** 2025-12-25
+
+### Root Cause & Fixes Applied
+
+| Issue | Root Cause | Fix Applied |
+|-------|------------|-------------|
+| Home portfolio cards → 404 | Route pattern `/project/:slug` instead of `/project-details/:slug` | Fixed in `PortfolioArea.tsx` line 117 |
+| 404 page missing Header/Footer | Catch-all route outside `MainLayout` | Moved inside `MainLayout` in `App.tsx` |
+| Project Details image instability | Missing `object-fit: cover` | Added to `_project_details.scss` |
+
+### Files Changed
+
+| File | Change |
+|------|--------|
+| `apps/public/src/components/pages/Home/PortfolioArea.tsx` | Route pattern fix |
+| `apps/public/src/App.tsx` | Catch-all moved inside MainLayout |
+| `apps/public/src/assets/sass/_project_details.scss` | Added object-fit: cover |
+
+### Stability Guarantee
+
+All project images (any dimensions) will render consistently with `object-fit: cover`.
+
+### Restore Point
+
+`docs/restore-points/Restore_Point_Phase_7_2_Routing_404_Image_Fix.md`
+
+---
+
 ## Phase 7 — Homepage Dynamic Wiring (🔄 IN PROGRESS)
 
 ### New Database Objects
@@ -94,7 +124,7 @@ See: Section "Homepage Sections — Deferred" below.
 | Services | `ServiceArea.tsx` | 🔄 Wiring | `services` table |
 | About + Stats | `AboutArea.tsx` | 🔄 Wiring | `homepage_settings.data` |
 | Newsletter + Partners | `OurPartnerArea.tsx` | 🔄 Wiring | `newsletter_subscribers` + settings |
-| Portfolio | `PortfolioArea.tsx` | 🔄 Wiring | `projects` table |
+| Portfolio | `PortfolioArea.tsx` | ✅ Wired | `projects` table (routing fixed) |
 | Why Choose Us | `WhyChooseUsArea.tsx` | 🔄 Wiring | `homepage_settings.data.why_choose` |
 | Testimonials | `TestimonialArea.tsx` | 🔄 Wiring | `testimonials` table |
 | Latest Blog | `NewsLatterArea.tsx` | 🔄 Wiring | `blog_posts` table |
@@ -153,5 +183,6 @@ See: Section "Homepage Sections — Deferred" below.
 |---------|------|--------|-------|
 | 0.1 | 2025-01-XX | Planning Agent | Initial draft |
 | 1.0 | 2025-12-25 | Implementation Agent | Phase 5 + 6.1 complete, MVP baseline |
+| 1.1 | 2025-12-25 | Implementation Agent | Phase 7.2 complete — Routing/404/Image parity |
 
-**Next Review:** Before Phase 6.2 authorization
+**Next Review:** Before Phase 7 homepage wiring authorization
