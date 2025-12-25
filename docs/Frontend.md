@@ -1,8 +1,8 @@
 # Frontend Specification — Devmart Platform
 
-**Status:** Draft  
-**Phase:** Planning Only  
-**Execution:** Not Authorized  
+**Status:** Implemented (MVP)  
+**Phase:** Phase 6.1 COMPLETE  
+**Last Updated:** 2025-12-25  
 
 ---
 
@@ -45,7 +45,9 @@
 | Dashboard | Overview metrics, quick actions |
 | Navigation | Sidebar menu, topbar controls |
 | Authentication | Login, logout, session management |
-| Future modules | Content management, lead management |
+| Content Management | Blog, Projects, Services, Pages, Media, Testimonials |
+| CRM | Lead management |
+| Settings | Site configuration |
 
 **Structure to Preserve:**
 
@@ -117,9 +119,41 @@ Each page must pass:
 
 ---
 
-## 3. UI Module Inventory
+## 3. Homepage Sections — Static by Design (Phase-Locked)
 
-### 3.1 Finibus Modules Required
+> **Authorization Status:** NOT AUTHORIZED for DB wiring
+
+All Homepage sections remain static per Phase 6 guardrails. Wiring to database requires explicit authorization.
+
+| Section | Current State | Data Source | Wiring Status |
+|---------|---------------|-------------|---------------|
+| Hero Slider | Static | Hardcoded | ❌ Not Authorized |
+| Services Section | Static | Hardcoded | ❌ Not Authorized |
+| About Section | Static | Hardcoded | ❌ Not Authorized |
+| Partners Carousel | Static | Hardcoded | ❌ Not Authorized |
+| Portfolio Section | Static | Hardcoded | ❌ Not Authorized |
+| Why Choose Us | Static | Hardcoded | ❌ Not Authorized |
+| Testimonials Section | Static | Hardcoded | ❌ Not Authorized |
+| Latest Blog Posts | Static | Hardcoded | ❌ Not Authorized |
+| Let's Talk CTA | Static | Hardcoded | ❌ Not Authorized |
+
+**Inner Pages (Wired to DB):**
+
+| Page | Status | Data Source |
+|------|--------|-------------|
+| `/services` | ✅ Wired | `services` table |
+| `/service/:slug` | ✅ Wired | `services` + `service_process_steps` + `service_pricing_plans` |
+| `/projects` | ✅ Wired | `projects` table |
+| `/project/:slug` | ✅ Wired | `projects` + `project_process_steps` |
+| `/blog` | ✅ Wired | `blog_posts` (published) |
+| `/blog/:slug` | ✅ Wired | `blog_posts` + `media` |
+| `/contact` | ✅ Wired | `settings` (contact info) + `leads` (form INSERT) |
+
+---
+
+## 4. UI Module Inventory
+
+### 4.1 Finibus Modules Required
 
 | Category | Modules |
 |----------|---------|
@@ -134,7 +168,7 @@ Each page must pass:
 | Forms | Contact forms, newsletter signup |
 | Navigation | Breadcrumbs, pagination |
 
-### 3.2 Darkone Modules Available
+### 4.2 Darkone Modules Available
 
 | Category | Modules |
 |----------|---------|
@@ -147,9 +181,9 @@ Each page must pass:
 
 ---
 
-## 4. Technology Stack
+## 5. Technology Stack
 
-### 4.1 Shared Stack
+### 5.1 Shared Stack
 
 | Technology | Version | Purpose |
 |------------|---------|---------|
@@ -158,7 +192,7 @@ Each page must pass:
 | Vite | 5.x | Build tool |
 | React Router | 6.x | Routing |
 
-### 4.2 Public App (Finibus)
+### 5.2 Public App (Finibus)
 
 | Technology | Purpose |
 |------------|---------|
@@ -167,7 +201,7 @@ Each page must pass:
 | Swiper | Carousels |
 | AOS | Scroll animations |
 
-### 4.3 Admin App (Darkone)
+### 5.3 Admin App (Darkone)
 
 | Technology | Purpose |
 |------------|---------|
@@ -179,9 +213,9 @@ Each page must pass:
 
 ---
 
-## 5. Responsive Requirements
+## 6. Responsive Requirements
 
-### 5.1 Breakpoints
+### 6.1 Breakpoints
 
 Both apps follow Bootstrap 5 breakpoints:
 
@@ -194,7 +228,7 @@ Both apps follow Bootstrap 5 breakpoints:
 | xl | ≥ 1200px |
 | xxl | ≥ 1400px |
 
-### 5.2 Mobile-First
+### 6.2 Mobile-First
 
 - All layouts must be mobile-first
 - Navigation collapses on mobile
@@ -203,7 +237,7 @@ Both apps follow Bootstrap 5 breakpoints:
 
 ---
 
-## 6. Performance Requirements
+## 7. Performance Requirements
 
 | Metric | Target |
 |--------|--------|
@@ -216,7 +250,7 @@ Both apps follow Bootstrap 5 breakpoints:
 
 ---
 
-## 7. Accessibility Requirements
+## 8. Accessibility Requirements
 
 | Requirement | Standard |
 |-------------|----------|
@@ -230,7 +264,7 @@ Both apps follow Bootstrap 5 breakpoints:
 
 ---
 
-## 8. Explicit Non-Goals (All Phases)
+## 9. Explicit Non-Goals (All Phases)
 
 The following are explicitly out of scope for ALL phases unless separately authorized:
 
@@ -250,5 +284,6 @@ The following are explicitly out of scope for ALL phases unless separately autho
 | Version | Date | Author | Notes |
 |---------|------|--------|-------|
 | 0.1 | 2025-01-XX | Planning Agent | Initial draft |
+| 1.0 | 2025-12-25 | Implementation Agent | Updated to Implemented (MVP), added Homepage section status |
 
-**Next Review:** After Phase 2 execution approval
+**Next Review:** After Phase 6.2 authorization
