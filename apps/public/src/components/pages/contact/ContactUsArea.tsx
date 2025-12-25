@@ -1,6 +1,16 @@
+/**
+ * ContactUsArea Component
+ * 
+ * Phase 6.1: Wired to Admin Settings with safe fallbacks
+ * Displays Location, Phone, Email cards
+ */
+
 import React from "react";
+import { usePublicSettings } from "../../../hooks/usePublicSettings";
 
 function ContactUsArea() {
+  const { settings } = usePublicSettings();
+
   return (
     <>
       <div className="container">
@@ -19,9 +29,7 @@ function ContactUsArea() {
                 <i className="bi bi-geo-alt" />
               </div>
               <h4>Location</h4>
-              <p>
-                168/170, Ave 01,Old York Drive Rich Mirpur, Dhaka, Bangladesh
-              </p>
+              <p>{settings.contact_address}</p>
             </div>
           </div>
           <div className="col-md-6 col-lg-4 col-xl-4">
@@ -30,8 +38,9 @@ function ContactUsArea() {
                 <i className="bi bi-telephone" />
               </div>
               <h4>Phone</h4>
-              <a href="tel:0123456789102">+012-3456-789102</a>
-              <a href="tel:013456789102">+012-3456-789102</a>
+              <a href={`tel:${settings.contact_phone.replace(/\s/g, '')}`}>
+                {settings.contact_phone}
+              </a>
             </div>
           </div>
           <div className="col-md-6 col-lg-4 col-xl-4">
@@ -40,8 +49,9 @@ function ContactUsArea() {
                 <i className="bi bi-envelope" />
               </div>
               <h4>Email</h4>
-              <a href="mailto:info@example.com">info@example.com</a>
-              <a href="mailto:support@example.com">support@example.com</a>
+              <a href={`mailto:${settings.contact_email}`}>
+                {settings.contact_email}
+              </a>
             </div>
           </div>
         </div>

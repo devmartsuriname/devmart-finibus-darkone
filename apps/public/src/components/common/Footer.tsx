@@ -4,12 +4,16 @@
  * Migrated from Finibus to React 18 + react-router-dom v6
  * - Link updated for v6 API
  * - Removed process.env.PUBLIC_URL (not needed in Vite)
+ * - Phase 6.1: Wired to Admin Settings with safe fallbacks
  */
 
 import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
+import { usePublicSettings } from '../../hooks/usePublicSettings'
 
 function Footer() {
+  const { settings } = usePublicSettings();
+  
   const scrollTop = () => {
     window.scrollTo({
       top: 0,
@@ -31,45 +35,53 @@ function Footer() {
                 </div>
                 <address>
                   <h4>Office</h4>
-                  <p>168/170, Avenue 01, Mirpur DOHS, Bangladesh</p>
+                  <p>{settings.contact_address}</p>
                 </address>
                 <ul className="social-media-icons">
-                  <li>
-                    <a
-                      rel="noopener noreferrer"
-                      href="https://www.facebook.com/"
-                      target="_blank"
-                    >
-                      <i className="fab fa-facebook-f" />
-                    </a>
-                  </li>
-                  <li>
-                    <a
-                      rel="noopener noreferrer"
-                      href="https://www.twitter.com/"
-                      target="_blank"
-                    >
-                      <i className="fab fa-twitter" />
-                    </a>
-                  </li>
-                  <li>
-                    <a
-                      rel="noopener noreferrer"
-                      target="_blank"
-                      href="https://www.pinterest.com/"
-                    >
-                      <i className="fab fa-pinterest-p" />
-                    </a>
-                  </li>
-                  <li>
-                    <a
-                      rel="noopener noreferrer"
-                      target="_blank"
-                      href="https://www.instagram.com/"
-                    >
-                      <i className="fab fa-instagram" />
-                    </a>
-                  </li>
+                  {settings.facebook_url && (
+                    <li>
+                      <a
+                        rel="noopener noreferrer"
+                        href={settings.facebook_url}
+                        target="_blank"
+                      >
+                        <i className="fab fa-facebook-f" />
+                      </a>
+                    </li>
+                  )}
+                  {settings.linkedin_url && (
+                    <li>
+                      <a
+                        rel="noopener noreferrer"
+                        href={settings.linkedin_url}
+                        target="_blank"
+                      >
+                        <i className="fab fa-linkedin-in" />
+                      </a>
+                    </li>
+                  )}
+                  {settings.instagram_url && (
+                    <li>
+                      <a
+                        rel="noopener noreferrer"
+                        target="_blank"
+                        href={settings.instagram_url}
+                      >
+                        <i className="fab fa-instagram" />
+                      </a>
+                    </li>
+                  )}
+                  {settings.youtube_url && (
+                    <li>
+                      <a
+                        rel="noopener noreferrer"
+                        target="_blank"
+                        href={settings.youtube_url}
+                      >
+                        <i className="fab fa-youtube" />
+                      </a>
+                    </li>
+                  )}
                 </ul>
               </div>
             </div>
@@ -155,11 +167,8 @@ function Footer() {
                     <i className="fas fa-phone-alt" />
                   </div>
                   <div className="phone">
-                    <a rel="noopener noreferrer" href="tel:05661111985">
-                      +880 566 1111 985
-                    </a>
-                    <a rel="noopener noreferrer" href="tel:06571111576">
-                      +880 657 1111 576
+                    <a rel="noopener noreferrer" href={`tel:${settings.contact_phone.replace(/\s/g, '')}`}>
+                      {settings.contact_phone}
                     </a>
                   </div>
                 </div>
@@ -168,11 +177,8 @@ function Footer() {
                     <i className="far fa-envelope" />
                   </div>
                   <div className="email">
-                    <a rel="noopener noreferrer" href="mailto:info@example.com">
-                      info@example.com
-                    </a>
-                    <a rel="noopener noreferrer" href="mailto:info@support.com">
-                      info@support.com
+                    <a rel="noopener noreferrer" href={`mailto:${settings.contact_email}`}>
+                      {settings.contact_email}
                     </a>
                   </div>
                 </div>
@@ -180,7 +186,7 @@ function Footer() {
                   <div className="address-icon">
                     <i className="fas fa-map-marker-alt" />
                   </div>
-                  <p>168/170, Avenue 01, Mirpur DOHS, Bangladesh</p>
+                  <p>{settings.contact_address}</p>
                 </div>
               </div>
             </div>
@@ -190,13 +196,13 @@ function Footer() {
               <div className="col-12 col-md-4 col-lg-4 col-xl-5">
                 <div className="copy-txt">
                   <span>
-                    Copyright 2024 <b>Devmart</b> | Powered by{' '}
+                    Copyright 2024 <b>{settings.site_name}</b> | Powered by{' '}
                     <a
                       rel="noopener noreferrer"
-                      href="https://www.devmart.com/"
+                      href="https://www.devmart.sr/"
                       target="_blank"
                     >
-                      Devmart
+                      {settings.site_name}
                     </a>
                   </span>
                 </div>

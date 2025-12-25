@@ -2,10 +2,10 @@
 
 ```
 Status: AUTHORITATIVE
-Phase: Phase 4 COMPLETE | Phase 5 IN PROGRESS
+Phase: Phase 4 COMPLETE | Phase 5 COMPLETE | Phase 6.1 COMPLETE
 Auth: IMPLEMENTED (Supabase JWT + Roles + RLS)
-Execution: All 8 Admin Modules Complete | Public → DB Integration Active
-Last Updated: 2025-12-23
+Execution: All 8 Admin Modules Complete | Public → DB Integration Complete
+Last Updated: 2025-12-25
 ```
 
 ---
@@ -602,6 +602,63 @@ Updated all 6 blog posts with Finibus-style lorem ipsum content:
 
 ---
 
+## 17. Phase 6.1: Contact/Footer Settings Wiring
+
+### 17.1 Overview
+
+Wired Contact page and Footer components to Admin Settings (Supabase) with safe fallbacks.
+
+### 17.2 Deployment Reality
+
+**IMPORTANT:** The Lovable Preview runs the Admin app from `/src`. The `apps/public` Vite app is a **separate application** that requires independent deployment (e.g., local development, Vercel, Netlify).
+
+| Environment | What Runs |
+|-------------|-----------|
+| Lovable Preview | Admin app (`/src/main.tsx`) |
+| Local `cd apps/public && npm run dev` | Public app (`apps/public/src/main.tsx`) |
+| Production deployment | Both apps separately |
+
+### 17.3 Components Created
+
+| File | Purpose |
+|------|---------|
+| `apps/public/src/hooks/usePublicSettings.ts` | Fetch whitelisted settings with fallbacks |
+
+### 17.4 Components Modified
+
+| File | Change |
+|------|--------|
+| `apps/public/src/components/common/Footer.tsx` | Wired to settings via usePublicSettings hook |
+| `apps/public/src/components/pages/contact/ContactUsArea.tsx` | Wired to settings via usePublicSettings hook |
+
+### 17.5 Leads Pipeline Summary
+
+| Step | Description |
+|------|-------------|
+| 1 | User fills Contact form in `apps/public` |
+| 2 | Client-side validation (name, email required, basic email format) |
+| 3 | Honeypot check (if filled → silent success, no DB insert) |
+| 4 | INSERT into `leads` table with `source='contact_form'` |
+| 5 | Admin views leads at `/crm/leads` (authenticated, admin role required) |
+
+**RLS Policies:**
+- `"Public can submit leads"` — INSERT with `WITH CHECK (true)`
+- `"Admins can view all leads"` — SELECT with `has_role(auth.uid(), 'admin')`
+- `"Admins can update leads"` — UPDATE with `has_role(auth.uid(), 'admin')`
+
+### 17.6 Public Settings Exposure
+
+**Whitelisted Keys:**
+- `contact_email`, `contact_phone`, `contact_address`
+- `site_name`
+- `facebook_url`, `instagram_url`, `linkedin_url`, `youtube_url`
+
+**RLS Policy:** `"Public can read settings"` with `QUAL (true)` — allows anon SELECT.
+
+**Fallback Behavior:** If fetch fails or keys empty, hardcoded Finibus defaults are used.
+
+---
+
 ## Document Control
 
 | Version | Date | Author | Notes |
@@ -625,3 +682,4 @@ Updated all 6 blog posts with Finibus-style lorem ipsum content:
 | 3.4 | 2025-12-23 | Implementation Agent | Phase 5.4+ Parity Restore - Fixed stretched images by adding landscape media + correcting project media assignments |
 | 3.5 | 2025-12-24 | Implementation Agent | Phase 5.5 - Blog public wiring complete (list + details + RLS + modal parity) |
 | 3.6 | 2025-12-24 | Implementation Agent | Phase 5.5 Blog Parity Hotfix - Quote block always rendered, seed data backfilled |
+| 3.7 | 2025-12-25 | Implementation Agent | Phase 6.1 - Contact/Footer settings wiring + leads pipeline documentation |
