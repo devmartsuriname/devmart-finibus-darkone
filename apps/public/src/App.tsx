@@ -148,10 +148,9 @@ function App() {
         <Route path="/blog-standard" element={<BlogStandardPage />} />
         <Route path="/contact" element={<ContactPage />} />
         <Route path="/error" element={<ErrorPage />} />
+        {/* Catch-all for 404 - inside MainLayout for Header/Footer */}
+        <Route path="*" element={<ErrorPage />} />
       </Route>
-      
-      {/* Catch-all for 404 */}
-      <Route path="*" element={<ErrorPage />} />
     </Routes>
   )
 }
