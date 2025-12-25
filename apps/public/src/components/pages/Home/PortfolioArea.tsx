@@ -2,12 +2,36 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, Navigation } from "swiper/modules";
+import { useProjects } from "../../../hooks/useProjects";
 
 interface PortfolioAreaProps {
   black?: string;
 }
 
+// Static fallback projects (Finibus defaults)
+const STATIC_PROJECTS = [
+  { id: "static-1", category: "Template", title: "Creative Agency", image: "/images/portfolio/portfolio-1.jpg", slug: "project-details" },
+  { id: "static-2", category: "UI Kit", title: "E-Shop Ecommerce", image: "/images/portfolio/portfolio-2.jpg", slug: "project-details" },
+  { id: "static-3", category: "Software", title: "Desktop Mockup", image: "/images/portfolio/portfolio-3.jpg", slug: "project-details" },
+  { id: "static-4", category: "Graphic", title: "Art Deco Cocktails", image: "/images/portfolio/portfolio-4.jpg", slug: "project-details" },
+  { id: "static-5", category: "App", title: "Mobile Crypto Wallet", image: "/images/portfolio/portfolio-5.jpg", slug: "project-details" },
+  { id: "static-6", category: "Template", title: "Creative Agency", image: "/images/portfolio/portfolio-3.jpg", slug: "project-details" }
+];
+
 function PortfolioArea({ black = "" }: PortfolioAreaProps) {
+  const { projects: dbProjects } = useProjects();
+  
+  // Use DB projects or fallback to static (need at least 5 for carousel)
+  const displayProjects = dbProjects.length >= 5 
+    ? dbProjects.slice(0, 6).map((p, i) => ({
+        id: p.id,
+        category: p.category,
+        title: p.title,
+        image: p.featured_image?.public_url || p.image?.public_url || STATIC_PROJECTS[i % 6].image,
+        slug: p.slug
+      }))
+    : STATIC_PROJECTS;
+
   const portfolioSlider = {
     slidesPerView: 5,
     spaceBetween: 30,
@@ -73,204 +97,46 @@ function PortfolioArea({ black = "" }: PortfolioAreaProps) {
             }}
             className="swiper-wrapper"
           >
-            <SwiperSlide className="swiper-slide">
-              <div className="single-portfolio">
-                <div className="portfolio-data">
-                  <a href="/">
-                    <img
-                      src="/images/portfolio/portfolio-1.jpg"
-                      alt="images"
-                    />
-                  </a>
-                </div>
-                <div className="portfolio-inner">
-                  <span>Template</span>
-                  <h4>Creative Agency</h4>
-                  <div className="portfolio-hover">
-                    <Link
-                      onClick={scrollTop}
-                      to="/project-details"
-                      className="case-btn"
-                    >
-                      Case Study
-                    </Link>
-                    <a
-                      data-lightbox="image1"
-                      href="/images/portfolio/portfolio-1.jpg"
-                    >
-                      <i className="fas fa-search" />
-                    </a>
-                  </div>
-                </div>
-              </div>
-            </SwiperSlide>
-            <SwiperSlide className="swiper-slide">
-              <div className="single-portfolio">
-                <div className="portfolio-data">
-                  <a href="#s">
-                    <img
-                      src="/images/portfolio/portfolio-2.jpg"
-                      alt="images"
-                    />
-                  </a>
-                </div>
-                <div className="portfolio-inner">
-                  <span>UI Kit</span>
-                  <h4>E-Shop Ecommerce</h4>
-                  <div className="portfolio-hover">
-                    <Link
-                      onClick={scrollTop}
-                      to="/project-details"
-                      className="case-btn"
-                    >
-                      Case Study
-                    </Link>
-                    <a
-                      data-lightbox="image1"
-                      href="/images/portfolio/portfolio-2.jpg"
-                    >
+            {displayProjects.map((project, index) => (
+              <SwiperSlide key={project.id} className="swiper-slide">
+                <div className="single-portfolio">
+                  <div className="portfolio-data">
+                    <a href="#s">
                       <img
-                        alt="images"
-                        src="/images/portfolio/search-2.svg"
+                        src={project.image}
+                        alt={project.title}
                       />
                     </a>
                   </div>
-                </div>
-              </div>
-            </SwiperSlide>
-            <SwiperSlide className="swiper-slide">
-              <div className="single-portfolio">
-                <div className="portfolio-data">
-                  <a href="#s">
-                    <img
-                      src="/images/portfolio/portfolio-3.jpg"
-                      alt="images"
-                    />
-                  </a>
-                </div>
-                <div className="portfolio-inner">
-                  <span>Software</span>
-                  <h4>Desktop Mockup</h4>
-                  <div className="portfolio-hover">
-                    <Link
-                      onClick={scrollTop}
-                      to="/project-details"
-                      className="case-btn"
-                    >
-                      Case Study
-                    </Link>
-                    <a
-                      data-lightbox="image1"
-                      href="/images/portfolio/portfolio-3.jpg"
-                    >
-                      <img
-                        alt="images"
-                        src="/images/portfolio/search-2.svg"
-                      />
-                    </a>
+                  <div className="portfolio-inner">
+                    <span>{project.category}</span>
+                    <h4>{project.title}</h4>
+                    <div className="portfolio-hover">
+                      <Link
+                        onClick={scrollTop}
+                        to={`/project/${project.slug}`}
+                        className="case-btn"
+                      >
+                        Case Study
+                      </Link>
+                      <a
+                        data-lightbox="image1"
+                        href={project.image}
+                      >
+                        {index === 0 || index === 5 ? (
+                          <i className="fas fa-search" />
+                        ) : (
+                          <img
+                            alt="search"
+                            src="/images/portfolio/search-2.svg"
+                          />
+                        )}
+                      </a>
+                    </div>
                   </div>
                 </div>
-              </div>
-            </SwiperSlide>
-            <SwiperSlide className="swiper-slide">
-              <div className="single-portfolio">
-                <div className="portfolio-data">
-                  <a href="#s">
-                    <img
-                      src="/images/portfolio/portfolio-4.jpg"
-                      alt="images"
-                    />
-                  </a>
-                </div>
-                <div className="portfolio-inner">
-                  <span>Graphic</span>
-                  <h4>Art Deco Cocktails</h4>
-                  <div className="portfolio-hover">
-                    <Link
-                      onClick={scrollTop}
-                      to="/project-details"
-                      className="case-btn"
-                    >
-                      Case Study
-                    </Link>
-                    <a
-                      data-lightbox="image1"
-                      href="/images/portfolio/portfolio-4.jpg"
-                    >
-                      <img
-                        alt="images"
-                        src="/images/portfolio/search-2.svg"
-                      />
-                    </a>
-                  </div>
-                </div>
-              </div>
-            </SwiperSlide>
-            <SwiperSlide className="swiper-slide">
-              <div className="single-portfolio">
-                <div className="portfolio-data">
-                  <a href="#s">
-                    <img
-                      src="/images/portfolio/portfolio-5.jpg"
-                      alt="images"
-                    />
-                  </a>
-                </div>
-                <div className="portfolio-inner">
-                  <span>App</span>
-                  <h4>Mobile Crypto Wallet</h4>
-                  <div className="portfolio-hover">
-                    <Link
-                      onClick={scrollTop}
-                      to="/project-details"
-                      className="case-btn"
-                    >
-                      Case Study
-                    </Link>
-                    <a
-                      data-lightbox="image1"
-                      href="/images/portfolio/portfolio-5.jpg"
-                    >
-                      <img
-                        alt="images"
-                        src="/images/portfolio/search-2.svg"
-                      />
-                    </a>
-                  </div>
-                </div>
-              </div>
-            </SwiperSlide>
-            <SwiperSlide className="swiper-slide">
-              <div className="single-portfolio">
-                <div className="portfolio-data">
-                  <a href="#s">
-                    <img
-                      src="/images/portfolio/portfolio-3.jpg"
-                      alt="images"
-                    />
-                  </a>
-                </div>
-                <div className="portfolio-inner">
-                  <span>Template</span>
-                  <h4>Creative Agency</h4>
-                  <div className="portfolio-hover">
-                    <Link
-                      onClick={scrollTop}
-                      to="/project-details"
-                      className="case-btn"
-                    >
-                      Case Study
-                    </Link>
-                    <a
-                      data-lightbox="image1"
-                      href="/images/portfolio/portfolio-3.jpg"
-                    >
-                      <i className="fas fa-search" />
-                    </a>
-                  </div>
-                </div>
-              </div>
-            </SwiperSlide>
+              </SwiperSlide>
+            ))}
           </Swiper>
           <div className="swiper-pagination" />
           <div className="swiper-button-next" />

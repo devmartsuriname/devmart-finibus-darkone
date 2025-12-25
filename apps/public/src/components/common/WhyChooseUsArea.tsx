@@ -2,11 +2,11 @@
  * WhyChooseUsArea Component
  * 
  * Migrated from Finibus to React 18
- * Note: Uses react-modal-video for video popup
- * Progress bars implemented with inline styles (removed @ramonak/react-progress-bar dependency)
+ * Phase 7: Wired to homepage_settings
  */
 
 import React, { useState } from 'react'
+import { useHomepageSettings, SkillBar } from '../../hooks/useHomepageSettings'
 
 interface WhyChooseUsAreaProps {
   black?: string
@@ -18,6 +18,19 @@ interface ProgressBarProps {
   completed: number
   label?: string
 }
+
+// Static fallback data (Finibus defaults)
+const STATIC_WHY_CHOOSE = {
+  title: "success is just around the next online corner",
+  video_url: "https://www.youtube.com/embed/L61p2uyiMSo",
+  video_poster: "/images/play-video.jpg",
+  skills: [
+    { label: "Web Design", percent: 85 },
+    { label: "App Development", percent: 75 },
+    { label: "Backend", percent: 55 },
+    { label: "Video Animation", percent: 65 }
+  ] as SkillBar[]
+};
 
 // Simple progress bar component to replace @ramonak/react-progress-bar
 function ProgressBar({ completed, label }: ProgressBarProps) {
@@ -48,7 +61,12 @@ function ProgressBar({ completed, label }: ProgressBarProps) {
 }
 
 function WhyChooseUsArea({ black = '', light = '', lable = '' }: WhyChooseUsAreaProps) {
+  const { data: homepageData } = useHomepageSettings();
   const [isOpen, setOpen] = useState(false)
+
+  // Use DB data or fallback to static
+  const whyChoose = homepageData?.why_choose || STATIC_WHY_CHOOSE;
+  const skills = whyChoose.skills?.length ? whyChoose.skills : STATIC_WHY_CHOOSE.skills;
 
   return (
     <>
@@ -59,11 +77,11 @@ function WhyChooseUsArea({ black = '', light = '', lable = '' }: WhyChooseUsArea
               <div className={`title ${black}`}>
                 <span>Why Choose Devmart</span>
                 <h2 className="mb-15">
-                  success is just around the next online corner
+                  {whyChoose.title}
                 </h2>
               </div>
               <div className="video-demo">
-                <img src="/images/play-video.jpg" alt="Video demo" />
+                <img src={whyChoose.video_poster} alt="Video demo" />
                 <div className="play-btn">
                   <div onClick={() => setOpen(true)} className="popup-video">
                     <i className="fas fa-play" /> Play now
@@ -74,22 +92,12 @@ function WhyChooseUsArea({ black = '', light = '', lable = '' }: WhyChooseUsArea
             <div className="col-md-6 col-lg-6 col-xl-6">
               <div className={`valuable-skills ${light}`}>
                 <img src="/images/valuable-skill.jpg" alt="Valuable skills" />
-                <div className="signle-bar pt-0">
-                  <h6>Web Design</h6>
-                  <ProgressBar completed={85} />
-                </div>
-                <div className="signle-bar">
-                  <h6>App Development</h6>
-                  <ProgressBar completed={75} />
-                </div>
-                <div className="signle-bar">
-                  <h6>Backend</h6>
-                  <ProgressBar completed={55} />
-                </div>
-                <div className="signle-bar">
-                  <h6>Video Animation</h6>
-                  <ProgressBar completed={65} />
-                </div>
+                {skills.map((skill, index) => (
+                  <div key={index} className={`signle-bar ${index === 0 ? 'pt-0' : ''}`}>
+                    <h6>{skill.label}</h6>
+                    <ProgressBar completed={skill.percent} />
+                  </div>
+                ))}
               </div>
             </div>
           </div>
@@ -141,7 +149,7 @@ function WhyChooseUsArea({ black = '', light = '', lable = '' }: WhyChooseUsArea
             <iframe
               width="100%"
               height="100%"
-              src="https://www.youtube.com/embed/L61p2uyiMSo?autoplay=1"
+              src={`${whyChoose.video_url}?autoplay=1`}
               title="Video"
               frameBorder="0"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"

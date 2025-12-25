@@ -156,6 +156,27 @@ export type Database = {
         }
         Relationships: []
       }
+      homepage_settings: {
+        Row: {
+          data: Json
+          id: number
+          updated_at: string
+          updated_by: string | null
+        }
+        Insert: {
+          data?: Json
+          id?: number
+          updated_at?: string
+          updated_by?: string | null
+        }
+        Update: {
+          data?: Json
+          id?: number
+          updated_at?: string
+          updated_by?: string | null
+        }
+        Relationships: []
+      }
       leads: {
         Row: {
           created_at: string
@@ -234,6 +255,27 @@ export type Database = {
           title?: string | null
           updated_at?: string
           uploaded_by?: string | null
+        }
+        Relationships: []
+      }
+      newsletter_subscribers: {
+        Row: {
+          created_at: string
+          email: string
+          id: string
+          source: string
+        }
+        Insert: {
+          created_at?: string
+          email: string
+          id?: string
+          source?: string
+        }
+        Update: {
+          created_at?: string
+          email?: string
+          id?: string
+          source?: string
         }
         Relationships: []
       }
