@@ -1,7 +1,7 @@
 # Tasks — Devmart Implementation Tracker
 
 **Status:** Verified  
-**Current Phase:** Phase 6.1 COMPLETE — MVP Baseline Established  
+**Current Phase:** Phase 7 IN PROGRESS — Homepage Dynamic Wiring  
 **Last Updated:** 2025-12-25  
 
 ---
@@ -16,8 +16,8 @@
 | Phase 4 | ✅ Complete | Admin Modules (All 8 modules) |
 | Phase 5 | ✅ Complete | Public → DB Integration (Inner Pages) |
 | Phase 6.1 | ✅ Complete | Contact/Leads Pipeline + Settings Wiring |
-| Phase 6.2 | ⏸️ Deferred | Homepage DB Wiring (not authorized) |
-| Phase 7 | ⏸️ Deferred | Analytics (not authorized) |
+| Phase 7 | 🔄 In Progress | Homepage Dynamic Wiring + Newsletter |
+| Phase 8 | ⏸️ Deferred | Analytics (not authorized) |
 
 ---
 
@@ -77,25 +77,34 @@ See: Section "Homepage Sections — Deferred" below.
 
 ---
 
+## Phase 7 — Homepage Dynamic Wiring (🔄 IN PROGRESS)
+
+### New Database Objects
+
+| Object | Type | Status | Notes |
+|--------|------|--------|-------|
+| `homepage_settings` | Table | 🔄 Creating | Single-row JSON config |
+| `newsletter_subscribers` | Table | 🔄 Creating | Newsletter collection |
+
+### Homepage Sections Wiring Status
+
+| Section | Component | Status | Data Source |
+|---------|-----------|--------|-------------|
+| Hero | `HeroArea.tsx` | 🔄 Wiring | `homepage_settings.data.hero` |
+| Services | `ServiceArea.tsx` | 🔄 Wiring | `services` table |
+| About + Stats | `AboutArea.tsx` | 🔄 Wiring | `homepage_settings.data` |
+| Newsletter + Partners | `OurPartnerArea.tsx` | 🔄 Wiring | `newsletter_subscribers` + settings |
+| Portfolio | `PortfolioArea.tsx` | 🔄 Wiring | `projects` table |
+| Why Choose Us | `WhyChooseUsArea.tsx` | 🔄 Wiring | `homepage_settings.data.why_choose` |
+| Testimonials | `TestimonialArea.tsx` | 🔄 Wiring | `testimonials` table |
+| Latest Blog | `NewsLatterArea.tsx` | 🔄 Wiring | `blog_posts` table |
+| CTA Strip | `LetsTalkArea.tsx` | 🔄 Wiring | `homepage_settings.data.cta` |
+
+---
+
 ## Deferred Items
 
-### Phase 6.2 — Homepage DB Wiring (⏸️ DEFERRED)
-
-| Section | Current State | Reason |
-|---------|---------------|--------|
-| Hero Slider | Static | Not authorized |
-| Services Section | Static | Not authorized |
-| About Section | Static | Not authorized |
-| Partners Section | Static | Not authorized |
-| Portfolio Section | Static | Not authorized |
-| Why Choose Us | Static | Not authorized |
-| Testimonials Section | Static | Not authorized |
-| Latest Blog Posts | Static | Not authorized |
-| Let's Talk CTA | Static | Not authorized |
-
-**Authorization Required:** Explicit GO decision to wire Homepage sections to database.
-
-### Phase 7 — Analytics (⏸️ DEFERRED)
+### Phase 8 — Analytics (⏸️ DEFERRED)
 
 | Item | Reason |
 |------|--------|
