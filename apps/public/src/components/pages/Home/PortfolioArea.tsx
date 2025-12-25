@@ -114,7 +114,7 @@ function PortfolioArea({ black = "" }: PortfolioAreaProps) {
                     <div className="portfolio-hover">
                       <Link
                         onClick={scrollTop}
-                        to={`/project/${project.slug}`}
+                        to={`/project-details/${project.slug}`}
                         className="case-btn"
                       >
                         Case Study
