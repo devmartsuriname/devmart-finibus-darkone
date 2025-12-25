@@ -50,7 +50,7 @@ export const useSettings = () => {
     } catch (err) {
       const message = err instanceof Error ? err.message : 'Failed to fetch settings'
       setError(message)
-      toast.error(`Error loading settings: ${message}`)
+      toast.error(`Error loading settings: ${message}`, { icon: false })
     } finally {
       setIsLoading(false)
     }
@@ -76,7 +76,7 @@ export const useSettings = () => {
 
   const updateSettings = useCallback(async (updates: SettingUpdate[]): Promise<boolean> => {
     if (!user?.id) {
-      toast.error('You must be logged in to update settings')
+      toast.error('You must be logged in to update settings', { icon: false })
       return false
     }
 
@@ -102,12 +102,12 @@ export const useSettings = () => {
       // Refresh settings after update
       await fetchSettings()
       
-      toast.success('Settings saved successfully')
+      toast.success('Settings saved successfully', { icon: false })
       return true
     } catch (err) {
       const message = err instanceof Error ? err.message : 'Failed to save settings'
       setError(message)
-      toast.error(`Error saving settings: ${message}`)
+      toast.error(`Error saving settings: ${message}`, { icon: false })
       return false
     } finally {
       setIsSaving(false)

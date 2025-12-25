@@ -339,6 +339,7 @@ declare module 'react-toastify' {
     progress?: number
     theme?: string
     type?: string
+    icon?: boolean | ReactNode
   }
   export const toast: {
     (content: ReactNode, options?: ToastOptions): void
