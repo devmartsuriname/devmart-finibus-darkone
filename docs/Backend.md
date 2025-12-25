@@ -2,10 +2,10 @@
 
 ```
 Status: AUTHORITATIVE
-Phase: Phase 4 COMPLETE | Phase 5 IN PROGRESS
+Phase: Phase 4 COMPLETE | Phase 5 COMPLETE | Phase 6.1 COMPLETE
 Auth: IMPLEMENTED (Supabase JWT + Roles + RLS Active)
-Execution: All 8 Admin Modules Complete | Public → DB Integration Active
-Last Updated: 2025-12-23
+Execution: All 8 Admin Modules Complete | Public → DB Integration Complete
+Last Updated: 2025-12-25
 ```
 
 ---
@@ -430,7 +430,32 @@ CREATE TABLE public.leads (
 - `message` required (trimmed, non-empty)
 - `subject` optional
 
-### 2.13 services Table (Phase 4 Services)
+### 2.12.2 Public Settings Read — Contact/Footer Wiring (Phase 6.1)
+
+**Hook:** `apps/public/src/hooks/usePublicSettings.ts`
+
+**Purpose:** Fetch whitelisted contact settings from Supabase for public display in Contact page and Footer.
+
+**Whitelisted Keys:**
+| Key | Usage |
+|-----|-------|
+| `contact_email` | Email display in Footer + ContactUsArea |
+| `contact_phone` | Phone display in Footer + ContactUsArea |
+| `contact_address` | Address display in Footer + ContactUsArea |
+| `site_name` | Footer copyright |
+| `facebook_url` | Footer social icon |
+| `instagram_url` | Footer social icon |
+| `linkedin_url` | Footer social icon |
+| `youtube_url` | Footer social icon |
+
+**Fallback Behavior:**
+- If Supabase fetch fails → use hardcoded Finibus defaults
+- If specific key is empty → use fallback value for that key
+- NO UI breakage on network error
+
+**RLS Policy:** `"Public can read settings"` allows anon SELECT on settings table.
+
+
 
 ```sql
 CREATE TABLE public.services (
