@@ -684,3 +684,98 @@ Wired Contact page and Footer components to Admin Settings (Supabase) with safe 
 | 3.6 | 2025-12-24 | Implementation Agent | Phase 5.5 Blog Parity Hotfix - Quote block always rendered, seed data backfilled |
 | 3.7 | 2025-12-25 | Implementation Agent | Phase 6.1 - Contact/Footer settings wiring + leads pipeline documentation |
 | 3.8 | 2025-12-25 | Implementation Agent | Phase 7.2 - Routing 404 fix (Home → /project-details), 404 page parity (Header/Footer), Project Details image standardization (object-fit: cover) |
+| 3.9 | 2025-12-26 | Definition Agent | Phase 9A - Page UI Blocks Architecture definition (documentation only, no execution) |
+
+---
+
+## 18. Phase 9 — Page UI Blocks Architecture
+
+```
+Status: DEFINITION COMPLETE — Execution not started
+Phase: 9A
+Created: 2025-12-26
+```
+
+### 18.1 Overview
+
+Phase 9 extends the Homepage UI Blocks model to other static pages using a **scalable, governance-safe architecture**. The About page serves as the pilot implementation.
+
+### 18.2 Three-Table Model
+
+```
+┌─────────────────────────────────────────────────────────┐
+│                  UI Blocks Data Layer                   │
+├─────────────────────────────────────────────────────────┤
+│                                                         │
+│   ┌─────────────────────┐                               │
+│   │  homepage_settings  │  ← Phase 8 (LOCKED)           │
+│   │  (id: 1, JSONB)     │     Homepage-only data        │
+│   │                     │     NO CHANGES IN PHASE 9     │
+│   └─────────────────────┘                               │
+│                                                         │
+│   ┌─────────────────────┐                               │
+│   │    global_blocks    │  ← Phase 9 (NEW)              │
+│   │  (block_key, JSONB) │     Shared blocks across      │
+│   │                     │     multiple pages            │
+│   └─────────────────────┘                               │
+│                                                         │
+│   ┌─────────────────────┐                               │
+│   │   page_settings     │  ← Phase 9 (NEW)              │
+│   │  (page_slug, JSONB) │     Page-specific UI blocks   │
+│   └─────────────────────┘                               │
+│                                                         │
+└─────────────────────────────────────────────────────────┘
+```
+
+### 18.3 Block Ownership
+
+| Block Type | Storage | Examples |
+|------------|---------|----------|
+| Homepage blocks | `homepage_settings` | Hero, About, Partners, Stats |
+| Shared blocks | `global_blocks` | CTA Strip, Why Choose Us |
+| Page-specific blocks | `page_settings` | About Inside Story, Services Hero |
+
+### 18.4 About Page Section Mapping
+
+| Section | Component | Data Source |
+|---------|-----------|-------------|
+| Breadcrumb | `Breadcrumb` | `pages.title` |
+| Inside Story | `InsideStoryArea` | `page_settings` (slug='about') |
+| Why Choose Us | `WhyChooseUsArea` | `global_blocks` (key='why_choose_us') |
+| Testimonials | `TestimonialArea` | `testimonials` table |
+| Latest News | `LatesNewsArea` | `page_settings` + `blog_posts` |
+| Let's Talk | `LetsTalkArea` | `global_blocks` (key='cta_strip') |
+
+### 18.5 Admin UX Integration
+
+| Integration Point | Approach |
+|-------------------|----------|
+| Page-specific blocks | Pages module → Extended modal tabs |
+| Global blocks | New `/admin/content/global-blocks` module |
+| Shared block indicators | Read-only status with navigation links |
+
+### 18.6 Governance Rules
+
+| Rule | Enforcement |
+|------|-------------|
+| Homepage protection | `homepage_settings` NOT modified |
+| CSS isolation | Admin SCSS ≠ Finibus SCSS |
+| No block duplication | Shared blocks consumed, not copied |
+| Fixed section order | Finibus parity maintained |
+
+### 18.7 Execution Phases
+
+| Phase | Description | Status |
+|-------|-------------|--------|
+| 9A | Definition & documentation | ✅ COMPLETE |
+| 9B | Database (tables, RLS, seeding) | ⬜ AWAITING |
+| 9C | Admin UI (modals, forms) | ⬜ AWAITING |
+| 9D | Frontend wiring (hooks, components) | ⬜ AWAITING |
+
+### 18.8 Reference Documents
+
+| Document | Purpose |
+|----------|---------|
+| `docs/Phase_9A_Page_UI_Blocks_Architecture.md` | Full architecture blueprint |
+| `docs/restore-points/Restore_Point_Phase_9A_Definition.md` | Pre-execution snapshot |
+| `docs/Backend.md` Section 16 | Proposed table schemas |

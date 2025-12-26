@@ -1176,3 +1176,138 @@ The Project Details page requires **landscape-oriented images** for certain slot
 - **DO NOT** assign square portfolio thumbnails to detail-page image slots
 - **Portfolio images** should be used for card/grid thumbnails ONLY
 - **Landscape images** must be used for featured_image, image, and check_launch_image fields on Project Details
+
+---
+
+## 16. Phase 9 — Page UI Blocks Architecture (PROPOSED)
+
+```
+Status: DEFINITION ONLY — No execution performed
+Phase: 9A
+Created: 2025-12-26
+```
+
+### 16.1 Overview
+
+Phase 9 extends the Homepage UI Blocks model to other static pages, starting with the About page as pilot. This section documents the **proposed** database schema — no tables have been created.
+
+**Key Principle:** Homepage (`homepage_settings`) remains LOCKED and unchanged. New tables handle page-specific and global shared blocks.
+
+### 16.2 `page_settings` Table (PROPOSED)
+
+**Purpose:** Store page-specific UI block data for any static page.
+
+```sql
+-- PROPOSED SCHEMA (NOT EXECUTED)
+CREATE TABLE public.page_settings (
+  id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+  page_slug text UNIQUE NOT NULL,
+  data jsonb DEFAULT '{}'::jsonb,
+  updated_at timestamptz DEFAULT now(),
+  updated_by uuid REFERENCES auth.users(id)
+);
+```
+
+**Key Constraints:**
+
+- One row per `page_slug`
+- `page_slug` corresponds to `pages.slug` (referential integrity via application logic)
+- JSONB structure varies per page type
+
+**Proposed RLS Policies:**
+
+| Policy | Operation | Condition |
+|--------|-----------|-----------|
+| Admins can manage page settings | ALL | `has_role(auth.uid(), 'admin')` |
+| Public can read page settings | SELECT | `true` |
+
+**Example JSONB for About Page:**
+
+```jsonb
+{
+  "inside_story": {
+    "enabled": true,
+    "section_label": "Inside Story",
+    "title": "...",
+    "description": "...",
+    "main_image_media_id": null,
+    "cto_message": "...",
+    "cto_name": "...",
+    "cto_title": "...",
+    "cto_signature_media_id": null,
+    "progress_stats": [
+      { "label": "Idea & Research", "percent": 90 }
+    ]
+  },
+  "latest_news": {
+    "enabled": true,
+    "section_label": "Blog",
+    "section_title": "...",
+    "view_all_label": "View All Blog",
+    "view_all_url": "/blog",
+    "posts_count": 2
+  }
+}
+```
+
+### 16.3 `global_blocks` Table (PROPOSED)
+
+**Purpose:** Store shared UI blocks used across multiple pages.
+
+```sql
+-- PROPOSED SCHEMA (NOT EXECUTED)
+CREATE TABLE public.global_blocks (
+  id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+  block_key text UNIQUE NOT NULL,
+  data jsonb DEFAULT '{}'::jsonb,
+  updated_at timestamptz DEFAULT now(),
+  updated_by uuid REFERENCES auth.users(id)
+);
+```
+
+**Initial Block Keys (Proposed):**
+
+| block_key | Purpose | Current Source (Reference) |
+|-----------|---------|---------------------------|
+| `cta_strip` | "Let's Talk" CTA section | `homepage_settings.data.cta` |
+| `why_choose_us` | "Why Choose Us" section | `homepage_settings.data.why_choose` |
+
+**Proposed RLS Policies:**
+
+| Policy | Operation | Condition |
+|--------|-----------|-----------|
+| Admins can manage global blocks | ALL | `has_role(auth.uid(), 'admin')` |
+| Public can read global blocks | SELECT | `true` |
+
+### 16.4 Homepage Protection Note
+
+**CRITICAL:** The `homepage_settings` table is NOT modified in Phase 9.
+
+| Aspect | Status |
+|--------|--------|
+| `homepage_settings` schema | ❌ NO CHANGES |
+| `homepage_settings` RLS policies | ❌ NO CHANGES |
+| `homepage_settings` data | ❌ NO MIGRATION |
+| Homepage frontend hooks | ❌ NO CHANGES |
+
+Homepage continues to use `homepage_settings` exclusively. The new `global_blocks` table is for future pages consuming shared content.
+
+### 16.5 About Page Data Mapping (Proposed)
+
+| Section | Data Source | Type |
+|---------|-------------|------|
+| Breadcrumb | `pages.title` | Page metadata |
+| Inside Story | `page_settings` (slug='about') | Page-specific |
+| Why Choose Us | `global_blocks` (key='why_choose_us') | **SHARED** |
+| Testimonials | `testimonials` table | Dynamic module |
+| Latest News | `page_settings` + `blog_posts` | Page-specific config |
+| Let's Talk | `global_blocks` (key='cta_strip') | **SHARED** |
+
+### 16.6 Execution Status
+
+| Phase | Description | Status |
+|-------|-------------|--------|
+| 9A | Definition & documentation | ✅ COMPLETE |
+| 9B | Database creation + seeding | ⬜ AWAITING AUTHORIZATION |
+| 9C | Admin UI | ⬜ AWAITING AUTHORIZATION |
+| 9D | Frontend wiring | ⬜ AWAITING AUTHORIZATION |
