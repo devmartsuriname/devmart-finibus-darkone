@@ -1,7 +1,7 @@
 # Frontend Specification — Devmart Platform
 
 **Status:** Implemented (MVP)  
-**Phase:** Phase 6.1 COMPLETE | Phase 9 CLOSED | Phase 10A COMPLETE | Phase 10B Hotfix COMPLETE  
+**Phase:** Phase 6.1 COMPLETE | Phase 9 CLOSED | Phase 10A COMPLETE | Phase 10B FINALIZED  
 **Last Updated:** 2025-12-26
 
 ---
@@ -228,6 +228,47 @@ The following classes are the source of truth for pricing tables:
 ---
 
 ## 5. Technology Stack
+
+### 5.0 Admin Notification Standard (Phase 10B)
+
+#### 5.0.1 Canonical Wrapper
+
+**File:** `src/lib/notify.ts`
+
+All Admin save-action feedback MUST use this wrapper:
+
+| Function | Usage |
+|----------|-------|
+| `notifySuccess(message)` | Success feedback |
+| `notifyError(message)` | Error feedback |
+| `notifyInfo(message)` | Info messages |
+| `notifyWarning(message)` | Warning messages |
+
+**Configuration enforced:**
+- `icon: false` — Text-only, no SVG icons
+- `position: 'top-right'` — Consistent placement
+
+#### 5.0.2 Usage Rules
+
+1. ❌ Do NOT use `toast.*` directly in Admin hooks/components
+2. ✅ Use `notifySuccess/notifyError` from `@/lib/notify`
+3. Every successful save action MUST emit `notifySuccess`
+4. Every failed save action MUST emit `notifyError`
+
+#### 5.0.3 Global ToastContainer
+
+**File:** `src/components/wrapper/AppProvidersWrapper.tsx`
+
+**Configuration:**
+```tsx
+<ToastContainer 
+  theme="colored" 
+  position="top-right"
+  autoClose={3000}
+  hideProgressBar={false}
+  closeOnClick
+/>
+```
 
 ### 5.1 Shared Stack
 

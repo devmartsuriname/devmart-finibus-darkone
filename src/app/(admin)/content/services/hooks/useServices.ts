@@ -279,6 +279,7 @@ export const useServices = () => {
         if (error) throw error
       }
 
+      notifySuccess('Process steps saved')
       return true
     } catch (err) {
       const message = err instanceof Error ? err.message : 'Failed to save process steps'
@@ -338,6 +339,7 @@ export const useServices = () => {
         if (error) throw error
       }
 
+      notifySuccess('Pricing plans saved')
       return true
     } catch (err) {
       const message = err instanceof Error ? err.message : 'Failed to save pricing plans'

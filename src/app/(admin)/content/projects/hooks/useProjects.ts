@@ -314,6 +314,7 @@ export const useProjects = () => {
         if (insertError) throw insertError
       }
 
+      notifySuccess('Process steps saved')
       return true
     } catch (err) {
       console.error('Error saving process steps:', err)
