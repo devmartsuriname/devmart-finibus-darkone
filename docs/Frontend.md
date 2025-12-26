@@ -1,7 +1,7 @@
 # Frontend Specification — Devmart Platform
 
 **Status:** Implemented (MVP)  
-**Phase:** Phase 6.1 COMPLETE | Phase 7 CLOSED | Phase 9 CLOSED | Phase 10A COMPLETE | Phase 10B FINALIZED | Phase 10C COMPLETE | Phase 11 Step 3 COMPLETE  
+**Phase:** Phase 6.1 COMPLETE | Phase 7 CLOSED | Phase 9 CLOSED | Phase 10A COMPLETE | Phase 10B FINALIZED | Phase 10C COMPLETE | Phase 11 Step 4 COMPLETE  
 **Last Updated:** 2025-12-26
 
 ---
@@ -510,9 +510,9 @@ The following are explicitly out of scope for ALL phases unless separately autho
 
 ---
 
-## 10. Phase 11 — Settings Module Branding (Step 3 COMPLETE)
+## 10. Phase 11 — Settings Module Branding (Step 4 COMPLETE)
 
-### 10.1 Branding Color Pickers (Admin)
+### 10.1 Branding Color Pickers (Admin — Step 3)
 
 **Status:** ✅ Implemented
 
@@ -532,26 +532,52 @@ Each color picker uses a dual-input pattern:
 
 Both inputs are bound to the same form value and sync on change.
 
-### 10.3 Data Flow
+### 10.3 Public Branding Hook (Step 4)
+
+**Status:** ✅ Implemented
+
+**File:** `apps/public/src/hooks/useBrandingColors.ts`
+
+**Usage:**
+```tsx
+import { useBrandingColors } from '../hooks/useBrandingColors';
+
+const { colors, isLoading, error } = useBrandingColors();
+// colors.primaryColor   → '#D90A2C' (or DB value)
+// colors.secondaryColor → '#17161A' (or DB value)
+// colors.accentColor    → '#F7941D' (or DB value)
+```
+
+**Behavior:**
+- Fetches branding keys from `settings` table
+- Validates hex format (`#RRGGBB`)
+- Returns Finibus defaults if DB values missing/invalid
+- No UI breakage on network error
+
+### 10.4 Data Flow
 
 ```
 Admin → BrandingSettingsTab → handleChange → formValues → updateSettings
                                                               ↓
                                                       settings table (DB)
                                                               ↓
-                                                    (Step 4+5 pending)
+                                               useBrandingColors (Public Hook)
+                                                              ↓
+                                                     (Step 5 pending)
                                                               ↓
                                                   Public Frontend CSS Variables
 ```
 
-### 10.4 Guardian Rules Verified
+### 10.5 Guardian Rules Verified
 
 - ✅ Fonts remain locked (Finibus 1:1)
 - ✅ No layout changes
 - ✅ No Bootstrap customization
 - ✅ No custom CSS/SCSS
-- ✅ Admin-only scope
-- ✅ Uses existing React-Bootstrap Form components
+- ✅ Admin-only scope (Step 3)
+- ✅ Public app only (Step 4)
+- ✅ Uses existing React-Bootstrap Form components (Admin)
+- ✅ No new dependencies
 
 ---
 
