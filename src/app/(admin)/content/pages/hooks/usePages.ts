@@ -1,6 +1,6 @@
 import { useState, useCallback } from 'react'
 import { supabase } from '@/integrations/supabase/client'
-import { toast } from 'react-toastify'
+import { notifySuccess, notifyError } from '@/lib/notify'
 
 export interface Page {
   id: string
@@ -39,7 +39,7 @@ export const usePages = () => {
     } catch (err) {
       const message = err instanceof Error ? err.message : 'Failed to fetch pages'
       setError(message)
-      toast.error(message)
+      notifyError(message)
     } finally {
       setLoading(false)
     }
@@ -75,12 +75,12 @@ export const usePages = () => {
 
       if (updateError) throw updateError
 
-      toast.success('Page updated successfully')
+      notifySuccess('Page updated successfully')
       await fetchPages()
       return true
     } catch (err) {
       const message = err instanceof Error ? err.message : 'Failed to update page'
-      toast.error(message)
+      notifyError(message)
       return false
     } finally {
       setLoading(false)

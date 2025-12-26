@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from 'react'
 import { supabase } from '@/integrations/supabase/client'
 import { useAuthContext } from '@/context/useAuthContext'
-import { toast } from 'react-toastify'
+import { notifySuccess, notifyError } from '@/lib/notify'
 
 export interface BlogPost {
   id: string
@@ -78,7 +78,7 @@ export const useBlogPosts = () => {
 
   const createPost = useCallback(async (input: BlogPostInput): Promise<boolean> => {
     if (!user?.id) {
-      toast.error('You must be logged in to create posts')
+      notifyError('You must be logged in to create posts')
       return false
     }
 
@@ -91,7 +91,7 @@ export const useBlogPosts = () => {
         .maybeSingle()
 
       if (existing) {
-        toast.error('A post with this slug already exists')
+        notifyError('A post with this slug already exists')
         return false
       }
 
@@ -112,12 +112,12 @@ export const useBlogPosts = () => {
         throw insertError
       }
 
-      toast.success('Post created successfully')
+      notifySuccess('Post created successfully')
       await fetchPosts()
       return true
     } catch (err) {
       const message = err instanceof Error ? err.message : 'Failed to create post'
-      toast.error(`Error creating post: ${message}`)
+      notifyError(`Error creating post: ${message}`)
       console.error('Error creating post:', err)
       return false
     }
@@ -125,7 +125,7 @@ export const useBlogPosts = () => {
 
   const updatePost = useCallback(async (id: string, input: Partial<BlogPostInput>): Promise<boolean> => {
     if (!user?.id) {
-      toast.error('You must be logged in to update posts')
+      notifyError('You must be logged in to update posts')
       return false
     }
 
@@ -140,7 +140,7 @@ export const useBlogPosts = () => {
           .maybeSingle()
 
         if (existing) {
-          toast.error('A post with this slug already exists')
+          notifyError('A post with this slug already exists')
           return false
         }
       }
@@ -171,12 +171,12 @@ export const useBlogPosts = () => {
         throw updateError
       }
 
-      toast.success('Post updated successfully')
+      notifySuccess('Post updated successfully')
       await fetchPosts()
       return true
     } catch (err) {
       const message = err instanceof Error ? err.message : 'Failed to update post'
-      toast.error(`Error updating post: ${message}`)
+      notifyError(`Error updating post: ${message}`)
       console.error('Error updating post:', err)
       return false
     }
@@ -193,12 +193,12 @@ export const useBlogPosts = () => {
         throw deleteError
       }
 
-      toast.success('Post deleted successfully')
+      notifySuccess('Post deleted successfully')
       await fetchPosts()
       return true
     } catch (err) {
       const message = err instanceof Error ? err.message : 'Failed to delete post'
-      toast.error(`Error deleting post: ${message}`)
+      notifyError(`Error deleting post: ${message}`)
       console.error('Error deleting post:', err)
       return false
     }

@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react'
 import { supabase } from '@/integrations/supabase/client'
-import { toast } from 'react-toastify'
+import { notifySuccess, notifyError } from '@/lib/notify'
 
 export interface Service {
   id: string
@@ -131,7 +131,7 @@ export const useServices = () => {
         .maybeSingle()
 
       if (existing) {
-        toast.error('A service with this slug already exists', { icon: false })
+        notifyError('A service with this slug already exists')
         return { success: false }
       }
 
@@ -154,12 +154,12 @@ export const useServices = () => {
 
       if (insertError) throw insertError
 
-      toast.success('Service created successfully', { icon: false })
+      notifySuccess('Service created successfully')
       await fetchServices()
       return { success: true, id: inserted.id }
     } catch (err) {
       const message = err instanceof Error ? err.message : 'Failed to create service'
-      toast.error(`Error creating service: ${message}`, { icon: false })
+      notifyError(`Error creating service: ${message}`)
       console.error('Error creating service:', err)
       return { success: false }
     }
@@ -176,7 +176,7 @@ export const useServices = () => {
           .maybeSingle()
 
         if (existing) {
-          toast.error('A service with this slug already exists', { icon: false })
+          notifyError('A service with this slug already exists')
           return false
         }
       }
@@ -200,12 +200,12 @@ export const useServices = () => {
 
       if (updateError) throw updateError
 
-      toast.success('Service updated successfully', { icon: false })
+      notifySuccess('Service updated successfully')
       await fetchServices()
       return true
     } catch (err) {
       const message = err instanceof Error ? err.message : 'Failed to update service'
-      toast.error(`Error updating service: ${message}`, { icon: false })
+      notifyError(`Error updating service: ${message}`)
       console.error('Error updating service:', err)
       return false
     }
@@ -220,12 +220,12 @@ export const useServices = () => {
 
       if (deleteError) throw deleteError
 
-      toast.success('Service deleted successfully', { icon: false })
+      notifySuccess('Service deleted successfully')
       await fetchServices()
       return true
     } catch (err) {
       const message = err instanceof Error ? err.message : 'Failed to delete service'
-      toast.error(`Error deleting service: ${message}`, { icon: false })
+      notifyError(`Error deleting service: ${message}`)
       console.error('Error deleting service:', err)
       return false
     }
@@ -282,7 +282,7 @@ export const useServices = () => {
       return true
     } catch (err) {
       const message = err instanceof Error ? err.message : 'Failed to save process steps'
-      toast.error(`Error saving process steps: ${message}`, { icon: false })
+      notifyError(`Error saving process steps: ${message}`)
       console.error('Error saving process steps:', err)
       return false
     }
@@ -341,7 +341,7 @@ export const useServices = () => {
       return true
     } catch (err) {
       const message = err instanceof Error ? err.message : 'Failed to save pricing plans'
-      toast.error(`Error saving pricing plans: ${message}`, { icon: false })
+      notifyError(`Error saving pricing plans: ${message}`)
       console.error('Error saving pricing plans:', err)
       return false
     }

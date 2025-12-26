@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react'
 import { supabase } from '@/integrations/supabase/client'
-import { toast } from 'react-toastify'
+import { notifySuccess, notifyError } from '@/lib/notify'
 import type { Tables } from '@/integrations/supabase/types'
 
 type MediaItem = Tables<'media'>
@@ -47,7 +47,7 @@ export const useMediaLibrary = () => {
       // Get current user
       const { data: { user } } = await supabase.auth.getUser()
       if (!user) {
-        toast.error('You must be logged in to upload files')
+        notifyError('You must be logged in to upload files')
         return false
       }
 
@@ -63,7 +63,7 @@ export const useMediaLibrary = () => {
 
       if (uploadError) {
         console.error('Storage upload error:', uploadError)
-        toast.error(`Upload failed: ${uploadError.message}`)
+        notifyError(`Upload failed: ${uploadError.message}`)
         return false
       }
 
@@ -88,18 +88,18 @@ export const useMediaLibrary = () => {
 
       if (insertError) {
         console.error('Database insert error:', insertError)
-        toast.error(`Failed to save metadata: ${insertError.message}`)
+        notifyError(`Failed to save metadata: ${insertError.message}`)
         // Attempt to clean up the uploaded file
         await supabase.storage.from('media').remove([storagePath])
         return false
       }
 
-      toast.success('File uploaded successfully')
+      notifySuccess('File uploaded successfully')
       await fetchMedia()
       return true
     } catch (err) {
       console.error('Upload error:', err)
-      toast.error('An unexpected error occurred during upload')
+      notifyError('An unexpected error occurred during upload')
       return false
     }
   }
@@ -113,7 +113,7 @@ export const useMediaLibrary = () => {
 
       if (storageError) {
         console.error('Storage delete error:', storageError)
-        toast.error(`Storage delete failed: ${storageError.message}`)
+        notifyError(`Storage delete failed: ${storageError.message}`)
         return false
       }
 
@@ -125,25 +125,25 @@ export const useMediaLibrary = () => {
 
       if (dbError) {
         console.error('Database delete error:', dbError)
-        toast.error(`Database delete failed: ${dbError.message}`)
+        notifyError(`Database delete failed: ${dbError.message}`)
         return false
       }
 
-      toast.success('File deleted successfully')
+      notifySuccess('File deleted successfully')
       await fetchMedia()
       return true
     } catch (err) {
       console.error('Delete error:', err)
-      toast.error('An unexpected error occurred during deletion')
+      notifyError('An unexpected error occurred during deletion')
       return false
     }
   }
 
   const copyToClipboard = (url: string) => {
     navigator.clipboard.writeText(url).then(() => {
-      toast.success('URL copied to clipboard')
+      notifySuccess('URL copied to clipboard')
     }).catch(() => {
-      toast.error('Failed to copy URL')
+      notifyError('Failed to copy URL')
     })
   }
 

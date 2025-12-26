@@ -6,7 +6,7 @@
 
 import { useState, useEffect, useCallback } from 'react'
 import { supabase } from '@/integrations/supabase/client'
-import { toast } from 'react-toastify'
+import { notifySuccess, notifyError } from '@/lib/notify'
 
 export interface Project {
   id: string
@@ -142,7 +142,7 @@ export const useProjects = () => {
         .maybeSingle()
 
       if (existing) {
-        toast.error('A project with this slug already exists')
+        notifyError('A project with this slug already exists')
         return { success: false }
       }
 
@@ -173,12 +173,12 @@ export const useProjects = () => {
         throw insertError
       }
 
-      toast.success('Project created successfully')
+      notifySuccess('Project created successfully')
       await fetchProjects()
       return { success: true, id: data?.id }
     } catch (err) {
       const message = err instanceof Error ? err.message : 'Failed to create project'
-      toast.error(`Error creating project: ${message}`)
+      notifyError(`Error creating project: ${message}`)
       console.error('Error creating project:', err)
       return { success: false }
     }
@@ -196,7 +196,7 @@ export const useProjects = () => {
           .maybeSingle()
 
         if (existing) {
-          toast.error('A project with this slug already exists')
+          notifyError('A project with this slug already exists')
           return false
         }
       }
@@ -229,12 +229,12 @@ export const useProjects = () => {
         throw updateError
       }
 
-      toast.success('Project updated successfully')
+      notifySuccess('Project updated successfully')
       await fetchProjects()
       return true
     } catch (err) {
       const message = err instanceof Error ? err.message : 'Failed to update project'
-      toast.error(`Error updating project: ${message}`)
+      notifyError(`Error updating project: ${message}`)
       console.error('Error updating project:', err)
       return false
     }
@@ -251,12 +251,12 @@ export const useProjects = () => {
         throw deleteError
       }
 
-      toast.success('Project deleted successfully')
+      notifySuccess('Project deleted successfully')
       await fetchProjects()
       return true
     } catch (err) {
       const message = err instanceof Error ? err.message : 'Failed to delete project'
-      toast.error(`Error deleting project: ${message}`)
+      notifyError(`Error deleting project: ${message}`)
       console.error('Error deleting project:', err)
       return false
     }
@@ -317,7 +317,7 @@ export const useProjects = () => {
       return true
     } catch (err) {
       console.error('Error saving process steps:', err)
-      toast.error('Failed to save process steps')
+      notifyError('Failed to save process steps')
       return false
     }
   }, [])

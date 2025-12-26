@@ -1,6 +1,6 @@
 import { useState, useCallback } from 'react'
 import { supabase } from '@/integrations/supabase/client'
-import { toast } from 'react-toastify'
+import { notifySuccess, notifyError } from '@/lib/notify'
 
 // Global block keys
 export const GLOBAL_BLOCK_KEYS = [
@@ -77,7 +77,7 @@ export const useGlobalBlocks = () => {
     } catch (err) {
       const message = err instanceof Error ? err.message : 'Failed to fetch global blocks'
       setError(message)
-      toast.error(message)
+      notifyError(message)
     } finally {
       setLoading(false)
     }
@@ -108,11 +108,11 @@ export const useGlobalBlocks = () => {
           : block
       ))
       
-      toast.success('Global block saved')
+      notifySuccess('Global block saved')
       return true
     } catch (err) {
       const message = err instanceof Error ? err.message : 'Failed to save global block'
-      toast.error(message)
+      notifyError(message)
       return false
     } finally {
       setLoading(false)
