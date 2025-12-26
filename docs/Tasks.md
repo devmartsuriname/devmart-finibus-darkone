@@ -26,6 +26,61 @@
 | Phase 10B Hotfix | ✅ COMPLETE | Text-Only Toast Feedback (No Icons) |
 | Phase 10B Global | ✅ FINALIZED | Admin Global Text-Only Save Messages Standardized (All Modules) |
 | Phase 10B Parity | ✅ COMPLETE | Top-Right Text Banner Parity (Bootstrap Toast) |
+| Phase 10C | ✅ COMPLETE | About Page DB Wiring + Heading Color Parity |
+
+---
+
+## Phase 10C — About Page DB Wiring (✅ COMPLETE)
+
+**Completed:** 2025-12-26
+
+### Summary
+
+Wired About page sections to database via `page_settings` table (page_slug='about') and fixed heading color parity issue.
+
+### Key Changes
+
+| Task | Status | Notes |
+|------|--------|-------|
+| Fix WhyChooseUsArea heading color | ✅ Complete | Changed `black=""` to `black="black"` in AboutPage.tsx |
+| Create useAboutPageSettings hook | ✅ Complete | Fetches from `page_settings` where `page_slug='about'` |
+| Wire InsideStoryArea to DB | ✅ Complete | Uses hook with static fallbacks |
+| Wire LatesNewsArea to DB | ✅ Complete | Section header from DB, posts from useBlogPosts |
+| Remove date-fns dependency | ✅ Complete | Replaced with native Intl.DateTimeFormat |
+
+### Date Formatting Standard (Phase 10C)
+
+**Public app must NOT use external date libraries.**
+
+Date formatting in `apps/public` uses native JavaScript:
+```tsx
+const formatDate = (dateStr: string | null): string => {
+  if (!dateStr) return '';
+  try {
+    const date = new Date(dateStr);
+    if (isNaN(date.getTime())) return '';
+    const day = date.getDate().toString().padStart(2, '0');
+    const month = new Intl.DateTimeFormat('en-US', { month: 'long' }).format(date);
+    const year = date.getFullYear();
+    return `${day} ${month}, ${year}`;
+  } catch {
+    return '';
+  }
+};
+```
+
+### Restore Points
+
+- `docs/restore-points/Restore_Point_Phase_10C_About_Wiring_Start.md`
+- `docs/restore-points/Restore_Point_Phase_10C_About_Wiring_DateFix.md`
+
+### Guardian Rules Verified
+
+- ✅ apps/public only — no admin changes
+- ✅ No new dependencies — removed date-fns, used native APIs
+- ✅ No Bootstrap introduced
+- ✅ No CSS/SCSS changes — used existing `.title.black` class
+- ✅ Finibus parity maintained
 
 ---
 
