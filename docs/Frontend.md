@@ -1,8 +1,8 @@
 # Frontend Specification — Devmart Platform
 
 **Status:** Implemented (MVP)  
-**Phase:** Phase 6.1 COMPLETE | Phase 9 CLOSED (No Frontend Changes)  
-**Last Updated:** 2025-12-26  
+**Phase:** Phase 6.1 COMPLETE | Phase 9 CLOSED | Phase 10A PENDING  
+**Last Updated:** 2025-12-26
 
 ---
 
@@ -141,6 +141,52 @@ All Homepage sections remain static per Phase 6 guardrails. Wiring to database r
 
 | Page | Status | Data Source |
 |------|--------|-------------|
+| `/services` | ✅ Wired | `services` table |
+| `/service/:slug` | ✅ Wired | `services` + `service_process_steps` + `service_pricing_plans` |
+| `/projects` | ✅ Wired | `projects` table |
+| `/project/:slug` | ✅ Wired | `projects` + `project_process_steps` |
+| `/blog` | ✅ Wired | `blog_posts` (published) |
+| `/blog/:slug` | ✅ Wired | `blog_posts` + `media` |
+| `/contact` | ✅ Wired | `settings` (contact info) + `leads` (form INSERT) |
+
+---
+
+## 4. Phase 10A — Services Pricing (PENDING)
+
+### 4.1 Services Landing Page
+
+| Change | Status |
+|--------|--------|
+| Remove pricing section from `/services` | ⏳ PENDING |
+
+**Rationale:** Pricing should only display on individual Service Detail pages, not the Services overview.
+
+### 4.2 Service Detail Pages
+
+| Change | Status |
+|--------|--------|
+| Fix pricing table visual parity | ⏳ PENDING |
+
+**Root Cause:** Current implementation uses custom CSS classes (`price-card`, `price-feature`) that do not exist in Finibus. The fix requires using Finibus-native classes (`single-price-box`, `feature-list`).
+
+### 4.3 Finibus CSS Classes (Authoritative)
+
+The following classes are the source of truth for pricing tables:
+
+| Class | Purpose | File |
+|-------|---------|------|
+| `section.pricing-plan.sec-mar` | Wrapper | `_service_page.scss` |
+| `div.single-price-box` | Card container | `_service_page.scss` |
+| `ul.feature-list` | Feature list | `_service_page.scss` |
+| `div.pay-btn` | CTA button | `_service_page.scss` |
+
+### 4.4 Execution Status
+
+| Item | Status |
+|------|--------|
+| Documentation complete | ✅ |
+| Execution authorized | ❌ NOT YET |
+| Restore point for execution | ⏳ Required before execution |
 | `/services` | ✅ Wired | `services` table |
 | `/service/:slug` | ✅ Wired | `services` + `service_process_steps` + `service_pricing_plans` |
 | `/projects` | ✅ Wired | `projects` table |

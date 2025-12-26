@@ -2,7 +2,7 @@
 
 ```
 Status: AUTHORITATIVE
-Phase: Phase 4 COMPLETE | Phase 5 COMPLETE | Phase 6.1 COMPLETE | Phase 7.2 COMPLETE | Phase 9 CLOSED
+Phase: Phase 4 COMPLETE | Phase 5 COMPLETE | Phase 6.1 COMPLETE | Phase 7.2 COMPLETE | Phase 9 CLOSED | Phase 10A DOCUMENTED
 Auth: IMPLEMENTED (Supabase JWT + Roles + RLS)
 Execution: All 8 Admin Modules Complete | Public → DB Integration Complete | Routing/404/Image Parity Fixed | Phase 9 About/Global Blocks Complete
 Last Updated: 2025-12-26
@@ -522,6 +522,63 @@ Phase 9 established the architecture for managing UI blocks across pages:
 | No frontend changes | ✅ Admin-only |
 | No CSS/SCSS changes | ✅ Existing patterns |
 | 1:1 Darkone patterns | ✅ Reused components |
+
+---
+
+## 15. Phase 10 — Services Pricing Architecture (DOCUMENTED)
+
+### 15.1 Overview
+
+Phase 10 addresses the Services module pricing display:
+
+| Page | Action | Status |
+|------|--------|--------|
+| `/services` (Landing) | Remove pricing section | PENDING |
+| `/service-details/:slug` | Fix pricing table visual parity | PENDING |
+
+### 15.2 Relationship Diagram
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│                    ADMIN MODULE                             │
+│                    (Services)                               │
+├─────────────────────────────────────────────────────────────┤
+│  Services CRUD       │  Pricing Plans CRUD                  │
+│  /admin/content/     │  (Embedded in Service modal)         │
+│  services            │                                      │
+└────────────┬─────────┴────────────────┬─────────────────────┘
+             │                          │
+             ▼                          ▼
+┌─────────────────────────────────────────────────────────────┐
+│                      SUPABASE                               │
+├─────────────────────────────────────────────────────────────┤
+│  services            │  service_pricing_plans               │
+│  (7 records)         │  (42 records: 6 per service × 7)     │
+└────────────┬─────────┴────────────────┬─────────────────────┘
+             │                          │
+             ▼                          ▼
+┌─────────────────────────────────────────────────────────────┐
+│                   PUBLIC FRONTEND                           │
+├─────────────────────────────────────────────────────────────┤
+│  /services           │  /service-details/:slug              │
+│  - NO pricing        │  - Pricing table (Finibus parity)    │
+│  - Service cards     │  - Monthly/Yearly toggle             │
+└─────────────────────────────────────────────────────────────┘
+```
+
+### 15.3 Explicit Constraints
+
+| Constraint | Status |
+|------------|--------|
+| No new tables | ✅ Not required |
+| No changes to `page_settings` | ✅ Not related |
+| No changes to `global_blocks` | ✅ Not related |
+| No changes to `homepage_settings` | ✅ Not related |
+| Finibus CSS reuse only | ✅ Required |
+
+### 15.4 Blueprint Reference
+
+Full specification: `docs/Phase_10A_Services_Pricing_Blueprint.md`
 
 ---
 

@@ -1,7 +1,7 @@
 # Tasks — Devmart Implementation Tracker
 
 **Status:** Verified  
-**Current Phase:** Phase 9 CLOSED | Phase 7 Remaining IN PROGRESS  
+**Current Phase:** Phase 9 CLOSED | Phase 10A DOCUMENTED | Phase 7 Remaining IN PROGRESS  
 **Last Updated:** 2025-12-26
 
 ---
@@ -19,6 +19,7 @@
 | Phase 7 | 🔄 In Progress | Homepage Dynamic Wiring + Newsletter |
 | Phase 8 | ⏸️ Deferred | Analytics (not authorized) |
 | Phase 9 | ✅ CLOSED | About Page + Global Blocks (Admin UI + DB) |
+| Phase 10A | 📄 DOCUMENTED | Services Pricing Visual Fix (NOT EXECUTED) |
 
 ---
 
@@ -203,6 +204,47 @@ All project images (any dimensions) will render consistently with `object-fit: c
 - ✅ No frontend code changes
 - ✅ No CSS/SCSS changes
 - ✅ 1:1 Darkone patterns preserved
+
+---
+
+## Phase 10A — Services Pricing Visual Fix (📄 DOCUMENTED — NOT EXECUTED)
+
+**Status:** DOCUMENTED — Awaiting Execution Authorization
+
+### Scope
+
+| Page | Action | Status |
+|------|--------|--------|
+| `/services` | Remove pricing section | ⏳ Pending |
+| `/service-details/:slug` | Fix pricing table visual parity | ⏳ Pending |
+
+### Root Cause
+
+The Service Detail pricing table uses custom CSS classes that do not exist in Finibus:
+- `price-card` → should be `single-price-box`
+- `price-feature` → should be `feature-list`
+- `price-btn` → should be `pay-btn`
+
+### Fix Strategy
+
+1. Update `PriceBox.tsx` to use Finibus class structure
+2. Update `ServicePrice.tsx` wrapper to use `section.pricing-plan.sec-mar`
+3. Remove pricing section from Services landing page
+
+### Dependencies
+
+| Dependency | Status |
+|------------|--------|
+| Phase 9 CLOSED | ✅ |
+| Blueprint documented | ✅ `docs/Phase_10A_Services_Pricing_Blueprint.md` |
+| Execution authorization | ⏳ Awaiting |
+
+### Out of Scope
+
+- Quote request wizard
+- Pricing → checkout flow
+- Stripe integration
+- New pricing plan types
 
 ---
 
