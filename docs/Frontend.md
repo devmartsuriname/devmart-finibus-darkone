@@ -1,7 +1,7 @@
 # Frontend Specification — Devmart Platform
 
 **Status:** Implemented (MVP)  
-**Phase:** Phase 6.1 COMPLETE | Phase 7 CLOSED | Phase 9 CLOSED | Phase 10A COMPLETE | Phase 10B FINALIZED | Phase 10C COMPLETE | Phase 11 COMPLETE  
+**Phase:** Phase 6.1 COMPLETE | Phase 7 CLOSED | Phase 9 CLOSED | Phase 10A COMPLETE | Phase 10B FINALIZED | Phase 10C COMPLETE | Phase 11 PLANNED  
 **Last Updated:** 2025-12-26
 
 ---
@@ -217,112 +217,6 @@ return <section>{/* render displayData */}</section>;
 | `useBlogPosts` | `apps/public/src/hooks/useBlogPosts.ts` | Fetches published blog posts |
 | `useNewsletterSubscribe` | `apps/public/src/hooks/useNewsletterSubscribe.ts` | INSERT to `newsletter_subscribers` |
 | `useAboutPageSettings` | `apps/public/src/hooks/useAboutPageSettings.ts` | Fetches About page UI block settings |
-| `useBrandingColors` | `apps/public/src/hooks/useBrandingColors.ts` | Fetches branding colors from settings (Phase 11) |
-
-### 3.5 Branding Colors System (Phase 11)
-
-**Status:** Root-Cause Fix Complete — Full Color Control
-
-**Data Flow:**
-```
-Admin Settings (BrandingSettingsTab)
-        ↓
-  settings table (Supabase)
-  [primary_color, secondary_color, accent_color,
-   primary_gradient_start, primary_gradient_end]
-        ↓
-  useBrandingColors hook (apps/public)
-        ↓
-  BrandingProvider (App.tsx wrapper)
-        ↓
-  CSS Variables on :root
-  [--color-primary, --color-secondary, --color-accent,
-   --color-primary-grad-start, --color-primary-grad-end]
-        ↓
-  index.scss Consumption Layer (override selectors)
-        ↓
-  Finibus elements display DB-driven colors
-```
-
-**Implementation Files:**
-| File | Purpose |
-|------|---------|
-| `apps/public/src/hooks/useBrandingColors.ts` | Fetch branding colors from settings table |
-| `apps/public/src/components/providers/BrandingProvider.tsx` | Inject CSS variables on :root |
-| `apps/public/src/App.tsx` | Wraps Routes with BrandingProvider |
-| `apps/public/src/index.scss` | Consumption layer: maps Finibus selectors to CSS vars |
-
-**CSS Variables (Finibus Defaults as Fallbacks):**
-| Variable | Default Value | Purpose |
-|----------|---------------|---------|
-| `--color-primary` | `#D90A2C` | Main brand color (solid) |
-| `--color-secondary` | `#17161A` | Secondary/dark color |
-| `--color-accent` | `#F7941D` | Accent highlights |
-| `--color-primary-grad-start` | `#D90A2C` | Gradient start (buttons) |
-| `--color-primary-grad-end` | `#730000` | Gradient end (buttons) |
-
-**Guardian Rules Enforced:**
-- ✅ Finibus typography LOCKED (no font changes)
-- ✅ No Bootstrap usage
-- ✅ No new CSS/SCSS files (uses existing index.scss)
-- ✅ Existing Finibus SCSS untouched (overrides only)
-- ✅ CSS variables only (runtime injection)
-
-### 3.5.1 Finibus Color Map Contract
-
-**Purpose:** Documents all Finibus selectors that use hardcoded colors and their mapping to CSS variables.
-
-#### Primary Color (`--color-primary`) — Solid Uses
-
-| Selector | Property | Page/Section | Notes |
-|----------|----------|--------------|-------|
-| `.service-icon i` | `background-color` | Services section | Circular icon bg |
-| `.service-content a` | `color` | Services section | "Read More" links |
-| `.title span` | `color` | All sections | Section label text |
-| `.title span::before` | `background-color` | All sections | Underline accent |
-| `.main-nav ul li a.active` | `color` | Header | Active nav link |
-| `.main-nav ul li a:hover` | `color` | Header | Nav hover |
-| `.breadcrumb-wrapper span a` | `color` | Breadcrumb | Active crumb |
-| `.scroll-top.opacity span` | `border-color`, `color` | Footer | Scroll button |
-| `.swiper-pagination-bullet-active` | `background-color` | Sliders | Active bullet |
-| `.play-btn .popup-video` | `background-color` | About section | Play button |
-| `.footer-area .social-list li a:hover` | `background-color` | Footer | Social hover |
-| `.CircularProgressbar-path` | `stroke` | About/Why Choose | Progress bars |
-| `.CircularProgressbar-text` | `fill` | About/Why Choose | Progress text |
-
-#### Primary Color (`--color-primary-grad-*`) — Gradient Uses
-
-| Selector | Property | Page/Section | Notes |
-|----------|----------|--------------|-------|
-| `.cmn-btn a` | `background: linear-gradient(...)` | All CTAs | Main CTA buttons |
-| `.nav-pills .nav-link.active` | `background: linear-gradient(...)` | Service pricing | Active tab |
-| `.nav-pills .nav-link:hover` | `background: linear-gradient(...)` | Service pricing | Tab hover |
-| `.project-filter-tab li.active` | `background: linear-gradient(...)` | Portfolio | Active filter |
-| `.project-filter-tab li:hover` | `background: linear-gradient(...)` | Portfolio | Filter hover |
-| `.subscribe-form input[type="submit"]` | `background: linear-gradient(...)` | Newsletter | Subscribe btn |
-| `.pay-btn a` | `background: linear-gradient(...)` | Pricing | Pricing CTA |
-
-#### Secondary Color (`--color-secondary`)
-
-| Selector | Property | Page/Section | Notes |
-|----------|----------|--------------|-------|
-| `.cmn-btn a:hover::before` | `background-color` | CTAs | Hover overlay |
-| Various dark sections | `background-color` | Multiple | Dark backgrounds |
-
-#### Accent Color (`--color-accent`)
-
-Reserved for future use. Finibus does not actively use `#F7941D` in core elements.
-
-### 3.5.2 Consumption Layer Architecture
-
-The consumption layer lives in `apps/public/src/index.scss` as a clearly delimited section at the end of the file.
-
-**Key Principles:**
-1. **Target the correct element:** If Finibus applies a gradient to `.cmn-btn a`, override `.cmn-btn a`, not `.cmn-btn`
-2. **Override gradients properly:** Use `background: var(...) !important` with `background-image: none !important`
-3. **Use fallbacks:** Always include Finibus default as fallback: `var(--color-primary, #D90A2C)`
-4. **Minimal overrides:** Only override color properties, never layout/spacing
-5. **No dead selectors:** Only include selectors that exist in Finibus DOM
 
 **Inner Pages (Wired to DB):**
 
@@ -616,83 +510,11 @@ The following are explicitly out of scope for ALL phases unless separately autho
 
 ---
 
-## 10. Phase 11 — Settings Module Branding (Step 4 COMPLETE)
-
-### 10.1 Branding Color Pickers (Admin — Step 3)
-
-**Status:** ✅ Implemented
-
-Admin Settings → Branding tab now includes editable color pickers for:
-
-| Setting Key | Default Value | Purpose |
-|-------------|---------------|---------|
-| `primary_color` | `#D90A2C` | Main brand color (buttons, links) |
-| `secondary_color` | `#17161A` | Secondary brand color (headers, dark sections) |
-| `accent_color` | `#F7941D` | Accent color (highlights, CTAs) |
-
-### 10.2 Admin UI Pattern
-
-Each color picker uses a dual-input pattern:
-- `type="color"` — Native color picker swatch
-- `type="text"` — Hex value input (e.g., `#D90A2C`)
-
-Both inputs are bound to the same form value and sync on change.
-
-### 10.3 Public Branding Hook (Step 4)
-
-**Status:** ✅ Implemented
-
-**File:** `apps/public/src/hooks/useBrandingColors.ts`
-
-**Usage:**
-```tsx
-import { useBrandingColors } from '../hooks/useBrandingColors';
-
-const { colors, isLoading, error } = useBrandingColors();
-// colors.primaryColor   → '#D90A2C' (or DB value)
-// colors.secondaryColor → '#17161A' (or DB value)
-// colors.accentColor    → '#F7941D' (or DB value)
-```
-
-**Behavior:**
-- Fetches branding keys from `settings` table
-- Validates hex format (`#RRGGBB`)
-- Returns Finibus defaults if DB values missing/invalid
-- No UI breakage on network error
-
-### 10.4 Data Flow
-
-```
-Admin → BrandingSettingsTab → handleChange → formValues → updateSettings
-                                                              ↓
-                                                      settings table (DB)
-                                                              ↓
-                                               useBrandingColors (Public Hook)
-                                                              ↓
-                                                     (Step 5 pending)
-                                                              ↓
-                                                  Public Frontend CSS Variables
-```
-
-### 10.5 Guardian Rules Verified
-
-- ✅ Fonts remain locked (Finibus 1:1)
-- ✅ No layout changes
-- ✅ No Bootstrap customization
-- ✅ No custom CSS/SCSS
-- ✅ Admin-only scope (Step 3)
-- ✅ Public app only (Step 4)
-- ✅ Uses existing React-Bootstrap Form components (Admin)
-- ✅ No new dependencies
-
----
-
 ## Document Control
 
 | Version | Date | Author | Notes |
 |---------|------|--------|-------|
 | 0.1 | 2025-01-XX | Planning Agent | Initial draft |
 | 1.0 | 2025-12-25 | Implementation Agent | Updated to Implemented (MVP), added Homepage section status |
-| 1.1 | 2025-12-26 | Implementation Agent | Phase 11 Step 3 — Branding color pickers |
 
-**Next Review:** After Phase 11 Step 4 (Frontend Hook)
+**Next Review:** After Phase 6.2 authorization

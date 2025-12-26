@@ -33,7 +33,6 @@ const STATIC_WHY_CHOOSE = {
 };
 
 // Simple progress bar component to replace @ramonak/react-progress-bar
-// Phase 11 Step 6: Uses CSS variables for branding colors
 function ProgressBar({ completed, label }: ProgressBarProps) {
   return (
     <div className="progress-container" style={{ display: 'flex', alignItems: 'center', width: '100%' }}>
@@ -41,7 +40,7 @@ function ProgressBar({ completed, label }: ProgressBarProps) {
         style={{ 
           flex: 1,
           height: '5px', 
-          backgroundColor: 'color-mix(in srgb, var(--color-primary, #D90A2C) 50%, transparent)',
+          backgroundColor: '#d90a2c80',
           borderRadius: '3px',
           overflow: 'hidden'
         }}
@@ -50,7 +49,7 @@ function ProgressBar({ completed, label }: ProgressBarProps) {
           style={{ 
             width: `${completed}%`, 
             height: '100%', 
-            backgroundColor: 'var(--color-primary, #D90A2C)',
+            backgroundColor: '#D90A2C',
             transition: 'width 1s ease-in-out',
             borderRadius: '3px'
           }} 

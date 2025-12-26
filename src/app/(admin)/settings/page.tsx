@@ -51,9 +51,6 @@ interface FormValues {
   // Branding
   logo_media_id: string
   favicon_media_id: string
-  primary_color: string
-  secondary_color: string
-  accent_color: string
 }
 
 const INITIAL_VALUES: FormValues = {
@@ -71,9 +68,6 @@ const INITIAL_VALUES: FormValues = {
   youtube_url: '',
   logo_media_id: '',
   favicon_media_id: '',
-  primary_color: '#D90A2C',
-  secondary_color: '#17161A',
-  accent_color: '#F7941D',
 }
 
 const SettingsPage = () => {
@@ -101,9 +95,6 @@ const SettingsPage = () => {
         youtube_url: getSettingValue('youtube_url'),
         logo_media_id: getSettingValue('logo_media_id'),
         favicon_media_id: getSettingValue('favicon_media_id'),
-        primary_color: getSettingValue('primary_color') || '#D90A2C',
-        secondary_color: getSettingValue('secondary_color') || '#17161A',
-        accent_color: getSettingValue('accent_color') || '#F7941D',
       }
       setFormValues(newValues)
       setHasChanges(false)
@@ -276,9 +267,6 @@ const SettingsPage = () => {
                           values={{
                             logo_media_id: formValues.logo_media_id,
                             favicon_media_id: formValues.favicon_media_id,
-                            primary_color: formValues.primary_color,
-                            secondary_color: formValues.secondary_color,
-                            accent_color: formValues.accent_color,
                           }}
                           onChange={handleChange}
                         />

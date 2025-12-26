@@ -27,12 +27,12 @@
     stroke-linecap: round;
   }
   .CircularProgressbar-path {
-    stroke: var(--color-primary, #d90a2c);
+    stroke: #d90a2c;
     stroke-linecap: round;
     transition: stroke-dashoffset 0.5s ease 0s;
   }
   .CircularProgressbar-text {
-    fill: var(--color-primary, #d90a2c);
+    fill: #d90a2c;
     font-size: 22px;
     font-weight: 700;
   }
@@ -164,99 +164,6 @@
 }
 
 .scroll-top.opacity {
-  color: var(--color-primary, #D90A2C);
+  color: #D90A2C;
   font-weight: 800;
-}
-
-/* ============================================================
-   BRANDING OVERRIDES (DB-driven) — Phase 11 Root-Cause Fix
-   Must load after Finibus styles to take precedence.
-   Maps Finibus hardcoded colors to CSS variables.
-   ============================================================ */
-
-/* CTA Buttons — Target the anchor, not wrapper! Override gradient properly */
-.cmn-btn a {
-  background: linear-gradient(90deg, var(--color-primary-grad-start, #D90A2C), var(--color-primary-grad-end, #730000)) !important;
-}
-
-.cmn-btn a:hover::before {
-  background-color: var(--color-secondary, #17161A) !important;
-}
-
-/* Service Icons */
-.service-icon i {
-  background-color: var(--color-primary, #D90A2C) !important;
-}
-
-/* Service Links */
-.service-content a {
-  color: var(--color-primary, #D90A2C) !important;
-}
-
-/* Section Title Labels + Underlines */
-.title span {
-  color: var(--color-primary, #D90A2C) !important;
-}
-
-.title span::before {
-  background-color: var(--color-primary, #D90A2C) !important;
-}
-
-/* Navigation Active/Hover */
-.main-nav ul li a.active,
-.main-nav ul li a:hover {
-  color: var(--color-primary, #D90A2C) !important;
-}
-
-/* Breadcrumb */
-.breadcrumb-wrapper span a {
-  color: var(--color-primary, #D90A2C) !important;
-}
-
-/* Scroll Top Button */
-.scroll-top.opacity span {
-  border-color: var(--color-primary, #D90A2C) !important;
-  color: var(--color-primary, #D90A2C) !important;
-}
-
-/* Swiper Pagination */
-.swiper-pagination-bullet-active {
-  background-color: var(--color-primary, #D90A2C) !important;
-}
-
-/* Play Button */
-.play-btn .popup-video {
-  background-color: var(--color-primary, #D90A2C) !important;
-}
-
-/* Footer Social Hover */
-.footer-area .social-list li a:hover {
-  background-color: var(--color-primary, #D90A2C) !important;
-}
-
-/* Footer Widget Title Accent */
-.footer-area .footer-widget h4::after {
-  background-color: var(--color-primary, #D90A2C) !important;
-}
-
-/* Project Filter Tabs */
-.project-filter-tab li.active,
-.project-filter-tab li:hover {
-  background: linear-gradient(90deg, var(--color-primary-grad-start, #D90A2C), var(--color-primary-grad-end, #730000)) !important;
-}
-
-/* Pricing Tabs */
-.nav-pills .nav-link.active,
-.nav-pills .nav-link:hover {
-  background: linear-gradient(90deg, var(--color-primary-grad-start, #D90A2C), var(--color-primary-grad-end, #730000)) !important;
-}
-
-/* Subscribe Button */
-.subscribe-form form input[type="submit"] {
-  background: linear-gradient(90deg, var(--color-primary-grad-start, #D90A2C), var(--color-primary-grad-end, #730000)) !important;
-}
-
-/* Pay Button (Pricing) */
-.pay-btn a {
-  background: linear-gradient(90deg, var(--color-primary-grad-start, #D90A2C), var(--color-primary-grad-end, #730000)) !important;
 }
