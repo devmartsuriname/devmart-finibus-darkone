@@ -1,6 +1,6 @@
 import { useState, useCallback } from 'react'
 import { supabase } from '@/integrations/supabase/client'
-import { toast } from 'react-toastify'
+import { notifySuccess, notifyError } from '@/lib/notify'
 
 // Section keys in fixed Finibus order
 export const SECTION_KEYS = [
@@ -166,7 +166,7 @@ export const useHomepageBlocks = () => {
     } catch (err) {
       const message = err instanceof Error ? err.message : 'Failed to fetch homepage data'
       setError(message)
-      toast.error(message)
+      notifyError(message)
     } finally {
       setLoading(false)
     }
@@ -185,11 +185,11 @@ export const useHomepageBlocks = () => {
       if (updateError) throw updateError
 
       setData(newData)
-      toast.success('Homepage settings saved')
+      notifySuccess('Homepage settings saved')
       return true
     } catch (err) {
       const message = err instanceof Error ? err.message : 'Failed to save homepage data'
-      toast.error(message)
+      notifyError(message)
       return false
     } finally {
       setLoading(false)

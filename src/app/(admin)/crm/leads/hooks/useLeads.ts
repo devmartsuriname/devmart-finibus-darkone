@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react'
 import { supabase } from '@/integrations/supabase/client'
-import { toast } from 'react-toastify'
+import { notifySuccess, notifyError, notifyInfo } from '@/lib/notify'
 
 export type LeadStatus = 'new' | 'contacted' | 'qualified' | 'closed'
 
@@ -73,7 +73,7 @@ export const useLeads = () => {
       }
 
       if (Object.keys(updateData).length === 0) {
-        toast.info('No changes to save')
+        notifyInfo('No changes to save')
         return true
       }
 
@@ -86,12 +86,12 @@ export const useLeads = () => {
         throw updateError
       }
 
-      toast.success('Lead updated successfully')
+      notifySuccess('Lead updated successfully')
       await fetchLeads()
       return true
     } catch (err) {
       const message = err instanceof Error ? err.message : 'Failed to update lead'
-      toast.error(`Error updating lead: ${message}`)
+      notifyError(`Error updating lead: ${message}`)
       console.error('Error updating lead:', err)
       return false
     }

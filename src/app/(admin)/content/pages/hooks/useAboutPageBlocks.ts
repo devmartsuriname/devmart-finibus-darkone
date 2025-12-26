@@ -1,6 +1,6 @@
 import { useState, useCallback } from 'react'
 import { supabase } from '@/integrations/supabase/client'
-import { toast } from 'react-toastify'
+import { notifySuccess, notifyError } from '@/lib/notify'
 
 // About page section keys in fixed Finibus order
 export const ABOUT_SECTION_KEYS = [
@@ -88,7 +88,7 @@ export const useAboutPageBlocks = () => {
     } catch (err) {
       const message = err instanceof Error ? err.message : 'Failed to fetch About page data'
       setError(message)
-      toast.error(message)
+      notifyError(message)
     } finally {
       setLoading(false)
     }
@@ -106,11 +106,11 @@ export const useAboutPageBlocks = () => {
       if (updateError) throw updateError
 
       setData(newData)
-      toast.success('About page settings saved')
+      notifySuccess('About page settings saved')
       return true
     } catch (err) {
       const message = err instanceof Error ? err.message : 'Failed to save About page data'
-      toast.error(message)
+      notifyError(message)
       return false
     } finally {
       setLoading(false)

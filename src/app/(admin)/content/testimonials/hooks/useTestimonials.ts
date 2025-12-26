@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react'
 import { supabase } from '@/integrations/supabase/client'
-import { toast } from 'react-toastify'
+import { notifySuccess, notifyError } from '@/lib/notify'
 
 export interface Testimonial {
   id: string
@@ -100,12 +100,12 @@ export const useTestimonials = () => {
         throw insertError
       }
 
-      toast.success('Testimonial created successfully')
+      notifySuccess('Testimonial created successfully')
       await fetchTestimonials()
       return true
     } catch (err) {
       const message = err instanceof Error ? err.message : 'Failed to create testimonial'
-      toast.error(`Error creating testimonial: ${message}`)
+      notifyError(`Error creating testimonial: ${message}`)
       console.error('Error creating testimonial:', err)
       return false
     }
@@ -140,12 +140,12 @@ export const useTestimonials = () => {
         throw updateError
       }
 
-      toast.success('Testimonial updated successfully')
+      notifySuccess('Testimonial updated successfully')
       await fetchTestimonials()
       return true
     } catch (err) {
       const message = err instanceof Error ? err.message : 'Failed to update testimonial'
-      toast.error(`Error updating testimonial: ${message}`)
+      notifyError(`Error updating testimonial: ${message}`)
       console.error('Error updating testimonial:', err)
       return false
     }
@@ -162,12 +162,12 @@ export const useTestimonials = () => {
         throw deleteError
       }
 
-      toast.success('Testimonial deleted successfully')
+      notifySuccess('Testimonial deleted successfully')
       await fetchTestimonials()
       return true
     } catch (err) {
       const message = err instanceof Error ? err.message : 'Failed to delete testimonial'
-      toast.error(`Error deleting testimonial: ${message}`)
+      notifyError(`Error deleting testimonial: ${message}`)
       console.error('Error deleting testimonial:', err)
       return false
     }

@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from 'react'
 import { supabase } from '@/integrations/supabase/client'
 import { useAuthContext } from '@/context/useAuthContext'
-import { toast } from 'react-toastify'
+import { notifySuccess, notifyError } from '@/lib/notify'
 
 export interface Setting {
   key: string
@@ -50,7 +50,7 @@ export const useSettings = () => {
     } catch (err) {
       const message = err instanceof Error ? err.message : 'Failed to fetch settings'
       setError(message)
-      toast.error(`Error loading settings: ${message}`, { icon: false })
+      notifyError(`Error loading settings: ${message}`)
     } finally {
       setIsLoading(false)
     }
@@ -76,7 +76,7 @@ export const useSettings = () => {
 
   const updateSettings = useCallback(async (updates: SettingUpdate[]): Promise<boolean> => {
     if (!user?.id) {
-      toast.error('You must be logged in to update settings', { icon: false })
+      notifyError('You must be logged in to update settings')
       return false
     }
 
@@ -102,12 +102,12 @@ export const useSettings = () => {
       // Refresh settings after update
       await fetchSettings()
       
-      toast.success('Settings saved successfully', { icon: false })
+      notifySuccess('Settings saved successfully')
       return true
     } catch (err) {
       const message = err instanceof Error ? err.message : 'Failed to save settings'
       setError(message)
-      toast.error(`Error saving settings: ${message}`, { icon: false })
+      notifyError(`Error saving settings: ${message}`)
       return false
     } finally {
       setIsSaving(false)
