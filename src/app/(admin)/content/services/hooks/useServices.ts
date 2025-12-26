@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback, useRef } from 'react'
 import { supabase } from '@/integrations/supabase/client'
 import { useAdminNotify } from '@/lib/notify'
 
@@ -88,6 +88,15 @@ export const useServices = () => {
   const [error, setError] = useState<string | null>(null)
   const { notifySuccess, notifyError } = useAdminNotify()
 
+  // Ref pattern for stable notify functions
+  const notifySuccessRef = useRef(notifySuccess)
+  const notifyErrorRef = useRef(notifyError)
+
+  useEffect(() => {
+    notifySuccessRef.current = notifySuccess
+    notifyErrorRef.current = notifyError
+  })
+
   const fetchServices = useCallback(async () => {
     try {
       setIsLoading(true)
@@ -132,7 +141,7 @@ export const useServices = () => {
         .maybeSingle()
 
       if (existing) {
-        notifyError('A service with this slug already exists')
+        notifyErrorRef.current('A service with this slug already exists')
         return { success: false }
       }
 
@@ -155,16 +164,16 @@ export const useServices = () => {
 
       if (insertError) throw insertError
 
-      notifySuccess('Service created successfully')
+      notifySuccessRef.current('Service created successfully')
       await fetchServices()
       return { success: true, id: inserted.id }
     } catch (err) {
       const message = err instanceof Error ? err.message : 'Failed to create service'
-      notifyError(`Error creating service: ${message}`)
+      notifyErrorRef.current(`Error creating service: ${message}`)
       console.error('Error creating service:', err)
       return { success: false }
     }
-  }, [fetchServices, notifySuccess, notifyError])
+  }, [fetchServices])
 
   const updateService = useCallback(async (id: string, input: Partial<ServiceInput>): Promise<boolean> => {
     try {
@@ -177,7 +186,7 @@ export const useServices = () => {
           .maybeSingle()
 
         if (existing) {
-          notifyError('A service with this slug already exists')
+          notifyErrorRef.current('A service with this slug already exists')
           return false
         }
       }
@@ -201,16 +210,16 @@ export const useServices = () => {
 
       if (updateError) throw updateError
 
-      notifySuccess('Service updated successfully')
+      notifySuccessRef.current('Service updated successfully')
       await fetchServices()
       return true
     } catch (err) {
       const message = err instanceof Error ? err.message : 'Failed to update service'
-      notifyError(`Error updating service: ${message}`)
+      notifyErrorRef.current(`Error updating service: ${message}`)
       console.error('Error updating service:', err)
       return false
     }
-  }, [fetchServices, notifySuccess, notifyError])
+  }, [fetchServices])
 
   const deleteService = useCallback(async (id: string): Promise<boolean> => {
     try {
@@ -221,16 +230,16 @@ export const useServices = () => {
 
       if (deleteError) throw deleteError
 
-      notifySuccess('Service deleted successfully')
+      notifySuccessRef.current('Service deleted successfully')
       await fetchServices()
       return true
     } catch (err) {
       const message = err instanceof Error ? err.message : 'Failed to delete service'
-      notifyError(`Error deleting service: ${message}`)
+      notifyErrorRef.current(`Error deleting service: ${message}`)
       console.error('Error deleting service:', err)
       return false
     }
-  }, [fetchServices, notifySuccess, notifyError])
+  }, [fetchServices])
 
   // Process Steps
   const fetchProcessSteps = useCallback(async (serviceId: string): Promise<ServiceProcessStep[]> => {
@@ -280,15 +289,15 @@ export const useServices = () => {
         if (error) throw error
       }
 
-      notifySuccess('Process steps saved')
+      notifySuccessRef.current('Process steps saved')
       return true
     } catch (err) {
       const message = err instanceof Error ? err.message : 'Failed to save process steps'
-      notifyError(`Error saving process steps: ${message}`)
+      notifyErrorRef.current(`Error saving process steps: ${message}`)
       console.error('Error saving process steps:', err)
       return false
     }
-  }, [notifySuccess, notifyError])
+  }, [])
 
   // Pricing Plans
   const fetchPricingPlans = useCallback(async (serviceId: string): Promise<ServicePricingPlan[]> => {
@@ -340,15 +349,15 @@ export const useServices = () => {
         if (error) throw error
       }
 
-      notifySuccess('Pricing plans saved')
+      notifySuccessRef.current('Pricing plans saved')
       return true
     } catch (err) {
       const message = err instanceof Error ? err.message : 'Failed to save pricing plans'
-      notifyError(`Error saving pricing plans: ${message}`)
+      notifyErrorRef.current(`Error saving pricing plans: ${message}`)
       console.error('Error saving pricing plans:', err)
       return false
     }
-  }, [notifySuccess, notifyError])
+  }, [])
 
   return {
     services,
