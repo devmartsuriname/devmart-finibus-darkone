@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react'
+import { useState, useCallback, useRef, useEffect } from 'react'
 import { supabase } from '@/integrations/supabase/client'
 import { useAdminNotify } from '@/lib/notify'
 
@@ -72,6 +72,16 @@ export const useAboutPageBlocks = () => {
   const [error, setError] = useState<string | null>(null)
   const { notifySuccess, notifyError } = useAdminNotify()
 
+  // Store notify functions in refs to avoid dependency issues
+  const notifySuccessRef = useRef(notifySuccess)
+  const notifyErrorRef = useRef(notifyError)
+
+  // Update refs on each render
+  useEffect(() => {
+    notifySuccessRef.current = notifySuccess
+    notifyErrorRef.current = notifyError
+  })
+
   const fetchAboutPageData = useCallback(async () => {
     setLoading(true)
     setError(null)
@@ -89,11 +99,11 @@ export const useAboutPageBlocks = () => {
     } catch (err) {
       const message = err instanceof Error ? err.message : 'Failed to fetch About page data'
       setError(message)
-      notifyError(message)
+      notifyErrorRef.current(message)
     } finally {
       setLoading(false)
     }
-  }, [notifyError])
+  }, [])
 
   const updateAboutPageData = useCallback(async (newData: AboutPageData): Promise<boolean> => {
     setLoading(true)
@@ -107,16 +117,16 @@ export const useAboutPageBlocks = () => {
       if (updateError) throw updateError
 
       setData(newData)
-      notifySuccess('About page settings saved')
+      notifySuccessRef.current('About page settings saved')
       return true
     } catch (err) {
       const message = err instanceof Error ? err.message : 'Failed to save About page data'
-      notifyError(message)
+      notifyErrorRef.current(message)
       return false
     } finally {
       setLoading(false)
     }
-  }, [notifySuccess, notifyError])
+  }, [])
 
   const updateSection = useCallback(async (
     sectionKey: 'inside_story' | 'latest_news',

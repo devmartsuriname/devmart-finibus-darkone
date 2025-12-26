@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react'
+import { useState, useCallback, useRef, useEffect } from 'react'
 import { supabase } from '@/integrations/supabase/client'
 import { useAdminNotify } from '@/lib/notify'
 
@@ -149,6 +149,16 @@ export const useHomepageBlocks = () => {
   const [error, setError] = useState<string | null>(null)
   const { notifySuccess, notifyError } = useAdminNotify()
 
+  // Store notify functions in refs to avoid dependency issues
+  const notifySuccessRef = useRef(notifySuccess)
+  const notifyErrorRef = useRef(notifyError)
+
+  // Update refs on each render
+  useEffect(() => {
+    notifySuccessRef.current = notifySuccess
+    notifyErrorRef.current = notifyError
+  })
+
   const fetchHomepageData = useCallback(async () => {
     setLoading(true)
     setError(null)
@@ -167,11 +177,11 @@ export const useHomepageBlocks = () => {
     } catch (err) {
       const message = err instanceof Error ? err.message : 'Failed to fetch homepage data'
       setError(message)
-      notifyError(message)
+      notifyErrorRef.current(message)
     } finally {
       setLoading(false)
     }
-  }, [notifyError])
+  }, [])
 
   const updateHomepageData = useCallback(async (newData: HomepageData): Promise<boolean> => {
     setLoading(true)
@@ -186,16 +196,16 @@ export const useHomepageBlocks = () => {
       if (updateError) throw updateError
 
       setData(newData)
-      notifySuccess('Homepage settings saved')
+      notifySuccessRef.current('Homepage settings saved')
       return true
     } catch (err) {
       const message = err instanceof Error ? err.message : 'Failed to save homepage data'
-      notifyError(message)
+      notifyErrorRef.current(message)
       return false
     } finally {
       setLoading(false)
     }
-  }, [notifySuccess, notifyError])
+  }, [])
 
   const updateSection = useCallback(async (
     sectionKey: SectionKey,
