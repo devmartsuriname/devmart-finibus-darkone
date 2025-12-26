@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback, useRef } from 'react'
 import { supabase } from '@/integrations/supabase/client'
 import { useAdminNotify } from '@/lib/notify'
 
@@ -38,6 +38,15 @@ export const useTestimonials = () => {
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const { notifySuccess, notifyError } = useAdminNotify()
+
+  // Ref pattern for stable notify functions
+  const notifySuccessRef = useRef(notifySuccess)
+  const notifyErrorRef = useRef(notifyError)
+
+  useEffect(() => {
+    notifySuccessRef.current = notifySuccess
+    notifyErrorRef.current = notifyError
+  })
 
   const fetchTestimonials = useCallback(async () => {
     try {
@@ -101,16 +110,16 @@ export const useTestimonials = () => {
         throw insertError
       }
 
-      notifySuccess('Testimonial created successfully')
+      notifySuccessRef.current('Testimonial created successfully')
       await fetchTestimonials()
       return true
     } catch (err) {
       const message = err instanceof Error ? err.message : 'Failed to create testimonial'
-      notifyError(`Error creating testimonial: ${message}`)
+      notifyErrorRef.current(`Error creating testimonial: ${message}`)
       console.error('Error creating testimonial:', err)
       return false
     }
-  }, [fetchTestimonials, notifySuccess, notifyError])
+  }, [fetchTestimonials])
 
   const updateTestimonial = useCallback(async (id: string, input: Partial<TestimonialInput>): Promise<boolean> => {
     try {
@@ -141,16 +150,16 @@ export const useTestimonials = () => {
         throw updateError
       }
 
-      notifySuccess('Testimonial updated successfully')
+      notifySuccessRef.current('Testimonial updated successfully')
       await fetchTestimonials()
       return true
     } catch (err) {
       const message = err instanceof Error ? err.message : 'Failed to update testimonial'
-      notifyError(`Error updating testimonial: ${message}`)
+      notifyErrorRef.current(`Error updating testimonial: ${message}`)
       console.error('Error updating testimonial:', err)
       return false
     }
-  }, [fetchTestimonials, notifySuccess, notifyError])
+  }, [fetchTestimonials])
 
   const deleteTestimonial = useCallback(async (id: string): Promise<boolean> => {
     try {
@@ -163,16 +172,16 @@ export const useTestimonials = () => {
         throw deleteError
       }
 
-      notifySuccess('Testimonial deleted successfully')
+      notifySuccessRef.current('Testimonial deleted successfully')
       await fetchTestimonials()
       return true
     } catch (err) {
       const message = err instanceof Error ? err.message : 'Failed to delete testimonial'
-      notifyError(`Error deleting testimonial: ${message}`)
+      notifyErrorRef.current(`Error deleting testimonial: ${message}`)
       console.error('Error deleting testimonial:', err)
       return false
     }
-  }, [fetchTestimonials, notifySuccess, notifyError])
+  }, [fetchTestimonials])
 
   return {
     testimonials,
