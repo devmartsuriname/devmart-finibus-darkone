@@ -607,7 +607,10 @@ export type Database = {
           full_description: string | null
           icon_media_id: string | null
           id: string
+          pricing_monthly_enabled: boolean
+          pricing_yearly_enabled: boolean
           short_description: string
+          show_pricing: boolean
           slug: string
           status: string
           title: string
@@ -619,7 +622,10 @@ export type Database = {
           full_description?: string | null
           icon_media_id?: string | null
           id?: string
+          pricing_monthly_enabled?: boolean
+          pricing_yearly_enabled?: boolean
           short_description: string
+          show_pricing?: boolean
           slug: string
           status?: string
           title: string
@@ -631,7 +637,10 @@ export type Database = {
           full_description?: string | null
           icon_media_id?: string | null
           id?: string
+          pricing_monthly_enabled?: boolean
+          pricing_yearly_enabled?: boolean
           short_description?: string
+          show_pricing?: boolean
           slug?: string
           status?: string
           title?: string

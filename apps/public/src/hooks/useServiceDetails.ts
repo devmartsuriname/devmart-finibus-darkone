@@ -61,6 +61,9 @@ export function useServiceDetails(slug: string | undefined): UseServiceDetailsRe
             icon_media_id,
             display_order,
             status,
+            show_pricing,
+            pricing_monthly_enabled,
+            pricing_yearly_enabled,
             icon:media!services_icon_media_id_fkey (
               id,
               public_url,
@@ -82,6 +85,9 @@ export function useServiceDetails(slug: string | undefined): UseServiceDetailsRe
           icon_media_id: s.icon_media_id,
           display_order: s.display_order,
           status: s.status,
+          show_pricing: s.show_pricing ?? true,
+          pricing_monthly_enabled: s.pricing_monthly_enabled ?? true,
+          pricing_yearly_enabled: s.pricing_yearly_enabled ?? true,
           icon: s.icon || null,
         }));
 
@@ -99,6 +105,9 @@ export function useServiceDetails(slug: string | undefined): UseServiceDetailsRe
             icon_media_id,
             display_order,
             status,
+            show_pricing,
+            pricing_monthly_enabled,
+            pricing_yearly_enabled,
             icon:media!services_icon_media_id_fkey (
               id,
               public_url,
@@ -129,6 +138,9 @@ export function useServiceDetails(slug: string | undefined): UseServiceDetailsRe
           icon_media_id: serviceData.icon_media_id,
           display_order: serviceData.display_order,
           status: serviceData.status,
+          show_pricing: (serviceData as any).show_pricing ?? true,
+          pricing_monthly_enabled: (serviceData as any).pricing_monthly_enabled ?? true,
+          pricing_yearly_enabled: (serviceData as any).pricing_yearly_enabled ?? true,
           icon: (serviceData as any).icon || null,
         };
 

@@ -26,6 +26,10 @@ export interface Service {
   icon_media_id: string | null;
   display_order: number;
   status: 'draft' | 'published';
+  // Phase 10B: Pricing visibility controls
+  show_pricing: boolean;
+  pricing_monthly_enabled: boolean;
+  pricing_yearly_enabled: boolean;
   icon?: Media | null;
 }
 

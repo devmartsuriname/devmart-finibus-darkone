@@ -26,6 +26,11 @@ const ServiceModal = ({ show, onClose, onSave, onUpdate, service }: ServiceModal
   const [iconId, setIconId] = useState<string>('')
   const [displayOrder, setDisplayOrder] = useState<string>('0')
   const [status, setStatus] = useState<'draft' | 'published'>('draft')
+  
+  // Phase 10B: Pricing visibility controls
+  const [showPricing, setShowPricing] = useState(true)
+  const [pricingMonthlyEnabled, setPricingMonthlyEnabled] = useState(true)
+  const [pricingYearlyEnabled, setPricingYearlyEnabled] = useState(true)
 
   // Related data
   const [processSteps, setProcessSteps] = useState<ProcessStepInput[]>([])
@@ -49,6 +54,10 @@ const ServiceModal = ({ show, onClose, onSave, onUpdate, service }: ServiceModal
         setIconId(service.icon_media_id || '')
         setDisplayOrder(service.display_order.toString())
         setStatus(service.status)
+        // Phase 10B: Load pricing visibility controls
+        setShowPricing(service.show_pricing ?? true)
+        setPricingMonthlyEnabled(service.pricing_monthly_enabled ?? true)
+        setPricingYearlyEnabled(service.pricing_yearly_enabled ?? true)
         loadRelatedData(service.id)
       } else {
         resetForm()
@@ -100,6 +109,10 @@ const ServiceModal = ({ show, onClose, onSave, onUpdate, service }: ServiceModal
     setIconId('')
     setDisplayOrder('0')
     setStatus('draft')
+    // Phase 10B: Reset pricing visibility controls
+    setShowPricing(true)
+    setPricingMonthlyEnabled(true)
+    setPricingYearlyEnabled(true)
     setProcessSteps([])
     setPricingPlans([])
     setErrors({})
@@ -159,6 +172,10 @@ const ServiceModal = ({ show, onClose, onSave, onUpdate, service }: ServiceModal
       icon_media_id: iconId || null,
       display_order: parseInt(displayOrder) || 0,
       status,
+      // Phase 10B: Include pricing visibility controls
+      show_pricing: showPricing,
+      pricing_monthly_enabled: pricingMonthlyEnabled,
+      pricing_yearly_enabled: pricingYearlyEnabled,
     }
 
     let success = false
@@ -297,6 +314,51 @@ const ServiceModal = ({ show, onClose, onSave, onUpdate, service }: ServiceModal
                       <option value="draft">Draft</option>
                       <option value="published">Published</option>
                     </Form.Select>
+                  </Form.Group>
+
+                  {/* Phase 10B: Pricing Visibility Controls */}
+                  <hr className="my-3" />
+                  <h6 className="text-muted mb-3">Pricing Visibility</h6>
+                  
+                  <Form.Group className="mb-3">
+                    <Form.Check
+                      type="switch"
+                      id="show-pricing"
+                      label="Show Pricing Section"
+                      checked={showPricing}
+                      onChange={(e) => setShowPricing(e.target.checked)}
+                      disabled={isSaving}
+                    />
+                    <Form.Text className="text-muted">
+                      When enabled, pricing plans display on the Service Detail page.
+                    </Form.Text>
+                  </Form.Group>
+
+                  <Form.Group className="mb-3">
+                    <Form.Check
+                      type="switch"
+                      id="pricing-monthly"
+                      label="Enable Monthly Plans"
+                      checked={pricingMonthlyEnabled}
+                      onChange={(e) => setPricingMonthlyEnabled(e.target.checked)}
+                      disabled={isSaving || !showPricing}
+                    />
+                    {!showPricing && (
+                      <Form.Text className="text-muted">
+                        Enable pricing to manage billing-period visibility.
+                      </Form.Text>
+                    )}
+                  </Form.Group>
+
+                  <Form.Group className="mb-2">
+                    <Form.Check
+                      type="switch"
+                      id="pricing-yearly"
+                      label="Enable Yearly Plans"
+                      checked={pricingYearlyEnabled}
+                      onChange={(e) => setPricingYearlyEnabled(e.target.checked)}
+                      disabled={isSaving || !showPricing}
+                    />
                   </Form.Group>
                 </Col>
               </Row>
