@@ -1,6 +1,6 @@
 import { useState, useCallback } from 'react'
 import { supabase } from '@/integrations/supabase/client'
-import { notifySuccess, notifyError } from '@/lib/notify'
+import { useAdminNotify } from '@/lib/notify'
 
 export interface Page {
   id: string
@@ -24,6 +24,7 @@ export const usePages = () => {
   const [pages, setPages] = useState<Page[]>([])
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const { notifySuccess, notifyError } = useAdminNotify()
 
   const fetchPages = useCallback(async () => {
     setLoading(true)
@@ -43,7 +44,7 @@ export const usePages = () => {
     } finally {
       setLoading(false)
     }
-  }, [])
+  }, [notifyError])
 
   const updatePage = useCallback(async (id: string, input: PageUpdateInput): Promise<boolean> => {
     setLoading(true)
@@ -85,7 +86,7 @@ export const usePages = () => {
     } finally {
       setLoading(false)
     }
-  }, [fetchPages])
+  }, [fetchPages, notifySuccess, notifyError])
 
   return {
     pages,

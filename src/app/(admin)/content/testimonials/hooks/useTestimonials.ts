@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react'
 import { supabase } from '@/integrations/supabase/client'
-import { notifySuccess, notifyError } from '@/lib/notify'
+import { useAdminNotify } from '@/lib/notify'
 
 export interface Testimonial {
   id: string
@@ -37,6 +37,7 @@ export const useTestimonials = () => {
   const [testimonials, setTestimonials] = useState<Testimonial[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
+  const { notifySuccess, notifyError } = useAdminNotify()
 
   const fetchTestimonials = useCallback(async () => {
     try {
@@ -109,7 +110,7 @@ export const useTestimonials = () => {
       console.error('Error creating testimonial:', err)
       return false
     }
-  }, [fetchTestimonials])
+  }, [fetchTestimonials, notifySuccess, notifyError])
 
   const updateTestimonial = useCallback(async (id: string, input: Partial<TestimonialInput>): Promise<boolean> => {
     try {
@@ -149,7 +150,7 @@ export const useTestimonials = () => {
       console.error('Error updating testimonial:', err)
       return false
     }
-  }, [fetchTestimonials])
+  }, [fetchTestimonials, notifySuccess, notifyError])
 
   const deleteTestimonial = useCallback(async (id: string): Promise<boolean> => {
     try {
@@ -171,7 +172,7 @@ export const useTestimonials = () => {
       console.error('Error deleting testimonial:', err)
       return false
     }
-  }, [fetchTestimonials])
+  }, [fetchTestimonials, notifySuccess, notifyError])
 
   return {
     testimonials,

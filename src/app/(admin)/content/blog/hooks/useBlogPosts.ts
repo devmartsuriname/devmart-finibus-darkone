@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from 'react'
 import { supabase } from '@/integrations/supabase/client'
 import { useAuthContext } from '@/context/useAuthContext'
-import { notifySuccess, notifyError } from '@/lib/notify'
+import { useAdminNotify } from '@/lib/notify'
 
 export interface BlogPost {
   id: string
@@ -34,6 +34,7 @@ export const useBlogPosts = () => {
   const [posts, setPosts] = useState<BlogPost[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
+  const { notifySuccess, notifyError } = useAdminNotify()
 
   const fetchPosts = useCallback(async () => {
     try {
@@ -121,7 +122,7 @@ export const useBlogPosts = () => {
       console.error('Error creating post:', err)
       return false
     }
-  }, [user?.id, fetchPosts])
+  }, [user?.id, fetchPosts, notifySuccess, notifyError])
 
   const updatePost = useCallback(async (id: string, input: Partial<BlogPostInput>): Promise<boolean> => {
     if (!user?.id) {
@@ -180,7 +181,7 @@ export const useBlogPosts = () => {
       console.error('Error updating post:', err)
       return false
     }
-  }, [user?.id, fetchPosts, posts])
+  }, [user?.id, fetchPosts, posts, notifySuccess, notifyError])
 
   const deletePost = useCallback(async (id: string): Promise<boolean> => {
     try {
@@ -202,7 +203,7 @@ export const useBlogPosts = () => {
       console.error('Error deleting post:', err)
       return false
     }
-  }, [fetchPosts])
+  }, [fetchPosts, notifySuccess, notifyError])
 
   return {
     posts,

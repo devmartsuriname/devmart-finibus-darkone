@@ -231,44 +231,47 @@ The following classes are the source of truth for pricing tables:
 
 ### 5.0 Admin Notification Standard (Phase 10B)
 
-#### 5.0.1 Canonical Wrapper
+#### 5.0.1 Canonical Hook
 
 **File:** `src/lib/notify.ts`
 
-All Admin save-action feedback MUST use this wrapper:
+All Admin save-action feedback MUST use the `useAdminNotify()` hook:
+
+```tsx
+import { useAdminNotify } from '@/lib/notify'
+
+// Inside your hook:
+const { notifySuccess, notifyError, notifyInfo, notifyWarning } = useAdminNotify()
+```
 
 | Function | Usage |
 |----------|-------|
-| `notifySuccess(message)` | Success feedback |
-| `notifyError(message)` | Error feedback |
-| `notifyInfo(message)` | Info messages |
-| `notifyWarning(message)` | Warning messages |
+| `notifySuccess(message)` | Success feedback (green) |
+| `notifyError(message)` | Error feedback (red) |
+| `notifyInfo(message)` | Info messages (blue) |
+| `notifyWarning(message)` | Warning messages (yellow) |
 
-**Configuration enforced:**
-- `icon: false` — Text-only, no SVG icons
-- `position: 'top-right'` — Consistent placement
+#### 5.0.2 Implementation Details
 
-#### 5.0.2 Usage Rules
+**Uses Bootstrap Toast** via `useNotificationContext` for:
+- ✅ UX parity with login success banner
+- ✅ Top-right positioning (`position="top-end"`)
+- ✅ Text-only (no icons)
+- ✅ Admin-only scope (no leakage to Auth routes)
+- ✅ Auto-dismiss (~2-3 seconds)
 
-1. ❌ Do NOT use `toast.*` directly in Admin hooks/components
-2. ✅ Use `notifySuccess/notifyError` from `@/lib/notify`
+#### 5.0.3 Usage Rules
+
+1. ❌ Do NOT use `toast.*` from react-toastify in Admin hooks/components
+2. ✅ Use `useAdminNotify()` hook from `@/lib/notify`
 3. Every successful save action MUST emit `notifySuccess`
 4. Every failed save action MUST emit `notifyError`
 
-#### 5.0.3 Global ToastContainer
+#### 5.0.4 Notification Host
 
-**File:** `src/components/wrapper/AppProvidersWrapper.tsx`
+**File:** `src/context/useNotificationContext.tsx`
 
-**Configuration:**
-```tsx
-<ToastContainer 
-  theme="colored" 
-  position="top-right"
-  autoClose={3000}
-  hideProgressBar={false}
-  closeOnClick
-/>
-```
+The `NotificationProvider` renders the Bootstrap Toast at `position="top-end"`. No `ToastContainer` from react-toastify is mounted globally.
 
 ### 5.1 Shared Stack
 

@@ -4,7 +4,15 @@ import { NotificationProvider } from '@/context/useNotificationContext'
 import { ChildrenType } from '@/types/component-props'
 import { HelmetProvider } from 'react-helmet-async'
 
-import { ToastContainer } from 'react-toastify'
+/**
+ * Phase 10B: Removed ToastContainer (react-toastify)
+ * 
+ * Admin notifications now use Bootstrap Toast via useNotificationContext.
+ * This ensures:
+ * - No scope leakage to Auth routes
+ * - UX parity with login success banner
+ * - Text-only, top-right placement
+ */
 
 const AppProvidersWrapper = ({ children }: ChildrenType) => {
   return (
@@ -14,13 +22,6 @@ const AppProvidersWrapper = ({ children }: ChildrenType) => {
           <LayoutProvider>
             <NotificationProvider>
               {children}
-              <ToastContainer 
-                theme="colored" 
-                position="top-right"
-                autoClose={3000}
-                hideProgressBar={false}
-                closeOnClick
-              />
             </NotificationProvider>
           </LayoutProvider>
         </AuthProvider>

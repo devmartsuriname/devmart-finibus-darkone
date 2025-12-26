@@ -3,57 +3,65 @@
  * 
  * Phase 10B: Admin Global Text-Only Save Messages
  * 
- * This module enforces text-only notifications (no icons) across all Admin modules.
- * Uses react-toastify with standardized configuration.
+ * This module provides the useAdminNotify() hook for text-only notifications
+ * across all Admin modules. Uses Bootstrap Toast via useNotificationContext
+ * for UX parity with the login success banner.
  * 
  * USAGE:
- * - Import: import { notifySuccess, notifyError } from '@/lib/notify'
- * - Call: notifySuccess('Message saved') or notifyError('Failed to save')
+ * - Import: import { useAdminNotify } from '@/lib/notify'
+ * - In hook: const { notifySuccess, notifyError, notifyInfo, notifyWarning } = useAdminNotify()
+ * - Call: notifySuccess('Message saved')
  * 
- * DO NOT use direct toast.* calls in Admin hooks/components.
+ * DO NOT use direct toast.* calls from react-toastify in Admin hooks/components.
  * All notifications should go through this wrapper for consistency.
+ * 
+ * FEATURES:
+ * - Text-only (no icons)
+ * - Top-right placement (matches login banner)
+ * - Auto-dismiss after ~2-3 seconds
+ * - No scope leakage to Auth routes
  */
 
-import { toast, ToastOptions } from 'react-toastify'
-
-/**
- * Base configuration for all notifications
- * - icon: false — No SVG icons, text-only
- * - position: top-right — Consistent placement
- */
-const baseConfig: ToastOptions = {
-  icon: false,
-  position: 'top-right',
-}
+import { useNotificationContext } from '@/context/useNotificationContext'
 
 /**
- * Display a success notification (text-only, top-right)
- * @param message - The success message to display
+ * Admin notification hook using Bootstrap Toast.
+ * Provides UX parity with the login success banner.
  */
-export const notifySuccess = (message: string): void => {
-  toast.success(message, baseConfig)
-}
+export const useAdminNotify = () => {
+  const { showNotification } = useNotificationContext()
 
-/**
- * Display an error notification (text-only, top-right)
- * @param message - The error message to display
- */
-export const notifyError = (message: string): void => {
-  toast.error(message, baseConfig)
-}
+  /**
+   * Display a success notification (green, top-right)
+   * @param message - The success message to display
+   */
+  const notifySuccess = (message: string): void => {
+    showNotification({ message, variant: 'success', delay: 3000 })
+  }
 
-/**
- * Display an info notification (text-only, top-right)
- * @param message - The info message to display
- */
-export const notifyInfo = (message: string): void => {
-  toast.info(message, baseConfig)
-}
+  /**
+   * Display an error notification (red, top-right)
+   * @param message - The error message to display
+   */
+  const notifyError = (message: string): void => {
+    showNotification({ message, variant: 'danger', delay: 4000 })
+  }
 
-/**
- * Display a warning notification (text-only, top-right)
- * @param message - The warning message to display
- */
-export const notifyWarning = (message: string): void => {
-  toast.warn(message, baseConfig)
+  /**
+   * Display an info notification (blue, top-right)
+   * @param message - The info message to display
+   */
+  const notifyInfo = (message: string): void => {
+    showNotification({ message, variant: 'info', delay: 3000 })
+  }
+
+  /**
+   * Display a warning notification (yellow, top-right)
+   * @param message - The warning message to display
+   */
+  const notifyWarning = (message: string): void => {
+    showNotification({ message, variant: 'warning', delay: 3000 })
+  }
+
+  return { notifySuccess, notifyError, notifyInfo, notifyWarning }
 }

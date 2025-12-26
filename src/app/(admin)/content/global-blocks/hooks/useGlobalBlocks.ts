@@ -1,6 +1,6 @@
 import { useState, useCallback } from 'react'
 import { supabase } from '@/integrations/supabase/client'
-import { notifySuccess, notifyError } from '@/lib/notify'
+import { useAdminNotify } from '@/lib/notify'
 
 // Global block keys
 export const GLOBAL_BLOCK_KEYS = [
@@ -61,6 +61,7 @@ export const useGlobalBlocks = () => {
   const [blocks, setBlocks] = useState<GlobalBlock[]>([])
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const { notifySuccess, notifyError } = useAdminNotify()
 
   const fetchGlobalBlocks = useCallback(async () => {
     setLoading(true)
@@ -81,7 +82,7 @@ export const useGlobalBlocks = () => {
     } finally {
       setLoading(false)
     }
-  }, [])
+  }, [notifyError])
 
   const getBlockByKey = useCallback((blockKey: GlobalBlockKey): GlobalBlock | undefined => {
     return blocks.find(b => b.block_key === blockKey)
@@ -117,7 +118,7 @@ export const useGlobalBlocks = () => {
     } finally {
       setLoading(false)
     }
-  }, [])
+  }, [notifySuccess, notifyError])
 
   const toggleBlockEnabled = useCallback(async (
     blockKey: GlobalBlockKey,

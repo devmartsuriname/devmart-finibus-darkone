@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react'
 import { supabase } from '@/integrations/supabase/client'
-import { notifySuccess, notifyError, notifyInfo } from '@/lib/notify'
+import { useAdminNotify } from '@/lib/notify'
 
 export type LeadStatus = 'new' | 'contacted' | 'qualified' | 'closed'
 
@@ -26,6 +26,7 @@ export const useLeads = () => {
   const [leads, setLeads] = useState<Lead[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
+  const { notifySuccess, notifyError, notifyInfo } = useAdminNotify()
 
   const fetchLeads = useCallback(async () => {
     try {
@@ -95,7 +96,7 @@ export const useLeads = () => {
       console.error('Error updating lead:', err)
       return false
     }
-  }, [fetchLeads])
+  }, [fetchLeads, notifySuccess, notifyError, notifyInfo])
 
   // Note: No createLead function - leads come from public forms only
   // Note: No deleteLead function - MVP restriction per Phase_4_Module_Leads.md

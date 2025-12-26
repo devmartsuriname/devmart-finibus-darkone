@@ -2,11 +2,12 @@
  * useProjects Hook
  * 
  * Phase 5.4+ Hotfix: Extended with new fields + process steps CRUD
+ * Phase 10B: Uses Bootstrap Toast via useAdminNotify
  */
 
 import { useState, useEffect, useCallback } from 'react'
 import { supabase } from '@/integrations/supabase/client'
-import { notifySuccess, notifyError } from '@/lib/notify'
+import { useAdminNotify } from '@/lib/notify'
 
 export interface Project {
   id: string
@@ -86,6 +87,7 @@ export const useProjects = () => {
   const [projects, setProjects] = useState<Project[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
+  const { notifySuccess, notifyError } = useAdminNotify()
 
   const fetchProjects = useCallback(async () => {
     try {
@@ -182,7 +184,7 @@ export const useProjects = () => {
       console.error('Error creating project:', err)
       return { success: false }
     }
-  }, [fetchProjects])
+  }, [fetchProjects, notifySuccess, notifyError])
 
   const updateProject = useCallback(async (id: string, input: Partial<ProjectInput>): Promise<boolean> => {
     try {
@@ -238,7 +240,7 @@ export const useProjects = () => {
       console.error('Error updating project:', err)
       return false
     }
-  }, [fetchProjects])
+  }, [fetchProjects, notifySuccess, notifyError])
 
   const deleteProject = useCallback(async (id: string): Promise<boolean> => {
     try {
@@ -260,7 +262,7 @@ export const useProjects = () => {
       console.error('Error deleting project:', err)
       return false
     }
-  }, [fetchProjects])
+  }, [fetchProjects, notifySuccess, notifyError])
 
   // Process Steps CRUD
   const fetchProcessSteps = useCallback(async (projectId: string): Promise<ProjectProcessStep[]> => {
@@ -321,7 +323,7 @@ export const useProjects = () => {
       notifyError('Failed to save process steps')
       return false
     }
-  }, [])
+  }, [notifySuccess, notifyError])
 
   return {
     projects,

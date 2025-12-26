@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react'
 import { supabase } from '@/integrations/supabase/client'
-import { notifySuccess, notifyError } from '@/lib/notify'
+import { useAdminNotify } from '@/lib/notify'
 
 export interface Service {
   id: string
@@ -86,6 +86,7 @@ export const useServices = () => {
   const [services, setServices] = useState<Service[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
+  const { notifySuccess, notifyError } = useAdminNotify()
 
   const fetchServices = useCallback(async () => {
     try {
@@ -163,7 +164,7 @@ export const useServices = () => {
       console.error('Error creating service:', err)
       return { success: false }
     }
-  }, [fetchServices])
+  }, [fetchServices, notifySuccess, notifyError])
 
   const updateService = useCallback(async (id: string, input: Partial<ServiceInput>): Promise<boolean> => {
     try {
@@ -209,7 +210,7 @@ export const useServices = () => {
       console.error('Error updating service:', err)
       return false
     }
-  }, [fetchServices])
+  }, [fetchServices, notifySuccess, notifyError])
 
   const deleteService = useCallback(async (id: string): Promise<boolean> => {
     try {
@@ -229,7 +230,7 @@ export const useServices = () => {
       console.error('Error deleting service:', err)
       return false
     }
-  }, [fetchServices])
+  }, [fetchServices, notifySuccess, notifyError])
 
   // Process Steps
   const fetchProcessSteps = useCallback(async (serviceId: string): Promise<ServiceProcessStep[]> => {
@@ -287,7 +288,7 @@ export const useServices = () => {
       console.error('Error saving process steps:', err)
       return false
     }
-  }, [])
+  }, [notifySuccess, notifyError])
 
   // Pricing Plans
   const fetchPricingPlans = useCallback(async (serviceId: string): Promise<ServicePricingPlan[]> => {
@@ -347,7 +348,7 @@ export const useServices = () => {
       console.error('Error saving pricing plans:', err)
       return false
     }
-  }, [])
+  }, [notifySuccess, notifyError])
 
   return {
     services,
