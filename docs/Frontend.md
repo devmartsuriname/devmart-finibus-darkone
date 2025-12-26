@@ -119,23 +119,58 @@ Each page must pass:
 
 ---
 
-## 3. Homepage Sections — Static by Design (Phase-Locked)
+## 3. Homepage Sections — Dynamic Wiring (✅ COMPLETE)
 
-> **Authorization Status:** NOT AUTHORIZED for DB wiring
+> **Status:** Phase 7.1 COMPLETE — All 9 sections wired to database with static fallbacks
+> **Verified:** 2025-12-26
 
-All Homepage sections remain static per Phase 6 guardrails. Wiring to database requires explicit authorization.
+### 3.1 Wiring Status
 
-| Section | Current State | Data Source | Wiring Status |
-|---------|---------------|-------------|---------------|
-| Hero Slider | Static | Hardcoded | ❌ Not Authorized |
-| Services Section | Static | Hardcoded | ❌ Not Authorized |
-| About Section | Static | Hardcoded | ❌ Not Authorized |
-| Partners Carousel | Static | Hardcoded | ❌ Not Authorized |
-| Portfolio Section | Static | Hardcoded | ❌ Not Authorized |
-| Why Choose Us | Static | Hardcoded | ❌ Not Authorized |
-| Testimonials Section | Static | Hardcoded | ❌ Not Authorized |
-| Latest Blog Posts | Static | Hardcoded | ❌ Not Authorized |
-| Let's Talk CTA | Static | Hardcoded | ❌ Not Authorized |
+| Section | Component | Status | Data Source | Hook |
+|---------|-----------|--------|-------------|------|
+| Hero Slider | `HeroArea.tsx` | ✅ WIRED | `homepage_settings.data.hero` | `useHomepageSettings` |
+| Services | `ServiceArea.tsx` | ✅ WIRED | `services` table | `useServices` |
+| About + Stats | `AboutArea.tsx` | ✅ WIRED | `homepage_settings.data` | `useHomepageSettings` |
+| Partners + Newsletter | `OurPartnerArea.tsx` | ✅ WIRED | `homepage_settings.data.partners` | `useHomepageSettings` + `useNewsletterSubscribe` |
+| Portfolio | `PortfolioArea.tsx` | ✅ WIRED | `projects` table | `useProjects` |
+| Why Choose Us | `WhyChooseUsArea.tsx` | ✅ WIRED | `homepage_settings.data.why_choose` | `useHomepageSettings` |
+| Testimonials | `TestimonialArea.tsx` | ✅ WIRED | `testimonials` table | `useTestimonials` |
+| Latest Blog | `NewsLatterArea.tsx` | ✅ WIRED | `blog_posts` table | `useBlogPosts` |
+| CTA Strip | `LetsTalkArea.tsx` | ✅ WIRED | `homepage_settings.data.cta` | `useHomepageSettings` |
+
+### 3.2 Hook + Fallback Pattern
+
+All homepage components follow the "Hook + Static Fallback" pattern:
+
+```tsx
+// 1. Define static fallback data (matches original Finibus template)
+const STATIC_DATA = { /* hardcoded template data */ };
+
+// 2. Fetch from database via hook
+const { data, loading, error } = useHomepageSettings(); // or useServices, etc.
+
+// 3. Use DB data if available, otherwise fallback
+const displayData = data?.property || STATIC_DATA;
+
+// 4. Render with displayData
+return <section>{/* render displayData */}</section>;
+```
+
+**Benefits:**
+- **Zero-downtime:** Static fallback ensures page renders even if DB fails
+- **Template parity:** Fallback data matches original Finibus template exactly
+- **Gradual migration:** Content can be updated in Admin without code changes
+
+### 3.3 Hooks Reference
+
+| Hook | File | Purpose |
+|------|------|---------|
+| `useHomepageSettings` | `apps/public/src/hooks/useHomepageSettings.ts` | Fetches `homepage_settings.data` JSON |
+| `useServices` | `apps/public/src/hooks/useServices.ts` | Fetches published services |
+| `useProjects` | `apps/public/src/hooks/useProjects.ts` | Fetches published projects |
+| `useTestimonials` | `apps/public/src/hooks/useTestimonials.ts` | Fetches published testimonials |
+| `useBlogPosts` | `apps/public/src/hooks/useBlogPosts.ts` | Fetches published blog posts |
+| `useNewsletterSubscribe` | `apps/public/src/hooks/useNewsletterSubscribe.ts` | INSERT to `newsletter_subscribers` |
 
 **Inner Pages (Wired to DB):**
 
