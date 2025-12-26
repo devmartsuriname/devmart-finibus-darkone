@@ -192,8 +192,14 @@ function ServiceDetailsWrapper({
         </div>
       </section>
 
-      {/* Pricing Section */}
-      <ServicePrice pricingPlans={pricingPlans} />
+      {/* Pricing Section - Phase 10B: Conditional render based on Admin toggle */}
+      {service?.show_pricing && (
+        <ServicePrice 
+          pricingPlans={pricingPlans}
+          monthlyEnabled={service.pricing_monthly_enabled}
+          yearlyEnabled={service.pricing_yearly_enabled}
+        />
+      )}
     </>
   );
 }

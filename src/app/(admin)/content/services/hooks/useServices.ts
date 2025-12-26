@@ -11,6 +11,10 @@ export interface Service {
   icon_media_id: string | null
   display_order: number
   status: 'draft' | 'published'
+  // Phase 10B: Pricing visibility controls
+  show_pricing: boolean
+  pricing_monthly_enabled: boolean
+  pricing_yearly_enabled: boolean
   created_at: string
   updated_at: string
   // Joined data
@@ -53,6 +57,10 @@ export interface ServiceInput {
   icon_media_id?: string | null
   display_order: number
   status: 'draft' | 'published'
+  // Phase 10B: Pricing visibility controls
+  show_pricing?: boolean
+  pricing_monthly_enabled?: boolean
+  pricing_yearly_enabled?: boolean
 }
 
 export interface ProcessStepInput {
@@ -137,6 +145,9 @@ export const useServices = () => {
           icon_media_id: input.icon_media_id || null,
           display_order: input.display_order,
           status: input.status,
+          show_pricing: input.show_pricing ?? true,
+          pricing_monthly_enabled: input.pricing_monthly_enabled ?? true,
+          pricing_yearly_enabled: input.pricing_yearly_enabled ?? true,
         })
         .select('id')
         .single()
@@ -178,6 +189,9 @@ export const useServices = () => {
       if (input.icon_media_id !== undefined) updateData.icon_media_id = input.icon_media_id || null
       if (input.display_order !== undefined) updateData.display_order = input.display_order
       if (input.status !== undefined) updateData.status = input.status
+      if (input.show_pricing !== undefined) updateData.show_pricing = input.show_pricing
+      if (input.pricing_monthly_enabled !== undefined) updateData.pricing_monthly_enabled = input.pricing_monthly_enabled
+      if (input.pricing_yearly_enabled !== undefined) updateData.pricing_yearly_enabled = input.pricing_yearly_enabled
 
       const { error: updateError } = await supabase
         .from('services')
