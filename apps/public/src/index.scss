@@ -169,60 +169,59 @@
 }
 
 /* ============================================================
-   BRANDING OVERRIDES (DB-driven) — Phase 11 Step 6
+   BRANDING OVERRIDES (DB-driven) — Phase 11 Root-Cause Fix
    Must load after Finibus styles to take precedence.
-   These selectors map Finibus hardcoded colors to CSS variables.
+   Maps Finibus hardcoded colors to CSS variables.
    ============================================================ */
 
-/* Primary CTA Buttons */
-.eg-btn,
-.primary-btn1,
-.quote-btn,
-.cmn-btn {
-  background-color: var(--color-primary, #D90A2C) !important;
-  border-color: var(--color-primary, #D90A2C) !important;
+/* CTA Buttons — Target the anchor, not wrapper! Override gradient properly */
+.cmn-btn a {
+  background: linear-gradient(90deg, var(--color-primary-grad-start, #D90A2C), var(--color-primary-grad-end, #730000)) !important;
 }
 
-.eg-btn:hover,
-.primary-btn1:hover,
-.quote-btn:hover,
-.cmn-btn:hover {
+.cmn-btn a:hover::before {
   background-color: var(--color-secondary, #17161A) !important;
-  border-color: var(--color-secondary, #17161A) !important;
 }
 
-/* Header Quote Button */
-.header-area .header-right .quote-btn a,
-.header-area .header-right .quote-btn button {
+/* Service Icons */
+.service-icon i {
   background-color: var(--color-primary, #D90A2C) !important;
 }
 
-/* Section Title Accent Lines */
-.title span::before,
-.section-title span::before {
+/* Service Links */
+.service-content a {
+  color: var(--color-primary, #D90A2C) !important;
+}
+
+/* Section Title Labels + Underlines */
+.title span {
+  color: var(--color-primary, #D90A2C) !important;
+}
+
+.title span::before {
   background-color: var(--color-primary, #D90A2C) !important;
 }
 
-/* Service Cards Hover */
-.single-service:hover,
-.service-card:hover {
+/* Navigation Active/Hover */
+.main-nav ul li a.active,
+.main-nav ul li a:hover {
+  color: var(--color-primary, #D90A2C) !important;
+}
+
+/* Breadcrumb */
+.breadcrumb-wrapper span a {
+  color: var(--color-primary, #D90A2C) !important;
+}
+
+/* Scroll Top Button */
+.scroll-top.opacity span {
   border-color: var(--color-primary, #D90A2C) !important;
-}
-
-/* Links Primary Color */
-a.theme-color,
-.theme-color {
   color: var(--color-primary, #D90A2C) !important;
 }
 
-/* Footer Accent */
-.footer-area .footer-widget h4::after {
+/* Swiper Pagination */
+.swiper-pagination-bullet-active {
   background-color: var(--color-primary, #D90A2C) !important;
-}
-
-/* Breadcrumb Active */
-.breadcrumb-area .breadcrumb li.active {
-  color: var(--color-primary, #D90A2C) !important;
 }
 
 /* Play Button */
@@ -230,7 +229,34 @@ a.theme-color,
   background-color: var(--color-primary, #D90A2C) !important;
 }
 
-/* Swiper Pagination Active */
-.swiper-pagination-bullet-active {
+/* Footer Social Hover */
+.footer-area .social-list li a:hover {
   background-color: var(--color-primary, #D90A2C) !important;
+}
+
+/* Footer Widget Title Accent */
+.footer-area .footer-widget h4::after {
+  background-color: var(--color-primary, #D90A2C) !important;
+}
+
+/* Project Filter Tabs */
+.project-filter-tab li.active,
+.project-filter-tab li:hover {
+  background: linear-gradient(90deg, var(--color-primary-grad-start, #D90A2C), var(--color-primary-grad-end, #730000)) !important;
+}
+
+/* Pricing Tabs */
+.nav-pills .nav-link.active,
+.nav-pills .nav-link:hover {
+  background: linear-gradient(90deg, var(--color-primary-grad-start, #D90A2C), var(--color-primary-grad-end, #730000)) !important;
+}
+
+/* Subscribe Button */
+.subscribe-form form input[type="submit"] {
+  background: linear-gradient(90deg, var(--color-primary-grad-start, #D90A2C), var(--color-primary-grad-end, #730000)) !important;
+}
+
+/* Pay Button (Pricing) */
+.pay-btn a {
+  background: linear-gradient(90deg, var(--color-primary-grad-start, #D90A2C), var(--color-primary-grad-end, #730000)) !important;
 }

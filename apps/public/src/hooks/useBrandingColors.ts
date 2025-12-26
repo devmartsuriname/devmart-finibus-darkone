@@ -2,11 +2,11 @@
  * Branding Colors Hook
  * 
  * Purpose: Fetch branding color settings from Supabase for public frontend consumption.
- * Returns primary, secondary, and accent colors with Finibus defaults as fallbacks.
+ * Returns primary, secondary, accent colors AND gradient tokens with Finibus defaults as fallbacks.
  * 
- * Phase 11 — Step 4: Public Branding Hook
+ * Phase 11 — Root-Cause Fix: Added gradient token support
  * 
- * Note: CSS variable injection is handled separately in Step 5.
+ * Note: CSS variable injection is handled by BrandingProvider.
  */
 
 import { useState, useEffect } from 'react';
@@ -17,19 +17,25 @@ const BRANDING_KEYS = [
   'primary_color',
   'secondary_color',
   'accent_color',
+  'primary_gradient_start',
+  'primary_gradient_end',
 ] as const;
 
 // Finibus default colors — used if DB values are missing/invalid
 const FALLBACK_COLORS = {
-  primaryColor: '#D90A2C',   // Finibus theme-color (red)
-  secondaryColor: '#17161A', // Finibus black
-  accentColor: '#F7941D',    // Finibus accent (orange)
+  primaryColor: '#D90A2C',           // Finibus theme-color (red)
+  secondaryColor: '#17161A',         // Finibus black
+  accentColor: '#F7941D',            // Finibus accent (orange)
+  primaryGradientStart: '#D90A2C',   // Gradient start (same as primary)
+  primaryGradientEnd: '#730000',     // Gradient end (dark red)
 } as const;
 
 export interface BrandingColors {
   primaryColor: string;
   secondaryColor: string;
   accentColor: string;
+  primaryGradientStart: string;
+  primaryGradientEnd: string;
 }
 
 interface UseBrandingColorsResult {
@@ -77,6 +83,8 @@ export function useBrandingColors(): UseBrandingColorsResult {
             'primary_color': 'primaryColor',
             'secondary_color': 'secondaryColor',
             'accent_color': 'accentColor',
+            'primary_gradient_start': 'primaryGradientStart',
+            'primary_gradient_end': 'primaryGradientEnd',
           };
 
           // Build colors object with validation
@@ -88,8 +96,16 @@ export function useBrandingColors(): UseBrandingColorsResult {
             }
           }
 
-          // Merge with fallbacks (fallbacks used for any missing/invalid values)
-          setColors({ ...FALLBACK_COLORS, ...fetched });
+          // If gradient start/end not set, derive from primary color
+          // This ensures solid primary color changes also affect gradients
+          const mergedColors = { ...FALLBACK_COLORS, ...fetched };
+          
+          // If user set primary but not gradient tokens, use primary for start
+          if (fetched.primaryColor && !fetched.primaryGradientStart) {
+            mergedColors.primaryGradientStart = fetched.primaryColor;
+          }
+
+          setColors(mergedColors);
         }
         // If no data, keep fallback colors
       } catch (err) {
