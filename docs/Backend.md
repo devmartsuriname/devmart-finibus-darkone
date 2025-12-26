@@ -2,9 +2,9 @@
 
 ```
 Status: AUTHORITATIVE
-Phase: Phase 4 COMPLETE | Phase 5 COMPLETE | Phase 6.1 COMPLETE | Phase 7.2 COMPLETE | Phase 9 CLOSED
+Phase: Phase 4 COMPLETE | Phase 5 COMPLETE | Phase 6.1 COMPLETE | Phase 7.2 COMPLETE | Phase 9 CLOSED | Phase 10B CLOSED
 Auth: IMPLEMENTED (Supabase JWT + Roles + RLS Active)
-Execution: All 8 Admin Modules Complete | Public → DB Integration Complete | Routing Parity Fixed | Phase 9 About/Global Blocks Complete
+Execution: All 8 Admin Modules Complete | Public → DB Integration Complete | Routing Parity Fixed | Phase 9 About/Global Blocks Complete | Phase 10B Pricing Controls Complete
 Last Updated: 2025-12-26
 ```
 
@@ -456,6 +456,7 @@ CREATE TABLE public.leads (
 **RLS Policy:** `"Public can read settings"` allows anon SELECT on settings table.
 
 
+### 2.13 services Table (Phase 4 Services + Phase 10B)
 
 ```sql
 CREATE TABLE public.services (
@@ -467,10 +468,33 @@ CREATE TABLE public.services (
     icon_media_id UUID REFERENCES public.media(id) ON DELETE SET NULL,
     display_order INTEGER NOT NULL DEFAULT 0,
     status TEXT NOT NULL DEFAULT 'draft' CHECK (status IN ('draft', 'published')),
+    -- Phase 10B: Pricing Visibility Controls
+    show_pricing BOOLEAN NOT NULL DEFAULT true,
+    pricing_monthly_enabled BOOLEAN NOT NULL DEFAULT true,
+    pricing_yearly_enabled BOOLEAN NOT NULL DEFAULT true,
     created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
     updated_at TIMESTAMPTZ NOT NULL DEFAULT now()
 );
 ```
+
+**Phase 10B Additions:**
+
+| Column | Type | Default | Purpose |
+|--------|------|---------|---------|
+| `show_pricing` | BOOLEAN NOT NULL | `true` | Master toggle: show/hide pricing section on Service Detail page |
+| `pricing_monthly_enabled` | BOOLEAN NOT NULL | `true` | Enable/disable Monthly tab in pricing section |
+| `pricing_yearly_enabled` | BOOLEAN NOT NULL | `true` | Enable/disable Yearly tab in pricing section |
+
+**Admin Behavior:**
+- All three toggles in ServiceModal Basic Info tab under "Pricing Visibility"
+- Monthly/Yearly toggles disabled when Show Pricing is OFF
+- Changes persist on save without regression to existing fields
+
+**Public Behavior:**
+- Pricing section renders only if `show_pricing = true`
+- Monthly tab renders only if `pricing_monthly_enabled = true`
+- Yearly tab renders only if `pricing_yearly_enabled = true`
+- Edge case: If pricing enabled but both tabs disabled → section hidden + dev console warning
 
 **Indexes:**
 - `idx_services_status` ON (status)
@@ -479,7 +503,7 @@ CREATE TABLE public.services (
 **Trigger:**
 - `update_services_updated_at` → calls `update_updated_at_column()`
 
-**RLS:** Admin full CRUD + Public SELECT for published services.
+**RLS:** Admin full CRUD + Public SELECT for published services (including new columns).
 
 **Seed Data:** 7 services matching Finibus template.
 

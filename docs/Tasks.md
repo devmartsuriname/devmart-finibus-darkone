@@ -1,7 +1,7 @@
 # Tasks — Devmart Implementation Tracker
 
 **Status:** Verified  
-**Current Phase:** Phase 9 CLOSED | Phase 10A DOCUMENTED | Phase 7 Remaining IN PROGRESS  
+**Current Phase:** Phase 10B CLOSED | Phase 7 Remaining IN PROGRESS  
 **Last Updated:** 2025-12-26
 
 ---
@@ -20,6 +20,7 @@
 | Phase 8 | ⏸️ Deferred | Analytics (not authorized) |
 | Phase 9 | ✅ CLOSED | About Page + Global Blocks (Admin UI + DB) |
 | Phase 10A | ✅ COMPLETE | Services Pricing Visual Fix + Spacing Adjustment |
+| Phase 10B | ✅ CLOSED | Service Detail Pricing Visibility Controls |
 
 ---
 
@@ -207,44 +208,66 @@ All project images (any dimensions) will render consistently with `object-fit: c
 
 ---
 
-## Phase 10A — Services Pricing Visual Fix (📄 DOCUMENTED — NOT EXECUTED)
+## Phase 10A — Services Pricing Visual Fix (✅ COMPLETE)
 
-**Status:** DOCUMENTED — Awaiting Execution Authorization
+**Completed:** 2025-12-26
 
 ### Scope
 
 | Page | Action | Status |
 |------|--------|--------|
-| `/services` | Remove pricing section | ⏳ Pending |
-| `/service-details/:slug` | Fix pricing table visual parity | ⏳ Pending |
+| `/services` | Remove pricing section | ✅ Complete |
+| `/service-details/:slug` | Fix pricing table visual parity | ✅ Complete |
 
-### Root Cause
+### Fix Applied
 
-The Service Detail pricing table uses custom CSS classes that do not exist in Finibus:
-- `price-card` → should be `single-price-box`
-- `price-feature` → should be `feature-list`
-- `price-btn` → should be `pay-btn`
+Updated `PriceBox.tsx` and `ServicePrice.tsx` to use Finibus-parity CSS classes:
+- `single-price-box` instead of custom `price-card`
+- `feature-list` instead of custom `price-feature`
+- `pay-btn` instead of custom `price-btn`
+- `section.pricing-plan.sec-mar` wrapper
 
-### Fix Strategy
+---
 
-1. Update `PriceBox.tsx` to use Finibus class structure
-2. Update `ServicePrice.tsx` wrapper to use `section.pricing-plan.sec-mar`
-3. Remove pricing section from Services landing page
+## Phase 10B — Service Detail Pricing Visibility Controls (✅ CLOSED)
 
-### Dependencies
+**Completed:** 2025-12-26
 
-| Dependency | Status |
-|------------|--------|
-| Phase 9 CLOSED | ✅ |
-| Blueprint documented | ✅ `docs/Phase_10A_Services_Pricing_Blueprint.md` |
-| Execution authorization | ⏳ Awaiting |
+### Summary
 
-### Out of Scope
+Implemented per-service pricing visibility controls enabling Admin to manage:
+- **Show Pricing Section** — Master toggle to show/hide pricing on Service Detail page
+- **Enable Monthly Plans** — Toggle to show/hide Monthly tab
+- **Enable Yearly Plans** — Toggle to show/hide Yearly tab
 
-- Quote request wizard
-- Pricing → checkout flow
-- Stripe integration
-- New pricing plan types
+### Database Changes
+
+Added 3 columns to `services` table:
+| Column | Type | Default |
+|--------|------|---------|
+| `show_pricing` | BOOLEAN NOT NULL | `true` |
+| `pricing_monthly_enabled` | BOOLEAN NOT NULL | `true` |
+| `pricing_yearly_enabled` | BOOLEAN NOT NULL | `true` |
+
+### Admin UI
+
+ServiceModal.tsx updated with 3 toggles in Basic Info tab under "Pricing Visibility" section.
+
+### Public Frontend
+
+- `ServiceDetailsWrapper.tsx`: Conditional render based on `show_pricing`
+- `ServicePrice.tsx`: Conditional tabs based on `pricing_monthly_enabled` / `pricing_yearly_enabled`
+
+### Guardian Rules Verified
+
+- ✅ No new database tables
+- ✅ No global CSS/SCSS changes introduced
+- ✅ No unintended scope expansion
+- ✅ Finibus 1:1 visual parity maintained
+
+### Restore Point
+
+`docs/restore-points/Restore_Point_Phase_10B_Closeout.md`
 
 ---
 
@@ -256,6 +279,6 @@ The Service Detail pricing table uses custom CSS classes that do not exist in Fi
 | 1.0 | 2025-12-25 | Implementation Agent | Phase 5 + 6.1 complete, MVP baseline |
 | 1.1 | 2025-12-25 | Implementation Agent | Phase 7.2 complete — Routing/404/Image parity |
 | 1.2 | 2025-12-26 | Implementation Agent | Phase 9 CLOSED — About Page + Global Blocks |
+| 1.3 | 2025-12-26 | Implementation Agent | Phase 10A COMPLETE, Phase 10B CLOSED — Pricing controls |
 
-**Next Review:** Before Phase 10 authorization
-**Next Review:** Before Phase 7 homepage wiring authorization
+**Next Review:** Before Phase 10C or Phase 11 authorization
