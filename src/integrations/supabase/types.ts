@@ -156,6 +156,30 @@ export type Database = {
         }
         Relationships: []
       }
+      global_blocks: {
+        Row: {
+          block_key: string
+          data: Json | null
+          id: string
+          updated_at: string | null
+          updated_by: string | null
+        }
+        Insert: {
+          block_key: string
+          data?: Json | null
+          id?: string
+          updated_at?: string | null
+          updated_by?: string | null
+        }
+        Update: {
+          block_key?: string
+          data?: Json | null
+          id?: string
+          updated_at?: string | null
+          updated_by?: string | null
+        }
+        Relationships: []
+      }
       homepage_settings: {
         Row: {
           data: Json
@@ -276,6 +300,30 @@ export type Database = {
           email?: string
           id?: string
           source?: string
+        }
+        Relationships: []
+      }
+      page_settings: {
+        Row: {
+          data: Json | null
+          id: string
+          page_slug: string
+          updated_at: string | null
+          updated_by: string | null
+        }
+        Insert: {
+          data?: Json | null
+          id?: string
+          page_slug: string
+          updated_at?: string | null
+          updated_by?: string | null
+        }
+        Update: {
+          data?: Json | null
+          id?: string
+          page_slug?: string
+          updated_at?: string | null
+          updated_by?: string | null
         }
         Relationships: []
       }
