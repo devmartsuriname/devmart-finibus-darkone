@@ -18,7 +18,7 @@ function HowWeWorkArea() {
   
   return (
     <>
-      <section className="how-we-work sec-mar-top">
+      <section className="how-we-work sec-mar-top sec-mar-bottom">
         <div className="container">
           <div className="row">
             <div className="col-md-8 col-xl-4">
