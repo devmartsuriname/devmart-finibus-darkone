@@ -2,7 +2,6 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { useAboutPageSettings } from "../../../hooks/useAboutPageSettings";
 import { useBlogPosts } from "../../../hooks/useBlogPosts";
-import { format } from "date-fns";
 
 function LatesNewsArea() {
   const { latestNews } = useAboutPageSettings();
@@ -23,11 +22,19 @@ function LatesNewsArea() {
   // Get the number of posts to display (default 2)
   const postsToShow = posts.slice(0, latestNews.posts_count || 2);
 
-  // Format date helper
-  const formatDate = (dateStr: string | null) => {
+  // Format date helper using native Intl.DateTimeFormat (no external dependencies)
+  const formatDate = (dateStr: string | null): string => {
     if (!dateStr) return '';
     try {
-      return format(new Date(dateStr), 'dd MMMM, yyyy');
+      const date = new Date(dateStr);
+      if (isNaN(date.getTime())) return '';
+      
+      // Format: "05 January, 2021" (matching Finibus demo style)
+      const day = date.getDate().toString().padStart(2, '0');
+      const month = new Intl.DateTimeFormat('en-US', { month: 'long' }).format(date);
+      const year = date.getFullYear();
+      
+      return `${day} ${month}, ${year}`;
     } catch {
       return '';
     }

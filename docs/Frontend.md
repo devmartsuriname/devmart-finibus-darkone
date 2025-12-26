@@ -1,7 +1,7 @@
 # Frontend Specification — Devmart Platform
 
 **Status:** Implemented (MVP)  
-**Phase:** Phase 6.1 COMPLETE | Phase 7 CLOSED | Phase 9 CLOSED | Phase 10A COMPLETE | Phase 10B FINALIZED  
+**Phase:** Phase 6.1 COMPLETE | Phase 7 CLOSED | Phase 9 CLOSED | Phase 10A COMPLETE | Phase 10B FINALIZED | Phase 10C COMPLETE  
 **Last Updated:** 2025-12-26
 
 ---
@@ -216,6 +216,7 @@ return <section>{/* render displayData */}</section>;
 | `useTestimonials` | `apps/public/src/hooks/useTestimonials.ts` | Fetches published testimonials |
 | `useBlogPosts` | `apps/public/src/hooks/useBlogPosts.ts` | Fetches published blog posts |
 | `useNewsletterSubscribe` | `apps/public/src/hooks/useNewsletterSubscribe.ts` | INSERT to `newsletter_subscribers` |
+| `useAboutPageSettings` | `apps/public/src/hooks/useAboutPageSettings.ts` | Fetches About page UI block settings |
 
 **Inner Pages (Wired to DB):**
 
@@ -228,6 +229,66 @@ return <section>{/* render displayData */}</section>;
 | `/blog` | ✅ Wired | `blog_posts` (published) |
 | `/blog/:slug` | ✅ Wired | `blog_posts` + `media` |
 | `/contact` | ✅ Wired | `settings` (contact info) + `leads` (form INSERT) |
+| `/about` | ✅ Wired | `page_settings` (UI blocks) + `blog_posts` (Latest News) |
+
+---
+
+## 3.4 About Page Wiring (Phase 10C)
+
+### 3.4.1 Data Source
+
+| Table | Key | Purpose |
+|-------|-----|---------|
+| `page_settings` | `page_slug = 'about'` | UI block configuration for About page sections |
+
+### 3.4.2 Sections Wired
+
+| Section | Component | Status | Data Source |
+|---------|-----------|--------|-------------|
+| Inside Story | `InsideStoryArea.tsx` | ✅ WIRED | `page_settings.data.inside_story` |
+| Latest News | `LatesNewsArea.tsx` | ✅ WIRED | `page_settings.data.latest_news` + `useBlogPosts` |
+| Why Choose Us | `WhyChooseUsArea.tsx` | ✅ STATIC | Uses global homepage settings (shared) |
+
+### 3.4.3 Hook Pattern
+
+```tsx
+// useAboutPageSettings.ts
+const { insideStory, latestNews, isLoading } = useAboutPageSettings();
+
+// Each section respects:
+// - enabled flag: if false, section does not render
+// - DB values with static fallbacks
+```
+
+### 3.4.4 Heading Color Parity Fix
+
+**Issue:** WhyChooseUsArea heading was white on About page (incorrect)
+**Root Cause:** `black=""` prop instead of `black="black"` in AboutPage.tsx
+**Fix:** Changed to `black="black"` to apply `.title.black h2` styling (dark heading)
+
+### 3.4.5 Date Formatting Standard
+
+**Rule:** Public app must NOT use external date libraries (e.g., date-fns, moment).
+
+**Implementation:** Native `Intl.DateTimeFormat` with defensive handling:
+
+```tsx
+const formatDate = (dateStr: string | null): string => {
+  if (!dateStr) return '';
+  try {
+    const date = new Date(dateStr);
+    if (isNaN(date.getTime())) return '';
+    const day = date.getDate().toString().padStart(2, '0');
+    const month = new Intl.DateTimeFormat('en-US', { month: 'long' }).format(date);
+    const year = date.getFullYear();
+    return `${day} ${month}, ${year}`;
+  } catch {
+    return '';
+  }
+};
+```
+
+**Output format:** `DD Month, YYYY` (e.g., "05 January, 2021")
 
 ---
 
