@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback, useRef } from 'react'
 import { supabase } from '@/integrations/supabase/client'
 import { useAuthContext } from '@/context/useAuthContext'
 import { useAdminNotify } from '@/lib/notify'
@@ -33,6 +33,16 @@ export const useSettings = () => {
   const [error, setError] = useState<string | null>(null)
   const { notifySuccess, notifyError } = useAdminNotify()
 
+  // Store notify functions in refs to avoid dependency issues (prevents infinite loop)
+  const notifySuccessRef = useRef(notifySuccess)
+  const notifyErrorRef = useRef(notifyError)
+
+  // Update refs on each render without triggering effects
+  useEffect(() => {
+    notifySuccessRef.current = notifySuccess
+    notifyErrorRef.current = notifyError
+  })
+
   const fetchSettings = useCallback(async () => {
     try {
       setIsLoading(true)
@@ -51,11 +61,11 @@ export const useSettings = () => {
     } catch (err) {
       const message = err instanceof Error ? err.message : 'Failed to fetch settings'
       setError(message)
-      notifyError(`Error loading settings: ${message}`)
+      notifyErrorRef.current(`Error loading settings: ${message}`)
     } finally {
       setIsLoading(false)
     }
-  }, [notifyError])
+  }, [])
 
   useEffect(() => {
     fetchSettings()
@@ -77,7 +87,7 @@ export const useSettings = () => {
 
   const updateSettings = useCallback(async (updates: SettingUpdate[]): Promise<boolean> => {
     if (!user?.id) {
-      notifyError('You must be logged in to update settings')
+      notifyErrorRef.current('You must be logged in to update settings')
       return false
     }
 
@@ -103,17 +113,17 @@ export const useSettings = () => {
       // Refresh settings after update
       await fetchSettings()
       
-      notifySuccess('Settings saved successfully')
+      notifySuccessRef.current('Settings saved successfully')
       return true
     } catch (err) {
       const message = err instanceof Error ? err.message : 'Failed to save settings'
       setError(message)
-      notifyError(`Error saving settings: ${message}`)
+      notifyErrorRef.current(`Error saving settings: ${message}`)
       return false
     } finally {
       setIsSaving(false)
     }
-  }, [user?.id, fetchSettings, notifySuccess, notifyError])
+  }, [user?.id, fetchSettings])
 
   return {
     settings,
