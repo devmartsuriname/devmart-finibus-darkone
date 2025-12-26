@@ -8,6 +8,19 @@ import { useState, useEffect } from 'react';
 import { supabase } from '../lib/supabase';
 import { ProjectWithMedia, ProjectProcessStep } from './useProjects';
 
+interface Media {
+  id: string;
+  public_url: string;
+  alt_text: string | null;
+}
+
+// Helper to extract single media from Supabase array response
+const extractMedia = (mediaData: unknown): Media | null => {
+  if (!mediaData) return null;
+  if (Array.isArray(mediaData)) return mediaData[0] || null;
+  return mediaData as Media;
+};
+
 interface UseProjectDetailsResult {
   project: ProjectWithMedia | null;
   relatedProjects: ProjectWithMedia[];
@@ -81,7 +94,7 @@ export function useProjectDetails(slug: string | undefined): UseProjectDetailsRe
           step_number: s.step_number,
           title: s.title,
           description: s.description,
-          image: s.image || null,
+          image: extractMedia(s.image),
         }));
 
         const transformedProject: ProjectWithMedia = {
@@ -101,9 +114,9 @@ export function useProjectDetails(slug: string | undefined): UseProjectDetailsRe
           start_date: projectData.start_date,
           end_date: projectData.end_date,
           check_launch_content: projectData.check_launch_content,
-          image: projectData.image || null,
-          featured_image: projectData.featured_image || null,
-          check_launch_image: projectData.check_launch_image || null,
+          image: extractMedia(projectData.image),
+          featured_image: extractMedia(projectData.featured_image),
+          check_launch_image: extractMedia(projectData.check_launch_image),
           process_steps: processSteps,
         };
 
@@ -142,9 +155,9 @@ export function useProjectDetails(slug: string | undefined): UseProjectDetailsRe
           start_date: p.start_date,
           end_date: p.end_date,
           check_launch_content: p.check_launch_content,
-          image: p.image || null,
-          featured_image: p.featured_image || null,
-          check_launch_image: p.check_launch_image || null,
+          image: extractMedia(p.image),
+          featured_image: extractMedia(p.featured_image),
+          check_launch_image: extractMedia(p.check_launch_image),
           process_steps: [],
         }));
         setRelatedProjects(transformedRelated);

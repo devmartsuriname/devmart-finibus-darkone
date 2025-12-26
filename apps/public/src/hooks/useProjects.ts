@@ -89,6 +89,13 @@ export function useProjects(): UseProjectsResult {
           throw fetchError;
         }
 
+        // Helper to extract single media from Supabase array response
+        const extractMedia = (mediaData: unknown): Media | null => {
+          if (!mediaData) return null;
+          if (Array.isArray(mediaData)) return mediaData[0] || null;
+          return mediaData as Media;
+        };
+
         // Transform the response to flatten media relations
         const transformedProjects: ProjectWithMedia[] = (data || []).map((project: any) => ({
           id: project.id,
@@ -103,8 +110,14 @@ export function useProjects(): UseProjectsResult {
           status: project.status,
           created_at: project.created_at,
           updated_at: project.updated_at,
-          image: project.image || null,
-          featured_image: project.featured_image || null,
+          website: project.website || null,
+          start_date: project.start_date || null,
+          end_date: project.end_date || null,
+          check_launch_content: project.check_launch_content || null,
+          image: extractMedia(project.image),
+          featured_image: extractMedia(project.featured_image),
+          check_launch_image: null,
+          process_steps: [],
         }));
 
         setProjects(transformedProjects);
