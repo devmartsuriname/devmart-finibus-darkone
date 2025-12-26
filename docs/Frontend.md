@@ -1,7 +1,7 @@
 # Frontend Specification — Devmart Platform
 
 **Status:** Implemented (MVP)  
-**Phase:** Phase 6.1 COMPLETE | Phase 7 CLOSED | Phase 9 CLOSED | Phase 10A COMPLETE | Phase 10B FINALIZED | Phase 10C COMPLETE | Phase 11 PLANNED  
+**Phase:** Phase 6.1 COMPLETE | Phase 7 CLOSED | Phase 9 CLOSED | Phase 10A COMPLETE | Phase 10B FINALIZED | Phase 10C COMPLETE | Phase 11 Step 3 COMPLETE  
 **Last Updated:** 2025-12-26
 
 ---
@@ -510,11 +510,57 @@ The following are explicitly out of scope for ALL phases unless separately autho
 
 ---
 
+## 10. Phase 11 — Settings Module Branding (Step 3 COMPLETE)
+
+### 10.1 Branding Color Pickers (Admin)
+
+**Status:** ✅ Implemented
+
+Admin Settings → Branding tab now includes editable color pickers for:
+
+| Setting Key | Default Value | Purpose |
+|-------------|---------------|---------|
+| `primary_color` | `#D90A2C` | Main brand color (buttons, links) |
+| `secondary_color` | `#17161A` | Secondary brand color (headers, dark sections) |
+| `accent_color` | `#F7941D` | Accent color (highlights, CTAs) |
+
+### 10.2 Admin UI Pattern
+
+Each color picker uses a dual-input pattern:
+- `type="color"` — Native color picker swatch
+- `type="text"` — Hex value input (e.g., `#D90A2C`)
+
+Both inputs are bound to the same form value and sync on change.
+
+### 10.3 Data Flow
+
+```
+Admin → BrandingSettingsTab → handleChange → formValues → updateSettings
+                                                              ↓
+                                                      settings table (DB)
+                                                              ↓
+                                                    (Step 4+5 pending)
+                                                              ↓
+                                                  Public Frontend CSS Variables
+```
+
+### 10.4 Guardian Rules Verified
+
+- ✅ Fonts remain locked (Finibus 1:1)
+- ✅ No layout changes
+- ✅ No Bootstrap customization
+- ✅ No custom CSS/SCSS
+- ✅ Admin-only scope
+- ✅ Uses existing React-Bootstrap Form components
+
+---
+
 ## Document Control
 
 | Version | Date | Author | Notes |
 |---------|------|--------|-------|
 | 0.1 | 2025-01-XX | Planning Agent | Initial draft |
 | 1.0 | 2025-12-25 | Implementation Agent | Updated to Implemented (MVP), added Homepage section status |
+| 1.1 | 2025-12-26 | Implementation Agent | Phase 11 Step 3 — Branding color pickers |
 
-**Next Review:** After Phase 6.2 authorization
+**Next Review:** After Phase 11 Step 4 (Frontend Hook)
