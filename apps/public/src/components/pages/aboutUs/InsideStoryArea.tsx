@@ -1,11 +1,17 @@
 import React from "react";
 import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
+import { useAboutPageSettings, STATIC_INSIDE_STORY } from "../../../hooks/useAboutPageSettings";
 
 function InsideStoryArea() {
-  const Singlepercentage = 90;
-  const singleXmPercentage = 95;
-  const singleXmlPercentage = 88;
+  const { insideStory } = useAboutPageSettings();
+  
+  // If section is disabled, don't render
+  if (!insideStory.enabled) {
+    return null;
+  }
+
+  const stats = insideStory.progress_stats || STATIC_INSIDE_STORY.progress_stats;
   
   return (
     <>
@@ -17,20 +23,17 @@ function InsideStoryArea() {
                 <div className="story-left">
                   <div className="office-group-img">
                     <img
-                      src="/images/story.png"
+                      src={insideStory.main_image_url}
                       alt="images"
                     />
                     <div className="cto-message-wrapper">
                       <div className="cto-message">
-                        <p>
-                          Integer purus odio, placerat neclessi rhoncus in,
-                          ullamcorper nec dolor.ol aptent taciti sociosqu.
-                        </p>
+                        <p>{insideStory.cto_message}</p>
                         <h4>
-                          Carlo Rabil. <span>CTO &amp; FOUNDER, Finibus</span>
+                          {insideStory.cto_name} <span>{insideStory.cto_title}</span>
                         </h4>
                         <img
-                          src="/images/cto-signature.png"
+                          src={insideStory.cto_signature_url}
                           alt="images"
                         />
                       </div>
@@ -41,52 +44,28 @@ function InsideStoryArea() {
               <div className="col-lg-6 col-xl-6">
                 <div className="story-right">
                   <div className="title black">
-                    <span>Inside Story</span>
-                    <h2 className="mb-15">
-                      We are creative Agency that creates beautiful.
-                    </h2>
+                    <span>{insideStory.section_label}</span>
+                    <h2 className="mb-15">{insideStory.title}</h2>
                   </div>
-                  <p>
-                    Integer purus odio, placerat nec rhoncus in, ullamcorper nec
-                    dolor. Classe aptent taciti sociosqu ad litora torquent per
-                    conubia nostra, per inceptosi himenaeos. Praesent nec neque
-                    at dolor venenatis consectetur eu quis e Donec lacinia
-                    placerat felis non aliquam.Integer purus odio.
-                  </p>
+                  <p>{insideStory.description}</p>
                   <div className="story-skills">
-                    <div className="story-skill">
-                      <CircularProgressbar
-                        styles={buildStyles({
-                          pathTransition:
-                            Singlepercentage === 0
-                              ? "none"
-                              : "stroke-dashoffset 0.5s ease 0s",
-                        })}
-                        strokeWidth={1}
-                        value={Singlepercentage}
-                        text={`${Singlepercentage}%`}
-                        className="progress-bar-circle"
-                      />
-                      <span>Idea &amp; Research</span>
-                    </div>
-                    <div className="story-skill">
-                      <CircularProgressbar
-                        strokeWidth={1}
-                        value={singleXmPercentage}
-                        text={`${singleXmPercentage}%`}
-                        className="progress-bar-circle"
-                      />
-                      <span>Wirfirm &amp; Design</span>
-                    </div>
-                    <div className="story-skill">
-                      <CircularProgressbar
-                        strokeWidth={1}
-                        value={singleXmlPercentage}
-                        text={`${singleXmlPercentage}%`}
-                        className="progress-bar-circle"
-                      />
-                      <span>Developing &amp; Launch</span>
-                    </div>
+                    {stats.map((stat, index) => (
+                      <div className="story-skill" key={index}>
+                        <CircularProgressbar
+                          styles={buildStyles({
+                            pathTransition:
+                              stat.percentage === 0
+                                ? "none"
+                                : "stroke-dashoffset 0.5s ease 0s",
+                          })}
+                          strokeWidth={1}
+                          value={stat.percentage}
+                          text={`${stat.percentage}%`}
+                          className="progress-bar-circle"
+                        />
+                        <span>{stat.label}</span>
+                      </div>
+                    ))}
                   </div>
                 </div>
               </div>

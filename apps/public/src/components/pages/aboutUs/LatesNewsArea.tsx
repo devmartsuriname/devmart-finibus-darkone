@@ -1,12 +1,36 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { useAboutPageSettings } from "../../../hooks/useAboutPageSettings";
+import { useBlogPosts } from "../../../hooks/useBlogPosts";
+import { format } from "date-fns";
 
 function LatesNewsArea() {
+  const { latestNews } = useAboutPageSettings();
+  const { posts } = useBlogPosts();
+  
+  // If section is disabled, don't render
+  if (!latestNews.enabled) {
+    return null;
+  }
+
   const scrollTop = () => {
     window.scrollTo({
       top: 0,
       behavior: "smooth",
     });
+  };
+
+  // Get the number of posts to display (default 2)
+  const postsToShow = posts.slice(0, latestNews.posts_count || 2);
+
+  // Format date helper
+  const formatDate = (dateStr: string | null) => {
+    if (!dateStr) return '';
+    try {
+      return format(new Date(dateStr), 'dd MMMM, yyyy');
+    } catch {
+      return '';
+    }
   };
   
   return (
@@ -14,101 +38,55 @@ function LatesNewsArea() {
       <section className="latest-news sec-mar">
         <div className="container">
           <div className="row gx-4">
-            <div className="col-md-6 col-lg-4 col-xl-4">
-              <div className="signle-news">
-                <div className="tag">
-                  <Link onClick={scrollTop} to="/">Web Design</Link>
-                </div>
-                <div className="post-img">
-                  <Link onClick={scrollTop} to="/blog-details">
-                    <img
-                      src="/images/post/post-1.jpg"
-                      alt="images"
-                    />
-                  </Link>
-                </div>
-                <div className="news-content">
-                  <div className="author">
-                    <div className="author-pic">
-                      <img
-                        src="/images/author/author-1.jpg"
-                        alt="images"
-                      />
-                    </div>
-                    <div className="author-info">
-                      <h5>Posted by, Alen Jodge</h5>
-                      <span>05 January, 2021</span>
-                    </div>
+            {postsToShow.map((post) => (
+              <div className="col-md-6 col-lg-4 col-xl-4" key={post.id}>
+                <div className="signle-news">
+                  <div className="tag">
+                    <Link onClick={scrollTop} to="/">{post.category || 'General'}</Link>
                   </div>
-                  <h3>
-                    <Link onClick={scrollTop} to="/blog-details">
-                      Donec a porttitor phari sod tellus Nunc quis erosn.
+                  <div className="post-img">
+                    <Link onClick={scrollTop} to={`/blog/${post.slug}`}>
+                      <img
+                        src={post.featured_image_url || '/images/post/post-1.jpg'}
+                        alt={post.title}
+                      />
                     </Link>
-                  </h3>
-                  <p>
-                    Aptent taciti sociosqu ad litora torquent pi himenaeos.
-                    Praesent nec neque at dolor ti venenatis consectetur eu quis
-                    ex.
-                  </p>
-                  <div className="view-btn">
-                    <Link onClick={scrollTop} to="/blog-details">
-                      View details
-                    </Link>
+                  </div>
+                  <div className="news-content">
+                    <div className="author">
+                      <div className="author-pic">
+                        <img
+                          src="/images/author/author-1.jpg"
+                          alt="author"
+                        />
+                      </div>
+                      <div className="author-info">
+                        <h5>Posted by, Admin</h5>
+                        <span>{formatDate(post.published_at)}</span>
+                      </div>
+                    </div>
+                    <h3>
+                      <Link onClick={scrollTop} to={`/blog/${post.slug}`}>
+                        {post.title}
+                      </Link>
+                    </h3>
+                    <p>{post.excerpt}</p>
+                    <div className="view-btn">
+                      <Link onClick={scrollTop} to={`/blog/${post.slug}`}>
+                        View details
+                      </Link>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-            <div className="col-md-6 col-lg-4 col-xl-4">
-              <div className="signle-news">
-                <div className="tag">
-                  <Link onClick={scrollTop} to="/">Software</Link>
-                </div>
-                <div className="post-img">
-                  <Link to="/blog-details">
-                    <img
-                      src="/images/post/post-2.jpg"
-                      alt="images"
-                    />
-                  </Link>
-                </div>
-                <div className="news-content">
-                  <div className="author">
-                    <div className="author-pic">
-                      <img
-                        src="/images/author/author-2.jpg"
-                        alt="images"
-                      />
-                    </div>
-                    <div className="author-info">
-                      <h5>Posted by, Alen Jodge</h5>
-                      <span>05 January, 2021</span>
-                    </div>
-                  </div>
-                  <h3>
-                    <Link onClick={scrollTop} to="/blog-details">
-                      Mekusa a porttitor phari sod tellus algo quis ksro.
-                    </Link>
-                  </h3>
-                  <p>
-                    Aptent taciti sociosqu ad litora torquent pi himenaeos.
-                    Praesent nec neque at dolor ti venenatis consectetur eu quis
-                    ex.
-                  </p>
-                  <div className="view-btn">
-                    <Link onClick={scrollTop} to="/blog-details">
-                      View details
-                    </Link>
-                  </div>
-                </div>
-              </div>
-            </div>
+            ))}
             <div className="col-md-6 col-lg-4 col-xl-4">
               <div className="title black">
-                <span>Blog</span>
-                <h2>Latest news And Article modern design.</h2>
+                <span>{latestNews.section_label}</span>
+                <h2>{latestNews.section_title}</h2>
                 <div className="cmn-btn">
-                  <Link onClick={scrollTop} to="/blog">
-                    View All Blog
+                  <Link onClick={scrollTop} to={latestNews.view_all_url}>
+                    {latestNews.view_all_label}
                   </Link>
                 </div>
               </div>
