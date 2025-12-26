@@ -266,6 +266,17 @@ export const useHomepageBlocks = () => {
     return updateHomepageData(newData)
   }, [data, updateHomepageData])
 
+  const updateStats = useCallback(async (stats: StatItem[]): Promise<boolean> => {
+    if (!data) return false
+
+    const newData = {
+      ...data,
+      stats
+    }
+
+    return updateHomepageData(newData)
+  }, [data, updateHomepageData])
+
   return {
     data,
     loading,
@@ -276,6 +287,7 @@ export const useHomepageBlocks = () => {
     toggleSectionEnabled,
     getSectionEnabled,
     updateSeoData,
+    updateStats,
     SECTION_KEYS,
     SECTION_LABELS,
     SECTION_TYPES

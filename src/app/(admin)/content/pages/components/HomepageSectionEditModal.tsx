@@ -13,6 +13,7 @@ interface HomepageSectionEditModalProps {
   loading: boolean
   onClose: () => void
   onSave: (data: Record<string, unknown>) => Promise<boolean>
+  onSaveStats?: (stats: StatItem[]) => Promise<boolean>
 }
 
 const HomepageSectionEditModal = ({
@@ -24,9 +25,11 @@ const HomepageSectionEditModal = ({
   allData,
   loading,
   onClose,
-  onSave
+  onSave,
+  onSaveStats
 }: HomepageSectionEditModalProps) => {
   const [formData, setFormData] = useState<Record<string, unknown>>({})
+  const [statsData, setStatsData] = useState<StatItem[]>([])
   const [isSaving, setIsSaving] = useState(false)
 
   useEffect(() => {
@@ -42,12 +45,25 @@ const HomepageSectionEditModal = ({
       } else {
         setFormData(initialData)
       }
+
+      // Initialize stats data from allData (stats stored at root level)
+      if (sectionKey === 'home_about' && allData?.stats) {
+        setStatsData([...allData.stats])
+      }
     }
-  }, [show, sectionData, sectionKey])
+  }, [show, sectionData, sectionKey, allData])
 
   const handleSubmit = async () => {
     setIsSaving(true)
-    await onSave(formData)
+    
+    // Save section data
+    const sectionSaved = await onSave(formData)
+    
+    // If this is home_about, also save stats (stored at root level)
+    if (sectionKey === 'home_about' && onSaveStats) {
+      await onSaveStats(statsData)
+    }
+    
     setIsSaving(false)
   }
 
@@ -136,6 +152,16 @@ const HomepageSectionEditModal = ({
               <span className="fw-medium">Slide {index + 1}</span>
             </Card.Header>
             <Card.Body>
+              {/* Background Image MediaPicker */}
+              <Form.Group className="mb-3">
+                <MediaPicker
+                  label="Background Image"
+                  value={slide.background_media_id || ''}
+                  onChange={(mediaId) => updateSlide(index, 'background_media_id', mediaId || '')}
+                  helpText="Select a background image for this slide."
+                />
+              </Form.Group>
+
               <Row>
                 <Col md={6}>
                   <Form.Group className="mb-3">
@@ -247,12 +273,12 @@ const HomepageSectionEditModal = ({
   }
 
   const renderAboutFields = () => {
-    const stats = allData?.stats || []
     const skills = (formData.skills as SkillItem[]) || []
 
     const updateStat = (index: number, field: string, value: string | number) => {
-      // Stats are stored at root level, not in home_about
-      // This is read-only display for now
+      const newStats = [...statsData]
+      newStats[index] = { ...newStats[index], [field]: value }
+      setStatsData(newStats)
     }
 
     const updateSkill = (index: number, field: string, value: string | number) => {
@@ -263,6 +289,16 @@ const HomepageSectionEditModal = ({
 
     return (
       <>
+        {/* About Image MediaPicker */}
+        <Form.Group className="mb-3">
+          <MediaPicker
+            label="About Image"
+            value={(formData.image_media_id as string) || ''}
+            onChange={(mediaId) => updateField('image_media_id', mediaId)}
+            helpText="Main image for the About section."
+          />
+        </Form.Group>
+
         <Form.Group className="mb-3">
           <Form.Label>Title</Form.Label>
           <Form.Control
@@ -372,10 +408,52 @@ const HomepageSectionEditModal = ({
           </Row>
         ))}
 
-        {/* Stats display - read only hint */}
-        <Alert variant="secondary" className="mt-4">
-          Stats ({stats.length} items) are stored separately. Stats editing will be available in a future update.
-        </Alert>
+        {/* Stats Editor */}
+        <h6 className="mt-4 mb-3">Stats ({statsData.length} items)</h6>
+        {statsData.length === 0 ? (
+          <Alert variant="info" className="mb-3">
+            No stats configured yet. Stats data is stored at the root level of homepage settings.
+          </Alert>
+        ) : (
+          statsData.map((stat, index) => (
+            <Card key={index} className="mb-2">
+              <Card.Body className="py-2">
+                <Row className="align-items-center">
+                  <Col md={4}>
+                    <Form.Control
+                      type="text"
+                      size="sm"
+                      value={stat.value?.toString() || ''}
+                      onChange={(e) => updateStat(index, 'value', e.target.value)}
+                      placeholder="Value (e.g., 500+)"
+                      disabled={isSaving}
+                    />
+                  </Col>
+                  <Col md={4}>
+                    <Form.Control
+                      type="text"
+                      size="sm"
+                      value={stat.label || ''}
+                      onChange={(e) => updateStat(index, 'label', e.target.value)}
+                      placeholder="Label"
+                      disabled={isSaving}
+                    />
+                  </Col>
+                  <Col md={4}>
+                    <Form.Control
+                      type="text"
+                      size="sm"
+                      value={stat.icon || ''}
+                      onChange={(e) => updateStat(index, 'icon', e.target.value)}
+                      placeholder="Icon (path or class)"
+                      disabled={isSaving}
+                    />
+                  </Col>
+                </Row>
+              </Card.Body>
+            </Card>
+          ))
+        )}
       </>
     )
   }
@@ -400,40 +478,56 @@ const HomepageSectionEditModal = ({
         </p>
         
         {items.map((partner, index) => (
-          <Card key={index} className="mb-2">
-            <Card.Body className="py-2">
-              <Row className="align-items-center">
-                <Col md={4}>
-                  <Form.Control
-                    type="text"
-                    size="sm"
-                    value={partner.name || `Partner ${index + 1}`}
-                    onChange={(e) => updatePartner(index, 'name', e.target.value)}
-                    placeholder="Partner name"
-                    disabled={isSaving}
-                  />
-                </Col>
-                <Col md={4}>
-                  <Form.Control
-                    type="text"
-                    size="sm"
-                    value={partner.logo || ''}
-                    onChange={(e) => updatePartner(index, 'logo', e.target.value)}
-                    placeholder="Logo path"
-                    disabled={isSaving}
-                  />
-                </Col>
-                <Col md={4}>
-                  <Form.Control
-                    type="text"
-                    size="sm"
-                    value={partner.url || ''}
-                    onChange={(e) => updatePartner(index, 'url', e.target.value)}
-                    placeholder="URL"
-                    disabled={isSaving}
-                  />
-                </Col>
-              </Row>
+          <Card key={index} className="mb-3">
+            <Card.Header className="py-2">
+              <span className="fw-medium">{partner.name || `Partner ${index + 1}`}</span>
+            </Card.Header>
+            <Card.Body>
+              <Form.Group className="mb-3">
+                <Form.Label>Partner Name</Form.Label>
+                <Form.Control
+                  type="text"
+                  value={partner.name || ''}
+                  onChange={(e) => updatePartner(index, 'name', e.target.value)}
+                  placeholder="Partner name"
+                  disabled={isSaving}
+                />
+              </Form.Group>
+
+              {/* Logo MediaPicker - optional override for legacy logo path */}
+              <Form.Group className="mb-3">
+                <MediaPicker
+                  label="Logo (Media Library)"
+                  value={partner.logo_media_id || ''}
+                  onChange={(mediaId) => updatePartner(index, 'logo_media_id', mediaId || '')}
+                  helpText="Select from Media Library (takes precedence over legacy path)"
+                />
+              </Form.Group>
+
+              <Form.Group className="mb-3">
+                <Form.Label>Logo Path (Legacy)</Form.Label>
+                <Form.Control
+                  type="text"
+                  value={partner.logo || ''}
+                  onChange={(e) => updatePartner(index, 'logo', e.target.value)}
+                  placeholder="/images/partner-icons/partner.png"
+                  disabled={isSaving}
+                />
+                <Form.Text className="text-muted">
+                  Legacy path - used if no Media Library selection is made
+                </Form.Text>
+              </Form.Group>
+
+              <Form.Group className="mb-3">
+                <Form.Label>URL</Form.Label>
+                <Form.Control
+                  type="text"
+                  value={partner.url || ''}
+                  onChange={(e) => updatePartner(index, 'url', e.target.value)}
+                  placeholder="https://partner-website.com"
+                  disabled={isSaving}
+                />
+              </Form.Group>
             </Card.Body>
           </Card>
         ))}
@@ -452,6 +546,16 @@ const HomepageSectionEditModal = ({
 
     return (
       <>
+        {/* Section Image MediaPicker */}
+        <Form.Group className="mb-3">
+          <MediaPicker
+            label="Section Image"
+            value={(formData.image_media_id as string) || ''}
+            onChange={(mediaId) => updateField('image_media_id', mediaId)}
+            helpText="Image displayed in the Why Choose Us section."
+          />
+        </Form.Group>
+
         <Form.Group className="mb-3">
           <Form.Label>Title</Form.Label>
           <Form.Control
@@ -475,7 +579,7 @@ const HomepageSectionEditModal = ({
         </Form.Group>
 
         <Form.Group className="mb-3">
-          <Form.Label>Video Poster Image</Form.Label>
+          <Form.Label>Video Poster Image (Legacy)</Form.Label>
           <Form.Control
             type="text"
             value={(formData.video_poster as string) || ''}
@@ -483,6 +587,9 @@ const HomepageSectionEditModal = ({
             placeholder="/images/play-video.jpg"
             disabled={isSaving}
           />
+          <Form.Text className="text-muted">
+            Legacy path for video poster image
+          </Form.Text>
         </Form.Group>
 
         {/* Skills */}
@@ -518,6 +625,16 @@ const HomepageSectionEditModal = ({
   const renderCtaFields = () => {
     return (
       <>
+        {/* Background Image MediaPicker */}
+        <Form.Group className="mb-3">
+          <MediaPicker
+            label="Background Image"
+            value={(formData.background_media_id as string) || ''}
+            onChange={(mediaId) => updateField('background_media_id', mediaId)}
+            helpText="Optional background image for the CTA section."
+          />
+        </Form.Group>
+
         <Form.Group className="mb-3">
           <Form.Label>Title Line 1</Form.Label>
           <Form.Control
