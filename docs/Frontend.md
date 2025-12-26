@@ -1,7 +1,7 @@
 # Frontend Specification — Devmart Platform
 
 **Status:** Implemented (MVP)  
-**Phase:** Phase 6.1 COMPLETE | Phase 9 CLOSED | Phase 10A COMPLETE | Phase 10B FINALIZED  
+**Phase:** Phase 6.1 COMPLETE | Phase 7 CLOSED | Phase 9 CLOSED | Phase 10A COMPLETE | Phase 10B FINALIZED  
 **Last Updated:** 2025-12-26
 
 ---
@@ -121,8 +121,20 @@ Each page must pass:
 
 ## 3. Homepage Sections — Dynamic Wiring (✅ COMPLETE)
 
-> **Status:** Phase 7.1 COMPLETE — All 9 sections wired to database with static fallbacks
-> **Verified:** 2025-12-26
+> **Status:** Phase 7 CLOSED — All 9 sections wired to database with static fallbacks  
+> **Phase 7.1:** Wiring verification + documentation (2025-12-26)  
+> **Phase 7.2:** Visual verification + acceptance (2025-12-26)
+
+### 3.0 Homepage Visual Acceptance
+
+**Phase 7.2 Completed:** 2025-12-26
+
+- ✅ Code wiring verified for all 9 homepage sections
+- ✅ Database data verified for all data sources
+- ✅ No code changes introduced
+- ⚠️ Limitation: Visual verification via Lovable Preview not possible (Admin app only)
+
+**Restore Point:** `docs/restore-points/Restore_Point_Phase_7_2_Homepage_Visual_Verification.md`
 
 ### 3.1 Wiring Status
 
