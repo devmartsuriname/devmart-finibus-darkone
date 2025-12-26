@@ -21,45 +21,53 @@ function ServicePrice({ pricingPlans }: ServicePriceProps) {
   const activePlans = activeTab === "monthly" ? monthlyPlans : yearlyPlans;
 
   return (
-    <div className="service-price sec-mar">
+    <section className="pricing-plan sec-mar">
       <div className="container">
-        <div className="title-wrap">
-          <div className="sec-title">
-            <span>Pricing</span>
-            <h2>Service Plans</h2>
+        <div className="row justify-content-between align-items-center">
+          <div className="col-12 col-lg-6 col-xl-5 or2">
+            <ul className="nav nav-pills mb-3" id="pills-tab" role="tablist">
+              <li className="nav-item" role="presentation">
+                <button
+                  className={`nav-link ${activeTab === "monthly" ? "active" : ""}`}
+                  id="pills-monthly-tab"
+                  type="button"
+                  role="tab"
+                  aria-controls="pills-monthly"
+                  aria-selected={activeTab === "monthly"}
+                  onClick={() => setActiveTab("monthly")}
+                >
+                  Pay Monthly
+                </button>
+              </li>
+              <li className="nav-item" role="presentation">
+                <button
+                  className={`nav-link ${activeTab === "yearly" ? "active" : ""}`}
+                  id="pills-yearly-tab"
+                  type="button"
+                  role="tab"
+                  aria-controls="pills-yearly"
+                  aria-selected={activeTab === "yearly"}
+                  onClick={() => setActiveTab("yearly")}
+                >
+                  Pay Yearly
+                </button>
+              </li>
+            </ul>
+          </div>
+          <div className="col-12 col-lg-6 col-xl-5 or1">
+            <div className="title black">
+              <span>Pricing Plan</span>
+              <h2>Service Plans</h2>
+            </div>
           </div>
         </div>
-        <div className="price-tab">
-          <ul className="nav nav-pills" id="pills-tab" role="tablist">
-            <li className="nav-item" role="presentation">
-              <button
-                className={`nav-link ${activeTab === "monthly" ? "active" : ""}`}
-                id="pills-monthly-tab"
-                type="button"
-                role="tab"
-                aria-selected={activeTab === "monthly"}
-                onClick={() => setActiveTab("monthly")}
-              >
-                Pay Monthly
-              </button>
-            </li>
-            <li className="nav-item" role="presentation">
-              <button
-                className={`nav-link ${activeTab === "yearly" ? "active" : ""}`}
-                id="pills-yearly-tab"
-                type="button"
-                role="tab"
-                aria-selected={activeTab === "yearly"}
-                onClick={() => setActiveTab("yearly")}
-              >
-                Pay Yearly
-              </button>
-            </li>
-          </ul>
-        </div>
         <div className="tab-content" id="pills-tabContent">
-          <div className="tab-pane fade show active" role="tabpanel">
-            <div className="row g-4 justify-content-center">
+          <div
+            className="tab-pane fade show active"
+            role="tabpanel"
+            aria-labelledby={`pills-${activeTab}-tab`}
+          >
+            <div className="row g-4">
               {activePlans.map((plan) => (
                 <PriceBox
                   key={plan.id}
@@ -76,7 +84,7 @@ function ServicePrice({ pricingPlans }: ServicePriceProps) {
           </div>
         </div>
       </div>
-    </div>
+    </section>
   );
 }
 

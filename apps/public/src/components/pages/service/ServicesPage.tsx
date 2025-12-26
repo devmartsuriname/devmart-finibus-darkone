@@ -2,7 +2,6 @@ import React from "react";
 import Breadcrumb from "../../common/Breadcrumb";
 import LetsTalkArea from "../../common/LetsTalkArea";
 import HowWeWorkArea from "./HowWeWorkArea";
-import ServicePrice from "./ServicePrice";
 import WhatWeDoArea from "./WhatWeDoArea";
 
 function ServicesPage() {
@@ -11,7 +10,7 @@ function ServicesPage() {
       <Breadcrumb pageName="Service" />
       <WhatWeDoArea />
       <HowWeWorkArea />
-      <ServicePrice />
+      {/* Pricing removed per Phase 10A - pricing now only on Service Detail pages */}
       <LetsTalkArea />
     </>
   );

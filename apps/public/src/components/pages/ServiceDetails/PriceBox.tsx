@@ -32,25 +32,25 @@ function PriceBox({
     return `${curr} ${amount}`;
   };
 
-  const periodLabel = billingPeriod === "monthly" ? "/mo" : "/yr";
+  const periodLabel = billingPeriod === "monthly" ? "month" : "year";
 
   return (
-    <div className="col-md-6 col-lg-4">
-      <div className="price-card">
-        <span className="package-name">{planName}</span>
-        {planSubtitle && <p className="package-subtitle">{planSubtitle}</p>}
-        <div className="price-count">
-          <span className="pack-currency">{formatPrice(priceAmount, currency)}</span>
-          <span className="pack-duration">{periodLabel}</span>
-        </div>
-        <ul className="price-feature">
+    <div className="col-md-6 col-lg-4 col-xl-4">
+      <div className="single-price-box">
+        <h3>{planName}</h3>
+        {planSubtitle && <span>{planSubtitle}</span>}
+        <h2>
+          {formatPrice(priceAmount, currency)}/<sub>Per {periodLabel}</sub>
+        </h2>
+        <ul className="feature-list">
           {features.map((feature, index) => (
             <li key={index}>
-              <i className="bi bi-check-lg" /> {feature}
+              <i className="fas fa-check" />
+              {feature}
             </li>
           ))}
         </ul>
-        <div className="price-btn">
+        <div className="pay-btn">
           <Link onClick={scrollTop} to="/contact">
             {ctaLabel}
           </Link>
