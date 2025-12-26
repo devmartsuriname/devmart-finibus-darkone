@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from 'react'
 import { supabase } from '@/integrations/supabase/client'
 import { useAuthContext } from '@/context/useAuthContext'
-import { notifySuccess, notifyError } from '@/lib/notify'
+import { useAdminNotify } from '@/lib/notify'
 
 export interface Setting {
   key: string
@@ -31,6 +31,7 @@ export const useSettings = () => {
   const [isLoading, setIsLoading] = useState(true)
   const [isSaving, setIsSaving] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const { notifySuccess, notifyError } = useAdminNotify()
 
   const fetchSettings = useCallback(async () => {
     try {
@@ -54,7 +55,7 @@ export const useSettings = () => {
     } finally {
       setIsLoading(false)
     }
-  }, [])
+  }, [notifyError])
 
   useEffect(() => {
     fetchSettings()
@@ -112,7 +113,7 @@ export const useSettings = () => {
     } finally {
       setIsSaving(false)
     }
-  }, [user?.id, fetchSettings])
+  }, [user?.id, fetchSettings, notifySuccess, notifyError])
 
   return {
     settings,

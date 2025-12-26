@@ -1,6 +1,6 @@
 import { useState, useCallback } from 'react'
 import { supabase } from '@/integrations/supabase/client'
-import { notifySuccess, notifyError } from '@/lib/notify'
+import { useAdminNotify } from '@/lib/notify'
 
 // About page section keys in fixed Finibus order
 export const ABOUT_SECTION_KEYS = [
@@ -70,6 +70,7 @@ export const useAboutPageBlocks = () => {
   const [data, setData] = useState<AboutPageData | null>(null)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const { notifySuccess, notifyError } = useAdminNotify()
 
   const fetchAboutPageData = useCallback(async () => {
     setLoading(true)
@@ -92,7 +93,7 @@ export const useAboutPageBlocks = () => {
     } finally {
       setLoading(false)
     }
-  }, [])
+  }, [notifyError])
 
   const updateAboutPageData = useCallback(async (newData: AboutPageData): Promise<boolean> => {
     setLoading(true)
@@ -115,7 +116,7 @@ export const useAboutPageBlocks = () => {
     } finally {
       setLoading(false)
     }
-  }, [])
+  }, [notifySuccess, notifyError])
 
   const updateSection = useCallback(async (
     sectionKey: 'inside_story' | 'latest_news',

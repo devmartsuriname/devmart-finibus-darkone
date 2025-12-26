@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react'
 import { supabase } from '@/integrations/supabase/client'
-import { notifySuccess, notifyError } from '@/lib/notify'
+import { useAdminNotify } from '@/lib/notify'
 import type { Tables } from '@/integrations/supabase/types'
 
 type MediaItem = Tables<'media'>
@@ -9,6 +9,7 @@ export const useMediaLibrary = () => {
   const [media, setMedia] = useState<MediaItem[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
+  const { notifySuccess, notifyError } = useAdminNotify()
 
   const fetchMedia = useCallback(async () => {
     try {
