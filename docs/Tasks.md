@@ -1,8 +1,8 @@
 # Tasks — Devmart Implementation Tracker
 
 **Status:** Verified  
-**Current Phase:** Phase 7.2 COMPLETE | Phase 7 Remaining IN PROGRESS  
-**Last Updated:** 2025-12-25
+**Current Phase:** Phase 9 CLOSED | Phase 7 Remaining IN PROGRESS  
+**Last Updated:** 2025-12-26
 
 ---
 
@@ -18,6 +18,7 @@
 | Phase 6.1 | ✅ Complete | Contact/Leads Pipeline + Settings Wiring |
 | Phase 7 | 🔄 In Progress | Homepage Dynamic Wiring + Newsletter |
 | Phase 8 | ⏸️ Deferred | Analytics (not authorized) |
+| Phase 9 | ✅ CLOSED | About Page + Global Blocks (Admin UI + DB) |
 
 ---
 
@@ -177,6 +178,34 @@ All project images (any dimensions) will render consistently with `object-fit: c
 
 ---
 
+## Phase 9 — About Page + Global Blocks (✅ CLOSED)
+
+**Completed:** 2025-12-26
+
+### Phase 9A — Definition & Planning (✅ COMPLETE)
+- Defined `page_settings` as per-page UI block storage
+- Defined `global_blocks` as shared block storage
+- Homepage established as master reference pattern
+
+### Phase 9B — Database Foundation (✅ VERIFIED)
+- Created `page_settings` table with RLS
+- Created `global_blocks` table with RLS
+- Seeded About page row in `page_settings`
+- Seeded CTA Strip + Why Choose Us in `global_blocks`
+
+### Phase 9C — Admin UI (✅ COMPLETE)
+- Extended PageEditModal for About page (Sections + SEO tabs)
+- Created Global Blocks admin page at `/admin/content/global-blocks`
+- Created edit modals for Inside Story, Latest News, CTA Strip, Why Choose Us
+
+### Guardian Rules Verified
+- ✅ `homepage_settings` untouched
+- ✅ No frontend code changes
+- ✅ No CSS/SCSS changes
+- ✅ 1:1 Darkone patterns preserved
+
+---
+
 ## Document Control
 
 | Version | Date | Author | Notes |
@@ -184,5 +213,7 @@ All project images (any dimensions) will render consistently with `object-fit: c
 | 0.1 | 2025-01-XX | Planning Agent | Initial draft |
 | 1.0 | 2025-12-25 | Implementation Agent | Phase 5 + 6.1 complete, MVP baseline |
 | 1.1 | 2025-12-25 | Implementation Agent | Phase 7.2 complete — Routing/404/Image parity |
+| 1.2 | 2025-12-26 | Implementation Agent | Phase 9 CLOSED — About Page + Global Blocks |
 
+**Next Review:** Before Phase 10 authorization
 **Next Review:** Before Phase 7 homepage wiring authorization
