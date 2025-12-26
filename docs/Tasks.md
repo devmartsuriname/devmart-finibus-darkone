@@ -269,6 +269,16 @@ ServiceModal.tsx updated with 3 toggles in Basic Info tab under "Pricing Visibil
 
 `docs/restore-points/Restore_Point_Phase_10B_Closeout.md`
 
+### Hotfix — Toast CSS (2025-12-26)
+
+| Attribute | Value |
+|-----------|-------|
+| **Issue** | Full-screen success icon after saving service |
+| **Root Cause** | Missing `react-toastify/dist/ReactToastify.css` import |
+| **Fix** | Added CSS import to `Darkone-React_v1.0/src/main.tsx` |
+| **Scope** | Admin app only — no DB changes, no public app changes |
+| **Restore Point** | `docs/restore-points/Restore_Point_Phase_10B_Hotfix_Toast_CSS.md` |
+
 ---
 
 ## Document Control
@@ -280,5 +290,6 @@ ServiceModal.tsx updated with 3 toggles in Basic Info tab under "Pricing Visibil
 | 1.1 | 2025-12-25 | Implementation Agent | Phase 7.2 complete — Routing/404/Image parity |
 | 1.2 | 2025-12-26 | Implementation Agent | Phase 9 CLOSED — About Page + Global Blocks |
 | 1.3 | 2025-12-26 | Implementation Agent | Phase 10A COMPLETE, Phase 10B CLOSED — Pricing controls |
+| 1.4 | 2025-12-26 | Implementation Agent | Phase 10B Hotfix — Toast CSS import |
 
 **Next Review:** Before Phase 10C or Phase 11 authorization
