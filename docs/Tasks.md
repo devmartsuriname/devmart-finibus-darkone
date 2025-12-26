@@ -21,6 +21,7 @@
 | Phase 9 | ✅ CLOSED | About Page + Global Blocks (Admin UI + DB) |
 | Phase 10A | ✅ COMPLETE | Services Pricing Visual Fix + Spacing Adjustment |
 | Phase 10B | ✅ CLOSED | Service Detail Pricing Visibility Controls |
+| Phase 10B Hotfix | ✅ COMPLETE | Text-Only Toast Feedback (No Icons) |
 
 ---
 
