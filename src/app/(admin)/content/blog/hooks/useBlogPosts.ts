@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback, useRef } from 'react'
 import { supabase } from '@/integrations/supabase/client'
 import { useAuthContext } from '@/context/useAuthContext'
 import { useAdminNotify } from '@/lib/notify'
@@ -35,6 +35,16 @@ export const useBlogPosts = () => {
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const { notifySuccess, notifyError } = useAdminNotify()
+
+  // Store notify functions in refs to avoid dependency issues
+  const notifySuccessRef = useRef(notifySuccess)
+  const notifyErrorRef = useRef(notifyError)
+
+  // Sync refs on each render
+  useEffect(() => {
+    notifySuccessRef.current = notifySuccess
+    notifyErrorRef.current = notifyError
+  })
 
   const fetchPosts = useCallback(async () => {
     try {
@@ -79,7 +89,7 @@ export const useBlogPosts = () => {
 
   const createPost = useCallback(async (input: BlogPostInput): Promise<boolean> => {
     if (!user?.id) {
-      notifyError('You must be logged in to create posts')
+      notifyErrorRef.current('You must be logged in to create posts')
       return false
     }
 
@@ -92,7 +102,7 @@ export const useBlogPosts = () => {
         .maybeSingle()
 
       if (existing) {
-        notifyError('A post with this slug already exists')
+        notifyErrorRef.current('A post with this slug already exists')
         return false
       }
 
@@ -113,20 +123,20 @@ export const useBlogPosts = () => {
         throw insertError
       }
 
-      notifySuccess('Post created successfully')
+      notifySuccessRef.current('Post created successfully')
       await fetchPosts()
       return true
     } catch (err) {
       const message = err instanceof Error ? err.message : 'Failed to create post'
-      notifyError(`Error creating post: ${message}`)
+      notifyErrorRef.current(`Error creating post: ${message}`)
       console.error('Error creating post:', err)
       return false
     }
-  }, [user?.id, fetchPosts, notifySuccess, notifyError])
+  }, [user?.id, fetchPosts])
 
   const updatePost = useCallback(async (id: string, input: Partial<BlogPostInput>): Promise<boolean> => {
     if (!user?.id) {
-      notifyError('You must be logged in to update posts')
+      notifyErrorRef.current('You must be logged in to update posts')
       return false
     }
 
@@ -141,7 +151,7 @@ export const useBlogPosts = () => {
           .maybeSingle()
 
         if (existing) {
-          notifyError('A post with this slug already exists')
+          notifyErrorRef.current('A post with this slug already exists')
           return false
         }
       }
@@ -172,16 +182,16 @@ export const useBlogPosts = () => {
         throw updateError
       }
 
-      notifySuccess('Post updated successfully')
+      notifySuccessRef.current('Post updated successfully')
       await fetchPosts()
       return true
     } catch (err) {
       const message = err instanceof Error ? err.message : 'Failed to update post'
-      notifyError(`Error updating post: ${message}`)
+      notifyErrorRef.current(`Error updating post: ${message}`)
       console.error('Error updating post:', err)
       return false
     }
-  }, [user?.id, fetchPosts, posts, notifySuccess, notifyError])
+  }, [user?.id, fetchPosts, posts])
 
   const deletePost = useCallback(async (id: string): Promise<boolean> => {
     try {
@@ -194,16 +204,16 @@ export const useBlogPosts = () => {
         throw deleteError
       }
 
-      notifySuccess('Post deleted successfully')
+      notifySuccessRef.current('Post deleted successfully')
       await fetchPosts()
       return true
     } catch (err) {
       const message = err instanceof Error ? err.message : 'Failed to delete post'
-      notifyError(`Error deleting post: ${message}`)
+      notifyErrorRef.current(`Error deleting post: ${message}`)
       console.error('Error deleting post:', err)
       return false
     }
-  }, [fetchPosts, notifySuccess, notifyError])
+  }, [fetchPosts])
 
   return {
     posts,
