@@ -16,7 +16,8 @@
 | Phase 4 | ✅ Complete | Admin Modules (All 8 modules) |
 | Phase 5 | ✅ Complete | Public → DB Integration (Inner Pages) |
 | Phase 6.1 | ✅ Complete | Contact/Leads Pipeline + Settings Wiring |
-| Phase 7 | 🔄 In Progress | Homepage Dynamic Wiring + Newsletter |
+| Phase 7 | ✅ COMPLETE | Homepage Dynamic Wiring + Newsletter |
+| Phase 7.1 | ✅ COMPLETE | Homepage Wiring Verification + Documentation |
 | Phase 8 | ⏸️ Deferred | Analytics (not authorized) |
 | Phase 9 | ✅ CLOSED | About Page + Global Blocks (Admin UI + DB) |
 | Phase 10A | ✅ COMPLETE | Services Pricing Visual Fix + Spacing Adjustment |
@@ -113,28 +114,46 @@ All project images (any dimensions) will render consistently with `object-fit: c
 
 ---
 
-## Phase 7 — Homepage Dynamic Wiring (🔄 IN PROGRESS)
+## Phase 7 — Homepage Dynamic Wiring (✅ COMPLETE)
 
-### New Database Objects
+**Completed:** 2025-12-26
+
+### Database Objects
 
 | Object | Type | Status | Notes |
 |--------|------|--------|-------|
-| `homepage_settings` | Table | 🔄 Creating | Single-row JSON config |
-| `newsletter_subscribers` | Table | 🔄 Creating | Newsletter collection |
+| `homepage_settings` | Table | ✅ Complete | Single-row JSON config (id=1) |
+| `newsletter_subscribers` | Table | ✅ Complete | Newsletter collection (empty, ready) |
 
 ### Homepage Sections Wiring Status
 
-| Section | Component | Status | Data Source |
-|---------|-----------|--------|-------------|
-| Hero | `HeroArea.tsx` | 🔄 Wiring | `homepage_settings.data.hero` |
-| Services | `ServiceArea.tsx` | 🔄 Wiring | `services` table |
-| About + Stats | `AboutArea.tsx` | 🔄 Wiring | `homepage_settings.data` |
-| Newsletter + Partners | `OurPartnerArea.tsx` | 🔄 Wiring | `newsletter_subscribers` + settings |
-| Portfolio | `PortfolioArea.tsx` | ✅ Wired | `projects` table (routing fixed) |
-| Why Choose Us | `WhyChooseUsArea.tsx` | 🔄 Wiring | `homepage_settings.data.why_choose` |
-| Testimonials | `TestimonialArea.tsx` | 🔄 Wiring | `testimonials` table |
-| Latest Blog | `NewsLatterArea.tsx` | 🔄 Wiring | `blog_posts` table |
-| CTA Strip | `LetsTalkArea.tsx` | 🔄 Wiring | `homepage_settings.data.cta` |
+| Section | Component | Status | Data Source | Hook |
+|---------|-----------|--------|-------------|------|
+| Hero | `HeroArea.tsx` | ✅ WIRED | `homepage_settings.data.hero` | `useHomepageSettings` |
+| Services | `ServiceArea.tsx` | ✅ WIRED | `services` table | `useServices` |
+| About + Stats | `AboutArea.tsx` | ✅ WIRED | `homepage_settings.data` | `useHomepageSettings` |
+| Newsletter + Partners | `OurPartnerArea.tsx` | ✅ WIRED | `homepage_settings.data.partners` + INSERT | `useHomepageSettings` + `useNewsletterSubscribe` |
+| Portfolio | `PortfolioArea.tsx` | ✅ WIRED | `projects` table | `useProjects` |
+| Why Choose Us | `WhyChooseUsArea.tsx` | ✅ WIRED | `homepage_settings.data.why_choose` | `useHomepageSettings` |
+| Testimonials | `TestimonialArea.tsx` | ✅ WIRED | `testimonials` table | `useTestimonials` |
+| Latest Blog | `NewsLatterArea.tsx` | ✅ WIRED | `blog_posts` table | `useBlogPosts` |
+| CTA Strip | `LetsTalkArea.tsx` | ✅ WIRED | `homepage_settings.data.cta` | `useHomepageSettings` |
+
+### Restore Point
+
+`docs/restore-points/Restore_Point_Phase_7_1_Homepage_Wiring_Verification.md`
+
+### Verification Results (2025-12-26)
+
+| Category | Count | Status |
+|----------|-------|--------|
+| Hero slides | 3 | ✅ DB verified |
+| Published services | 5 | ✅ DB verified |
+| Published projects | 5 | ✅ DB verified |
+| Published testimonials | 5 | ✅ DB verified |
+| Published blog posts | 3 | ✅ DB verified |
+| Partner logos | 10 | ✅ DB verified |
+| Stats items | 4 | ✅ DB verified |
 
 ---
 
