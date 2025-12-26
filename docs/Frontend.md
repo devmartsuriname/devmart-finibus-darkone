@@ -136,6 +136,39 @@ Each page must pass:
 
 **Restore Point:** `docs/restore-points/Restore_Point_Phase_7_2_Homepage_Visual_Verification.md`
 
+### 3.0.1 Homepage UI Blocks Editability (Phase 8)
+
+**Phase 8 Completed:** 2025-12-26 (Verification Only)
+
+Admin UI for homepage content control was found to be **already implemented**. The following pattern is in use:
+
+**Admin Entry Point:**
+- `PageEditModal.tsx` detects `slug === '/'` and renders Homepage-specific tabs
+
+**Homepage Admin Tabs:**
+| Tab | Component | Purpose |
+|-----|-----------|---------|
+| Sections | `HomepageSectionsTab.tsx` | List/toggle/edit all 9 sections |
+| SEO | `HomepageSeoTab.tsx` | Meta title, description, OG image |
+
+**Section Edit Modal:**
+- `HomepageSectionEditModal.tsx` — Field editors per section type
+- MediaPicker integrated for image fields
+- Enable/Disable toggle per section
+
+**Data Flow:**
+```
+Admin → PageEditModal → HomepageSectionsTab → HomepageSectionEditModal
+                                    ↓
+                           useHomepageBlocks (hook)
+                                    ↓
+                          homepage_settings.data (DB)
+                                    ↓
+                        Public Homepage Components (via useHomepageSettings)
+```
+
+**Restore Point:** `docs/restore-points/Restore_Point_Phase_8_Homepage_UI_Blocks_Verification.md`
+
 ### 3.1 Wiring Status
 
 | Section | Component | Status | Data Source | Hook |
