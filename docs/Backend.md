@@ -2,10 +2,10 @@
 
 ```
 Status: AUTHORITATIVE
-Phase: Phase 4 COMPLETE | Phase 5 COMPLETE | Phase 6.1 COMPLETE | Phase 7.2 COMPLETE
+Phase: Phase 4 COMPLETE | Phase 5 COMPLETE | Phase 6.1 COMPLETE | Phase 7.2 COMPLETE | Phase 9 CLOSED
 Auth: IMPLEMENTED (Supabase JWT + Roles + RLS Active)
-Execution: All 8 Admin Modules Complete | Public → DB Integration Complete | Routing Parity Fixed
-Last Updated: 2025-12-25
+Execution: All 8 Admin Modules Complete | Public → DB Integration Complete | Routing Parity Fixed | Phase 9 About/Global Blocks Complete
+Last Updated: 2025-12-26
 ```
 
 ---
@@ -541,7 +541,57 @@ CREATE TABLE public.service_pricing_plans (
 
 **Seed Data:** 6 plans per service (42 total: 3 monthly + 3 yearly).
 
-### 2.16 Database Functions
+### 2.17 page_settings Table (Phase 9B)
+
+```sql
+CREATE TABLE public.page_settings (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    page_slug TEXT NOT NULL UNIQUE,
+    data JSONB DEFAULT '{}'::jsonb,
+    updated_at TIMESTAMPTZ DEFAULT now(),
+    updated_by UUID REFERENCES auth.users(id)
+);
+```
+
+**Purpose:** Per-page UI block configuration storage.
+
+**Trigger:**
+- `set_page_settings_updated_at` → calls `update_updated_at_column()`
+
+**RLS Policies:**
+- `Admins can manage page settings` — ALL operations for admins
+- `Public can read page settings` — SELECT with `USING (true)`
+
+**Seed Data:** 1 row (page_slug = 'about') with Inside Story + Latest News configuration.
+
+**Note:** `homepage_settings` remains untouched and is the master reference for homepage blocks.
+
+### 2.18 global_blocks Table (Phase 9B)
+
+```sql
+CREATE TABLE public.global_blocks (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    block_key TEXT NOT NULL UNIQUE,
+    data JSONB DEFAULT '{}'::jsonb,
+    updated_at TIMESTAMPTZ DEFAULT now(),
+    updated_by UUID REFERENCES auth.users(id)
+);
+```
+
+**Purpose:** Shared UI blocks that appear on multiple pages (CTA Strip, Why Choose Us).
+
+**Trigger:**
+- `set_global_blocks_updated_at` → calls `update_updated_at_column()`
+
+**RLS Policies:**
+- `Admins can manage global blocks` — ALL operations for admins
+- `Public can read global blocks` — SELECT with `USING (true)`
+
+**Seed Data:** 
+- `cta_strip` — Call-to-action strip block
+- `why_choose_us` — Why Choose Us section block
+
+### 2.19 Database Functions
 
 | Function | Purpose |
 |----------|---------|

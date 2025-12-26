@@ -2,10 +2,10 @@
 
 ```
 Status: AUTHORITATIVE
-Phase: Phase 4 COMPLETE | Phase 5 COMPLETE | Phase 6.1 COMPLETE | Phase 7.2 COMPLETE
+Phase: Phase 4 COMPLETE | Phase 5 COMPLETE | Phase 6.1 COMPLETE | Phase 7.2 COMPLETE | Phase 9 CLOSED
 Auth: IMPLEMENTED (Supabase JWT + Roles + RLS)
-Execution: All 8 Admin Modules Complete | Public → DB Integration Complete | Routing/404/Image Parity Fixed
-Last Updated: 2025-12-25
+Execution: All 8 Admin Modules Complete | Public → DB Integration Complete | Routing/404/Image Parity Fixed | Phase 9 About/Global Blocks Complete
+Last Updated: 2025-12-26
 ```
 
 ---
@@ -461,6 +461,70 @@ All admin content CRUD modals must follow the Services modal as the single sourc
 
 ---
 
+## 14. Phase 9 — UI Blocks Architecture (CLOSED)
+
+### 14.1 Overview
+
+Phase 9 established the architecture for managing UI blocks across pages:
+
+| Storage Type | Table | Purpose |
+|--------------|-------|---------|
+| Per-Page Blocks | `page_settings` | Page-specific UI block configuration |
+| Shared Blocks | `global_blocks` | Blocks shared across multiple pages |
+| Homepage Blocks | `homepage_settings` | Homepage-specific blocks (Phase 8, LOCKED) |
+
+### 14.2 Block Categories
+
+| Category | Storage | Example Blocks |
+|----------|---------|----------------|
+| Page Blocks | `page_settings` | Inside Story, Latest News (About page) |
+| Shared Blocks | `global_blocks` | CTA Strip, Why Choose Us |
+| Dynamic Modules | Separate tables | Services, Projects, Blog, Testimonials |
+
+### 14.3 Admin UI Structure
+
+**About Page Admin:**
+- Extended PageEditModal with conditional tabs for About page (slug = 'about')
+- Tabs: Page Info, Sections, SEO
+- Sections tab contains editable blocks + read-only shared block references
+
+**Global Blocks Admin:**
+- Dedicated admin page at `/admin/content/global-blocks`
+- Card-based list of all global blocks
+- Edit modal per block (CTA Strip, Why Choose Us)
+
+### 14.4 Data Flow
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│                       ADMIN UI                              │
+├─────────────────────────────────────────────────────────────┤
+│  Pages Module          │  Global Blocks Module              │
+│  (PageEditModal)       │  (/admin/content/global-blocks)    │
+│  - About Sections Tab  │  - CTA Strip Editor                │
+│  - SEO Tab             │  - Why Choose Us Editor            │
+└────────────┬───────────┴────────────────┬───────────────────┘
+             │                            │
+             ▼                            ▼
+┌─────────────────────────────────────────────────────────────┐
+│                      SUPABASE                               │
+├─────────────────────────────────────────────────────────────┤
+│  page_settings         │  global_blocks                     │
+│  (page_slug = 'about') │  (cta_strip, why_choose_us)        │
+└─────────────────────────────────────────────────────────────┘
+```
+
+### 14.5 Guardian Rules (Phase 9)
+
+| Rule | Status |
+|------|--------|
+| `homepage_settings` immutable | ✅ Not touched |
+| No frontend changes | ✅ Admin-only |
+| No CSS/SCSS changes | ✅ Existing patterns |
+| 1:1 Darkone patterns | ✅ Reused components |
+
+---
+
 ## Document Control
 
 | Version | Date | Author | Notes |
@@ -485,6 +549,7 @@ All admin content CRUD modals must follow the Services modal as the single sourc
 | 3.5 | 2025-12-24 | Implementation Agent | Phase 5.5 - Blog public wiring complete (list + details + RLS + modal parity) |
 | 3.6 | 2025-12-24 | Implementation Agent | Phase 5.5 Title + Route Fix - Dynamic breadcrumb title, route changed from /blog-details/:slug to /blog/:slug |
 | 3.7 | 2025-12-24 | Implementation Agent | Phase 6 - Contact form wired to leads table (honeypot anti-spam, client validation, no layout changes) |
+| 3.8 | 2025-12-26 | Implementation Agent | Phase 9 CLOSED - About Page + Global Blocks architecture complete |
 ---
 
 ## 14. Phase 5.4+ Parity Restoration Notes
