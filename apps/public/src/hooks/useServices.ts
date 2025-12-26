@@ -30,6 +30,13 @@ export function useServices(): UseServicesResult {
         setLoading(true);
         setError(null);
 
+        // Helper to extract single media from Supabase array response
+        const extractMedia = (mediaData: unknown): Media | null => {
+          if (!mediaData) return null;
+          if (Array.isArray(mediaData)) return mediaData[0] || null;
+          return mediaData as Media;
+        };
+
         // Fetch published services with icon media
         const { data, error: fetchError } = await supabase
           .from('services')
@@ -42,6 +49,9 @@ export function useServices(): UseServicesResult {
             icon_media_id,
             display_order,
             status,
+            show_pricing,
+            pricing_monthly_enabled,
+            pricing_yearly_enabled,
             icon:media!services_icon_media_id_fkey (
               id,
               public_url,
@@ -66,7 +76,10 @@ export function useServices(): UseServicesResult {
           icon_media_id: service.icon_media_id,
           display_order: service.display_order,
           status: service.status,
-          icon: service.icon || null,
+          show_pricing: service.show_pricing ?? true,
+          pricing_monthly_enabled: service.pricing_monthly_enabled ?? true,
+          pricing_yearly_enabled: service.pricing_yearly_enabled ?? true,
+          icon: extractMedia(service.icon),
         }));
 
         setServices(transformedServices);

@@ -54,7 +54,7 @@ function LatesNewsArea() {
                   <div className="post-img">
                     <Link onClick={scrollTop} to={`/blog/${post.slug}`}>
                       <img
-                        src={post.featured_image_url || '/images/post/post-1.jpg'}
+                        src={post.featured_image?.public_url || ''}
                         alt={post.title}
                       />
                     </Link>
