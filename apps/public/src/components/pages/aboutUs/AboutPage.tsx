@@ -11,7 +11,7 @@ function AboutPage() {
     <>
       <Breadcrumb pageName="About Us" />
       <InsideStoryArea />
-      <WhyChooseUsArea black="" lable="" />
+      <WhyChooseUsArea black="black" lable="" />
       <TestimonialArea />
       <LatesNewsArea />
       <LetsTalkArea />
