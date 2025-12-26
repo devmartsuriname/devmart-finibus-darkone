@@ -3,8 +3,10 @@ import { Modal, Button, Spinner, Tabs, Tab } from 'react-bootstrap'
 import Form from 'react-bootstrap/Form'
 import type { Page, PageUpdateInput } from '../hooks/usePages'
 import { useHomepageBlocks } from '../hooks/useHomepageBlocks'
+import { useAboutPageBlocks } from '../hooks/useAboutPageBlocks'
 import HomepageSectionsTab from './HomepageSectionsTab'
 import HomepageSeoTab from './HomepageSeoTab'
+import AboutPageSectionsTab from './AboutPageSectionsTab'
 
 interface PageEditModalProps {
   show: boolean
@@ -33,8 +35,19 @@ const PageEditModal = ({ show, page, loading, onClose, onSave }: PageEditModalPr
     updateSeoData
   } = useHomepageBlocks()
 
-  // Detect if this is the Homepage
+  // About page-specific hook
+  const {
+    data: aboutPageData,
+    loading: aboutPageLoading,
+    fetchAboutPageData,
+    toggleSectionEnabled: toggleAboutSectionEnabled,
+    updateSection: updateAboutSection,
+    getSectionEnabled: getAboutSectionEnabled
+  } = useAboutPageBlocks()
+
+  // Detect page type
   const isHomepage = page?.slug === '/'
+  const isAboutPage = page?.slug === 'about'
 
   useEffect(() => {
     if (page) {
@@ -45,12 +58,14 @@ const PageEditModal = ({ show, page, loading, onClose, onSave }: PageEditModalPr
       setErrors({})
       setActiveTab('page-info')
 
-      // Fetch homepage data if this is the homepage
+      // Fetch page-specific data
       if (page.slug === '/') {
         fetchHomepageData()
+      } else if (page.slug === 'about') {
+        fetchAboutPageData()
       }
     }
-  }, [page, fetchHomepageData])
+  }, [page, fetchHomepageData, fetchAboutPageData])
 
   const validate = (): boolean => {
     const newErrors: Record<string, string> = {}
@@ -92,7 +107,78 @@ const PageEditModal = ({ show, page, loading, onClose, onSave }: PageEditModalPr
 
   if (!page) return null
 
-  // Render standard page modal (non-Homepage)
+  // Render About page modal with tabs
+  if (isAboutPage) {
+    return (
+      <Modal show={show} onHide={onClose} centered size="xl">
+        <Modal.Header closeButton className="border-bottom">
+          <Modal.Title as="h5">Edit Page — About</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Tabs 
+            activeKey={activeTab} 
+            onSelect={(k) => setActiveTab(k || 'page-info')} 
+            className="mb-3"
+          >
+            <Tab eventKey="page-info" title="Page Info">
+              <Form onSubmit={handleSubmit}>
+                <Form.Group className="mb-3">
+                  <Form.Label>Slug</Form.Label>
+                  <Form.Control type="text" value={page.slug} disabled readOnly className="bg-light text-muted" />
+                </Form.Group>
+                <Form.Group className="mb-3">
+                  <Form.Label>Title <span className="text-danger">*</span></Form.Label>
+                  <Form.Control type="text" value={title} onChange={(e) => setTitle(e.target.value)} isInvalid={!!errors.title} maxLength={100} />
+                  <Form.Control.Feedback type="invalid">{errors.title}</Form.Control.Feedback>
+                </Form.Group>
+                <Form.Group className="mb-3">
+                  <Form.Check type="switch" id="is-published-about" label="Published" checked={isPublished} onChange={(e) => setIsPublished(e.target.checked)} />
+                </Form.Group>
+                <div className="mt-4 pt-3 border-top">
+                  <Button variant="primary" type="submit" disabled={loading}>
+                    {loading ? <><Spinner animation="border" size="sm" className="me-2" />Saving...</> : 'Save Page Info'}
+                  </Button>
+                </div>
+              </Form>
+            </Tab>
+            <Tab eventKey="sections" title="Sections">
+              {aboutPageLoading && !aboutPageData ? (
+                <div className="text-center py-4"><Spinner animation="border" size="sm" /><p className="text-muted mt-2">Loading sections...</p></div>
+              ) : (
+                <AboutPageSectionsTab
+                  data={aboutPageData}
+                  loading={aboutPageLoading}
+                  onToggleEnabled={toggleAboutSectionEnabled}
+                  onUpdateSection={updateAboutSection}
+                  getSectionEnabled={getAboutSectionEnabled}
+                />
+              )}
+            </Tab>
+            <Tab eventKey="seo" title="SEO">
+              <Form.Group className="mb-3">
+                <Form.Label>Meta Title</Form.Label>
+                <Form.Control type="text" value={metaTitle} onChange={(e) => setMetaTitle(e.target.value)} maxLength={70} placeholder="SEO meta title" />
+                <Form.Text className="text-muted">{metaTitle.length}/70</Form.Text>
+              </Form.Group>
+              <Form.Group className="mb-3">
+                <Form.Label>Meta Description</Form.Label>
+                <Form.Control as="textarea" rows={3} value={metaDescription} onChange={(e) => setMetaDescription(e.target.value)} maxLength={160} placeholder="SEO meta description" />
+                <Form.Text className="text-muted">{metaDescription.length}/160</Form.Text>
+              </Form.Group>
+              <Button variant="primary" onClick={handleSubmit} disabled={loading}>
+                {loading ? <><Spinner animation="border" size="sm" className="me-2" />Saving...</> : 'Save SEO'}
+              </Button>
+            </Tab>
+          </Tabs>
+        </Modal.Body>
+        <Modal.Footer className="border-top">
+          <Button variant="secondary" onClick={onClose} disabled={loading || aboutPageLoading}>Close</Button>
+        </Modal.Footer>
+      </Modal>
+    )
+  }
+
+  // Render standard page modal (non-Homepage, non-About)
   if (!isHomepage) {
     return (
       <Modal show={show} onHide={onClose} centered size="xl">
