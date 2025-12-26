@@ -60,7 +60,6 @@ function HeroArea() {
     speed: 1500,
     spaceBetween: 0,
     loop: true,
-    clickable: true,
     autoplay: true,
     effect: "fade" as const,
     centeredSlides: true,
