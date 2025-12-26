@@ -27,12 +27,12 @@
     stroke-linecap: round;
   }
   .CircularProgressbar-path {
-    stroke: #d90a2c;
+    stroke: var(--color-primary, #d90a2c);
     stroke-linecap: round;
     transition: stroke-dashoffset 0.5s ease 0s;
   }
   .CircularProgressbar-text {
-    fill: #d90a2c;
+    fill: var(--color-primary, #d90a2c);
     font-size: 22px;
     font-weight: 700;
   }
@@ -164,6 +164,73 @@
 }
 
 .scroll-top.opacity {
-  color: #D90A2C;
+  color: var(--color-primary, #D90A2C);
   font-weight: 800;
+}
+
+/* ============================================================
+   BRANDING OVERRIDES (DB-driven) — Phase 11 Step 6
+   Must load after Finibus styles to take precedence.
+   These selectors map Finibus hardcoded colors to CSS variables.
+   ============================================================ */
+
+/* Primary CTA Buttons */
+.eg-btn,
+.primary-btn1,
+.quote-btn,
+.cmn-btn {
+  background-color: var(--color-primary, #D90A2C) !important;
+  border-color: var(--color-primary, #D90A2C) !important;
+}
+
+.eg-btn:hover,
+.primary-btn1:hover,
+.quote-btn:hover,
+.cmn-btn:hover {
+  background-color: var(--color-secondary, #17161A) !important;
+  border-color: var(--color-secondary, #17161A) !important;
+}
+
+/* Header Quote Button */
+.header-area .header-right .quote-btn a,
+.header-area .header-right .quote-btn button {
+  background-color: var(--color-primary, #D90A2C) !important;
+}
+
+/* Section Title Accent Lines */
+.title span::before,
+.section-title span::before {
+  background-color: var(--color-primary, #D90A2C) !important;
+}
+
+/* Service Cards Hover */
+.single-service:hover,
+.service-card:hover {
+  border-color: var(--color-primary, #D90A2C) !important;
+}
+
+/* Links Primary Color */
+a.theme-color,
+.theme-color {
+  color: var(--color-primary, #D90A2C) !important;
+}
+
+/* Footer Accent */
+.footer-area .footer-widget h4::after {
+  background-color: var(--color-primary, #D90A2C) !important;
+}
+
+/* Breadcrumb Active */
+.breadcrumb-area .breadcrumb li.active {
+  color: var(--color-primary, #D90A2C) !important;
+}
+
+/* Play Button */
+.play-btn .popup-video {
+  background-color: var(--color-primary, #D90A2C) !important;
+}
+
+/* Swiper Pagination Active */
+.swiper-pagination-bullet-active {
+  background-color: var(--color-primary, #D90A2C) !important;
 }
