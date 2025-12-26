@@ -5,7 +5,7 @@
  * Phase 10B: Uses Bootstrap Toast via useAdminNotify
  */
 
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback, useRef } from 'react'
 import { supabase } from '@/integrations/supabase/client'
 import { useAdminNotify } from '@/lib/notify'
 
@@ -89,6 +89,15 @@ export const useProjects = () => {
   const [error, setError] = useState<string | null>(null)
   const { notifySuccess, notifyError } = useAdminNotify()
 
+  // Ref pattern for stable notify functions (prevents useCallback re-render loops)
+  const notifySuccessRef = useRef(notifySuccess)
+  const notifyErrorRef = useRef(notifyError)
+
+  useEffect(() => {
+    notifySuccessRef.current = notifySuccess
+    notifyErrorRef.current = notifyError
+  })
+
   const fetchProjects = useCallback(async () => {
     try {
       setIsLoading(true)
@@ -144,7 +153,7 @@ export const useProjects = () => {
         .maybeSingle()
 
       if (existing) {
-        notifyError('A project with this slug already exists')
+        notifyErrorRef.current('A project with this slug already exists')
         return { success: false }
       }
 
@@ -175,16 +184,16 @@ export const useProjects = () => {
         throw insertError
       }
 
-      notifySuccess('Project created successfully')
+      notifySuccessRef.current('Project created successfully')
       await fetchProjects()
       return { success: true, id: data?.id }
     } catch (err) {
       const message = err instanceof Error ? err.message : 'Failed to create project'
-      notifyError(`Error creating project: ${message}`)
+      notifyErrorRef.current(`Error creating project: ${message}`)
       console.error('Error creating project:', err)
       return { success: false }
     }
-  }, [fetchProjects, notifySuccess, notifyError])
+  }, [fetchProjects])
 
   const updateProject = useCallback(async (id: string, input: Partial<ProjectInput>): Promise<boolean> => {
     try {
@@ -198,7 +207,7 @@ export const useProjects = () => {
           .maybeSingle()
 
         if (existing) {
-          notifyError('A project with this slug already exists')
+          notifyErrorRef.current('A project with this slug already exists')
           return false
         }
       }
@@ -231,16 +240,16 @@ export const useProjects = () => {
         throw updateError
       }
 
-      notifySuccess('Project updated successfully')
+      notifySuccessRef.current('Project updated successfully')
       await fetchProjects()
       return true
     } catch (err) {
       const message = err instanceof Error ? err.message : 'Failed to update project'
-      notifyError(`Error updating project: ${message}`)
+      notifyErrorRef.current(`Error updating project: ${message}`)
       console.error('Error updating project:', err)
       return false
     }
-  }, [fetchProjects, notifySuccess, notifyError])
+  }, [fetchProjects])
 
   const deleteProject = useCallback(async (id: string): Promise<boolean> => {
     try {
@@ -253,16 +262,16 @@ export const useProjects = () => {
         throw deleteError
       }
 
-      notifySuccess('Project deleted successfully')
+      notifySuccessRef.current('Project deleted successfully')
       await fetchProjects()
       return true
     } catch (err) {
       const message = err instanceof Error ? err.message : 'Failed to delete project'
-      notifyError(`Error deleting project: ${message}`)
+      notifyErrorRef.current(`Error deleting project: ${message}`)
       console.error('Error deleting project:', err)
       return false
     }
-  }, [fetchProjects, notifySuccess, notifyError])
+  }, [fetchProjects])
 
   // Process Steps CRUD
   const fetchProcessSteps = useCallback(async (projectId: string): Promise<ProjectProcessStep[]> => {
@@ -316,14 +325,14 @@ export const useProjects = () => {
         if (insertError) throw insertError
       }
 
-      notifySuccess('Process steps saved')
+      notifySuccessRef.current('Process steps saved')
       return true
     } catch (err) {
       console.error('Error saving process steps:', err)
-      notifyError('Failed to save process steps')
+      notifyErrorRef.current('Failed to save process steps')
       return false
     }
-  }, [notifySuccess, notifyError])
+  }, [])
 
   return {
     projects,
