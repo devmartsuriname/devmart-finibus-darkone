@@ -1,19 +1,16 @@
 /**
  * BrandingProvider
  * 
- * Phase 11 — Step 5: CSS Variable Injection
+ * Phase 11 — Root-Cause Fix: CSS Variable Injection with Gradient Support
  * 
  * Purpose: Injects branding colors as CSS custom properties on :root.
- * This allows components to consume branding colors via CSS variables
- * without requiring any direct modifications.
  * 
  * Variables exposed:
  * - --color-primary
  * - --color-secondary
  * - --color-accent
- * 
- * Values are sourced from the settings table via useBrandingColors hook.
- * Finibus defaults are applied automatically when DB values are missing.
+ * - --color-primary-grad-start
+ * - --color-primary-grad-end
  */
 
 import React, { useEffect } from 'react';
@@ -31,7 +28,9 @@ export function BrandingProvider({ children }: BrandingProviderProps) {
     root.style.setProperty('--color-primary', colors.primaryColor);
     root.style.setProperty('--color-secondary', colors.secondaryColor);
     root.style.setProperty('--color-accent', colors.accentColor);
-  }, [colors.primaryColor, colors.secondaryColor, colors.accentColor]);
+    root.style.setProperty('--color-primary-grad-start', colors.primaryGradientStart);
+    root.style.setProperty('--color-primary-grad-end', colors.primaryGradientEnd);
+  }, [colors]);
 
   return <>{children}</>;
 }

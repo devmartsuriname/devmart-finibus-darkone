@@ -31,40 +31,43 @@
 
 ---
 
-## Phase 11 — Settings Module (✅ COMPLETE)
+## Phase 11 — Settings Module (✅ ROOT-CAUSE FIX COMPLETE)
 
-**Status:** Step 6 Complete — Branding Colors Fully Functional  
+**Status:** Root-Cause Fix Complete — Full Branding Color Control  
 **Plan Document:** `docs/phase-11/Phase_11_Settings_Module_Implementation_Plan.md`
 
 ### Summary
 
-Phase 11 addresses two issues in the Settings Module:
-
-| Issue | Root Cause | Proposed Fix | Status |
-|-------|------------|--------------|--------|
-| Infinite loading spinner | `notifyError` in useCallback deps creates loop | Use ref pattern for notify functions | ✅ FIXED (Step 1) |
-| Branding colors missing | No DB keys, placeholder UI | Add 3 keys + color pickers + frontend hook + CSS vars + consumption layer | ✅ COMPLETE |
-
-### Scope
-
-| In Scope | Out of Scope |
-|----------|--------------|
-| Primary Color | Fonts (LOCKED) |
-| Secondary Color | Typography (LOCKED) |
-| Accent Color | Layout changes |
-| Admin → DB → Frontend flow | New styling systems |
+Phase 11 implements database-driven branding colors for the public frontend with proper gradient support.
 
 ### Execution Status
 
 | Step | Status | Description |
 |------|--------|-------------|
-| Step 0 — Restore Point | ✅ Complete | `docs/restore-points/Restore_Point_Phase_11_Settings_Start.md` |
-| Step 1 — Fix Loading Loop | ✅ Complete | useRef pattern for notify functions in `useSettings.ts` |
-| Step 2 — Add DB Keys | ✅ Complete | Added `primary_color`, `secondary_color`, `accent_color` to settings table |
-| Step 3 — Color Pickers | ✅ Complete | Updated `BrandingSettingsTab.tsx` with 3 color picker inputs |
-| Step 4 — Frontend Hook | ✅ Complete | Created `apps/public/src/hooks/useBrandingColors.ts` |
-| Step 5 — CSS Variable Injection | ✅ Complete | Created `BrandingProvider.tsx`, wrapped `App.tsx` |
-| Step 6 — Consumption Layer | ✅ Complete | Added branding overrides in `index.scss`, fixed `WhyChooseUsArea.tsx` |
+| Step 0 — Restore Point | ✅ Complete | `docs/restore-points/Restore_Point_Phase_11_Branding_Color_RootCause_Audit.md` |
+| Step A — Documentation | ✅ Complete | Finibus Color Map Contract in Frontend.md, Architecture Section 19 |
+| Step B — Fix Root Cause | ✅ Complete | Corrected index.scss consumption layer with proper gradient overrides |
+| Step C — Gradient Support | ✅ Complete | Added gradient tokens to hook + provider |
+| Step D — Verification | ✅ Complete | All elements respond to primary_color changes |
+
+### Key Fixes Applied
+
+| Issue | Root Cause | Fix |
+|-------|------------|-----|
+| Buttons not changing | Targeted `.cmn-btn` wrapper instead of `.cmn-btn a` anchor | Target `.cmn-btn a` with gradient override |
+| Gradient not overriding | Used `background-color` instead of `background` | Use `background: linear-gradient(...)` |
+| Dead selectors | `.eg-btn`, `.primary-btn1` don't exist | Removed, added real Finibus selectors |
+| Missing coverage | Only ~10 selectors covered | Added 15+ key selectors |
+
+### Files Changed
+
+| File | Change |
+|------|--------|
+| `apps/public/src/hooks/useBrandingColors.ts` | Added gradient token support |
+| `apps/public/src/components/providers/BrandingProvider.tsx` | Injects gradient CSS variables |
+| `apps/public/src/index.scss` | Corrected consumption layer with proper targeting |
+| `docs/Frontend.md` | Added Finibus Color Map Contract (3.5.1, 3.5.2) |
+| `docs/Architecture.md` | Added Section 19 - Branding Colors Architecture |
 
 ---
 

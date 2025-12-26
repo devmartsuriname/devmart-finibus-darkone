@@ -963,3 +963,127 @@ Phase 9 extends the Homepage UI Blocks model to other static pages using a **sca
 | `docs/Phase_9A_Page_UI_Blocks_Architecture.md` | Full architecture blueprint |
 | `docs/restore-points/Restore_Point_Phase_9A_Definition.md` | Pre-execution snapshot |
 | `docs/Backend.md` Section 16 | Proposed table schemas |
+
+---
+
+## 19. Phase 11 — Public Branding Colors Architecture
+
+### 19.1 Overview
+
+Phase 11 implements database-driven branding color control for the public Finibus frontend, allowing Admin to set primary, secondary, and accent colors that dynamically update the public site.
+
+### 19.2 Data Flow
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│                   ADMIN APP (Darkone)                       │
+├─────────────────────────────────────────────────────────────┤
+│  Settings → Branding Tab                                    │
+│  - Primary Color picker (#HEX)                              │
+│  - Secondary Color picker (#HEX)                            │
+│  - Accent Color picker (#HEX)                               │
+│  - Primary Gradient Start picker (#HEX)                     │
+│  - Primary Gradient End picker (#HEX)                       │
+└────────────────────────────┬────────────────────────────────┘
+                             │ UPDATE settings table
+                             ▼
+┌─────────────────────────────────────────────────────────────┐
+│                      SUPABASE                               │
+├─────────────────────────────────────────────────────────────┤
+│  settings table (category='branding')                       │
+│  Keys: primary_color, secondary_color, accent_color,        │
+│        primary_gradient_start, primary_gradient_end         │
+└────────────────────────────┬────────────────────────────────┘
+                             │ SELECT (public read via RLS)
+                             ▼
+┌─────────────────────────────────────────────────────────────┐
+│                   PUBLIC APP (Finibus)                      │
+├─────────────────────────────────────────────────────────────┤
+│  Layer 1: useBrandingColors hook                            │
+│  - Fetches settings on mount                                │
+│  - Returns colors with Finibus defaults as fallbacks        │
+├─────────────────────────────────────────────────────────────┤
+│  Layer 2: BrandingProvider (wraps App.tsx)                  │
+│  - Injects CSS variables on document.documentElement        │
+│  - Variables: --color-primary, --color-secondary, etc.      │
+├─────────────────────────────────────────────────────────────┤
+│  Layer 3: Consumption Layer (index.scss)                    │
+│  - Maps Finibus hardcoded selectors to CSS variables        │
+│  - Uses !important to override compiled Finibus CSS         │
+│  - Targets actual styled elements (e.g., .cmn-btn a)        │
+└─────────────────────────────────────────────────────────────┘
+```
+
+### 19.3 CSS Variable Contract
+
+| Variable | Default | Usage |
+|----------|---------|-------|
+| `--color-primary` | `#D90A2C` | Solid primary color uses (icons, links, text) |
+| `--color-secondary` | `#17161A` | Dark/secondary backgrounds and text |
+| `--color-accent` | `#F7941D` | Accent highlights (reserved) |
+| `--color-primary-grad-start` | `#D90A2C` | Gradient start (buttons) |
+| `--color-primary-grad-end` | `#730000` | Gradient end (buttons) |
+
+### 19.4 Consumption Layer Rules
+
+Located in: `apps/public/src/index.scss` (BRANDING OVERRIDES section)
+
+**Key Principles:**
+
+1. **Correct Targeting:** Override the element with the actual style, not its parent
+   - ✅ `.cmn-btn a` (anchor has the gradient)
+   - ❌ `.cmn-btn` (wrapper div has no visual style)
+
+2. **Gradient Override Pattern:**
+   ```scss
+   .cmn-btn a {
+     background: linear-gradient(90deg, 
+       var(--color-primary-grad-start, #D90A2C), 
+       var(--color-primary-grad-end, #730000)) !important;
+   }
+   ```
+
+3. **Solid Color Override Pattern:**
+   ```scss
+   .service-icon i {
+     background-color: var(--color-primary, #D90A2C) !important;
+   }
+   ```
+
+4. **Fallback Required:** All var() usages include Finibus default as second parameter
+
+5. **!important Required:** Necessary to override compiled Finibus CSS specificity
+
+### 19.5 Implementation Files
+
+| File | Layer | Purpose |
+|------|-------|---------|
+| `src/app/(admin)/settings/page.tsx` | Admin | Settings form with color fields |
+| `src/app/(admin)/settings/components/BrandingSettingsTab.tsx` | Admin | Color picker UI |
+| `apps/public/src/hooks/useBrandingColors.ts` | Public | Fetch from DB with fallbacks |
+| `apps/public/src/components/providers/BrandingProvider.tsx` | Public | Inject CSS vars on :root |
+| `apps/public/src/index.scss` | Public | Consumption layer overrides |
+
+### 19.6 Guardian Rules
+
+| Rule | Status |
+|------|--------|
+| No font changes | ✅ Typography locked |
+| No new CSS/SCSS files | ✅ Uses existing index.scss |
+| No Bootstrap in public | ✅ Not introduced |
+| No layout changes | ✅ Color overrides only |
+| Finibus SCSS untouched | ✅ Override layer only |
+
+### 19.7 Verification Checklist
+
+With `primary_color=#4be89b` (green):
+
+| Element | Expected | Selector |
+|---------|----------|----------|
+| Header CTA button | Green gradient | `.cmn-btn a` |
+| Service icons | Green background | `.service-icon i` |
+| Section labels | Green text | `.title span` |
+| Nav active/hover | Green text | `.main-nav ul li a.active` |
+| Progress bars | Green stroke | `.CircularProgressbar-path` |
+| Pagination bullets | Green background | `.swiper-pagination-bullet-active` |
+| Footer social hover | Green background | `.footer-area .social-list li a:hover` |

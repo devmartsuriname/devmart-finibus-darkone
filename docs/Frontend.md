@@ -221,23 +221,27 @@ return <section>{/* render displayData */}</section>;
 
 ### 3.5 Branding Colors System (Phase 11)
 
-**Status:** Step 5 Complete — CSS Variable Injection
+**Status:** Root-Cause Fix Complete — Full Color Control
 
 **Data Flow:**
 ```
 Admin Settings (BrandingSettingsTab)
         ↓
   settings table (Supabase)
-  [primary_color, secondary_color, accent_color]
+  [primary_color, secondary_color, accent_color,
+   primary_gradient_start, primary_gradient_end]
         ↓
   useBrandingColors hook (apps/public)
         ↓
   BrandingProvider (App.tsx wrapper)
         ↓
   CSS Variables on :root
-  [--color-primary, --color-secondary, --color-accent]
+  [--color-primary, --color-secondary, --color-accent,
+   --color-primary-grad-start, --color-primary-grad-end]
         ↓
-  Components can consume via var(--color-primary)
+  index.scss Consumption Layer (override selectors)
+        ↓
+  Finibus elements display DB-driven colors
 ```
 
 **Implementation Files:**
@@ -246,20 +250,79 @@ Admin Settings (BrandingSettingsTab)
 | `apps/public/src/hooks/useBrandingColors.ts` | Fetch branding colors from settings table |
 | `apps/public/src/components/providers/BrandingProvider.tsx` | Inject CSS variables on :root |
 | `apps/public/src/App.tsx` | Wraps Routes with BrandingProvider |
+| `apps/public/src/index.scss` | Consumption layer: maps Finibus selectors to CSS vars |
 
-**Finibus Defaults (Used as Fallbacks):**
-| Variable | Default Value |
-|----------|---------------|
-| `--color-primary` | `#D90A2C` |
-| `--color-secondary` | `#17161A` |
-| `--color-accent` | `#F7941D` |
+**CSS Variables (Finibus Defaults as Fallbacks):**
+| Variable | Default Value | Purpose |
+|----------|---------------|---------|
+| `--color-primary` | `#D90A2C` | Main brand color (solid) |
+| `--color-secondary` | `#17161A` | Secondary/dark color |
+| `--color-accent` | `#F7941D` | Accent highlights |
+| `--color-primary-grad-start` | `#D90A2C` | Gradient start (buttons) |
+| `--color-primary-grad-end` | `#730000` | Gradient end (buttons) |
 
 **Guardian Rules Enforced:**
 - ✅ Finibus typography LOCKED (no font changes)
 - ✅ No Bootstrap usage
-- ✅ No custom CSS/SCSS files
-- ✅ Existing Finibus styles untouched
+- ✅ No new CSS/SCSS files (uses existing index.scss)
+- ✅ Existing Finibus SCSS untouched (overrides only)
 - ✅ CSS variables only (runtime injection)
+
+### 3.5.1 Finibus Color Map Contract
+
+**Purpose:** Documents all Finibus selectors that use hardcoded colors and their mapping to CSS variables.
+
+#### Primary Color (`--color-primary`) — Solid Uses
+
+| Selector | Property | Page/Section | Notes |
+|----------|----------|--------------|-------|
+| `.service-icon i` | `background-color` | Services section | Circular icon bg |
+| `.service-content a` | `color` | Services section | "Read More" links |
+| `.title span` | `color` | All sections | Section label text |
+| `.title span::before` | `background-color` | All sections | Underline accent |
+| `.main-nav ul li a.active` | `color` | Header | Active nav link |
+| `.main-nav ul li a:hover` | `color` | Header | Nav hover |
+| `.breadcrumb-wrapper span a` | `color` | Breadcrumb | Active crumb |
+| `.scroll-top.opacity span` | `border-color`, `color` | Footer | Scroll button |
+| `.swiper-pagination-bullet-active` | `background-color` | Sliders | Active bullet |
+| `.play-btn .popup-video` | `background-color` | About section | Play button |
+| `.footer-area .social-list li a:hover` | `background-color` | Footer | Social hover |
+| `.CircularProgressbar-path` | `stroke` | About/Why Choose | Progress bars |
+| `.CircularProgressbar-text` | `fill` | About/Why Choose | Progress text |
+
+#### Primary Color (`--color-primary-grad-*`) — Gradient Uses
+
+| Selector | Property | Page/Section | Notes |
+|----------|----------|--------------|-------|
+| `.cmn-btn a` | `background: linear-gradient(...)` | All CTAs | Main CTA buttons |
+| `.nav-pills .nav-link.active` | `background: linear-gradient(...)` | Service pricing | Active tab |
+| `.nav-pills .nav-link:hover` | `background: linear-gradient(...)` | Service pricing | Tab hover |
+| `.project-filter-tab li.active` | `background: linear-gradient(...)` | Portfolio | Active filter |
+| `.project-filter-tab li:hover` | `background: linear-gradient(...)` | Portfolio | Filter hover |
+| `.subscribe-form input[type="submit"]` | `background: linear-gradient(...)` | Newsletter | Subscribe btn |
+| `.pay-btn a` | `background: linear-gradient(...)` | Pricing | Pricing CTA |
+
+#### Secondary Color (`--color-secondary`)
+
+| Selector | Property | Page/Section | Notes |
+|----------|----------|--------------|-------|
+| `.cmn-btn a:hover::before` | `background-color` | CTAs | Hover overlay |
+| Various dark sections | `background-color` | Multiple | Dark backgrounds |
+
+#### Accent Color (`--color-accent`)
+
+Reserved for future use. Finibus does not actively use `#F7941D` in core elements.
+
+### 3.5.2 Consumption Layer Architecture
+
+The consumption layer lives in `apps/public/src/index.scss` as a clearly delimited section at the end of the file.
+
+**Key Principles:**
+1. **Target the correct element:** If Finibus applies a gradient to `.cmn-btn a`, override `.cmn-btn a`, not `.cmn-btn`
+2. **Override gradients properly:** Use `background: var(...) !important` with `background-image: none !important`
+3. **Use fallbacks:** Always include Finibus default as fallback: `var(--color-primary, #D90A2C)`
+4. **Minimal overrides:** Only override color properties, never layout/spacing
+5. **No dead selectors:** Only include selectors that exist in Finibus DOM
 
 **Inner Pages (Wired to DB):**
 
