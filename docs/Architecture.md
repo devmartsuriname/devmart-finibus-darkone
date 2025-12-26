@@ -2,9 +2,9 @@
 
 ```
 Status: AUTHORITATIVE
-Phase: Phase 4 COMPLETE | Phase 5 COMPLETE | Phase 6.1 COMPLETE | Phase 7.2 COMPLETE | Phase 9 CLOSED | Phase 10A COMPLETE | Phase 10B CLOSED + Hotfix
+Phase: Phase 4 COMPLETE | Phase 5 COMPLETE | Phase 6.1 COMPLETE | Phase 7.2 COMPLETE | Phase 9 CLOSED | Phase 10A COMPLETE | Phase 10B FINALIZED
 Auth: IMPLEMENTED (Supabase JWT + Roles + RLS)
-Execution: All 8 Admin Modules Complete | Public → DB Integration Complete | Routing/404/Image Parity Fixed | Phase 9 About/Global Blocks Complete | Phase 10B Pricing Controls Complete | Phase 10B Hotfix Toast CSS
+Execution: All 8 Admin Modules Complete | Public → DB Integration Complete | Routing/404/Image Parity Fixed | Phase 9 About/Global Blocks Complete | Phase 10B Pricing Controls + Global Text-Only Toasts FINALIZED
 Last Updated: 2025-12-26
 ```
 
@@ -525,7 +525,65 @@ Phase 9 established the architecture for managing UI blocks across pages:
 
 ---
 
-## 15. Phase 10 — Services Pricing Architecture (DOCUMENTED)
+## 15. Admin Notification Architecture (Phase 10B FINALIZED)
+
+### 15.1 Single ToastContainer
+
+**Location:** `src/components/wrapper/AppProvidersWrapper.tsx`
+
+**Configuration:**
+```tsx
+<ToastContainer 
+  theme="colored" 
+  position="top-right"
+  autoClose={3000}
+  hideProgressBar={false}
+  closeOnClick
+/>
+```
+
+### 15.2 Canonical Wrapper
+
+**Location:** `src/lib/notify.ts`
+
+**Enforces:**
+- `icon: false` — No SVG icons, text-only
+- `position: 'top-right'` — Consistent placement
+
+**Functions:**
+| Function | Usage |
+|----------|-------|
+| `notifySuccess(msg)` | Success feedback |
+| `notifyError(msg)` | Error feedback |
+| `notifyInfo(msg)` | Info messages |
+| `notifyWarning(msg)` | Warning messages |
+
+### 15.3 Module Compliance
+
+| Module | Hook | Status |
+|--------|------|--------|
+| Services | `useServices.ts` | ✅ Compliant |
+| Projects | `useProjects.ts` | ✅ Compliant |
+| Blog | `useBlogPosts.ts` | ✅ Compliant |
+| Testimonials | `useTestimonials.ts` | ✅ Compliant |
+| Pages | `usePages.ts` | ✅ Compliant |
+| Homepage Blocks | `useHomepageBlocks.ts` | ✅ Compliant |
+| About Page Blocks | `useAboutPageBlocks.ts` | ✅ Compliant |
+| Global Blocks | `useGlobalBlocks.ts` | ✅ Compliant |
+| Settings | `useSettings.ts` | ✅ Compliant |
+| Media Library | `useMediaLibrary.ts` | ✅ Compliant |
+| Leads | `useLeads.ts` | ✅ Compliant |
+
+### 15.4 Usage Rules
+
+1. ❌ Do NOT use `toast.*` directly in Admin hooks/components
+2. ✅ Use `notifySuccess/notifyError` from `@/lib/notify`
+3. Every successful save action MUST emit `notifySuccess`
+4. Every failed save action MUST emit `notifyError`
+
+---
+
+## 16. Phase 10 — Services Pricing Architecture (DOCUMENTED)
 
 ### 15.1 Overview
 
