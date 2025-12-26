@@ -28,6 +28,9 @@ import { Routes, Route, Outlet } from 'react-router-dom'
 import Header from './components/common/Header'
 import Footer from './components/common/Footer'
 
+// Providers
+import { BrandingProvider } from './components/providers/BrandingProvider'
+
 // Page Components
 import HomePage from './components/pages/Home/HomePage'
 import HomePage2 from './components/pages/Home2/HomePage2'
@@ -121,37 +124,39 @@ function Home2Layout() {
  */
 function App() {
   return (
-    <Routes>
-      {/* Standalone pages (no layout wrapper) */}
-      <Route path="/commingsoon" element={<CommingSoonPage />} />
-      
-      {/* Home pages with their own layout */}
-      <Route path="/" element={<HomeLayout />} />
-      <Route path="/home2" element={<Home2Layout />} />
-      
-      {/* Pages with standard Header/Footer layout */}
-      <Route element={<MainLayout />}>
-        <Route path="/about" element={<AboutPage />} />
-        <Route path="/service" element={<ServicesPage />} />
-        {/* Dynamic service details with slug parameter */}
-        <Route path="/service-details/:slug" element={<ServiceDetailsPage />} />
-        {/* Fallback for /service-details without slug - redirects to services list */}
-        <Route path="/service-details" element={<ServiceDetailsPage />} />
-        <Route path="/project" element={<ProjectsPage />} />
-        {/* Dynamic project details with slug parameter */}
-        <Route path="/project-details/:slug" element={<ProjectDetailsPage />} />
-        {/* Fallback for /project-details without slug - shows ErrorPage */}
-        <Route path="/project-details" element={<ErrorPage />} />
-        <Route path="/blog" element={<BlogPage />} />
-        {/* Dynamic blog details with slug parameter */}
-        <Route path="/blog/:slug" element={<BlogDetailsPage />} />
-        <Route path="/blog-standard" element={<BlogStandardPage />} />
-        <Route path="/contact" element={<ContactPage />} />
-        <Route path="/error" element={<ErrorPage />} />
-        {/* Catch-all for 404 - inside MainLayout for Header/Footer */}
-        <Route path="*" element={<ErrorPage />} />
-      </Route>
-    </Routes>
+    <BrandingProvider>
+      <Routes>
+        {/* Standalone pages (no layout wrapper) */}
+        <Route path="/commingsoon" element={<CommingSoonPage />} />
+        
+        {/* Home pages with their own layout */}
+        <Route path="/" element={<HomeLayout />} />
+        <Route path="/home2" element={<Home2Layout />} />
+        
+        {/* Pages with standard Header/Footer layout */}
+        <Route element={<MainLayout />}>
+          <Route path="/about" element={<AboutPage />} />
+          <Route path="/service" element={<ServicesPage />} />
+          {/* Dynamic service details with slug parameter */}
+          <Route path="/service-details/:slug" element={<ServiceDetailsPage />} />
+          {/* Fallback for /service-details without slug - redirects to services list */}
+          <Route path="/service-details" element={<ServiceDetailsPage />} />
+          <Route path="/project" element={<ProjectsPage />} />
+          {/* Dynamic project details with slug parameter */}
+          <Route path="/project-details/:slug" element={<ProjectDetailsPage />} />
+          {/* Fallback for /project-details without slug - shows ErrorPage */}
+          <Route path="/project-details" element={<ErrorPage />} />
+          <Route path="/blog" element={<BlogPage />} />
+          {/* Dynamic blog details with slug parameter */}
+          <Route path="/blog/:slug" element={<BlogDetailsPage />} />
+          <Route path="/blog-standard" element={<BlogStandardPage />} />
+          <Route path="/contact" element={<ContactPage />} />
+          <Route path="/error" element={<ErrorPage />} />
+          {/* Catch-all for 404 - inside MainLayout for Header/Footer */}
+          <Route path="*" element={<ErrorPage />} />
+        </Route>
+      </Routes>
+    </BrandingProvider>
   )
 }
 
