@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react'
+import { useState, useCallback, useRef, useEffect } from 'react'
 import { supabase } from '@/integrations/supabase/client'
 import { useAdminNotify } from '@/lib/notify'
 
@@ -26,6 +26,16 @@ export const usePages = () => {
   const [error, setError] = useState<string | null>(null)
   const { notifySuccess, notifyError } = useAdminNotify()
 
+  // Store notify functions in refs to avoid dependency issues
+  const notifySuccessRef = useRef(notifySuccess)
+  const notifyErrorRef = useRef(notifyError)
+
+  // Update refs on each render
+  useEffect(() => {
+    notifySuccessRef.current = notifySuccess
+    notifyErrorRef.current = notifyError
+  })
+
   const fetchPages = useCallback(async () => {
     setLoading(true)
     setError(null)
@@ -40,11 +50,11 @@ export const usePages = () => {
     } catch (err) {
       const message = err instanceof Error ? err.message : 'Failed to fetch pages'
       setError(message)
-      notifyError(message)
+      notifyErrorRef.current(message)
     } finally {
       setLoading(false)
     }
-  }, [notifyError])
+  }, [])
 
   const updatePage = useCallback(async (id: string, input: PageUpdateInput): Promise<boolean> => {
     setLoading(true)
@@ -76,17 +86,17 @@ export const usePages = () => {
 
       if (updateError) throw updateError
 
-      notifySuccess('Page updated successfully')
+      notifySuccessRef.current('Page updated successfully')
       await fetchPages()
       return true
     } catch (err) {
       const message = err instanceof Error ? err.message : 'Failed to update page'
-      notifyError(message)
+      notifyErrorRef.current(message)
       return false
     } finally {
       setLoading(false)
     }
-  }, [fetchPages, notifySuccess, notifyError])
+  }, [fetchPages])
 
   return {
     pages,
