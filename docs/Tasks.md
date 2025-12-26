@@ -187,16 +187,18 @@ All project images (any dimensions) will render consistently with `object-fit: c
 - Inner page wiring (Services, Projects, Blog)
 - Contact form → Leads pipeline
 - Settings → Footer/Contact wiring
+- **Homepage Dynamic Wiring (all 9 sections)** — Phase 7 COMPLETE 2025-12-26
+- **Testimonials public carousel** — wired to `testimonials` table
+- **Newsletter form** — wired to `newsletter_subscribers` table
 
 ### MVP PARTIAL 🔶
 
-- Testimonials public carousel (admin done, homepage static)
-- Maps in Settings (not implemented)
+- Maps in Settings (Settings key exists, embed not implemented)
+- About page public wiring (Admin UI done, frontend still static)
 
 ### MVP DEFERRED ⏸️
 
-- Homepage DB wiring (all 9 sections)
-- Analytics dashboard
+- Analytics dashboard (not authorized)
 - Public app in Lovable Preview (architecture limitation)
 - User self-registration (SMTP-dependent)
 
