@@ -1,7 +1,7 @@
 # Frontend Specification — Devmart Platform
 
 **Status:** Implemented (MVP)  
-**Phase:** Phase 6.1 COMPLETE | Phase 7 CLOSED | Phase 9 CLOSED | Phase 10A COMPLETE | Phase 10B FINALIZED | Phase 10C COMPLETE | Phase 11 Step 4 COMPLETE  
+**Phase:** Phase 6.1 COMPLETE | Phase 7 CLOSED | Phase 9 CLOSED | Phase 10A COMPLETE | Phase 10B FINALIZED | Phase 10C COMPLETE | Phase 11 Step 5 COMPLETE  
 **Last Updated:** 2025-12-26
 
 ---
@@ -217,6 +217,49 @@ return <section>{/* render displayData */}</section>;
 | `useBlogPosts` | `apps/public/src/hooks/useBlogPosts.ts` | Fetches published blog posts |
 | `useNewsletterSubscribe` | `apps/public/src/hooks/useNewsletterSubscribe.ts` | INSERT to `newsletter_subscribers` |
 | `useAboutPageSettings` | `apps/public/src/hooks/useAboutPageSettings.ts` | Fetches About page UI block settings |
+| `useBrandingColors` | `apps/public/src/hooks/useBrandingColors.ts` | Fetches branding colors from settings (Phase 11) |
+
+### 3.5 Branding Colors System (Phase 11)
+
+**Status:** Step 5 Complete — CSS Variable Injection
+
+**Data Flow:**
+```
+Admin Settings (BrandingSettingsTab)
+        ↓
+  settings table (Supabase)
+  [primary_color, secondary_color, accent_color]
+        ↓
+  useBrandingColors hook (apps/public)
+        ↓
+  BrandingProvider (App.tsx wrapper)
+        ↓
+  CSS Variables on :root
+  [--color-primary, --color-secondary, --color-accent]
+        ↓
+  Components can consume via var(--color-primary)
+```
+
+**Implementation Files:**
+| File | Purpose |
+|------|---------|
+| `apps/public/src/hooks/useBrandingColors.ts` | Fetch branding colors from settings table |
+| `apps/public/src/components/providers/BrandingProvider.tsx` | Inject CSS variables on :root |
+| `apps/public/src/App.tsx` | Wraps Routes with BrandingProvider |
+
+**Finibus Defaults (Used as Fallbacks):**
+| Variable | Default Value |
+|----------|---------------|
+| `--color-primary` | `#D90A2C` |
+| `--color-secondary` | `#17161A` |
+| `--color-accent` | `#F7941D` |
+
+**Guardian Rules Enforced:**
+- ✅ Finibus typography LOCKED (no font changes)
+- ✅ No Bootstrap usage
+- ✅ No custom CSS/SCSS files
+- ✅ Existing Finibus styles untouched
+- ✅ CSS variables only (runtime injection)
 
 **Inner Pages (Wired to DB):**
 
