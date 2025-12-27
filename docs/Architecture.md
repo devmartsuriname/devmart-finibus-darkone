@@ -120,7 +120,8 @@ All Settings tabs (General/SEO/Social/Branding) verified: Save + Persist + 0 err
 
 ## Phase 11C — Color Map Contract (2025-12-27)
 
-**Status:** 📋 **DOCUMENTATION ONLY**
+**Status:** ✅ **PHASE COMPLETE — CLOSED**  
+**Closure Date:** 2025-12-27
 
 ### Objective
 Define injection strategy for public frontend branding colors with regression-resistant approach.
@@ -146,8 +147,10 @@ Define injection strategy for public frontend branding colors with regression-re
 |-------|--------|------|--------|
 | 11C-1 | CSS variable injection | LOW | ✅ COMPLETE |
 | 11C W1-W4 | SCSS selector conversion | LOW-MEDIUM | ✅ COMPLETE (15 selectors, 10 files) |
-| 11C-2 | Solid backgrounds | MEDIUM | Awaiting auth |
-| 11C-3 | Gradients, pseudo-elements | HIGH | DEFERRED |
+| 11C-2 | Solid backgrounds | MEDIUM | ⚠️ DEFERRED |
+| 11C-3 | Gradients, pseudo-elements | HIGH | ⚠️ DEFERRED (see Phase 11D) |
+
+**Phase 11C Closure:** Formally closed 2025-12-27. All eligible safe selectors converted. Remaining ~108 references classified as out-of-scope.
 
 ### Phase 11C SCSS Conversion (W1-W4) — COMPLETE
 
@@ -184,7 +187,53 @@ Define injection strategy for public frontend branding colors with regression-re
 - Fonts remain LOCKED
 - No SCSS file modifications in Phase 11C-1
 - CSS variables available but not consumed by SCSS yet
-- Gradients/pseudo-elements deferred to 11C-3
+- Gradients/pseudo-elements deferred to Phase 11D contract
+
+---
+
+## Phase 11D — Gradient & Overlay Design Contract (2025-12-27)
+
+**Status:** ✅ **DOCUMENTATION COMPLETE**
+
+### Objective
+Establish authoritative design contract for all gradient and overlay surfaces.
+
+### Document Reference
+- `docs/phase-11/Phase_11D_Gradient_Overlay_Contract.md`
+- `docs/phase-11/Phase_11E_11F_11G_Specifications.md`
+
+### Architecture (Gradient Authority Model)
+```
+┌──────────────────────────────────────────────────────────────┐
+│                   Color Authority Model                       │
+├──────────────────────────────────────────────────────────────┤
+│  Primary Color: #1EB36B (Single Source of Truth)             │
+│                                                               │
+│  Allowed Transformations:                                     │
+│    ├── Darken / Lighten                                       │
+│    ├── Opacity variation                                      │
+│    └── Linear / Radial gradients                              │
+│                                                               │
+│  Forbidden:                                                   │
+│    ├── Hue shifting                                           │
+│    ├── Multi-color gradients                                  │
+│    └── Designer-defined arbitrary gradients                   │
+└──────────────────────────────────────────────────────────────┘
+```
+
+### Audit Summary
+| Category | Selectors | Risk | Phase |
+|----------|-----------|------|-------|
+| CTA Gradients | 8 | MEDIUM | 11E |
+| Hero Overlays | 7 | HIGH | 11F |
+| Pseudo-elements | 8 | MEDIUM | 11G |
+
+### Future Phases (NOT AUTHORIZED)
+- **Phase 11E:** Safe CTA Gradients (8 selectors)
+- **Phase 11F:** Complex Overlays (7 selectors)
+- **Phase 11G:** Decorative Pseudo-elements (8 selectors)
+
+**Total surfaces documented:** 23
 
 ---
 
@@ -193,3 +242,4 @@ Define injection strategy for public frontend branding colors with regression-re
 - Each phase requires explicit GO / NO-GO approval
 - No automatic continuation between phases
 - All changes must be documented before execution
+- Restore point required for every execution phase
