@@ -46,6 +46,18 @@ This document outlines the architecture decisions and validation requirements fo
 3. If error disappears → External (browser extension)
 4. If error persists → Application bug (requires fix)
 
+### Stability Fixes Applied (2025-12-27)
+
+**Public App:**
+- Header.tsx: Fixed `/blog-details` → `/blog` (route was undefined)
+- Footer.tsx: Fixed 4x placeholder `#` links → `/commingsoon`
+
+**Admin App:**
+- useMediaLibrary.ts: Applied useRef pattern for `notifySuccess`/`notifyError`
+- useGlobalBlocks.ts: Applied useRef pattern, removed unstable deps from `useCallback` arrays
+
+**Result:** All fixes are wiring/stability only, no new features added.
+
 ---
 
 ## Template Rules

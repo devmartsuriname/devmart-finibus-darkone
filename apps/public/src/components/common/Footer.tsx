@@ -210,22 +210,22 @@ function Footer() {
               <div className="col-12 col-md-8 col-lg-8 col-xl-7">
                 <ul className="footer-bottom-menu">
                   <li>
-                    <Link onClick={scrollTop} to="#">
+                    <Link onClick={scrollTop} to="/commingsoon">
                       Privacy Policy
                     </Link>
                   </li>
                   <li>
-                    <Link onClick={scrollTop} to="#">
+                    <Link onClick={scrollTop} to="/commingsoon">
                       Terms of Use
                     </Link>
                   </li>
                   <li>
-                    <Link onClick={scrollTop} to="#">
+                    <Link onClick={scrollTop} to="/commingsoon">
                       Support Policy
                     </Link>
                   </li>
                   <li>
-                    <Link onClick={scrollTop} to="#">
+                    <Link onClick={scrollTop} to="/commingsoon">
                       Terms of Service
                     </Link>
                   </li>

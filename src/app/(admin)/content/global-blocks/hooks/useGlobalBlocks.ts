@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react'
+import { useState, useCallback, useRef, useEffect } from 'react'
 import { supabase } from '@/integrations/supabase/client'
 import { useAdminNotify } from '@/lib/notify'
 
@@ -63,6 +63,16 @@ export const useGlobalBlocks = () => {
   const [error, setError] = useState<string | null>(null)
   const { notifySuccess, notifyError } = useAdminNotify()
 
+  // Stable refs to avoid stale closures in callbacks
+  const notifySuccessRef = useRef(notifySuccess)
+  const notifyErrorRef = useRef(notifyError)
+
+  // Keep refs in sync
+  useEffect(() => {
+    notifySuccessRef.current = notifySuccess
+    notifyErrorRef.current = notifyError
+  }, [notifySuccess, notifyError])
+
   const fetchGlobalBlocks = useCallback(async () => {
     setLoading(true)
     setError(null)
@@ -78,11 +88,11 @@ export const useGlobalBlocks = () => {
     } catch (err) {
       const message = err instanceof Error ? err.message : 'Failed to fetch global blocks'
       setError(message)
-      notifyError(message)
+      notifyErrorRef.current(message)
     } finally {
       setLoading(false)
     }
-  }, [notifyError])
+  }, [])
 
   const getBlockByKey = useCallback((blockKey: GlobalBlockKey): GlobalBlock | undefined => {
     return blocks.find(b => b.block_key === blockKey)
@@ -109,16 +119,16 @@ export const useGlobalBlocks = () => {
           : block
       ))
       
-      notifySuccess('Global block saved')
+      notifySuccessRef.current('Global block saved')
       return true
     } catch (err) {
       const message = err instanceof Error ? err.message : 'Failed to save global block'
-      notifyError(message)
+      notifyErrorRef.current(message)
       return false
     } finally {
       setLoading(false)
     }
-  }, [notifySuccess, notifyError])
+  }, [])
 
   const toggleBlockEnabled = useCallback(async (
     blockKey: GlobalBlockKey,

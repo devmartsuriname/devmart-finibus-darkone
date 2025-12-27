@@ -44,13 +44,40 @@ See: `docs/frontend.md` for full runtime matrix.
 
 ---
 
+## Stability & Reliability Fixes (2025-12-27)
+
+### Public App Fixes
+
+| File | Issue | Fix |
+|------|-------|-----|
+| Header.tsx | `/blog-details` route not defined | Changed to `/blog` |
+| Footer.tsx | Placeholder `#` links (4x) | Changed to `/commingsoon` |
+
+### Admin App Fixes (Hook Stability)
+
+| File | Issue | Fix |
+|------|-------|-----|
+| useMediaLibrary.ts | Missing useRef pattern for notifications | Added `notifySuccessRef`/`notifyErrorRef` with sync `useEffect` |
+| useGlobalBlocks.ts | Unstable deps (`notifyError` line 85, `notifySuccess/notifyError` line 121) | Added useRef pattern, removed from dependency arrays |
+
+### Verification Evidence
+
+| Environment | Console Errors | Console Warnings | Status |
+|-------------|----------------|------------------|--------|
+| Lovable Preview | 0 | 0 | PASS |
+| Local Incognito | Pending user verification | Pending | TBD |
+
+---
+
 ## Stability Status
 
 | Module | Status | Notes |
 |--------|--------|-------|
 | Admin fixed modules | Complete | Placeholders in place |
 | Frontend runtime | Validated | PASS in clean environments |
-| Remaining work | Planned QA | Optional completeness scan |
+| Public navigation | Fixed | Header/Footer links wired correctly |
+| Admin hooks | Stabilized | useRef pattern applied |
+| Remaining work | Planned QA | User verification in Local Incognito |
 
 ---
 

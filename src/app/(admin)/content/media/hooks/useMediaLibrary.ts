@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback, useRef } from 'react'
 import { supabase } from '@/integrations/supabase/client'
 import { useAdminNotify } from '@/lib/notify'
 import type { Tables } from '@/integrations/supabase/types'
@@ -10,6 +10,16 @@ export const useMediaLibrary = () => {
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const { notifySuccess, notifyError } = useAdminNotify()
+
+  // Stable refs to avoid stale closures in callbacks
+  const notifySuccessRef = useRef(notifySuccess)
+  const notifyErrorRef = useRef(notifyError)
+
+  // Keep refs in sync
+  useEffect(() => {
+    notifySuccessRef.current = notifySuccess
+    notifyErrorRef.current = notifyError
+  }, [notifySuccess, notifyError])
 
   const fetchMedia = useCallback(async () => {
     try {
@@ -48,7 +58,7 @@ export const useMediaLibrary = () => {
       // Get current user
       const { data: { user } } = await supabase.auth.getUser()
       if (!user) {
-        notifyError('You must be logged in to upload files')
+        notifyErrorRef.current('You must be logged in to upload files')
         return false
       }
 
@@ -64,7 +74,7 @@ export const useMediaLibrary = () => {
 
       if (uploadError) {
         console.error('Storage upload error:', uploadError)
-        notifyError(`Upload failed: ${uploadError.message}`)
+        notifyErrorRef.current(`Upload failed: ${uploadError.message}`)
         return false
       }
 
@@ -89,18 +99,18 @@ export const useMediaLibrary = () => {
 
       if (insertError) {
         console.error('Database insert error:', insertError)
-        notifyError(`Failed to save metadata: ${insertError.message}`)
+        notifyErrorRef.current(`Failed to save metadata: ${insertError.message}`)
         // Attempt to clean up the uploaded file
         await supabase.storage.from('media').remove([storagePath])
         return false
       }
 
-      notifySuccess('File uploaded successfully')
+      notifySuccessRef.current('File uploaded successfully')
       await fetchMedia()
       return true
     } catch (err) {
       console.error('Upload error:', err)
-      notifyError('An unexpected error occurred during upload')
+      notifyErrorRef.current('An unexpected error occurred during upload')
       return false
     }
   }
@@ -114,7 +124,7 @@ export const useMediaLibrary = () => {
 
       if (storageError) {
         console.error('Storage delete error:', storageError)
-        notifyError(`Storage delete failed: ${storageError.message}`)
+        notifyErrorRef.current(`Storage delete failed: ${storageError.message}`)
         return false
       }
 
@@ -126,25 +136,25 @@ export const useMediaLibrary = () => {
 
       if (dbError) {
         console.error('Database delete error:', dbError)
-        notifyError(`Database delete failed: ${dbError.message}`)
+        notifyErrorRef.current(`Database delete failed: ${dbError.message}`)
         return false
       }
 
-      notifySuccess('File deleted successfully')
+      notifySuccessRef.current('File deleted successfully')
       await fetchMedia()
       return true
     } catch (err) {
       console.error('Delete error:', err)
-      notifyError('An unexpected error occurred during deletion')
+      notifyErrorRef.current('An unexpected error occurred during deletion')
       return false
     }
   }
 
   const copyToClipboard = (url: string) => {
     navigator.clipboard.writeText(url).then(() => {
-      notifySuccess('URL copied to clipboard')
+      notifySuccessRef.current('URL copied to clipboard')
     }).catch(() => {
-      notifyError('Failed to copy URL')
+      notifyErrorRef.current('Failed to copy URL')
     })
   }
 
