@@ -65,7 +65,31 @@ See: `docs/frontend.md` for full runtime matrix.
 | Environment | Console Errors | Console Warnings | Status |
 |-------------|----------------|------------------|--------|
 | Lovable Preview | 0 | 0 | PASS |
-| Local Incognito | Pending user verification | Pending | TBD |
+| Local Incognito | 0 | 0 | PASS |
+
+---
+
+## Admin Module Audit (Pending Verification)
+
+The following modules require manual verification in Local Incognito:
+
+| Module | Create | Edit | Delete | Tabs | Typing | Save Once | Persist | Status |
+|--------|--------|------|--------|------|--------|-----------|---------|--------|
+| Services | TBD | TBD | TBD | Process Steps, Pricing | TBD | TBD | TBD | Pending |
+| Projects | TBD | TBD | TBD | Process Steps | TBD | TBD | TBD | Pending |
+| Blog | TBD | TBD | TBD | — | TBD | TBD | TBD | Pending |
+| Testimonials | TBD | TBD | TBD | — | TBD | TBD | TBD | Pending |
+| Media Library | Upload | — | Delete | — | — | TBD | TBD | Pending |
+| Pages | — | TBD | — | Homepage/About | TBD | TBD | TBD | Pending |
+| Global Blocks | — | TBD | — | Toggle | TBD | TBD | TBD | Pending |
+| Settings | — | TBD | — | General/SEO/Social/Branding | TBD | TBD | TBD | Pending |
+
+**Audit Criteria:**
+- Modal opens reliably
+- Typing in fields is stable (no focus loss per character)
+- Save fires once (no double submit)
+- Data persists and list refreshes
+- No console errors/warnings
 
 ---
 
@@ -75,9 +99,9 @@ See: `docs/frontend.md` for full runtime matrix.
 |--------|--------|-------|
 | Admin fixed modules | Complete | Placeholders in place |
 | Frontend runtime | Validated | PASS in clean environments |
-| Public navigation | Fixed | Header/Footer links wired correctly |
+| Public navigation | **PASS** | Header/Footer links verified in Local Incognito |
 | Admin hooks | Stabilized | useRef pattern applied |
-| Remaining work | Planned QA | User verification in Local Incognito |
+| Admin module audit | **Pending** | User verification required |
 
 ---
 
