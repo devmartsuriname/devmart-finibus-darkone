@@ -180,14 +180,14 @@
     }
 
     &:hover {
-        background: linear-gradient(90deg, #D90A2C 1.05%, #730000 100%) !important;
+        background: linear-gradient(90deg, var(--theme-color, $theme-color) 1.05%, var(--theme-color-dark, $theme-color-dark) 100%) !important;
         box-shadow: inset 0px 0px 10px rgba(6, 6, 6, 0.15);
         border-radius: 50px;
     }
 }
 
 .nav-pills .nav-link.active {
-    background: linear-gradient(90deg, #D90A2C 1.05%, #730000 100%) !important;
+    background: linear-gradient(90deg, var(--theme-color, $theme-color) 1.05%, var(--theme-color-dark, $theme-color-dark) 100%) !important;
     box-shadow: inset 0px 0px 10px rgba(6, 6, 6, 0.15);
     border-radius: 50px;
 }

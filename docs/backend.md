@@ -267,18 +267,53 @@ Establish authoritative design contract for gradients, overlays, and color-deriv
 | **Total Surfaces** | **23** | — | — |
 
 ### Future Phases (NOT AUTHORIZED)
-- **Phase 11E:** Safe CTA Gradients
+- **Phase 11E Wave 2+:** Additional CTA Gradients
 - **Phase 11F:** Complex Overlays (Hero, Radial, RGBA)
 - **Phase 11G:** Alpha / Opacity Decorative Surfaces
 
 See: `docs/phase-11/Phase_11E_11F_11G_Specifications.md`
 
+---
+
+## Phase 11E — CTA Gradients (2025-12-27)
+
+**Status:** Wave 1 COMPLETE
+
+### Wave 1 Scope
+- **Objective:** Introduce Devmart-branded CTA gradients using Pattern A (primary → darker primary)
+- **Selectors:** 4 CTA tab/nav-pill selectors
+- **Pattern:** `linear-gradient(90deg, var(--theme-color, $theme-color) 1.05%, var(--theme-color-dark, $theme-color-dark) 100%)`
+
+### Governance Clarification
+The variable `$theme-color-dark` introduced in `_variables.scss` is:
+- A **Phase 11E–SCOPED** derived token
+- Intended **ONLY** for Pattern A gradients
+- **NOT** a general-purpose color token
+- **NOT** reusable outside Phase 11E without explicit authorization
+
+### Files Modified
+
+| File | Change |
+|------|--------|
+| `apps/public/src/assets/sass/_variables.scss` | Added `$theme-color-dark: darken($theme-color, 25%)` |
+| `apps/public/src/assets/sass/_project_page.scss` | Updated lines 46, 50 (`.project-filter-tab li.active`, `.project-filter-tab li:hover`) |
+| `apps/public/src/assets/sass/_service_page.scss` | Updated lines 183, 190 (`.nav-pills .nav-link:hover`, `.nav-pills .nav-link.active`) |
+
+### Verification
+- SCSS compilation: 0 errors
+- Console errors: 0
+- Routes verified: `/project`, `/service`
+
+### Restore Point
+- `docs/restore-points/Restore_Point_Phase_11E_Wave_1.md`
+
 ### Guardian Rules (Enforced)
 - ✅ Fonts LOCKED
-- ✅ No admin SCSS/CSS modifications
-- ✅ No swiper/pagination styling
-- ✅ No multi-color gradients
-- ✅ Restore point required for execution phases
+- ✅ No admin SCSS
+- ✅ No hero/overlay gradients
+- ✅ No pseudo-elements
+- ✅ No alpha-hex colors
+- ✅ No radial gradients
 
 ---
 

@@ -43,11 +43,11 @@
         }
 
         &.active {
-            background: linear-gradient(90deg, #D90A2C 1.05%, #730000 100%);
+            background: linear-gradient(90deg, var(--theme-color, $theme-color) 1.05%, var(--theme-color-dark, $theme-color-dark) 100%);
         }
 
         &:hover {
-            background: linear-gradient(90deg, #D90A2C 1.05%, #730000 100%);
+            background: linear-gradient(90deg, var(--theme-color, $theme-color) 1.05%, var(--theme-color-dark, $theme-color-dark) 100%);
         }
     }
 }
