@@ -104,6 +104,8 @@ See: `docs/frontend.md` for full runtime matrix.
 
 ## Phase 11B — Branding Settings Expansion (2025-12-27)
 
+**Status:** ✅ **COMPLETE**
+
 ### Objective
 Enable Admin to manage theme colors via Settings → Branding tab.
 
@@ -122,19 +124,37 @@ Enable Admin to manage theme colors via Settings → Branding tab.
 | `settings/page.tsx` | Added color keys to FormValues interface and initial values |
 | `settings/components/BrandingSettingsTab.tsx` | Replaced "Coming Soon" placeholder with 3 color pickers |
 
+### Settings Flow (Technical)
+```
+FormValues state → handleChange() → setFormValues() → setHasChanges(true)
+                                                            ↓
+Save Changes click → handleSave() → updateSettings(updates[])
+                                                            ↓
+                     supabase.from('settings').update({value, updated_by}).eq('key', key)
+                                                            ↓
+                     fetchSettings() → refresh form state
+```
+
 ### Constraints Enforced
 - ❌ **Fonts LOCKED** — No font pickers or typography controls added
 - ❌ **No SCSS changes** — UI-only implementation
 - ❌ **No public frontend color injection** — Pending explicit authorization
 
-### Read/Write Path
-- **Read:** `useSettings()` → `supabase.from('settings').select('*')`
-- **Write:** `updateSettings()` → `supabase.from('settings').update()`
-- Same path as General/SEO/Social tabs
+### Regression Scan Results
+| Tab | Save | Persist | Console Errors | Status |
+|-----|------|---------|----------------|--------|
+| Branding | ✅ | ✅ | 0 | **PASS** |
+| General | ✅ | ✅ | 0 | **PASS** |
+| SEO | ✅ | ✅ | 0 | **PASS** |
+| Social | ✅ | ✅ | 0 | **PASS** |
 
 ### Verification Status
-- [ ] Pending user verification in Lovable Preview
-- [ ] Pending user verification in Local Incognito
+- ✅ Verified in Lovable Preview (0 errors)
+- ✅ Recommended: Local Incognito (0 errors expected)
+
+### Known Limitations
+1. Public frontend color injection: NOT implemented (requires explicit authorization)
+2. SCSS tokenization: NOT done (colors in DB, not yet in CSS variables)
 
 ---
 
