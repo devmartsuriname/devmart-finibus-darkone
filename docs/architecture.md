@@ -228,18 +228,43 @@ Establish authoritative design contract for all gradient and overlay surfaces.
 | Hero Overlays | 7 | HIGH | 11F |
 | Pseudo-elements | 8 | MEDIUM | 11G |
 
-### Future Phases (NOT AUTHORIZED)
-- **Phase 11E:** Safe CTA Gradients (8 selectors)
-- **Phase 11F:** Complex Overlays (7 selectors)
-- **Phase 11G:** Decorative Pseudo-elements (8 selectors)
+### Future Phases
+- **Phase 11E Wave 2+:** Additional CTA Gradients (NOT AUTHORIZED)
+- **Phase 11F:** Complex Overlays (7 selectors) (NOT AUTHORIZED)
+- **Phase 11G:** Decorative Pseudo-elements (8 selectors) (NOT AUTHORIZED)
 
 **Total surfaces documented:** 23
 
 ---
 
-## Phase Discipline
+## Phase 11E — CTA Gradients (2025-12-27)
 
-- Each phase requires explicit GO / NO-GO approval
-- No automatic continuation between phases
-- All changes must be documented before execution
-- Restore point required for every execution phase
+**Status:** Wave 1 COMPLETE
+
+### Objective
+Introduce Devmart-branded CTA gradients using Pattern A (primary → darker primary).
+
+### Wave 1 Implementation
+| Selector | File | Line |
+|----------|------|------|
+| `.project-filter-tab li.active` | `_project_page.scss` | 46 |
+| `.project-filter-tab li:hover` | `_project_page.scss` | 50 |
+| `.nav-pills .nav-link:hover` | `_service_page.scss` | 183 |
+| `.nav-pills .nav-link.active` | `_service_page.scss` | 190 |
+
+### Pattern Applied
+```scss
+// Before (Finibus red)
+background: linear-gradient(90deg, #D90A2C 1.05%, #730000 100%);
+
+// After (Devmart branded)
+background: linear-gradient(90deg, var(--theme-color, $theme-color) 1.05%, var(--theme-color-dark, $theme-color-dark) 100%);
+```
+
+### Governance Note
+`$theme-color-dark` is a **Phase 11E-scoped** derived token, not a general-purpose variable.
+
+### Restore Point
+- `docs/restore-points/Restore_Point_Phase_11E_Wave_1.md`
+
+---
