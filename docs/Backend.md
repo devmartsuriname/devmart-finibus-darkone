@@ -477,6 +477,38 @@ Complete elimination of ALL remaining red residuals discovered during final veri
 
 ---
 
+## Phase 11F-D — Final Red Residual Fix (2025-12-27)
+
+**Status:** ✅ **COMPLETE**
+
+### Objective
+Final fix for the last remaining red residual: mobile hamburger menu gradient.
+
+### Files Modified
+
+| File | Changes |
+|------|---------|
+| `apps/public/src/assets/sass/style.scss` | Line 162 — Mobile hamburger gradient changed to green |
+
+### Before/After
+
+| Element | Before | After |
+|---------|--------|-------|
+| `.cross-btn span` | `rgba(115, 0, 0, 0.8)` → `rgba(217, 10, 44, 0.8)` | `rgba($theme-color-dark, 0.8)` → `rgba($theme-color, 0.8)` |
+
+### Verification
+- SCSS compilation: 0 errors
+- Console errors: 0
+- Mobile hamburger menu: GREEN gradient
+
+### Restore Point
+- `docs/restore-points/Restore_Point_Phase_11F_D.md`
+
+### Final Confirmation
+**Phase 11F is NOW FULLY COMPLETE. All public UI elements are derived exclusively from Devmart Primary Green (#1EB36B) and its approved dark variant. Zero red residuals remain.**
+
+---
+
 
 ### Darkone (Admin Backend)
 - 100% 1:1 template parity required
