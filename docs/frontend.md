@@ -76,16 +76,32 @@ When debugging frontend issues:
 ### Public Frontend
 | Setting | Status | Notes |
 |---------|--------|-------|
-| primary_color | ❌ NOT injected | Pending explicit authorization |
-| secondary_color | ❌ NOT injected | Pending explicit authorization |
-| accent_color | ❌ NOT injected | Pending explicit authorization |
+| primary_color | ✅ CSS var injected | `--theme-color` on `:root` (Phase 11C-1) |
+| secondary_color | ✅ CSS var injected | `--secondary-color` on `:root` (Phase 11C-1) |
+| accent_color | ✅ CSS var injected | `--accent-color` on `:root` (Phase 11C-1) |
 | logo_media_id | ❌ NOT consumed | Pending explicit authorization |
 | favicon_media_id | ❌ NOT consumed | Pending explicit authorization |
 
+### Phase 11C-1 Implementation (2025-12-27)
+| Component | Status | Purpose |
+|-----------|--------|---------|
+| `useBrandingColors.ts` | ✅ Created | Fetch colors + inject CSS vars |
+| `BrandingProvider.tsx` | ✅ Created | Root-level integration |
+| `main.tsx` | ✅ Updated | BrandingProvider wrapper added |
+
+### CSS Variables Injected
+```css
+:root {
+  --theme-color: [primary_color from DB or #D90A2C];
+  --secondary-color: [secondary_color from DB or #17161A];
+  --accent-color: [accent_color from DB or #F7941D];
+}
+```
+
 ### Constraints
 - **Fonts:** LOCKED — No font customization (admin or frontend)
-- **SCSS:** No modifications — Colors exist in DB only
-- **CSS Variables:** Not created — Requires Phase 11C or later
+- **SCSS:** No modifications — CSS variables injected, SCSS untouched
+- **Selector targeting:** NOT done in Phase 11C-1 — variables available but not consumed by SCSS
 
 ---
 
