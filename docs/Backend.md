@@ -398,7 +398,44 @@ Eliminate ALL remaining red or red-derived UI accents across the ENTIRE public a
 
 ---
 
-## Template Rules
+## Phase 11F-B — Residual Red Cleanup Completion (2025-12-27)
+
+**Status:** ✅ **COMPLETE**
+
+### Objective
+Complete elimination of all remaining red residuals missed in Phase 11F initial pass.
+
+### Files Modified
+
+| File | Changes |
+|------|---------|
+| `apps/public/src/index.scss` | Lines 30, 35, 167 — CircularProgressbar stroke/fill, scroll-top color |
+| `apps/public/src/assets/sass/_hero.scss` | Line 146 — Hero overlay gradient |
+| `apps/public/src/assets/sass/_project_page.scss` | Line 87 — Debug red background |
+| `apps/public/src/assets/sass/_common.scss` | Lines 232-233 — Preloader animation reds |
+
+### Files Deleted (Stale Compiled CSS)
+
+| File | Reason |
+|------|--------|
+| `apps/public/src/assets/sass/style.css` | Stale compiled CSS with legacy red |
+| `apps/public/src/assets/sass/style.css.map` | Associated source map |
+| `apps/public/src/assets/css/style.css` | Stale compiled CSS with legacy red |
+| `apps/public/src/assets/css/style.css.map` | Associated source map |
+
+### Verification
+- SCSS compilation: 0 errors
+- Console errors: 0
+- All public routes verified
+
+### Restore Point
+- `docs/restore-points/Restore_Point_Phase_11F_B.md`
+
+### Final Confirmation
+**All public UI elements are now exclusively derived from Devmart Primary Green (#1EB36B) and its approved dark variant. No hardcoded red or red-derived values remain anywhere in the public application.**
+
+---
+
 
 ### Darkone (Admin Backend)
 - 100% 1:1 template parity required

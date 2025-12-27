@@ -27,12 +27,12 @@
     stroke-linecap: round;
   }
   .CircularProgressbar-path {
-    stroke: #d90a2c;
+    stroke: #1EB36B;
     stroke-linecap: round;
     transition: stroke-dashoffset 0.5s ease 0s;
   }
   .CircularProgressbar-text {
-    fill: #d90a2c;
+    fill: #1EB36B;
     font-size: 22px;
     font-weight: 700;
   }
@@ -164,6 +164,6 @@
 }
 
 .scroll-top.opacity {
-  color: #D90A2C;
+  color: #1EB36B;
   font-weight: 800;
 }

@@ -143,7 +143,7 @@
 }
 
 .hero-content {
-    background: linear-gradient(233.77deg, rgba(217, 10, 44, 0.8) 0.94%, rgba(115, 0, 0, 0.8) 99.09%);
+    background: linear-gradient(233.77deg, rgba($theme-color, 0.8) 0.94%, rgba($theme-color-dark, 0.8) 99.09%);
     border: 1px solid rgba(173, 173, 173, 0.2);
     box-sizing: border-box;
     border-radius: 20px;
