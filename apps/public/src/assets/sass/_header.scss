@@ -69,12 +69,12 @@ header {
                 position: relative;
                 @include transition(.5s);
 
-                &.active {
-                    color: $theme-color;
+            &.active {
+                    color: var(--theme-color, $theme-color);
                 }
 
                 &:hover {
-                    color: $theme-color;
+                    color: var(--theme-color, $theme-color);
                 }
             }
 
@@ -122,11 +122,11 @@ header {
                         @include transition(.4s);
 
                         &.active {
-                            color: $theme-color;
+                            color: var(--theme-color, $theme-color);
                         }
 
                         &:hover {
-                            color: $theme-color;
+                            color: var(--theme-color, $theme-color);
                             margin-left: 10px;
 
                         }

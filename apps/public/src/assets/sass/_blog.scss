@@ -64,7 +64,7 @@
 
 .signle-news:hover .tag {
     a {
-        background-color: $theme-color;
+        background-color: var(--theme-color, $theme-color);
     }
 }
 .signle-news:hover{
@@ -198,7 +198,7 @@
         }
 
         &:hover {
-            color: $theme-color;
+            color: var(--theme-color, $theme-color);
         }
     }
 

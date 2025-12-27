@@ -153,7 +153,7 @@ footer {
             }
 
             &:hover {
-                color: $theme-color;
+                color: var(--theme-color, $theme-color);
                 padding-left: 15px;
             }
 
@@ -207,7 +207,7 @@ footer {
         }
 
         &:hover {
-            color: $theme-color;
+            color: var(--theme-color, $theme-color);
         }
     }
 }
@@ -222,7 +222,7 @@ footer {
     }
 
     i {
-        color: $theme-color;
+        color: var(--theme-color, $theme-color);
         font-size: 20px;
 
         @media #{$md} {
@@ -263,7 +263,7 @@ footer {
                 @include transition(.5s);
 
                 &:hover {
-                    color: $theme-color;
+                    color: var(--theme-color, $theme-color);
                 }
             }
         }
@@ -319,7 +319,7 @@ footer {
                 }
 
                 &:hover {
-                    color: $theme-color;
+                    color: var(--theme-color, $theme-color);
                 }
             }
 

@@ -272,3 +272,4 @@ input[type="submit"] { background-color: var(--theme-color); }
 |---------|------|--------|-------|
 | 1.0 | 2025-12-27 | ✅ COMPLETE | Initial Color Map Contract — Phase 11C-0 |
 | 1.1 | 2025-12-27 | ✅ COMPLETE | Phase 11C-1 implemented (CSS variable injection) |
+| 1.2 | 2025-12-27 | ✅ COMPLETE | Phase 11C-2 implemented (Safe surfaces — 17 selectors) |
