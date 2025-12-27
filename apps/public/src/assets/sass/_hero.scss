@@ -484,7 +484,7 @@
                 display: inline-block;
                 line-height: 1;
                 padding: 0 15px;
-                border-right: 1px solid #D90A2C;
+                border-right: 1px solid var(--theme-color, $theme-color);
                 @include transition(.5s);
 
                 @media #{$xs} {

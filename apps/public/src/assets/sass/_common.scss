@@ -464,9 +464,9 @@ video {
         height: 40px;
         width: 40px;
         display: block;
-        border: 1px solid #D90A2C;
+        border: 1px solid var(--theme-color, $theme-color);
         border-radius: 50%;
-        color: #D90A2C;
+        color: var(--theme-color, $theme-color);
         position: relative;
         line-height: 40px;
         font-size: 11px;

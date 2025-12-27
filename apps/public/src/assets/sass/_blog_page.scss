@@ -412,7 +412,7 @@
     font-weight: 600;
     font-size: 15px;
     letter-spacing: 0.03em;
-    color: #D90A2C;
+    color: var(--theme-color, $theme-color);
     padding-left: 40px;
 }
 

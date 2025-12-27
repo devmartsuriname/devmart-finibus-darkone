@@ -26,7 +26,7 @@
     }
 
     &:hover .icon {
-        background-color: #D90A2C;
+        background-color: var(--theme-color, $theme-color);
     }
 
     &:hover .icon i {
@@ -45,7 +45,7 @@
         @include transition(.5s);
 
         i {
-            color: #D90A2C;
+            color: var(--theme-color, $theme-color);
             font-size: 45px;
             @include transition(.5s);
         }
