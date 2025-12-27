@@ -55,7 +55,7 @@
         bottom: 0;
         height: 90px;
         width: 90px;
-        background: radial-gradient(105.91% 105.91% at 37.1% 19.35%, rgba(217, 10, 44, 0.3) 0%, rgba(217, 10, 44, 0) 83.11%);
+        background: radial-gradient(105.91% 105.91% at 37.1% 19.35%, rgba($theme-color, 0.3) 0%, rgba($theme-color, 0) 83.11%);
         border-radius: 50%;
         opacity: 0.3;
         display: none;
@@ -148,7 +148,7 @@
             content: "";
             height: 100%;
             width: 100%;
-            border: 1px solid rgba(217, 10, 44, 0.15);
+            border: 1px solid rgba($theme-color, 0.15);
             border-radius: 50%;
             left: -5px;
             top: -10px;
@@ -164,7 +164,7 @@
             content: "";
             height: 100%;
             width: 100%;
-            border: 1px solid rgba(217, 10, 44, 0.15);
+            border: 1px solid rgba($theme-color, 0.15);
             border-radius: 50%;
             right: -5px;
             top: -10px;

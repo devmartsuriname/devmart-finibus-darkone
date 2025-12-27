@@ -40,7 +40,7 @@ function ProgressBar({ completed, label }: ProgressBarProps) {
         style={{ 
           flex: 1,
           height: '5px', 
-          backgroundColor: '#d90a2c80',
+          backgroundColor: 'rgba(30, 179, 107, 0.5)',
           borderRadius: '3px',
           overflow: 'hidden'
         }}
@@ -49,7 +49,7 @@ function ProgressBar({ completed, label }: ProgressBarProps) {
           style={{ 
             width: `${completed}%`, 
             height: '100%', 
-            backgroundColor: '#D90A2C',
+            backgroundColor: '#1EB36B',
             transition: 'width 1s ease-in-out',
             borderRadius: '3px'
           }} 

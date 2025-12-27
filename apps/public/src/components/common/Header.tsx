@@ -64,7 +64,7 @@ function Header() {
       <AnimatedCursor
         innerSize={8}
         outerSize={30}
-        color="217, 10, 44"
+        color="30, 179, 107"
         outerAlpha={0.5}
         innerScale={0.7}
         outerScale={1.5}
