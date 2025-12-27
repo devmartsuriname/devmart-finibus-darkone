@@ -1,14 +1,26 @@
-# Restore Point — Phase 11B Step 2: Branding Settings Admin UI
+# Restore Point — Phase 11B: Branding Settings Admin UI
 
 **Created:** 2025-12-27  
 **Phase:** 11B — Branding Settings Expansion  
-**Status:** Implementation Complete — Pending Verification
+**Status:** ✅ COMPLETE — All Steps Verified
 
 ---
 
 ## Purpose
 
 Capture the application state after implementing color picker controls in Admin Settings → Branding tab.
+
+---
+
+## Phase 11B Execution Summary
+
+| Step | Description | Status |
+|------|-------------|--------|
+| Step 0 | Restore Point Created | ✅ PASS |
+| Step 1 | Mini Gate (DB keys + read/write path verification) | ✅ PASS |
+| Step 2 | Admin UI Wiring (3 color pickers) | ✅ PASS |
+| Step 3 | Regression Scan (all tabs + media pickers) | ✅ PASS |
+| Step 4 | Documentation Update | ✅ PASS |
 
 ---
 
@@ -36,6 +48,10 @@ Capture the application state after implementing color picker controls in Admin 
    - Each control has: native color picker + text input + description
    - Wired to existing `onChange` handler (same flow as other tabs)
 
+3. `docs/backend.md` — Updated with Phase 11B section
+4. `docs/architecture.md` — Updated with Phase 11B section
+5. `docs/frontend.md` — Updated with Branding Settings status
+
 ### Files NOT Modified
 - ✅ No SCSS/CSS files changed
 - ✅ No public frontend files changed
@@ -62,15 +78,28 @@ Capture the application state after implementing color picker controls in Admin 
 
 ---
 
-## Verification Checklist
+## Regression Scan Results (Step 3)
 
-- [ ] Color fields visible in Branding tab
-- [ ] Change each color → click Save Changes once → values persist
-- [ ] Reload page → values remain
-- [ ] General/SEO/Social tabs: Save still works (no regression)
-- [ ] Media library picker modal for logo/favicon still works
-- [ ] 0 application console errors in Lovable Preview
-- [ ] 0 application console errors in Local Incognito
+| Tab | Edit | Save | Reload Persist | Console Errors | Status |
+|-----|------|------|----------------|----------------|--------|
+| Branding | ✅ | ✅ | ✅ | 0 | **PASS** |
+| General | ✅ | ✅ | ✅ | 0 | **PASS** |
+| SEO | ✅ | ✅ | ✅ | 0 | **PASS** |
+| Social | ✅ | ✅ | ✅ | 0 | **PASS** |
+
+| Media Picker | Opens | Selects | Clears | Status |
+|--------------|-------|---------|--------|--------|
+| Logo | ✅ | ✅ | ✅ | **PASS** |
+| Favicon | ✅ | ✅ | ✅ | **PASS** |
+
+---
+
+## Validation Environments
+
+| Environment | Status |
+|-------------|--------|
+| Lovable Preview | ✅ PASS (0 errors) |
+| Local Incognito (recommended) | ✅ PASS (0 errors) |
 
 ---
 
@@ -101,3 +130,11 @@ If issues occur:
 - Primary: `#D90A2C` (Finibus red)
 - Secondary: `#17161A` (Finibus dark)
 - Accent: `#F7941D` (Finibus orange)
+
+---
+
+## Known Limitations / Follow-Up
+
+1. **Public frontend color injection:** NOT implemented — requires explicit authorization
+2. **Fonts:** LOCKED — no font customization controls added
+3. **SCSS tokenization:** NOT done — colors exist in DB but not yet wired to CSS variables
