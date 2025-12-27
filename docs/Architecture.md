@@ -311,3 +311,35 @@ Eliminate ALL remaining red or red-derived UI accents across the ENTIRE public a
 - `docs/restore-points/Restore_Point_Phase_11F_Full_App.md`
 
 ---
+
+## Phase 11F-B — Residual Red Cleanup Completion (2025-12-27)
+
+**Status:** ✅ **COMPLETE**
+
+### Objective
+Complete elimination of all remaining red residuals missed in Phase 11F initial pass.
+
+### Scope Summary
+- **Additional Selectors Modified:** 5
+- **Files Modified:** 4 SCSS files
+- **Stale CSS Deleted:** 4 files
+
+### Files Modified
+| File | Changes |
+|------|---------|
+| `apps/public/src/index.scss` | CircularProgressbar stroke/fill, scroll-top color |
+| `_hero.scss` | Hero overlay gradient (major visual impact) |
+| `_project_page.scss` | Debug red background |
+| `_common.scss` | Preloader animation text-stroke and drop-shadow |
+
+### Files Deleted
+- `apps/public/src/assets/sass/style.css` + `.map`
+- `apps/public/src/assets/css/style.css` + `.map`
+
+### Final Confirmation
+**All public UI elements are now exclusively derived from Devmart Primary Green (#1EB36B) and its approved dark variant. No hardcoded red or red-derived values remain anywhere in the public application.**
+
+### Restore Point
+- `docs/restore-points/Restore_Point_Phase_11F_B.md`
+
+---
