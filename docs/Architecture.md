@@ -118,6 +118,43 @@ All Settings tabs (General/SEO/Social/Branding) verified: Save + Persist + 0 err
 
 ---
 
+## Phase 11C — Color Map Contract (2025-12-27)
+
+**Status:** 📋 **DOCUMENTATION ONLY**
+
+### Objective
+Define injection strategy for public frontend branding colors with regression-resistant approach.
+
+### Document Reference
+- `docs/phase-11/Phase_11C_Color_Map_Contract.md`
+
+### Architecture (Planned — Not Implemented)
+```
+┌──────────────────┐     ┌──────────────────┐     ┌──────────────────┐
+│   Admin Panel    │     │    Supabase      │     │  Public Frontend │
+│   (Darkone)      │     │    (settings)    │     │    (Finibus)     │
+├──────────────────┤     ├──────────────────┤     ├──────────────────┤
+│ Color Pickers    │────▶│ primary_color    │────▶│ useBrandingColors│
+│ (BrandingTab)    │     │ secondary_color  │     │      ↓           │
+│                  │     │ accent_color     │     │ :root CSS vars   │
+│                  │     │                  │     │ --theme-color    │
+└──────────────────┘     └──────────────────┘     └──────────────────┘
+```
+
+### Incremental Rollout (Phased)
+| Phase | Target | Risk | Status |
+|-------|--------|------|--------|
+| 11C-1 | Link hovers, text colors | LOW | Awaiting auth |
+| 11C-2 | Solid backgrounds | MEDIUM | Awaiting auth |
+| 11C-3 | Gradients, pseudo-elements | HIGH | DEFERRED |
+
+### Constraints
+- Fonts remain LOCKED
+- No SCSS file modifications in Phase 11C-1
+- Gradients/pseudo-elements deferred to 11C-3
+
+---
+
 ## Phase Discipline
 
 - Each phase requires explicit GO / NO-GO approval
