@@ -179,7 +179,7 @@
 
     &:hover b {
         color: #FFFFFF;
-        background: $theme-color;
+        background: var(--theme-color, $theme-color);
     }
 
     &:hover .project-step-img {
@@ -233,7 +233,7 @@
         @include transition(.5s);
 
         &:hover {
-            background-color: $theme-color;
+            background-color: var(--theme-color, $theme-color);
         }
 
         @media #{$xs} {

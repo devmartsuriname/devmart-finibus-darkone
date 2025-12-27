@@ -28,7 +28,7 @@
     .swiper-pagination-bullet {
         height: 15px;
         width: 15px;
-        border: 1px solid $theme-color;
+        border: 1px solid var(--theme-color, $theme-color);
         box-sizing: border-box;
         background: transparent;
         opacity: 1;
@@ -38,7 +38,7 @@
         position: relative;
         height: 15px;
         width: 15px;
-        border: 1px solid $theme-color;
+        border: 1px solid var(--theme-color, $theme-color);
         box-sizing: border-box;
 
         &:before {
@@ -46,7 +46,7 @@
             content: "";
             height: 5px;
             width: 5px;
-            background-color: $theme-color;
+            background-color: var(--theme-color, $theme-color);
             border-radius: 50%;
             top: 50%;
             left: 50%;
@@ -70,7 +70,7 @@
         }
 
         &:hover {
-            background-color: $theme-color;
+            background-color: var(--theme-color, $theme-color);
         }
     }
 
