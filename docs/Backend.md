@@ -323,6 +323,81 @@ The variable `$theme-color-dark` introduced in `_variables.scss` is:
 
 ---
 
+## Phase 11F — Final Red Residual Cleanup (2025-12-27)
+
+**Status:** ✅ **COMPLETE**
+
+### Objective
+Eliminate ALL remaining red or red-derived UI accents across the ENTIRE public application.
+
+### Scope
+- **Global:** Full public app red residual cleanup
+- **Selectors Modified:** 16 total
+- **Files Modified:** 10 SCSS files
+
+### Selectors Updated
+
+#### Gradient Patterns (4 selectors)
+| File | Line | Selector |
+|------|------|----------|
+| `_common.scss` | 372 | `.cmn-btn a` |
+| `_service_page.scss` | 249 | `.single-price-box h3:before` |
+| `_service_page.scss` | 310 | `.pay-btn a` |
+| `_service_details.scss` | 144 | `.sidebar-search form button` |
+
+#### Solid Color References (6 selectors)
+| File | Line | Selector |
+|------|------|----------|
+| `_footer.scss` | 55 | `address h4:before` |
+| `_footer.scss` | 148 | `.footer-menu li a:before` |
+| `_testimonial.scss` | 35 | `.swiper-pagination...` |
+| `_testimonial.scss` | 48 | `.swiper-pagination-total` |
+| `_blog.scss` | 191 | `.view-btn a:before` |
+| `_blog_page.scss` | 424 | `.blog-quate b:before` |
+
+#### Text-Stroke Properties (3 selectors)
+| File | Line | Selector |
+|------|------|----------|
+| `_common.scss` | 346 | `.title.special h2 b` |
+| `_common.scss` | 428 | `.breadcrumb-wrapper h1` |
+| `_error_page.scss` | 39 | `.error-content h2` |
+
+#### Alpha/RGBA Colors (2 selectors)
+| File | Line | Selector |
+|------|------|----------|
+| `_contact_page.scss` | 39 | `.office-info .icon` |
+| `_service_details.scss` | 180 | `.single-step .step` |
+
+#### Malformed CSS Fixed (1 selector)
+| File | Line | Selector |
+|------|------|----------|
+| `_partner.scss` | 150 | `.subscribe-form form input[type="submit"]:hover` |
+
+### Patterns Applied
+- **Gradients:** `linear-gradient(90deg, var(--theme-color, $theme-color) 1.05%, var(--theme-color-dark, $theme-color-dark) 100%)`
+- **Solid Colors:** `var(--theme-color, $theme-color)`
+- **Alpha Colors:** `rgba($theme-color, <opacity>)`
+
+### Verification
+- SCSS compilation: 0 errors
+- Console errors: 0
+- Routes verified: `/`, `/about`, `/service`, `/service-details/:slug`, `/project`, `/blog`, `/blog/:slug`, `/contact`, `/error`
+
+### Confirmation
+**No hardcoded red remains in the public UI. Phase 11F is globally complete.**
+
+### Restore Point
+- `docs/restore-points/Restore_Point_Phase_11F_Full_App.md`
+
+### Guardian Rules (Enforced)
+- ✅ NO font changes
+- ✅ NO admin SCSS changes
+- ✅ NO new variables (using existing `$theme-color`, `$theme-color-dark`)
+- ✅ NO layout alterations
+- ✅ Color substitution ONLY
+
+---
+
 ## Template Rules
 
 ### Darkone (Admin Backend)

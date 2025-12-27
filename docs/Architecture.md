@@ -274,3 +274,40 @@ background: linear-gradient(90deg, #1EB36B 1.05%, [dark green] 100%);
 - Wave 2: `docs/restore-points/Restore_Point_Phase_11E_Wave_2.md`
 
 ---
+
+## Phase 11F — Final Red Residual Cleanup (2025-12-27)
+
+**Status:** ✅ **COMPLETE**
+
+### Objective
+Eliminate ALL remaining red or red-derived UI accents across the ENTIRE public application.
+
+### Scope Summary
+- **Selectors Modified:** 16 total
+- **Files Modified:** 10 SCSS files
+- **Categories:** Gradients (4), Solid Colors (6), Text-Stroke (3), Alpha/RGBA (2), Malformed CSS (1)
+
+### Files Modified
+| File | Selectors Changed |
+|------|-------------------|
+| `_common.scss` | 3 (lines 346, 372, 428) |
+| `_footer.scss` | 2 (lines 55, 148) |
+| `_testimonial.scss` | 2 (lines 35, 48) |
+| `_blog.scss` | 1 (line 191) |
+| `_blog_page.scss` | 1 (line 424) |
+| `_contact_page.scss` | 1 (line 39) |
+| `_partner.scss` | 1 (line 150) |
+| `_service_details.scss` | 2 (lines 144, 180) |
+| `_error_page.scss` | 1 (line 39) |
+| `_service_page.scss` | 2 (lines 249, 310) |
+
+### Routes Verified
+`/`, `/about`, `/service`, `/service-details/:slug`, `/project`, `/blog`, `/blog/:slug`, `/contact`, `/error`
+
+### Confirmation
+**No hardcoded red remains in the public UI. Phase 11F is globally complete.**
+
+### Restore Point
+- `docs/restore-points/Restore_Point_Phase_11F_Full_App.md`
+
+---

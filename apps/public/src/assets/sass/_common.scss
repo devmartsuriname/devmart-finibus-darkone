@@ -343,7 +343,7 @@ video {
             font-size: 65px;
             letter-spacing: 0.05em;
             text-transform: uppercase;
-            -webkit-text-stroke: 2px #D90A2C;
+            -webkit-text-stroke: 2px var(--theme-color, $theme-color);
             -webkit-text-fill-color: transparent;
 
             @media #{$md} {
@@ -369,7 +369,7 @@ video {
         color: #fff;
         font-size: 16px;
         text-transform: capitalize;
-        background: linear-gradient(90deg, #D90A2C 1.05%, #730000 100%);
+        background: linear-gradient(90deg, var(--theme-color, $theme-color) 1.05%, var(--theme-color-dark, $theme-color-dark) 100%);
         z-index: 1;
         @include transition(.5s);
 
@@ -425,7 +425,7 @@ video {
         font-size: 60px;
         letter-spacing: 0.05em;
         text-transform: uppercase;
-        -webkit-text-stroke: 2px #D90A2C;
+        -webkit-text-stroke: 2px var(--theme-color, $theme-color);
         -webkit-text-fill-color: transparent;
         line-height: 1;
         margin-bottom: 20px;
