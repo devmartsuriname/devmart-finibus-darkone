@@ -199,7 +199,7 @@
             @include transition(.5s);
 
             &:hover {
-                background: #D90A2C;
+                background: var(--theme-color, $theme-color);
             }
         }
 
