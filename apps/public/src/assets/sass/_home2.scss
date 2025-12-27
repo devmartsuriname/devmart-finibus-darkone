@@ -70,7 +70,7 @@
         }
 
         .view-btn a {
-            color: $theme-color;
+            color: var(--theme-color, $theme-color);
         }
     }
 }
