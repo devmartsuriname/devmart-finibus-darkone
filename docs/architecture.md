@@ -144,13 +144,32 @@ Define injection strategy for public frontend branding colors with regression-re
 ### Incremental Rollout (Phased)
 | Phase | Target | Risk | Status |
 |-------|--------|------|--------|
-| 11C-1 | Link hovers, text colors | LOW | Awaiting auth |
+| 11C-1 | CSS variable injection | LOW | ✅ COMPLETE |
 | 11C-2 | Solid backgrounds | MEDIUM | Awaiting auth |
 | 11C-3 | Gradients, pseudo-elements | HIGH | DEFERRED |
+
+### Phase 11C-1 Implementation (2025-12-27)
+```
+┌──────────────────────────────────────────────────────────────┐
+│                   Public App Startup                          │
+├──────────────────────────────────────────────────────────────┤
+│  main.tsx                                                     │
+│    └── <BrandingProvider>                                     │
+│          └── useBrandingColors()                              │
+│                ├── Fetch from Supabase: settings table        │
+│                │   └── primary_color, secondary_color,        │
+│                │       accent_color                           │
+│                ├── Inject on :root:                           │
+│                │   └── --theme-color, --secondary-color,      │
+│                │       --accent-color                         │
+│                └── Fallback: Finibus defaults                 │
+└──────────────────────────────────────────────────────────────┘
+```
 
 ### Constraints
 - Fonts remain LOCKED
 - No SCSS file modifications in Phase 11C-1
+- CSS variables available but not consumed by SCSS yet
 - Gradients/pseudo-elements deferred to 11C-3
 
 ---

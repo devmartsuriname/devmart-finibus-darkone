@@ -201,9 +201,23 @@ Define a deterministic, regression-resistant strategy for public frontend color 
 ```
 
 ### Execution Status
-- ❌ Phase 11C-1: NOT AUTHORIZED
+- ✅ Phase 11C-1: COMPLETE (CSS variable injection)
 - ❌ Phase 11C-2: NOT AUTHORIZED
 - ❌ Phase 11C-3: DEFERRED
+
+### Phase 11C-1 Implementation Details (2025-12-27)
+| File | Action | Purpose |
+|------|--------|---------|
+| `apps/public/src/hooks/useBrandingColors.ts` | Created | Fetch branding colors, inject CSS vars |
+| `apps/public/src/components/providers/BrandingProvider.tsx` | Created | Root-level provider component |
+| `apps/public/src/main.tsx` | Modified | Added BrandingProvider wrapper |
+
+**CSS Variables Injected on `:root`:**
+- `--theme-color` ← `primary_color`
+- `--secondary-color` ← `secondary_color`
+- `--accent-color` ← `accent_color`
+
+**Fallbacks:** Finibus defaults (`#D90A2C`, `#17161A`, `#F7941D`)
 
 ---
 

@@ -271,3 +271,4 @@ input[type="submit"] { background-color: var(--theme-color); }
 | Version | Date | Status | Notes |
 |---------|------|--------|-------|
 | 1.0 | 2025-12-27 | ✅ COMPLETE | Initial Color Map Contract — Phase 11C-0 |
+| 1.1 | 2025-12-27 | ✅ COMPLETE | Phase 11C-1 implemented (CSS variable injection) |
