@@ -277,12 +277,17 @@ See: `docs/phase-11/Phase_11E_11F_11G_Specifications.md`
 
 ## Phase 11E — CTA Gradients (2025-12-27)
 
-**Status:** Wave 1 COMPLETE
+**Status:** Wave 1 COMPLETE | Wave 2 COMPLETE
 
 ### Wave 1 Scope
 - **Objective:** Introduce Devmart-branded CTA gradients using Pattern A (primary → darker primary)
 - **Selectors:** 4 CTA tab/nav-pill selectors
 - **Pattern:** `linear-gradient(90deg, var(--theme-color, $theme-color) 1.05%, var(--theme-color-dark, $theme-color-dark) 100%)`
+
+### Wave 2 Scope (2025-12-27)
+- **Objective:** Complete visual migration by updating base `$theme-color` to Devmart green
+- **Change:** `$theme-color: #D90A2C` → `$theme-color: #1EB36B`
+- **Effect:** All gradient fallbacks now compile to green → dark green
 
 ### Governance Clarification
 The variable `$theme-color-dark` introduced in `_variables.scss` is:
@@ -295,7 +300,7 @@ The variable `$theme-color-dark` introduced in `_variables.scss` is:
 
 | File | Change |
 |------|--------|
-| `apps/public/src/assets/sass/_variables.scss` | Added `$theme-color-dark: darken($theme-color, 25%)` |
+| `apps/public/src/assets/sass/_variables.scss` | Wave 1: Added `$theme-color-dark` / Wave 2: Updated `$theme-color` to `#1EB36B` |
 | `apps/public/src/assets/sass/_project_page.scss` | Updated lines 46, 50 (`.project-filter-tab li.active`, `.project-filter-tab li:hover`) |
 | `apps/public/src/assets/sass/_service_page.scss` | Updated lines 183, 190 (`.nav-pills .nav-link:hover`, `.nav-pills .nav-link.active`) |
 
@@ -304,8 +309,9 @@ The variable `$theme-color-dark` introduced in `_variables.scss` is:
 - Console errors: 0
 - Routes verified: `/project`, `/service`
 
-### Restore Point
-- `docs/restore-points/Restore_Point_Phase_11E_Wave_1.md`
+### Restore Points
+- Wave 1: `docs/restore-points/Restore_Point_Phase_11E_Wave_1.md`
+- Wave 2: `docs/restore-points/Restore_Point_Phase_11E_Wave_2.md`
 
 ### Guardian Rules (Enforced)
 - ✅ Fonts LOCKED

@@ -239,7 +239,7 @@ Establish authoritative design contract for all gradient and overlay surfaces.
 
 ## Phase 11E — CTA Gradients (2025-12-27)
 
-**Status:** Wave 1 COMPLETE
+**Status:** Wave 1 COMPLETE | Wave 2 COMPLETE
 
 ### Objective
 Introduce Devmart-branded CTA gradients using Pattern A (primary → darker primary).
@@ -252,19 +252,25 @@ Introduce Devmart-branded CTA gradients using Pattern A (primary → darker prim
 | `.nav-pills .nav-link:hover` | `_service_page.scss` | 183 |
 | `.nav-pills .nav-link.active` | `_service_page.scss` | 190 |
 
+### Wave 2 Implementation
+| File | Line | Change |
+|------|------|--------|
+| `_variables.scss` | 8 | `$theme-color: #D90A2C` → `$theme-color: #1EB36B` |
+
 ### Pattern Applied
 ```scss
 // Before (Finibus red)
 background: linear-gradient(90deg, #D90A2C 1.05%, #730000 100%);
 
-// After (Devmart branded)
-background: linear-gradient(90deg, var(--theme-color, $theme-color) 1.05%, var(--theme-color-dark, $theme-color-dark) 100%);
+// After (Devmart branded - Wave 2 complete)
+background: linear-gradient(90deg, #1EB36B 1.05%, [dark green] 100%);
 ```
 
 ### Governance Note
 `$theme-color-dark` is a **Phase 11E-scoped** derived token, not a general-purpose variable.
 
-### Restore Point
-- `docs/restore-points/Restore_Point_Phase_11E_Wave_1.md`
+### Restore Points
+- Wave 1: `docs/restore-points/Restore_Point_Phase_11E_Wave_1.md`
+- Wave 2: `docs/restore-points/Restore_Point_Phase_11E_Wave_2.md`
 
 ---
