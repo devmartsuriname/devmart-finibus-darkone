@@ -436,6 +436,47 @@ Complete elimination of all remaining red residuals missed in Phase 11F initial 
 
 ---
 
+## Phase 11F-C — Complete Red Residual Elimination (2025-12-27)
+
+**Status:** ✅ **COMPLETE**
+
+### Objective
+Complete elimination of ALL remaining red residuals discovered during final verification audit.
+
+### Files Modified
+
+| File | Changes |
+|------|---------|
+| `apps/public/src/components/common/Header.tsx` | Line 67 — Cursor color changed to green RGB |
+| `apps/public/src/components/common/WhyChooseUsArea.tsx` | Lines 43, 52 — Progress bar colors |
+| `apps/public/src/assets/sass/_partner.scss` | Line 32 — Newsletter overlay gradient |
+| `apps/public/src/assets/sass/_services.scss` | Lines 58, 151, 167 — Service card rgba values |
+| `apps/public/src/assets/sass/_about.scss` | Line 146 — About skills card border |
+
+### Image Assets Replaced
+
+| Image | Action |
+|-------|--------|
+| `apps/public/public/images/play-button-bg.png` | Replaced with green gradient |
+| `apps/public/public/images/portfolio-hover-bg.png` | Replaced with green gradient |
+
+### Verification
+- SCSS compilation: 0 errors
+- Console errors: 0
+- All public routes verified
+- Custom cursor: GREEN
+- Progress bars: GREEN
+- Newsletter overlay: GREEN gradient
+- All service/about accents: GREEN
+
+### Restore Point
+- `docs/restore-points/Restore_Point_Phase_11F_C.md`
+
+### Final Confirmation
+**All public UI elements are now exclusively derived from Devmart Primary Green (#1EB36B) and its approved dark variant. No hardcoded red, rgba-red, or red-tinted image assets remain anywhere in the public application. Phase 11F is globally complete.**
+
+---
+
 
 ### Darkone (Admin Backend)
 - 100% 1:1 template parity required
