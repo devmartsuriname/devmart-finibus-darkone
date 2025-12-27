@@ -160,7 +160,8 @@ Save Changes click → handleSave() → updateSettings(updates[])
 
 ## Phase 11C — Color Map Contract (2025-12-27)
 
-**Status:** 📋 **DOCUMENTATION ONLY**
+**Status:** ✅ **PHASE COMPLETE — CLOSED**  
+**Closure Date:** 2025-12-27
 
 ### Objective
 Define a deterministic, regression-resistant strategy for public frontend color injection.
@@ -173,9 +174,10 @@ Define a deterministic, regression-resistant strategy for public frontend color 
 
 | Phase | Risk Level | Scope | Status |
 |-------|------------|-------|--------|
-| 11C-1 | ✅ LOW | Link hovers, text colors (CSS var injection) | Awaiting authorization |
-| 11C-2 | ⚠️ MEDIUM | Solid backgrounds (buttons, badges) | Awaiting authorization |
-| 11C-3 | 🔴 HIGH | Gradients, pseudo-elements | DEFERRED |
+| 11C-1 | ✅ LOW | Link hovers, text colors (CSS var injection) | ✅ COMPLETE |
+| 11C W1-W4 | ✅ LOW-MEDIUM | SCSS selector conversion (15 selectors) | ✅ COMPLETE |
+| 11C-2 | ⚠️ MEDIUM | Solid backgrounds (buttons, badges) | ⚠️ DEFERRED (requires separate phase) |
+| 11C-3 | 🔴 HIGH | Gradients, pseudo-elements | ⚠️ DEFERRED (see Phase 11D contract) |
 
 ### "Do Not Touch" Zones (Documented)
 - Hero section overlays (`rgba()` gradients)
@@ -202,9 +204,14 @@ Define a deterministic, regression-resistant strategy for public frontend color 
 
 ### Execution Status
 - ✅ Phase 11C-1: COMPLETE (CSS variable injection)
-- ✅ Phase 11C W1-W4: COMPLETE (SCSS selector conversion)
-- ❌ Phase 11C-2: NOT AUTHORIZED
-- ❌ Phase 11C-3: DEFERRED
+- ✅ Phase 11C W1-W4: COMPLETE (SCSS selector conversion — 15 selectors, 10 files)
+- ⚠️ Phase 11C-2: DEFERRED (requires separate authorization)
+- ⚠️ Phase 11C-3: DEFERRED (see Phase 11D Gradient/Overlay Contract)
+
+### Phase 11C Closure Verification
+- **Guardian Rules:** Fully respected (fonts locked, no admin SCSS, no gradients/pseudo-elements)
+- **Remaining Hardcoded:** ~108 references classified as out-of-scope (gradients, pseudo-elements, text-stroke, alpha-suffix)
+- **Closure Authorization:** APPROVED by project owner (2025-12-27)
 
 ### Phase 11C SCSS Conversion Summary (W1-W4)
 
@@ -233,6 +240,45 @@ Define a deterministic, regression-resistant strategy for public frontend color 
 - `--accent-color` ← `accent_color`
 
 **Fallbacks:** Finibus defaults (`#D90A2C`, `#17161A`, `#F7941D`)
+
+---
+
+## Phase 11D — Gradient & Overlay Design Contract (2025-12-27)
+
+**Status:** ✅ **DOCUMENTATION COMPLETE**
+
+### Objective
+Establish authoritative design contract for gradients, overlays, and color-derived decorative elements.
+
+### Document Reference
+- `docs/phase-11/Phase_11D_Gradient_Overlay_Contract.md`
+
+### Key Decisions
+- **Primary Color:** `#1EB36B` (single source of truth)
+- **Gradient Philosophy:** Design implementations, not branding choices
+- **Admin Exposure:** None (gradients remain design-locked)
+
+### Audit Summary
+| Category | Count | Risk | Future Phase |
+|----------|-------|------|--------------|
+| CTA Gradients (Pattern A) | 8 | ⚠️ MEDIUM | 11E |
+| Hero Overlays (Pattern B) | 7 | 🔴 HIGH | 11F |
+| Pseudo-element Decorations | 8 | ⚠️ MEDIUM | 11G |
+| **Total Surfaces** | **23** | — | — |
+
+### Future Phases (NOT AUTHORIZED)
+- **Phase 11E:** Safe CTA Gradients
+- **Phase 11F:** Complex Overlays (Hero, Radial, RGBA)
+- **Phase 11G:** Alpha / Opacity Decorative Surfaces
+
+See: `docs/phase-11/Phase_11E_11F_11G_Specifications.md`
+
+### Guardian Rules (Enforced)
+- ✅ Fonts LOCKED
+- ✅ No admin SCSS/CSS modifications
+- ✅ No swiper/pagination styling
+- ✅ No multi-color gradients
+- ✅ Restore point required for execution phases
 
 ---
 
