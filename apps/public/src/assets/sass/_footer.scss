@@ -107,7 +107,7 @@ footer {
             }
 
             &:hover {
-                background-color: #D90A2C;
+                background-color: var(--theme-color, $theme-color);
                 @include transform (rotate(360deg));
             }
         }

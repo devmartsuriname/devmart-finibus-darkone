@@ -44,7 +44,7 @@
         font-size: 20px;
         text-align: center;
         text-transform: capitalize;
-        color: #D90A2C;
+        color: var(--theme-color, $theme-color);
         display: block;
         margin-bottom: 15px;
     }
@@ -145,7 +145,7 @@
 
     &:hover {
         color: #17161A;
-        border: 2px solid #D90A2C;
+        border: 2px solid var(--theme-color, $theme-color);
         background: transparent;
         box-shadow: 0 0 20px (#D90A2C 1.05%, #730000 100%);
     }
