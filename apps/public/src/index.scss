@@ -18,7 +18,7 @@
 @import url('./assets/css/barfiller.css');
 
 // Main Theme Styles (compiled from SASS)
-@import url('./assets/sass/style.css');
+@import './assets/sass/style.scss';
 
 // Custom Overrides (1:1 from original index.scss)
 .CircularProgressbar {
