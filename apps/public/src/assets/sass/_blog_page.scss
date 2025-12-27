@@ -74,7 +74,7 @@
     }
 
     &:hover .wc h6 a {
-        color: $theme-color;
+        color: var(--theme-color, $theme-color);
 
     }
 }
@@ -100,8 +100,8 @@
 
             &:hover {
                 color: #ffffff;
-                border: 1px solid $theme-color;
-                background-color: $theme-color;
+                border: 1px solid var(--theme-color, $theme-color);
+                background-color: var(--theme-color, $theme-color);
             }
         }
     }
@@ -190,14 +190,14 @@
             @include transition(.5s);
 
             &:hover {
-                border: 1px solid $theme-color;
-                color: $theme-color;
+                border: 1px solid var(--theme-color, $theme-color);
+                color: var(--theme-color, $theme-color);
             }
         }
 
         &.active a {
-            border: 1px solid $theme-color;
-            color: $theme-color;
+            border: 1px solid var(--theme-color, $theme-color);
+            color: var(--theme-color, $theme-color);
         }
     }
 
@@ -465,8 +465,8 @@
 
         &:hover {
             color: #ffffff;
-            border: 1px solid $theme-color;
-            background-color: $theme-color;
+            border: 1px solid var(--theme-color, $theme-color);
+            background-color: var(--theme-color, $theme-color);
         }
     }
 }
