@@ -62,6 +62,33 @@ When debugging frontend issues:
 
 ---
 
+## Branding Settings Status (Phase 11B)
+
+### Admin UI
+| Setting | Status | Notes |
+|---------|--------|-------|
+| primary_color | ✅ Admin UI wired | Color picker in Settings → Branding |
+| secondary_color | ✅ Admin UI wired | Color picker in Settings → Branding |
+| accent_color | ✅ Admin UI wired | Color picker in Settings → Branding |
+| logo_media_id | ✅ Admin UI wired | Media picker (existing) |
+| favicon_media_id | ✅ Admin UI wired | Media picker (existing) |
+
+### Public Frontend
+| Setting | Status | Notes |
+|---------|--------|-------|
+| primary_color | ❌ NOT injected | Pending explicit authorization |
+| secondary_color | ❌ NOT injected | Pending explicit authorization |
+| accent_color | ❌ NOT injected | Pending explicit authorization |
+| logo_media_id | ❌ NOT consumed | Pending explicit authorization |
+| favicon_media_id | ❌ NOT consumed | Pending explicit authorization |
+
+### Constraints
+- **Fonts:** LOCKED — No font customization (admin or frontend)
+- **SCSS:** No modifications — Colors exist in DB only
+- **CSS Variables:** Not created — Requires Phase 11C or later
+
+---
+
 ## Optional Completeness Scan (User-Provided Evidence)
 
 The following 9 routes should be verified in Incognito for full coverage:

@@ -75,6 +75,49 @@ This document outlines the architecture decisions and validation requirements fo
 
 ---
 
+## Phase 11B — Branding Settings (2025-12-27)
+
+**Status:** ✅ **COMPLETE**
+
+### Scope
+- Admin can manage theme colors via Settings → Branding tab
+- Color keys: `primary_color`, `secondary_color`, `accent_color`
+- Public frontend color injection: **NOT IMPLEMENTED** (requires explicit authorization)
+
+### Settings Flow Architecture
+```
+┌─────────────────────────────────────────────────────────────┐
+│                    Admin Settings Page                       │
+├─────────────────────────────────────────────────────────────┤
+│  FormValues (React state)                                    │
+│    ├── general keys (site_name, contact_email, etc.)        │
+│    ├── seo keys (default_meta_title, etc.)                  │
+│    ├── social keys (facebook_url, etc.)                     │
+│    └── branding keys (primary_color, secondary_color, etc.) │
+├─────────────────────────────────────────────────────────────┤
+│  handleChange(key, value) → updates FormValues + hasChanges │
+├─────────────────────────────────────────────────────────────┤
+│  handleSave() → updateSettings(updates[])                   │
+│    └── supabase.from('settings').update() for each key      │
+├─────────────────────────────────────────────────────────────┤
+│  fetchSettings() → refreshes FormValues from DB             │
+└─────────────────────────────────────────────────────────────┘
+```
+
+### Constraints
+- **Fonts LOCKED** — No font customization added
+- **No SCSS modifications** — UI changes only
+- **No layout redesign** — Replaced placeholder content only
+
+### Files Modified
+1. `src/app/(admin)/settings/page.tsx` — Added color keys to form state
+2. `src/app/(admin)/settings/components/BrandingSettingsTab.tsx` — Added color pickers
+
+### Regression Verification
+All Settings tabs (General/SEO/Social/Branding) verified: Save + Persist + 0 errors
+
+---
+
 ## Phase Discipline
 
 - Each phase requires explicit GO / NO-GO approval

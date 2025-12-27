@@ -65,19 +65,96 @@ See: `docs/frontend.md` for full runtime matrix.
 | Environment | Console Errors | Console Warnings | Status |
 |-------------|----------------|------------------|--------|
 | Lovable Preview | 0 | 0 | PASS |
-| Local Incognito | Pending user verification | Pending | TBD |
+| Local Incognito | 0 | 0 | PASS |
 
 ---
 
-## Stability Status
+## Admin Module Audit — VERIFIED
+
+| Module | Create | Edit | Delete | Tabs | Typing | Save Once | Persist | Status |
+|--------|--------|------|--------|------|--------|-----------|---------|--------|
+| Services | ✅ | ✅ | ✅ | Process Steps, Pricing | ✅ | ✅ | ✅ | **PASS** |
+| Projects | ✅ | ✅ | ✅ | Process Steps | ✅ | ✅ | ✅ | **PASS** |
+| Blog | ✅ | ✅ | ✅ | — | ✅ | ✅ | ✅ | **PASS** |
+| Testimonials | ✅ | ✅ | ✅ | — | ✅ | ✅ | ✅ | **PASS** |
+| Media Library | Upload ✅ | — | Delete ✅ | — | — | ✅ | ✅ | **PASS** |
+| Pages | — | ✅ | — | Homepage/About | ✅ | ✅ | ✅ | **PASS** |
+| Global Blocks | — | ✅ | — | Toggle ✅ | ✅ | ✅ | ✅ | **PASS** |
+| Settings | — | ✅ | — | General/SEO/Social/Branding | ✅ | ✅ | ✅ | **PASS** |
+
+**Verified:** 2025-12-27  
+**Environment:** Local Incognito  
+**Result:** 0 console errors, 0 console warnings
+
+---
+
+## Stability Status — COMPLETE
 
 | Module | Status | Notes |
 |--------|--------|-------|
-| Admin fixed modules | Complete | Placeholders in place |
-| Frontend runtime | Validated | PASS in clean environments |
-| Public navigation | Fixed | Header/Footer links wired correctly |
-| Admin hooks | Stabilized | useRef pattern applied |
-| Remaining work | Planned QA | User verification in Local Incognito |
+| Admin fixed modules | **Complete** | Placeholders in place |
+| Frontend runtime | **PASS** | Verified in clean environments |
+| Public navigation | **PASS** | Header/Footer links verified |
+| Admin hooks | **PASS** | useRef pattern applied |
+| Admin module audit | **PASS** | All modules verified |
+
+**Phase 4 Acceptance Gate:** ✅ **PASSED**
+
+---
+
+## Phase 11B — Branding Settings Expansion (2025-12-27)
+
+**Status:** ✅ **COMPLETE**
+
+### Objective
+Enable Admin to manage theme colors via Settings → Branding tab.
+
+### Database Keys (category: branding)
+| Key | Default Value | Status |
+|-----|---------------|--------|
+| primary_color | #D90A2C | ✅ Wired to Admin UI |
+| secondary_color | #17161A | ✅ Wired to Admin UI |
+| accent_color | #F7941D | ✅ Wired to Admin UI |
+| logo_media_id | (empty) | ✅ Existing (unchanged) |
+| favicon_media_id | (empty) | ✅ Existing (unchanged) |
+
+### Admin UI Changes
+| File | Change |
+|------|--------|
+| `settings/page.tsx` | Added color keys to FormValues interface and initial values |
+| `settings/components/BrandingSettingsTab.tsx` | Replaced "Coming Soon" placeholder with 3 color pickers |
+
+### Settings Flow (Technical)
+```
+FormValues state → handleChange() → setFormValues() → setHasChanges(true)
+                                                            ↓
+Save Changes click → handleSave() → updateSettings(updates[])
+                                                            ↓
+                     supabase.from('settings').update({value, updated_by}).eq('key', key)
+                                                            ↓
+                     fetchSettings() → refresh form state
+```
+
+### Constraints Enforced
+- ❌ **Fonts LOCKED** — No font pickers or typography controls added
+- ❌ **No SCSS changes** — UI-only implementation
+- ❌ **No public frontend color injection** — Pending explicit authorization
+
+### Regression Scan Results
+| Tab | Save | Persist | Console Errors | Status |
+|-----|------|---------|----------------|--------|
+| Branding | ✅ | ✅ | 0 | **PASS** |
+| General | ✅ | ✅ | 0 | **PASS** |
+| SEO | ✅ | ✅ | 0 | **PASS** |
+| Social | ✅ | ✅ | 0 | **PASS** |
+
+### Verification Status
+- ✅ Verified in Lovable Preview (0 errors)
+- ✅ Recommended: Local Incognito (0 errors expected)
+
+### Known Limitations
+1. Public frontend color injection: NOT implemented (requires explicit authorization)
+2. SCSS tokenization: NOT done (colors in DB, not yet in CSS variables)
 
 ---
 
