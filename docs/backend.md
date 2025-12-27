@@ -158,6 +158,55 @@ Save Changes click → handleSave() → updateSettings(updates[])
 
 ---
 
+## Phase 11C — Color Map Contract (2025-12-27)
+
+**Status:** 📋 **DOCUMENTATION ONLY**
+
+### Objective
+Define a deterministic, regression-resistant strategy for public frontend color injection.
+
+### Phase 11C-0: Color Map Contract
+- **Document:** `docs/phase-11/Phase_11C_Color_Map_Contract.md`
+- **Status:** ✅ COMPLETE
+
+### Contract Summary
+
+| Phase | Risk Level | Scope | Status |
+|-------|------------|-------|--------|
+| 11C-1 | ✅ LOW | Link hovers, text colors (CSS var injection) | Awaiting authorization |
+| 11C-2 | ⚠️ MEDIUM | Solid backgrounds (buttons, badges) | Awaiting authorization |
+| 11C-3 | 🔴 HIGH | Gradients, pseudo-elements | DEFERRED |
+
+### "Do Not Touch" Zones (Documented)
+- Hero section overlays (`rgba()` gradients)
+- Multi-color gradients
+- Pseudo-elements (`::before`, `::after`)
+- Text-stroke effects
+- Progress bars with `!important`
+
+### Technical Approach (Planned)
+```
+┌─────────────────────────────────────────────────────────────┐
+│                  Public Frontend Injection                   │
+├─────────────────────────────────────────────────────────────┤
+│  useBrandingColors.ts                                        │
+│    ├── Fetch branding settings from Supabase                │
+│    ├── Inject CSS variables on :root                        │
+│    │   └── --theme-color, --secondary-color, --accent-color │
+│    └── Fallback to Finibus defaults if unavailable          │
+├─────────────────────────────────────────────────────────────┤
+│  SCSS consumption (future phase)                             │
+│    └── $theme-color: var(--theme-color, #D90A2C);           │
+└─────────────────────────────────────────────────────────────┘
+```
+
+### Execution Status
+- ❌ Phase 11C-1: NOT AUTHORIZED
+- ❌ Phase 11C-2: NOT AUTHORIZED
+- ❌ Phase 11C-3: DEFERRED
+
+---
+
 ## Template Rules
 
 ### Darkone (Admin Backend)
