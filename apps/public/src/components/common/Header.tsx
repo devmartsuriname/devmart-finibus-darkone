@@ -220,7 +220,7 @@ function Header() {
                         </NavLink>
                       </li>
                       <li>
-                        <NavLink onClick={scrollTop} to="/blog-details">
+                        <NavLink onClick={scrollTop} to="/blog">
                           Blog Details
                         </NavLink>
                       </li>
