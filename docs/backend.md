@@ -202,8 +202,23 @@ Define a deterministic, regression-resistant strategy for public frontend color 
 
 ### Execution Status
 - ✅ Phase 11C-1: COMPLETE (CSS variable injection)
+- ✅ Phase 11C W1-W4: COMPLETE (SCSS selector conversion)
 - ❌ Phase 11C-2: NOT AUTHORIZED
 - ❌ Phase 11C-3: DEFERRED
+
+### Phase 11C SCSS Conversion Summary (W1-W4)
+
+| Wave | Selectors | Files | Status |
+|------|-----------|-------|--------|
+| W1 | 1 | `index.scss` | ✅ COMPLETE |
+| W2 | 4 | `_footer.scss`, `_commingsoon.scss`, `_partner.scss` | ✅ COMPLETE |
+| W3 | 7 | `_contact_page.scss`, `_blog_page.scss`, `_service_page.scss`, `_hero.scss`, `_common.scss` | ✅ COMPLETE |
+| W4 | 3 | `_portfolio.scss`, `_services.scss` | ✅ COMPLETE |
+| **TOTAL** | **15** | **10 files** | ✅ **ALL ELIGIBLE SELECTORS CONVERTED** |
+
+**Pattern Used:** `var(--theme-color, $theme-color)`
+
+**Remaining Hardcoded `#D90A2C`:** ~108 references (all in "Do Not Touch" categories: gradients, pseudo-elements, text-stroke, alpha-suffix, variable definition)
 
 ### Phase 11C-1 Implementation Details (2025-12-27)
 | File | Action | Purpose |

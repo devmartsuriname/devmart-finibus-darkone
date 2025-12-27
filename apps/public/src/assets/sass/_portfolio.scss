@@ -203,7 +203,7 @@
 
             a.case-btn {
                 display: inline-block;
-                border: 1px solid #D90A2C;
+                border: 1px solid var(--theme-color, $theme-color);
                 box-sizing: border-box;
                 border-radius: 30px;
                 padding: 5px 15px;

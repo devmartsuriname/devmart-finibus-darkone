@@ -145,8 +145,22 @@ Define injection strategy for public frontend branding colors with regression-re
 | Phase | Target | Risk | Status |
 |-------|--------|------|--------|
 | 11C-1 | CSS variable injection | LOW | ✅ COMPLETE |
+| 11C W1-W4 | SCSS selector conversion | LOW-MEDIUM | ✅ COMPLETE (15 selectors, 10 files) |
 | 11C-2 | Solid backgrounds | MEDIUM | Awaiting auth |
 | 11C-3 | Gradients, pseudo-elements | HIGH | DEFERRED |
+
+### Phase 11C SCSS Conversion (W1-W4) — COMPLETE
+
+**Pattern:** `var(--theme-color, $theme-color)`
+
+| Wave | Selectors | Files Modified |
+|------|-----------|----------------|
+| W1 | 1 | `index.scss` |
+| W2 | 4 | `_footer.scss`, `_commingsoon.scss`, `_partner.scss` |
+| W3 | 7 | `_contact_page.scss`, `_blog_page.scss`, `_service_page.scss`, `_hero.scss`, `_common.scss` |
+| W4 | 3 | `_portfolio.scss`, `_services.scss` |
+
+**Remaining:** ~108 hardcoded `#D90A2C` in protected zones (gradients, pseudo-elements, text-stroke, alpha-hex)
 
 ### Phase 11C-1 Implementation (2025-12-27)
 ```
