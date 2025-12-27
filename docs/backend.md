@@ -102,6 +102,42 @@ See: `docs/frontend.md` for full runtime matrix.
 
 ---
 
+## Phase 11B — Branding Settings Expansion (2025-12-27)
+
+### Objective
+Enable Admin to manage theme colors via Settings → Branding tab.
+
+### Database Keys (category: branding)
+| Key | Default Value | Status |
+|-----|---------------|--------|
+| primary_color | #D90A2C | ✅ Wired to Admin UI |
+| secondary_color | #17161A | ✅ Wired to Admin UI |
+| accent_color | #F7941D | ✅ Wired to Admin UI |
+| logo_media_id | (empty) | ✅ Existing (unchanged) |
+| favicon_media_id | (empty) | ✅ Existing (unchanged) |
+
+### Admin UI Changes
+| File | Change |
+|------|--------|
+| `settings/page.tsx` | Added color keys to FormValues interface and initial values |
+| `settings/components/BrandingSettingsTab.tsx` | Replaced "Coming Soon" placeholder with 3 color pickers |
+
+### Constraints Enforced
+- ❌ **Fonts LOCKED** — No font pickers or typography controls added
+- ❌ **No SCSS changes** — UI-only implementation
+- ❌ **No public frontend color injection** — Pending explicit authorization
+
+### Read/Write Path
+- **Read:** `useSettings()` → `supabase.from('settings').select('*')`
+- **Write:** `updateSettings()` → `supabase.from('settings').update()`
+- Same path as General/SEO/Social tabs
+
+### Verification Status
+- [ ] Pending user verification in Lovable Preview
+- [ ] Pending user verification in Local Incognito
+
+---
+
 ## Template Rules
 
 ### Darkone (Admin Backend)

@@ -75,6 +75,24 @@ This document outlines the architecture decisions and validation requirements fo
 
 ---
 
+## Phase 11B — Branding Settings (2025-12-27)
+
+### Scope
+- Admin can manage theme colors via Settings → Branding tab
+- Color keys: `primary_color`, `secondary_color`, `accent_color`
+- Public frontend color injection: **NOT IMPLEMENTED** (requires explicit authorization)
+
+### Constraints
+- **Fonts LOCKED** — No font customization added
+- **No SCSS modifications** — UI changes only
+- **No layout redesign** — Replaced placeholder content only
+
+### Files Modified
+1. `src/app/(admin)/settings/page.tsx` — Added color keys to form state
+2. `src/app/(admin)/settings/components/BrandingSettingsTab.tsx` — Added color pickers
+
+---
+
 ## Phase Discipline
 
 - Each phase requires explicit GO / NO-GO approval
