@@ -188,7 +188,7 @@
             content: "";
             height: 40px;
             width: 40px;
-            background: #D90A2C;
+            background: var(--theme-color, $theme-color);
             opacity: 0.35;
             border-radius: 50%;
             left: -10px;

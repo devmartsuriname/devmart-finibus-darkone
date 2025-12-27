@@ -147,7 +147,7 @@
         color: #17161A;
         border: 2px solid var(--theme-color, $theme-color);
         background: transparent;
-        box-shadow: 0 0 20px (#D90A2C 1.05%, #730000 100%);
+        box-shadow: 0 0 20px rgba($theme-color, 0.3);
     }
 }
 

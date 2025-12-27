@@ -141,7 +141,7 @@
             position: absolute;
             width: 70px;
             height: 50px;
-            background: linear-gradient(90deg, #D90A2C 1.05%, #730000 100%);
+            background: linear-gradient(90deg, var(--theme-color, $theme-color) 1.05%, var(--theme-color-dark, $theme-color-dark) 100%);
             border-radius: 0px 3px 3px 0px;
             border: none;
             color: #fff;
@@ -177,7 +177,7 @@
 
         .step {
             background: #FFFFFF;
-            border: 1px solid rgba(217, 10, 44, 0.2);
+            border: 1px solid rgba($theme-color, 0.2);
             box-sizing: border-box;
             border-radius: 5px;
             padding: 30px 30px;

@@ -246,7 +246,7 @@
         &:before {
             position: absolute;
             content: "";
-            background: linear-gradient(90deg, #D90A2C 1.05%, #730000 100%);
+            background: linear-gradient(90deg, var(--theme-color, $theme-color) 1.05%, var(--theme-color-dark, $theme-color-dark) 100%);
             width: 150px;
             height: 2px;
             left: 50%;
@@ -307,7 +307,7 @@
             letter-spacing: 0.03em;
             color: #FFFFFF;
             display: inline-block;
-            background: linear-gradient(90deg, #D90A2C 1.05%, #730000 100%);
+            background: linear-gradient(90deg, var(--theme-color, $theme-color) 1.05%, var(--theme-color-dark, $theme-color-dark) 100%);
             border-radius: 30px;
             min-width: 200px;
             padding: 15px 30px;

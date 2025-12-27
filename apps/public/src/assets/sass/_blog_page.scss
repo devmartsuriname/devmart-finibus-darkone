@@ -421,7 +421,7 @@
     content: "";
     left: 0;
     width: 30px;
-    border: 1px solid #D90A2C;
+    border: 1px solid var(--theme-color, $theme-color);
     top: 50%;
     transform: translateY(-50%);
     opacity: 0.5;
