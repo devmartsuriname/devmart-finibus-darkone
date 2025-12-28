@@ -443,7 +443,69 @@ Phase 11F has been formally closed per governance directive.
 
 ### Next Phase
 - Phase 11G-A: COMPLETE (Mobile Menu Fix)
-- Phase 11G-B+: BLOCKED until explicitly authorized
+- Phase 11G-B: COMPLETE (Navigation Hygiene)
+- Phase 11G-C+: BLOCKED until explicitly authorized
+
+---
+
+## Phase 11G-B — Navigation Hygiene (2025-12-28)
+
+**Status:** ✅ COMPLETE
+
+### Scope
+apps/public ONLY — Remove ThemeForest demo links, align with actual routes
+
+### Architecture Change
+
+**Before (Demo Structure):**
+```
+Home (dropdown)
+├── Home 01 → /
+└── Home 02 → /home2
+About us → /about
+Services (dropdown)
+├── Service → /service
+└── Service Details → /service-details
+Projects (dropdown)
+├── Project → /project
+└── Project Details → /project-details
+Blogs (dropdown)
+├── Blog → /blog
+├── Blog standard → /blog-standard
+└── Blog Details → /blog
+Pages (dropdown)
+├── Coming soon → /commingsoon
+└── Error 404 → /error
+Contact us → /contact
+```
+
+**After (Production Structure):**
+```
+Home → /
+About us → /about
+Services → /service
+Projects → /project
+Blog → /blog
+Contact us → /contact
+```
+
+### Rationale
+- Demo variants (Home 02, Blog Standard) removed
+- Details pages accessed via item slugs (e.g., `/service-details/:slug`)
+- System pages (Coming Soon, Error 404) removed from navigation
+- Dropdowns flattened where no longer needed
+
+### Files Modified
+- `apps/public/src/components/common/Header.tsx`
+
+### Guardian Rules Compliance
+- ✅ apps/public ONLY
+- ✅ No custom UX patterns
+- ✅ No new styling
+- ✅ Finibus parity (flat nav is valid template pattern)
+
+### Restore Point
+- `docs/restore-points/Restore_Point_Phase_11G_B_Navigation_Hygiene.md`
 
 ---
 

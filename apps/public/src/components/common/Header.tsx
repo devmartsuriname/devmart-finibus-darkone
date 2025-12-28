@@ -1,39 +1,26 @@
 /**
  * Header Component
  * 
+ * Phase 11G-B: Navigation hygiene cleanup
+ * - Removed demo links (Home 02, Blog Standard, Error 404)
+ * - Flattened menu structure (no dropdowns for single-destination items)
+ * - Menu reflects only actual implemented routes
+ * 
  * Migrated from Finibus to React 18 + react-router-dom v6
- * - Link/NavLink updated for v6 API
- * - Removed process.env.PUBLIC_URL (not needed in Vite)
- * - Removed react-animated-cursor (optional enhancement, can be added later)
  */
 
-import React, { useEffect, useState, useReducer } from 'react'
-import { Link, NavLink } from 'react-router-dom'
+import React, { useEffect, useState } from 'react'
+import { Link, NavLink, useLocation } from 'react-router-dom'
 import AnimatedCursor from 'react-animated-cursor'
 
-// Menu state reducer
-const initialState = { activeMenu: '' }
-
-function reducer(state: { activeMenu: string }, action: { type: string }) {
-  switch (action.type) {
-    case 'homeOne':
-      return { activeMenu: 'homeOne' }
-    case 'service':
-      return { activeMenu: 'service' }
-    case 'projects':
-      return { activeMenu: 'projects' }
-    case 'blogs':
-      return { activeMenu: 'blogs' }
-    case 'pages':
-      return { activeMenu: 'pages' }
-    default:
-      return { activeMenu: '' }
-  }
-}
-
 function Header() {
-  const [state, dispatch] = useReducer(reducer, initialState)
   const [sidebar, setSidebar] = useState(false)
+  const location = useLocation()
+
+  // Close mobile menu on route change
+  useEffect(() => {
+    setSidebar(false)
+  }, [location.pathname])
 
   // Sticky Menu Area
   useEffect(() => {
@@ -101,162 +88,68 @@ function Header() {
                   </Link>
                 </div>
                 <ul>
-                  {/* Home Menu */}
-                  <li
-                    className="has-child active"
-                    onClick={() => dispatch({ type: 'homeOne' })}
-                  >
-                    <Link to="#" className={state.activeMenu === 'homeOne' ? 'active' : ''}>
-                      Home
-                    </Link>
-                    <i className="bi bi-chevron-down" />
-                    <ul
-                      className={
-                        state.activeMenu === 'homeOne'
-                          ? 'sub-menu d-block'
-                          : 'sub-menu d-none'
-                      }
+                  {/* Home - Flat link, no dropdown */}
+                  <li>
+                    <NavLink 
+                      onClick={scrollTop} 
+                      to="/"
+                      className={({ isActive }) => isActive ? 'active' : ''}
                     >
-                      <li>
-                        <Link onClick={scrollTop} to="/">
-                          Home 01
-                        </Link>
-                      </li>
-                      <li>
-                        <NavLink onClick={scrollTop} to="/home2">
-                          Home 02
-                        </NavLink>
-                      </li>
-                    </ul>
+                      Home
+                    </NavLink>
                   </li>
 
                   {/* About Us */}
                   <li>
-                    <NavLink onClick={scrollTop} to="/about">
+                    <NavLink 
+                      onClick={scrollTop} 
+                      to="/about"
+                      className={({ isActive }) => isActive ? 'active' : ''}
+                    >
                       About us
                     </NavLink>
                   </li>
 
-                  {/* Services Menu */}
-                  <li
-                    className="has-child"
-                    onClick={() => dispatch({ type: 'service' })}
-                  >
-                    <Link onClick={scrollTop} to="#">
+                  {/* Services - Flat link, details via slug */}
+                  <li>
+                    <NavLink 
+                      onClick={scrollTop} 
+                      to="/service"
+                      className={({ isActive }) => isActive ? 'active' : ''}
+                    >
                       Services
-                    </Link>
-                    <i className="bi bi-chevron-down" />
-                    <ul
-                      className={
-                        state.activeMenu === 'service'
-                          ? 'sub-menu d-block'
-                          : 'sub-menu d-none'
-                      }
-                    >
-                      <li>
-                        <NavLink onClick={scrollTop} to="/service">
-                          Service
-                        </NavLink>
-                      </li>
-                      <li>
-                        <NavLink onClick={scrollTop} to="/service-details">
-                          Service Details
-                        </NavLink>
-                      </li>
-                    </ul>
+                    </NavLink>
                   </li>
 
-                  {/* Projects Menu */}
-                  <li
-                    className="has-child"
-                    onClick={() => dispatch({ type: 'projects' })}
-                  >
-                    <Link onClick={scrollTop} to="#">
+                  {/* Projects - Flat link, details via slug */}
+                  <li>
+                    <NavLink 
+                      onClick={scrollTop} 
+                      to="/project"
+                      className={({ isActive }) => isActive ? 'active' : ''}
+                    >
                       Projects
-                    </Link>
-                    <i className="bi bi-chevron-down" />
-                    <ul
-                      className={
-                        state.activeMenu === 'projects'
-                          ? 'sub-menu d-block'
-                          : 'sub-menu d-none'
-                      }
-                    >
-                      <li>
-                        <NavLink onClick={scrollTop} to="/project">
-                          Project
-                        </NavLink>
-                      </li>
-                      <li>
-                        <NavLink onClick={scrollTop} to="/project-details">
-                          Project Details
-                        </NavLink>
-                      </li>
-                    </ul>
+                    </NavLink>
                   </li>
 
-                  {/* Blogs Menu */}
-                  <li
-                    className="has-child"
-                    onClick={() => dispatch({ type: 'blogs' })}
-                  >
-                    <Link to="#">Blogs</Link>
-                    <i className="bi bi-chevron-down" />
-                    <ul
-                      className={
-                        state.activeMenu === 'blogs'
-                          ? 'sub-menu d-block'
-                          : 'sub-menu d-none'
-                      }
+                  {/* Blog - Flat link, details via slug */}
+                  <li>
+                    <NavLink 
+                      onClick={scrollTop} 
+                      to="/blog"
+                      className={({ isActive }) => isActive ? 'active' : ''}
                     >
-                      <li>
-                        <NavLink onClick={scrollTop} to="/blog">
-                          Blog
-                        </NavLink>
-                      </li>
-                      <li>
-                        <NavLink onClick={scrollTop} to="/blog-standard">
-                          Blog standard
-                        </NavLink>
-                      </li>
-                      <li>
-                        <NavLink onClick={scrollTop} to="/blog">
-                          Blog Details
-                        </NavLink>
-                      </li>
-                    </ul>
-                  </li>
-
-                  {/* Pages Menu */}
-                  <li
-                    className="has-child"
-                    onClick={() => dispatch({ type: 'pages' })}
-                  >
-                    <Link to="#">Pages</Link>
-                    <i className="bi bi-chevron-down" />
-                    <ul
-                      className={
-                        state.activeMenu === 'pages'
-                          ? 'sub-menu d-block'
-                          : 'sub-menu d-none'
-                      }
-                    >
-                      <li>
-                        <NavLink onClick={scrollTop} to="/commingsoon">
-                          Coming soon
-                        </NavLink>
-                      </li>
-                      <li>
-                        <NavLink onClick={scrollTop} to="/error">
-                          Error 404
-                        </NavLink>
-                      </li>
-                    </ul>
+                      Blog
+                    </NavLink>
                   </li>
 
                   {/* Contact Us */}
                   <li>
-                    <NavLink onClick={scrollTop} to="/contact">
+                    <NavLink 
+                      onClick={scrollTop} 
+                      to="/contact"
+                      className={({ isActive }) => isActive ? 'active' : ''}
+                    >
                       Contact us
                     </NavLink>
                   </li>

@@ -568,6 +568,54 @@ The base `.main-nav` style set `display: inline-block` which could interfere wit
 
 ---
 
+## Phase 11G-B — Navigation Hygiene (2025-12-28)
+
+**Status:** ✅ COMPLETE
+
+### Scope
+apps/public ONLY — Remove demo links, align navigation with actual routes
+
+### Changes Made
+
+**File:** `apps/public/src/components/common/Header.tsx`
+
+| Before | After | Reason |
+|--------|-------|--------|
+| Home dropdown (Home 01, Home 02) | Flat "Home" link → `/` | Demo variant removal |
+| Services dropdown | Flat "Services" link → `/service` | Details accessed via slug |
+| Projects dropdown | Flat "Projects" link → `/project` | Details accessed via slug |
+| Blogs dropdown (Blog, Blog Standard, Blog Details) | Flat "Blog" link → `/blog` | Demo variants removal |
+| Pages dropdown (Coming Soon, Error 404) | Removed entirely | System pages, not nav items |
+
+### Final Navigation Structure
+```
+Home → /
+About us → /about
+Services → /service
+Projects → /project
+Blog → /blog
+Contact us → /contact
+```
+
+### Additional Improvements
+- Added `useLocation` hook to close mobile menu on route change
+- Removed unused `useReducer` (menu dropdown state no longer needed)
+- Cleaned up component to remove demo-specific code
+
+### Guardian Rules Compliance
+- ✅ apps/public ONLY
+- ✅ No branding changes
+- ✅ No new styling/colors/animations
+- ✅ Finibus structure preserved (flat nav is valid Finibus pattern)
+
+### Restore Point
+- `docs/restore-points/Restore_Point_Phase_11G_B_Navigation_Hygiene.md`
+
+### Next Phase
+- Phase 11G-C+: BLOCKED until explicitly authorized
+
+---
+
 ### Darkone (Admin Backend)
 - 100% 1:1 template parity required
 - No custom Bootstrap modifications
