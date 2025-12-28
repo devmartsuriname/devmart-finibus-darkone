@@ -443,6 +443,7 @@ Phase 11F has been formally closed per governance directive.
 
 ### Next Phase
 - Phase 11G-A: COMPLETE (Mobile Menu Fix)
+- Phase 11G-A Fix: COMPLETE (CSS parity restored — removed non-original `display: block` and `visibility: visible`)
 - Phase 11G-B: COMPLETE (Navigation Hygiene)
 - Phase 11G-C+: BLOCKED until explicitly authorized
 
