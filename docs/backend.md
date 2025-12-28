@@ -612,7 +612,46 @@ Contact us → /contact
 - `docs/restore-points/Restore_Point_Phase_11G_B_Navigation_Hygiene.md`
 
 ### Next Phase
+- Phase 11G-A Fix: COMPLETE (CSS parity restored)
 - Phase 11G-C+: BLOCKED until explicitly authorized
+
+---
+
+## Phase 11G-A Fix — Mobile Menu Parity Restoration (2025-12-28)
+
+**Status:** ✅ COMPLETE
+
+### Issue
+Previous fix added non-original CSS properties that caused mobile menu to:
+- Auto-open on page load
+- Cover entire screen instead of 260px sidebar
+- Overlay hero content when closed
+
+### Root Cause
+Non-Finibus CSS additions:
+- `display: block;` — NOT in original template
+- `visibility: visible;` — NOT in original template
+
+These interfered with `transform: translateX(-260px)` hide behavior.
+
+### Fix Applied
+
+**File:** `apps/public/src/assets/sass/style.scss`
+- Removed `display: block;`
+- Removed `visibility: visible;`
+- Restored EXACT Finibus original CSS
+
+**File:** `apps/public/src/components/common/Header.tsx`
+- Restored exact Finibus sidebar toggle logic: `setSidebar(1)` / `setSidebar(false)`
+- Class binding: `sidebar === 1 ? 'main-nav slidenav' : 'main-nav'`
+
+### Guardian Rules Compliance
+- ✅ apps/public ONLY
+- ✅ 1:1 Finibus parity restored
+- ✅ No custom UX patterns
+
+### Restore Point
+- `docs/restore-points/Restore_Point_Phase_11G_A_Fix.md`
 
 ---
 
