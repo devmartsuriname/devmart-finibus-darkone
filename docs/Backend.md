@@ -509,6 +509,34 @@ Final fix for the last remaining red residual: mobile hamburger menu gradient.
 
 ---
 
+## Phase 11F — FORMAL CLOSURE (2025-12-28)
+
+**Status:** 🔒 **CLOSED — DO NOT REOPEN**
+
+### Closure Authorization
+Phase 11F has been formally closed per governance directive.
+
+### Basis for Closure
+- All red and red-derived residuals fully eliminated
+- Cursor, progress bars, overlays, cards, borders, and animations derive exclusively from:
+  - Devmart Primary Green (#1EB36B)
+  - Approved dark variant ($theme-color-dark)
+- Red-tinted image assets replaced with green equivalents
+- No hardcoded red, rgba-red, or baked-in red assets remain
+
+### Restore Points Retained
+- `docs/restore-points/Restore_Point_Phase_11F_C.md`
+- `docs/restore-points/Restore_Point_Phase_11F_D.md`
+
+### Governance
+- Phase 11F MUST NOT be reopened
+- No further color cleanup permitted under this phase
+- Future visual adjustments fall under subsequent phases only
+
+### Next Phase
+- Phase 11G remains BLOCKED until explicitly authorized
+
+---
 
 ### Darkone (Admin Backend)
 - 100% 1:1 template parity required
