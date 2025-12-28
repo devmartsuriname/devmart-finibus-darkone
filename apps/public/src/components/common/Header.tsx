@@ -14,7 +14,7 @@ import { Link, NavLink, useLocation } from 'react-router-dom'
 import AnimatedCursor from 'react-animated-cursor'
 
 function Header() {
-  const [sidebar, setSidebar] = useState(false)
+  const [sidebar, setSidebar] = useState<boolean | number>(false)
   const location = useLocation()
 
   // Close mobile menu on route change
@@ -40,8 +40,13 @@ function Header() {
     }
   }, [])
 
+  // Exact Finibus toggle logic
   const showSidebar = () => {
-    setSidebar(!sidebar)
+    if (sidebar === false || sidebar === 0) {
+      setSidebar(1)
+    } else {
+      setSidebar(false)
+    }
   }
 
   const scrollTop = () => window.scrollTo({ top: 0, behavior: 'smooth' })
@@ -81,7 +86,7 @@ function Header() {
               </div>
             </div>
             <div className="col col-sm-5 col-md-6 col-lg-6 col-xl-8 text-end">
-              <nav className={sidebar ? 'main-nav slidenav' : 'main-nav'}>
+              <nav className={sidebar === 1 ? 'main-nav slidenav' : 'main-nav'}>
                 <div className="mobile-menu-logo">
                   <Link onClick={scrollTop} to="/">
                     <img src="/images/logo.png" alt="Devmart Logo" />
@@ -165,7 +170,7 @@ function Header() {
               <div className="mobile-menu">
                 <div
                   onClick={showSidebar}
-                  className={sidebar ? 'cross-btn h-active' : 'cross-btn'}
+                  className={sidebar === 1 ? 'cross-btn h-active' : 'cross-btn'}
                 >
                   <span className="cross-top" />
                   <span className="cross-middle" />

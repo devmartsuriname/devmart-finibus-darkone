@@ -66,7 +66,6 @@
 
     //Main menu redesign
     header .main-nav {
-        display: block; // Override inline-block from base styles
         position: fixed;
         top: 0;
         left: 0;
@@ -82,7 +81,6 @@
         transition: -webkit-transform .3s ease-in;
         transition: transform .3s ease-in;
         transition: transform .3s ease-in, -webkit-transform .3s ease-in;
-        visibility: visible; // Ensure visibility is set
 
         .mobile-menu-logo {
             text-align: left;
