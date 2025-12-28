@@ -477,6 +477,96 @@ Complete elimination of ALL remaining red residuals discovered during final veri
 
 ---
 
+## Phase 11F-D — Final Red Residual Fix (2025-12-27)
+
+**Status:** ✅ **COMPLETE**
+
+### Objective
+Final fix for the last remaining red residual: mobile hamburger menu gradient.
+
+### Files Modified
+
+| File | Changes |
+|------|---------|
+| `apps/public/src/assets/sass/style.scss` | Line 162 — Mobile hamburger gradient changed to green |
+
+### Before/After
+
+| Element | Before | After |
+|---------|--------|-------|
+| `.cross-btn span` | `rgba(115, 0, 0, 0.8)` → `rgba(217, 10, 44, 0.8)` | `rgba($theme-color-dark, 0.8)` → `rgba($theme-color, 0.8)` |
+
+### Verification
+- SCSS compilation: 0 errors
+- Console errors: 0
+- Mobile hamburger menu: GREEN gradient
+
+### Restore Point
+- `docs/restore-points/Restore_Point_Phase_11F_D.md`
+
+### Final Confirmation
+**Phase 11F is NOW FULLY COMPLETE. All public UI elements are derived exclusively from Devmart Primary Green (#1EB36B) and its approved dark variant. Zero red residuals remain.**
+
+---
+
+## Phase 11F — FORMAL CLOSURE (2025-12-28)
+
+**Status:** 🔒 **CLOSED — DO NOT REOPEN**
+
+### Closure Authorization
+Phase 11F has been formally closed per governance directive.
+
+### Basis for Closure
+- All red and red-derived residuals fully eliminated
+- Cursor, progress bars, overlays, cards, borders, and animations derive exclusively from:
+  - Devmart Primary Green (#1EB36B)
+  - Approved dark variant ($theme-color-dark)
+- Red-tinted image assets replaced with green equivalents
+- No hardcoded red, rgba-red, or baked-in red assets remain
+
+### Restore Points Retained
+- `docs/restore-points/Restore_Point_Phase_11F_C.md`
+- `docs/restore-points/Restore_Point_Phase_11F_D.md`
+
+### Governance
+- Phase 11F MUST NOT be reopened
+- No further color cleanup permitted under this phase
+- Future visual adjustments fall under subsequent phases only
+
+### Next Phase
+- Phase 11G remains BLOCKED until explicitly authorized
+
+---
+
+## Phase 11G-A — Mobile Menu Regression Fix (2025-12-28)
+
+**Status:** ✅ COMPLETE
+
+### Issue
+Mobile menu rendered open by default instead of hidden off-canvas.
+
+### Root Cause
+The base `.main-nav` style set `display: inline-block` which could interfere with the mobile fixed positioning and transform. The mobile media query needed to explicitly override this.
+
+### Fix Applied
+**File:** `apps/public/src/assets/sass/style.scss` (lines 68-95)
+- Added `display: block;` to override base inline-block
+- Added `visibility: visible;` to ensure consistent visibility handling
+- Transform `translateX(-260px)` now correctly hides menu off-canvas
+
+### Files Modified
+- `apps/public/src/assets/sass/style.scss`
+
+### Restore Point
+- `docs/restore-points/Restore_Point_Phase_11G_A_Mobile_Menu.md`
+
+### Verification
+- Mobile load: menu hidden ✅
+- Hamburger click: opens ✅
+- Hamburger click again: closes ✅
+- Desktop header: unaffected ✅
+
+---
 
 ### Darkone (Admin Backend)
 - 100% 1:1 template parity required

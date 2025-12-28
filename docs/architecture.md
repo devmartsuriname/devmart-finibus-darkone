@@ -386,3 +386,93 @@ Final sweep to eliminate ALL remaining red residuals discovered during comprehen
 **Phase 11F is GLOBALLY COMPLETE.**
 
 ---
+
+## Phase 11F-D — Final Red Residual Fix (2025-12-27)
+
+**Status:** ✅ **COMPLETE**
+
+### Objective
+Final fix for the last remaining red residual discovered in comprehensive audit.
+
+### Scope
+- **Files Modified:** 1
+- **Element Fixed:** Mobile hamburger menu gradient
+
+### Change Applied
+
+| File | Line | Before | After |
+|------|------|--------|-------|
+| `style.scss` | 162 | `rgba(115,0,0,0.8)` → `rgba(217,10,44,0.8)` | `rgba($theme-color-dark, 0.8)` → `rgba($theme-color, 0.8)` |
+
+### Verification
+- ✅ SCSS compilation: 0 errors
+- ✅ Mobile hamburger menu: GREEN gradient
+- ✅ All other elements unchanged
+
+### Restore Point
+- `docs/restore-points/Restore_Point_Phase_11F_D.md`
+
+### Final Confirmation
+**Phase 11F is NOW FULLY COMPLETE. Zero red residuals remain anywhere in the public application.**
+
+---
+
+## Phase 11F — FORMAL CLOSURE (2025-12-28)
+
+**Status:** 🔒 **CLOSED — DO NOT REOPEN**
+
+### Closure Authorization
+Phase 11F has been formally closed per governance directive.
+
+### Basis for Closure
+- All red and red-derived residuals fully eliminated
+- Cursor, progress bars, overlays, cards, borders, and animations derive exclusively from:
+  - Devmart Primary Green (#1EB36B)
+  - Approved dark variant ($theme-color-dark)
+- Red-tinted image assets replaced with green equivalents
+- No hardcoded red, rgba-red, or baked-in red assets remain
+
+### Restore Points Retained
+- `docs/restore-points/Restore_Point_Phase_11F_C.md`
+- `docs/restore-points/Restore_Point_Phase_11F_D.md`
+
+### Governance
+- Phase 11F MUST NOT be reopened
+- No further color cleanup permitted under this phase
+- Future visual adjustments fall under subsequent phases only
+
+### Next Phase
+- Phase 11G-A: COMPLETE (Mobile Menu Fix)
+- Phase 11G-B+: BLOCKED until explicitly authorized
+
+---
+
+## Phase 11G-A — Mobile Menu Regression Fix (2025-12-28)
+
+**Status:** ✅ COMPLETE
+
+### Scope
+apps/public ONLY — Finibus parity restoration
+
+### Issue
+Mobile menu rendered open by default instead of hidden off-canvas on mobile viewport.
+
+### Root Cause
+CSS specificity issue: base `.main-nav` had `display: inline-block` which interfered with mobile fixed positioning. The mobile media query needed to explicitly override the display property.
+
+### Fix Applied
+**File:** `apps/public/src/assets/sass/style.scss`
+- Added `display: block;` to override base inline-block in mobile media query
+- Added `visibility: visible;` for consistent handling
+- Transform `translateX(-260px)` now correctly hides menu off-canvas
+
+### Guardian Rules Compliance
+- ✅ apps/public ONLY
+- ✅ No branding changes
+- ✅ No new color tokens
+- ✅ Finibus parity restored
+
+### Restore Point
+- `docs/restore-points/Restore_Point_Phase_11G_A_Mobile_Menu.md`
+
+---
