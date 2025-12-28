@@ -613,6 +613,7 @@ Contact us → /contact
 
 ### Next Phase
 - Phase 11G-A Fix: COMPLETE (CSS parity restored)
+- Phase 11G-A Fix V2: COMPLETE (Explicit desktop hidden states + explicit media query)
 - Phase 11G-C+: BLOCKED until explicitly authorized
 
 ---
