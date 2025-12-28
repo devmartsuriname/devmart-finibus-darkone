@@ -442,6 +442,37 @@ Phase 11F has been formally closed per governance directive.
 - Future visual adjustments fall under subsequent phases only
 
 ### Next Phase
-- Phase 11G remains BLOCKED until explicitly authorized
+- Phase 11G-A: COMPLETE (Mobile Menu Fix)
+- Phase 11G-B+: BLOCKED until explicitly authorized
+
+---
+
+## Phase 11G-A — Mobile Menu Regression Fix (2025-12-28)
+
+**Status:** ✅ COMPLETE
+
+### Scope
+apps/public ONLY — Finibus parity restoration
+
+### Issue
+Mobile menu rendered open by default instead of hidden off-canvas on mobile viewport.
+
+### Root Cause
+CSS specificity issue: base `.main-nav` had `display: inline-block` which interfered with mobile fixed positioning. The mobile media query needed to explicitly override the display property.
+
+### Fix Applied
+**File:** `apps/public/src/assets/sass/style.scss`
+- Added `display: block;` to override base inline-block in mobile media query
+- Added `visibility: visible;` for consistent handling
+- Transform `translateX(-260px)` now correctly hides menu off-canvas
+
+### Guardian Rules Compliance
+- ✅ apps/public ONLY
+- ✅ No branding changes
+- ✅ No new color tokens
+- ✅ Finibus parity restored
+
+### Restore Point
+- `docs/restore-points/Restore_Point_Phase_11G_A_Mobile_Menu.md`
 
 ---

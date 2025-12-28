@@ -538,6 +538,36 @@ Phase 11F has been formally closed per governance directive.
 
 ---
 
+## Phase 11G-A — Mobile Menu Regression Fix (2025-12-28)
+
+**Status:** ✅ COMPLETE
+
+### Issue
+Mobile menu rendered open by default instead of hidden off-canvas.
+
+### Root Cause
+The base `.main-nav` style set `display: inline-block` which could interfere with the mobile fixed positioning and transform. The mobile media query needed to explicitly override this.
+
+### Fix Applied
+**File:** `apps/public/src/assets/sass/style.scss` (lines 68-95)
+- Added `display: block;` to override base inline-block
+- Added `visibility: visible;` to ensure consistent visibility handling
+- Transform `translateX(-260px)` now correctly hides menu off-canvas
+
+### Files Modified
+- `apps/public/src/assets/sass/style.scss`
+
+### Restore Point
+- `docs/restore-points/Restore_Point_Phase_11G_A_Mobile_Menu.md`
+
+### Verification
+- Mobile load: menu hidden ✅
+- Hamburger click: opens ✅
+- Hamburger click again: closes ✅
+- Desktop header: unaffected ✅
+
+---
+
 ### Darkone (Admin Backend)
 - 100% 1:1 template parity required
 - No custom Bootstrap modifications
