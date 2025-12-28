@@ -155,6 +155,15 @@ header {
         display: block;
     }
 }
+// Desktop: Explicitly hide mobile-only elements
+.mobile-menu {
+    display: none;
+}
+
+.cross-btn {
+    display: none;
+}
+
 @media only screen and (min-width: 1199px) {
     .main-nav ul li:hover ul.sub-menu {
         display: block !important;
