@@ -62,7 +62,7 @@
 @import 'commingsoon';
 
 
-@media#{$responsive-mobile-menu} {
+@media only screen and (max-width: 1199px) {
 
     //Main menu redesign
     header .main-nav {
