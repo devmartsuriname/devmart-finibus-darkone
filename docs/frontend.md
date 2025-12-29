@@ -120,3 +120,60 @@ The following 9 routes should be verified in Incognito for full coverage:
 - [ ] `/contact` — Contact page
 
 **Note:** This is a documentation TODO. User will provide screenshots when ready.
+
+---
+
+## Phase 12.1 — Homepage Content Character Limits (2025-12-29)
+
+### Hero Slides
+
+| Field | Content | Length | Safe Range | Status |
+|-------|---------|--------|------------|--------|
+| Slide 1 title_prefix | "We Design, Build, and Operate" | 30 | 20-40 | ✅ Safe |
+| Slide 1 title_highlight | "Critical Digital Systems" | 24 | 8-25 | ✅ Safe |
+| Slide 1 description | (155 chars) | 155 | 150-250 | ✅ Safe |
+| Slide 2 title_prefix | "Digital Infrastructure for" | 27 | 20-40 | ✅ Safe |
+| Slide 2 title_highlight | "Public Services" | 15 | 8-25 | ✅ Safe |
+| Slide 2 description | (170 chars) | 170 | 150-250 | ✅ Safe |
+| Slide 3 title_prefix | "Enterprise Systems That" | 23 | 20-40 | ✅ Safe |
+| Slide 3 title_highlight | "Scale with Governance" | 21 | 8-25 | ✅ Safe |
+| Slide 3 description | (148 chars) | 148 | 150-250 | ⚠️ Slightly short |
+
+### About Section
+
+| Field | Content | Length | Safe Range | Status |
+|-------|---------|--------|------------|--------|
+| title | "Your Digital Infrastructure Partner" | 36 | 25-50 | ✅ Safe |
+| description | (227 chars) | 227 | 200-400 | ✅ Safe |
+
+### Why Choose Us Section
+
+| Field | Content | Length | Safe Range | Status |
+|-------|---------|--------|------------|--------|
+| title | "Why Institutions Choose Devmart" | 32 | 25-50 | ✅ Safe |
+| skill 1 label | "Mission-Critical Delivery" | 25 | 15-30 | ✅ Safe |
+| skill 2 label | "Secure Integrations" | 19 | 15-30 | ✅ Safe |
+| skill 3 label | "Scalable Architecture" | 21 | 15-30 | ✅ Safe |
+| skill 4 label | "Operational Stewardship" | 23 | 15-30 | ✅ Safe |
+
+### CTA Strip
+
+| Field | Content | Length | Safe Range | Status |
+|-------|---------|--------|------------|--------|
+| title_line1 | "Ready to Build" | 14 | 12-25 | ✅ Safe |
+| title_line2 | "Critical Systems?" | 17 | 10-20 | ✅ Safe |
+| title_line3 | "Let's Talk" | 10 | 8-15 | ✅ Safe |
+| cta_label | "Get in Touch" | 12 | 10-20 | ✅ Safe |
+
+### Source-of-Truth Mapping
+
+| Field | Source A (Public UI) | Source B (Database) | Source C (Admin) |
+|-------|---------------------|---------------------|------------------|
+| Hero slides | ✅ Rendered | ✅ homepage_settings | ✅ Pages modal |
+| About title/desc | ✅ Rendered | ✅ homepage_settings | ✅ Pages modal |
+| Why Choose title | ✅ Rendered | ✅ homepage_settings | ✅ Pages modal |
+| Why Choose skills | ✅ Rendered | ✅ homepage_settings | ✅ Pages modal |
+| CTA strip | ✅ Rendered | ✅ homepage_settings | ✅ Pages modal |
+| Services wrapper | ❌ Hardcoded | ✅ Exists | ✅ Admin exists |
+| Portfolio wrapper | ❌ Hardcoded | ✅ Exists | ✅ Admin exists |
+| News wrapper | ❌ Hardcoded | ✅ Exists | ✅ Admin exists |
