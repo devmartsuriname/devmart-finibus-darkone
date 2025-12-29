@@ -1,6 +1,7 @@
 # Admin Diagnostic: Dashboard & Analytics
 
 **Last Verified:** 2025-12-29  
+**Updated:** 2025-12-29 (Added Reusability Rule)  
 **Status:** Placeholder State
 
 ---
@@ -24,27 +25,32 @@ Located in: `src/app/(admin)/dashboards/components/`
 - **Current Data:** Hardcoded (Total Income, New Users, Orders, Conversion Rate)
 - **Chart Type:** ApexCharts area sparkline
 - **Reusable For:** Leads count, Blog posts, Services, Projects, etc.
+- **Public Wiring Status:** NOT WIRED (demo only)
 
 ### 2. Chart.tsx
 - **Purpose:** Multi-series chart (bar + area)
 - **Current Data:** Hardcoded (Page Views, Clicks, Revenue by month)
 - **Chart Type:** ApexCharts line/bar combo
 - **Reusable For:** Time-series analytics
+- **Public Wiring Status:** NOT WIRED (demo only)
 
 ### 3. SaleChart.tsx
 - **Purpose:** Circular/donut progress charts
 - **Chart Type:** ApexCharts radial
 - **Reusable For:** Goal completion, percentages
+- **Public Wiring Status:** NOT WIRED (demo only)
 
 ### 4. CountryMap.tsx
 - **Purpose:** Geographic distribution map
 - **Library:** jsvectormap
 - **Reusable For:** Regional analytics (if needed)
+- **Public Wiring Status:** NOT WIRED (demo only)
 
 ### 5. User.tsx
 - **Purpose:** Data tables (accounts, transactions)
 - **Current Data:** Hardcoded sample rows
 - **Reusable For:** Leads table, recent activity
+- **Public Wiring Status:** NOT WIRED (demo only)
 
 ---
 
@@ -85,6 +91,30 @@ Located in: `src/app/(admin)/dashboards/components/`
 | CountryMap.tsx | ⚠️ Maybe | Requires geographic data |
 | User.tsx | ✅ Yes | Table component for leads/activity |
 | data.ts | ❌ Replace | Static demo data file |
+
+---
+
+## Reusability Rule (PLANNING NOTE)
+
+**CONSTRAINT:** When implementing dashboard/analytics features, the following rules apply:
+
+1. **MUST reuse existing Darkone demo components** — no new chart types or KPI card designs allowed
+2. **MUST use ApexCharts** — the charting library already in use
+3. **MUST NOT introduce new visualization libraries** (no Chart.js, D3, Recharts for dashboard)
+4. **MUST follow Darkone layout patterns** — 4-card top row, charts below, tables at bottom
+
+**Allowed modifications:**
+- Replace hardcoded data with Supabase queries
+- Adjust chart colors to match brand
+- Change labels/titles for KPI cards
+
+**Not allowed:**
+- Custom chart components
+- New dashboard layout structures
+- Alternative charting libraries
+- Custom KPI card designs
+
+This rule ensures 1:1 Darkone admin parity is maintained.
 
 ---
 
