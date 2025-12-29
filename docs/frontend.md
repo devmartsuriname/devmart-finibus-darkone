@@ -177,3 +177,135 @@ The following 9 routes should be verified in Incognito for full coverage:
 | Services wrapper | ❌ Hardcoded | ✅ Exists | ✅ Admin exists |
 | Portfolio wrapper | ❌ Hardcoded | ✅ Exists | ✅ Admin exists |
 | News wrapper | ❌ Hardcoded | ✅ Exists | ✅ Admin exists |
+
+---
+
+## Phase 12.2 — About Page Content Character Limits (2025-12-29)
+
+### Inside Story Section
+
+| Field | Content | Length | Safe Range | Status |
+|-------|---------|--------|------------|--------|
+| section_label | "Our Story" | 9 | ±20 | ✅ Safe |
+| title | "Building Mission-Critical Digital Systems" | 42 | 45-55 | ✅ Safe |
+| description | (298 chars) | 298 | 260-300 | ✅ Safe |
+| cto_message | (231 chars) | 231 | 220-260 | ✅ Safe |
+| cto_name | "Devmart Leadership" | 18 | ±30 | ✅ Safe |
+| cto_title | "Systems Integration Team" | 24 | ±35 | ✅ Safe |
+
+### Progress Stats
+
+| Field | Content | Length | Safe Range | Status |
+|-------|---------|--------|------------|--------|
+| stat 1 label | "Mission-Critical Systems" | 24 | ±30 | ✅ Safe |
+| stat 2 label | "Government & Enterprise" | 23 | ±30 | ✅ Safe |
+| stat 3 label | "Long-Term Operations" | 20 | ±30 | ✅ Safe |
+
+### Latest News Section
+
+| Field | Content | Length | Safe Range | Status |
+|-------|---------|--------|------------|--------|
+| section_label | "Insights" | 8 | ±20 | ✅ Safe |
+| section_title | "Latest Updates from Devmart" | 28 | 45-55 | ✅ Safe |
+| view_all_label | "View All Insights" | 17 | ±20 | ✅ Safe |
+
+### Source-of-Truth Mapping (About Page)
+
+| Field | Source A (Public UI) | Source B (Database) | Source C (Admin) |
+|-------|---------------------|---------------------|------------------|
+| Inside Story all fields | ✅ Rendered | ✅ page_settings (about) | ✅ Pages modal |
+| Latest News labels | ✅ Rendered | ✅ page_settings (about) | ✅ Pages modal |
+| Latest News posts | ✅ Rendered | ✅ blog_posts table | ✅ Blog module |
+| Why Choose Us (shared) | ✅ Rendered | ✅ homepage_settings | ✅ Pages modal |
+| Testimonials (shared) | ✅ Rendered | ✅ testimonials table | ✅ Testimonials module |
+| CTA (shared) | ✅ Rendered | ✅ homepage_settings | ✅ Pages modal |
+
+---
+
+## Phase 12.3 — Contact Page Content Verification (2025-12-29)
+
+### CMS-Wired Fields (Verified)
+
+| Field | Content | Length | Safe Range | Status |
+|-------|---------|--------|------------|--------|
+| contact_address | "Jaggernath Lachmonstraat 152, Paramaribo" | 41 | ±80 | ✅ Safe |
+| contact_phone | "+597 854-1211 \| +597 761-4838" | 30 | ±40 | ✅ Safe |
+| contact_email | "info@devmart.sr" | 15 | ±40 | ✅ Safe |
+| google_maps_embed_url | (Full Google Maps embed URL) | 283 | N/A | ✅ Valid |
+
+### Hardcoded Elements (Gaps Documented)
+
+| Element | Current Value | Length | Gap ID |
+|---------|---------------|--------|--------|
+| Section label | "Get In Touch" | 12 | GAP-09 |
+| Section title | "contact us if you have more questions." | 40 | GAP-10 |
+| Card label 1 | "Location" | 8 | GAP-11 |
+| Card label 2 | "Phone" | 5 | GAP-12 |
+| Card label 3 | "Email" | 5 | GAP-13 |
+| Form heading | "Have Any Questions" | 18 | GAP-14 |
+| Placeholder 1 | "Your Name" | 9 | GAP-15 |
+| Placeholder 2 | "Your Email" | 10 | GAP-16 |
+| Placeholder 3 | "Subject" | 7 | GAP-17 |
+| Placeholder 4 | "Your Message" | 12 | GAP-18 |
+| Submit button | "Send Message" | 12 | GAP-19 |
+| Success message | "Thank you! Your message has been sent successfully." | 52 | GAP-20 |
+
+### Source-of-Truth Mapping (Contact Page)
+
+| Field | Source A (Public UI) | Source B (Database) | Source C (Admin) |
+|-------|---------------------|---------------------|------------------|
+| Address | ✅ Rendered | ✅ settings table | ✅ Settings → General |
+| Phone | ✅ Rendered | ✅ settings table | ✅ Settings → General |
+| Email | ✅ Rendered | ✅ settings table | ✅ Settings → General |
+| Google Maps | ✅ Rendered | ✅ settings table | ✅ Settings → General |
+| CTA Strip (shared) | ✅ Rendered | ✅ homepage_settings | ✅ Pages modal |
+| Section labels | ❌ Hardcoded | N/A | N/A |
+| Form labels | ❌ Hardcoded | N/A | N/A |
+
+---
+
+## Phase 12.4 — Services Page Content Wiring (2025-12-29)
+
+### Services Content (Updated)
+
+| Slug | Title | Short Desc Length | Full Desc Length | Status |
+|------|-------|-------------------|------------------|--------|
+| web-design | Web Platforms | 85 | ~820 | ✅ Safe |
+| app-design | Product Design | 86 | ~780 | ✅ Safe |
+| developing | Software Engineering | 81 | ~880 | ✅ Safe |
+| graphic-design | Brand Design | 88 | ~760 | ✅ Safe |
+| video-animation | Motion & Video | 83 | ~740 | ✅ Safe |
+| 3d-design | 3D Visualization | 87 | ~700 | ✅ Safe |
+| ui-ux-design | UX & Service Design | 93 | ~900 | ✅ Safe |
+
+### Character Limits (Verified)
+
+| Field | Target Range | Safe Range | Status |
+|-------|--------------|------------|--------|
+| title | Single line | ±25 chars | ✅ All titles fit |
+| short_description | 60-100 chars | 60-120 chars | ✅ All 81-93 chars |
+| full_description | 500-1000 chars | 400-3000 chars | ✅ All 700-900 chars |
+
+### Hardcoded Elements (Gaps Documented)
+
+| Element | Current Value | Gap ID |
+|---------|---------------|--------|
+| Section label | "what we do" | GAP-21 |
+| Section title | "we work performed for client happy." | GAP-22 |
+| CTA label | "view all services" | GAP-23 |
+| Card CTA | "read more" | GAP-24 |
+| How We Work section | Entire section | GAP-25 |
+| How We Work label | "How We Work" | GAP-26 |
+| How We Work title | "Our Unique Work Process." | GAP-27 |
+| Slide titles | "Brainstorm & Wirefirm" etc. | GAP-28 |
+
+### Source-of-Truth Mapping (Services Page)
+
+| Field | Source A (Public UI) | Source B (Database) | Source C (Admin) |
+|-------|---------------------|---------------------|------------------|
+| Service title | ✅ Rendered | ✅ services table | ✅ Services module |
+| Service short_description | ✅ Rendered | ✅ services table | ✅ Services module |
+| Service full_description | ✅ Rendered | ✅ services table | ✅ Services module |
+| Service icon | ✅ Rendered | ✅ media table | ✅ MediaPicker |
+| Section labels | ❌ Hardcoded | N/A | N/A |
+| How We Work | ❌ Hardcoded | N/A | N/A |
