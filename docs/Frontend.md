@@ -261,3 +261,51 @@ The following 9 routes should be verified in Incognito for full coverage:
 | CTA Strip (shared) | ✅ Rendered | ✅ homepage_settings | ✅ Pages modal |
 | Section labels | ❌ Hardcoded | N/A | N/A |
 | Form labels | ❌ Hardcoded | N/A | N/A |
+
+---
+
+## Phase 12.4 — Services Page Content Wiring (2025-12-29)
+
+### Services Content (Updated)
+
+| Slug | Title | Short Desc Length | Full Desc Length | Status |
+|------|-------|-------------------|------------------|--------|
+| web-design | Web Platforms | 85 | ~820 | ✅ Safe |
+| app-design | Product Design | 86 | ~780 | ✅ Safe |
+| developing | Software Engineering | 81 | ~880 | ✅ Safe |
+| graphic-design | Brand Design | 88 | ~760 | ✅ Safe |
+| video-animation | Motion & Video | 83 | ~740 | ✅ Safe |
+| 3d-design | 3D Visualization | 87 | ~700 | ✅ Safe |
+| ui-ux-design | UX & Service Design | 93 | ~900 | ✅ Safe |
+
+### Character Limits (Verified)
+
+| Field | Target Range | Safe Range | Status |
+|-------|--------------|------------|--------|
+| title | Single line | ±25 chars | ✅ All titles fit |
+| short_description | 60-100 chars | 60-120 chars | ✅ All 81-93 chars |
+| full_description | 500-1000 chars | 400-3000 chars | ✅ All 700-900 chars |
+
+### Hardcoded Elements (Gaps Documented)
+
+| Element | Current Value | Gap ID |
+|---------|---------------|--------|
+| Section label | "what we do" | GAP-21 |
+| Section title | "we work performed for client happy." | GAP-22 |
+| CTA label | "view all services" | GAP-23 |
+| Card CTA | "read more" | GAP-24 |
+| How We Work section | Entire section | GAP-25 |
+| How We Work label | "How We Work" | GAP-26 |
+| How We Work title | "Our Unique Work Process." | GAP-27 |
+| Slide titles | "Brainstorm & Wirefirm" etc. | GAP-28 |
+
+### Source-of-Truth Mapping (Services Page)
+
+| Field | Source A (Public UI) | Source B (Database) | Source C (Admin) |
+|-------|---------------------|---------------------|------------------|
+| Service title | ✅ Rendered | ✅ services table | ✅ Services module |
+| Service short_description | ✅ Rendered | ✅ services table | ✅ Services module |
+| Service full_description | ✅ Rendered | ✅ services table | ✅ Services module |
+| Service icon | ✅ Rendered | ✅ media table | ✅ MediaPicker |
+| Section labels | ❌ Hardcoded | N/A | N/A |
+| How We Work | ❌ Hardcoded | N/A | N/A |
