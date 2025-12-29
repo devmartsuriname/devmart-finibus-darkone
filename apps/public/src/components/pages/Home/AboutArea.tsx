@@ -39,6 +39,12 @@ function AboutArea({ black = "", light = "" }: AboutAreaProps) {
   const stats = homepageData?.stats?.length ? homepageData.stats : STATIC_STATS;
   const skills = about.skills?.length ? about.skills : STATIC_ABOUT.skills;
 
+  // Resolve media URLs with fallbacks to Finibus static images
+  const image1Url = about.image_1_media_id || "/images/about-bottom.jpg";
+  const image2Url = about.image_2_media_id || "/images/about-top.png";
+  const missionIconUrl = about.mission_icon_media_id || "/images/icons/mission-icon.png";
+  const ctoSignatureUrl = about.cto_signature_media_id || "/images/ctoFounder.png";
+
   const scrollTop = () => {
     window.scrollTo({
       top: 0,
@@ -62,8 +68,8 @@ function AboutArea({ black = "", light = "" }: AboutAreaProps) {
                   <div className="msn-icon">
                     <i>
                       <img
-                        src="/images/icons/mission-icon.png"
-                        alt="images"
+                        src={missionIconUrl}
+                        alt="mission icon"
                       />
                     </i>
                   </div>
@@ -73,8 +79,8 @@ function AboutArea({ black = "", light = "" }: AboutAreaProps) {
                   </div>
                   <div className="cto">
                     <img
-                      src="/images/ctoFounder.png"
-                      alt="imgs"
+                      src={ctoSignatureUrl}
+                      alt="CTO signature"
                     />
                   </div>
                 </div>
@@ -87,13 +93,13 @@ function AboutArea({ black = "", light = "" }: AboutAreaProps) {
               <div className="about-right">
                 <div className="group-images">
                   <img
-                    src="/images/about-bottom.jpg"
-                    alt="images"
+                    src={image1Url}
+                    alt="about main"
                   />
                   <div className="about-top">
                     <img
-                      src="/images/about-top.png"
-                      alt="images"
+                      src={image2Url}
+                      alt="about overlay"
                     />
                   </div>
                   <div className="about-skills">

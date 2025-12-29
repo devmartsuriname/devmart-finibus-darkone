@@ -47,6 +47,10 @@ export interface HomeAboutData {
   cta_label: string;
   cta_url: string;
   skills: SkillBar[];
+  image_1_media_id?: string;        // Main bottom image
+  image_2_media_id?: string;        // Top overlay image
+  mission_icon_media_id?: string;   // Mission section icon
+  cto_signature_media_id?: string;  // CTO/Founder signature
 }
 
 export interface WhyChooseData {
