@@ -1,7 +1,7 @@
 # Tasks — Devmart Implementation Tracker
 
 **Status:** Verified  
-**Current Phase:** Phase 12.5 COMPLETE  
+**Current Phase:** Phase 12.6 COMPLETE  
 **Last Updated:** 2025-12-29
 
 ---
@@ -34,6 +34,77 @@
 | Phase 12.4 | ✅ COMPLETE | Services Content Wiring (Devmart Strategic Positioning) |
 | URL Fix A | ✅ COMPLETE | Broken Service Links (Footer + Blog Sidebar) |
 | Phase 12.5 | ✅ COMPLETE | Projects Verification & GAP Fix |
+| Phase 12.6 | ✅ COMPLETE | Blog Content Swap (DB-Only) |
+
+---
+
+## Phase 12.6 — Blog Content Swap (✅ COMPLETE)
+
+**Status:** COMPLETE  
+**Completed:** 2025-12-29  
+**Type:** Content Replacement (DB-Only)
+
+### Objective
+
+Apply Devmart strategic positioning content to blog posts via database UPDATE per Live Document: "Devmart Blog Content — Phase 12.6".
+
+### Posts Updated (5 of 6)
+
+| Slug | Title Updated | Excerpt Updated | Content Updated |
+|------|---------------|-----------------|-----------------|
+| `upcoming-trends-ai-machine-learning` | ✅ (kept) | ✅ NEW | ✅ NEW |
+| `future-of-digital-business-strategy` | ✅ NEW | ✅ NEW | ✅ NEW |
+| `complete-guide-marketing-automation` | ✅ (kept) | ✅ NEW | ✅ NEW |
+| `building-scalable-web-applications-2025` | ✅ NEW | ✅ NEW | ✅ NEW |
+| `design-thinking-modern-enterprise` | — (skipped) | — (skipped) | — (skipped) |
+| `security-best-practices-modern-applications` | ✅ (kept) | ✅ NEW | ✅ NEW |
+
+### Category Updates
+
+| Slug | Before | After |
+|------|--------|-------|
+| `future-of-digital-business-strategy` | Website | Strategy |
+| `building-scalable-web-applications-2025` | Software Design | Development |
+
+### Fields NOT Changed (Preserved)
+
+- `id` — Preserved
+- `slug` — Preserved (no URL changes)
+- `featured_image_media_id` — Preserved (images unchanged)
+- `status` — Preserved (all remain `published`)
+- `published_at` — Preserved
+- `author_id` — Preserved
+
+### Character Limit Compliance
+
+All content within safe ranges per Frontend_Blog.md and Frontend_BlogDetails.md:
+- Titles: 30-55 chars ✅
+- Excerpts: 90-145 chars ✅
+- Content: 1000-1600 chars per post ✅
+
+**No content shortened due to character limits.**
+
+### Verification Completed
+
+- ✅ `/blog` loads with updated titles and excerpts
+- ✅ All 6 slugs tested at `/blog/:slug`
+- ✅ No console errors
+- ✅ Images render correctly (unchanged)
+- ✅ Layout stable, no 404s
+
+### Guardian Rules Verified
+
+- ✅ No schema changes
+- ✅ No slug changes
+- ✅ No new records added/removed
+- ✅ No code changes
+- ✅ No CSS/SCSS changes
+- ✅ Darkone Admin 1:1 preserved
+- ✅ Finibus Frontend 1:1 preserved
+
+### Restore Point
+
+`docs/restore-points/Restore_Point_Phase_12_6_Blog_Content_Swap.md`
 
 ---
 
