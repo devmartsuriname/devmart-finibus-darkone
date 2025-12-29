@@ -32,7 +32,8 @@ const PageEditModal = ({ show, page, loading, onClose, onSave }: PageEditModalPr
     toggleSectionEnabled,
     updateSection,
     getSectionEnabled,
-    updateSeoData
+    updateSeoData,
+    updateStats
   } = useHomepageBlocks()
 
   // About page-specific hook
@@ -379,6 +380,7 @@ const PageEditModal = ({ show, page, loading, onClose, onSave }: PageEditModalPr
                 onToggleEnabled={toggleSectionEnabled}
                 onUpdateSection={updateSection}
                 getSectionEnabled={getSectionEnabled}
+                onSaveStats={updateStats}
               />
             )}
           </Tab>

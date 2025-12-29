@@ -289,13 +289,43 @@ const HomepageSectionEditModal = ({
 
     return (
       <>
-        {/* About Image MediaPicker */}
+        {/* About Image 1 (Main/Bottom) */}
         <Form.Group className="mb-3">
           <MediaPicker
-            label="About Image"
-            value={(formData.image_media_id as string) || ''}
-            onChange={(mediaId) => updateField('image_media_id', mediaId)}
-            helpText="Main image for the About section."
+            label="About Image 1 (Main)"
+            value={(formData.image_1_media_id as string) || ''}
+            onChange={(mediaId) => updateField('image_1_media_id', mediaId)}
+            helpText="Main bottom image for the About section."
+          />
+        </Form.Group>
+
+        {/* About Image 2 (Overlay/Top) */}
+        <Form.Group className="mb-3">
+          <MediaPicker
+            label="About Image 2 (Overlay)"
+            value={(formData.image_2_media_id as string) || ''}
+            onChange={(mediaId) => updateField('image_2_media_id', mediaId)}
+            helpText="Smaller overlay image at the top-right corner."
+          />
+        </Form.Group>
+
+        {/* Mission Icon */}
+        <Form.Group className="mb-3">
+          <MediaPicker
+            label="Mission Icon"
+            value={(formData.mission_icon_media_id as string) || ''}
+            onChange={(mediaId) => updateField('mission_icon_media_id', mediaId)}
+            helpText="Icon displayed next to the Mission text."
+          />
+        </Form.Group>
+
+        {/* CTO/Founder Signature */}
+        <Form.Group className="mb-3">
+          <MediaPicker
+            label="CTO/Founder Signature"
+            value={(formData.cto_signature_media_id as string) || ''}
+            onChange={(mediaId) => updateField('cto_signature_media_id', mediaId)}
+            helpText="Signature or badge image for CTO/Founder section."
           />
         </Form.Group>
 
