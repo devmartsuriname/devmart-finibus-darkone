@@ -177,3 +177,45 @@ The following 9 routes should be verified in Incognito for full coverage:
 | Services wrapper | ❌ Hardcoded | ✅ Exists | ✅ Admin exists |
 | Portfolio wrapper | ❌ Hardcoded | ✅ Exists | ✅ Admin exists |
 | News wrapper | ❌ Hardcoded | ✅ Exists | ✅ Admin exists |
+
+---
+
+## Phase 12.2 — About Page Content Character Limits (2025-12-29)
+
+### Inside Story Section
+
+| Field | Content | Length | Safe Range | Status |
+|-------|---------|--------|------------|--------|
+| section_label | "Our Story" | 9 | ±20 | ✅ Safe |
+| title | "Building Mission-Critical Digital Systems" | 42 | 45-55 | ✅ Safe |
+| description | (298 chars) | 298 | 260-300 | ✅ Safe |
+| cto_message | (231 chars) | 231 | 220-260 | ✅ Safe |
+| cto_name | "Devmart Leadership" | 18 | ±30 | ✅ Safe |
+| cto_title | "Systems Integration Team" | 24 | ±35 | ✅ Safe |
+
+### Progress Stats
+
+| Field | Content | Length | Safe Range | Status |
+|-------|---------|--------|------------|--------|
+| stat 1 label | "Mission-Critical Systems" | 24 | ±30 | ✅ Safe |
+| stat 2 label | "Government & Enterprise" | 23 | ±30 | ✅ Safe |
+| stat 3 label | "Long-Term Operations" | 20 | ±30 | ✅ Safe |
+
+### Latest News Section
+
+| Field | Content | Length | Safe Range | Status |
+|-------|---------|--------|------------|--------|
+| section_label | "Insights" | 8 | ±20 | ✅ Safe |
+| section_title | "Latest Updates from Devmart" | 28 | 45-55 | ✅ Safe |
+| view_all_label | "View All Insights" | 17 | ±20 | ✅ Safe |
+
+### Source-of-Truth Mapping (About Page)
+
+| Field | Source A (Public UI) | Source B (Database) | Source C (Admin) |
+|-------|---------------------|---------------------|------------------|
+| Inside Story all fields | ✅ Rendered | ✅ page_settings (about) | ✅ Pages modal |
+| Latest News labels | ✅ Rendered | ✅ page_settings (about) | ✅ Pages modal |
+| Latest News posts | ✅ Rendered | ✅ blog_posts table | ✅ Blog module |
+| Why Choose Us (shared) | ✅ Rendered | ✅ homepage_settings | ✅ Pages modal |
+| Testimonials (shared) | ✅ Rendered | ✅ testimonials table | ✅ Testimonials module |
+| CTA (shared) | ✅ Rendered | ✅ homepage_settings | ✅ Pages modal |
