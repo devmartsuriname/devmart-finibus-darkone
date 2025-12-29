@@ -29,6 +29,56 @@
 | Phase 10C | ✅ COMPLETE | About Page DB Wiring + Heading Color Parity |
 | Phase 11 | ✅ COMPLETE | Settings Module Expansion & Branding Rollout (through 11J) |
 | Phase 12.1 | ✅ COMPLETE | Homepage Content Wiring (Devmart Strategic Positioning) |
+| Phase 12.2 | ✅ COMPLETE | About Page Content Wiring (Devmart Strategic Positioning) |
+
+---
+
+## Phase 12.2 — About Page Content Wiring (✅ COMPLETE)
+
+**Status:** COMPLETE  
+**Completed:** 2025-12-29
+
+### Objective
+
+Apply Devmart strategic positioning content to About page CMS-wired sections via database UPDATE.
+
+### Content Updated
+
+| Section | Field | New Content | Chars |
+|---------|-------|-------------|-------|
+| Inside Story | section_label | "Our Story" | 9 |
+| Inside Story | title | "Building Mission-Critical Digital Systems" | 42 |
+| Inside Story | description | (298 chars) | 298 |
+| Inside Story | cto_message | (231 chars) | 231 |
+| Inside Story | cto_name | "Devmart Leadership" | 18 |
+| Inside Story | cto_title | "Systems Integration Team" | 24 |
+| Progress Stat 1 | label | "Mission-Critical Systems" | 24 |
+| Progress Stat 2 | label | "Government & Enterprise" | 23 |
+| Progress Stat 3 | label | "Long-Term Operations" | 20 |
+| Latest News | section_label | "Insights" | 8 |
+| Latest News | section_title | "Latest Updates from Devmart" | 28 |
+| Latest News | view_all_label | "View All Insights" | 17 |
+
+### Gaps Identified (NOT Implemented)
+
+| Gap ID | Section | Issue | Reason |
+|--------|---------|-------|--------|
+| GAP-06 | Inside Story | Signature image hardcoded | No MediaPicker wired (cto_signature_media_id is NULL) |
+| GAP-07 | Inside Story | Main image hardcoded | No MediaPicker wired (main_image_media_id is NULL) |
+| GAP-08 | Latest News | Author info hardcoded | Blog posts render "Posted by, Admin" statically |
+
+### Guardian Rules Verified
+
+- ✅ No schema changes
+- ✅ No type/interface changes
+- ✅ No component modifications
+- ✅ No CSS/SCSS changes
+- ✅ Darkone Admin 1:1 preserved
+- ✅ Finibus Frontend 1:1 preserved
+
+### Restore Point
+
+`docs/restore-points/Restore_Point_Phase_12_2_About_Content_Wiring.md`
 
 ---
 
