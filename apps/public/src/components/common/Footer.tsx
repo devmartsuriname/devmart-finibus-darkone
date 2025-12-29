@@ -90,32 +90,32 @@ function Footer() {
                 <h4>Our Services</h4>
                 <ul className="footer-menu">
                   <li>
-                    <Link onClick={scrollTop} to="/service-details">
+                    <Link onClick={scrollTop} to="/service">
                       Strategy &amp; Research
                     </Link>
                   </li>
                   <li>
-                    <Link onClick={scrollTop} to="/service-details">
+                    <Link onClick={scrollTop} to="/service">
                       Web Development
                     </Link>
                   </li>
                   <li>
-                    <Link onClick={scrollTop} to="/service-details">
+                    <Link onClick={scrollTop} to="/service">
                       Web Solution
                     </Link>
                   </li>
                   <li>
-                    <Link onClick={scrollTop} to="/service-details">
+                    <Link onClick={scrollTop} to="/service">
                       Digital Marketing
                     </Link>
                   </li>
                   <li>
-                    <Link onClick={scrollTop} to="/service-details">
+                    <Link onClick={scrollTop} to="/service">
                       App Design
                     </Link>
                   </li>
                   <li>
-                    <Link onClick={scrollTop} to="/service-details">
+                    <Link onClick={scrollTop} to="/service">
                       App Development
                     </Link>
                   </li>

@@ -32,8 +32,45 @@
 | Phase 12.2 | ✅ COMPLETE | About Page Content Wiring (Devmart Strategic Positioning) |
 | Phase 12.3 | ✅ COMPLETE | Contact Page Content Verification (No DB Updates Required) |
 | Phase 12.4 | ✅ COMPLETE | Services Content Wiring (Devmart Strategic Positioning) |
+| URL Fix A | ✅ COMPLETE | Broken Service Links (Footer + Blog Sidebar) |
 
 ---
+
+## URL Fix Option A — Broken Service Links (✅ COMPLETE)
+
+**Status:** COMPLETE  
+**Completed:** 2025-12-29  
+**Type:** URL Consistency Fix (No Route Changes)
+
+### Objective
+
+Fix broken service links that point to `/service-details` without a slug.
+
+### Files Changed
+
+| File | Issue | Fix Applied |
+|------|-------|-------------|
+| `apps/public/src/components/common/Footer.tsx` | 6 links to `/service-details` (no slug) | Changed to `/service` |
+| `apps/public/src/components/pages/blog/ServiceList.tsx` | 6 links to `/service-details` (no slug) | Changed to `/service` |
+
+### Canonical Routes (UNCHANGED)
+
+| Content Type | Route Pattern |
+|--------------|---------------|
+| Service Details | `/service-details/:slug` |
+| Project Details | `/project-details/:slug` |
+| Blog Details | `/blog/:slug` |
+| Services Listing | `/service` |
+| Projects Listing | `/project` |
+| Blog Listing | `/blog` |
+
+### Verification
+
+- ✅ Footer service links now point to `/service`
+- ✅ Blog sidebar service links now point to `/service`
+- ✅ No console errors
+- ✅ Canonical routes unchanged
+- ✅ 1:1 Finibus parity maintained
 
 ## Phase 12.4 — Services Content Wiring (✅ COMPLETE)
 

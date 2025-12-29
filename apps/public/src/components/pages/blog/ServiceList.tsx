@@ -15,7 +15,7 @@ function ServiceList() {
         <h4>Services</h4>
         <ul className="service-list">
           <li>
-            <Link to="/service-details" onClick={scrollTop}>
+            <Link to="/service" onClick={scrollTop}>
               <i>
                 <img src="/images/icons/dash-circle-icon.svg" alt="images" />
               </i>
@@ -23,7 +23,7 @@ function ServiceList() {
             </Link>
           </li>
           <li>
-            <Link to="/service-details" onClick={scrollTop}>
+            <Link to="/service" onClick={scrollTop}>
               <i>
                 <img src="/images/icons/dash-circle-icon.svg" alt="images" />
               </i>
@@ -31,7 +31,7 @@ function ServiceList() {
             </Link>
           </li>
           <li>
-            <Link to="/service-details" onClick={scrollTop}>
+            <Link to="/service" onClick={scrollTop}>
               <i>
                 <img src="/images/icons/dash-circle-icon.svg" alt="images" />
               </i>
@@ -39,7 +39,7 @@ function ServiceList() {
             </Link>
           </li>
           <li>
-            <Link to="/service-details" onClick={scrollTop}>
+            <Link to="/service" onClick={scrollTop}>
               <i>
                 <img src="/images/icons/dash-circle-icon.svg" alt="images" />
               </i>
@@ -47,7 +47,7 @@ function ServiceList() {
             </Link>
           </li>
           <li>
-            <Link to="/service-details" onClick={scrollTop}>
+            <Link to="/service" onClick={scrollTop}>
               <i>
                 <img src="/images/icons/dash-circle-icon.svg" alt="images" />
               </i>
@@ -55,7 +55,7 @@ function ServiceList() {
             </Link>
           </li>
           <li>
-            <Link to="/service-details" onClick={scrollTop}>
+            <Link to="/service" onClick={scrollTop}>
               <i>
                 <img src="/images/icons/dash-circle-icon.svg" alt="images" />
               </i>
