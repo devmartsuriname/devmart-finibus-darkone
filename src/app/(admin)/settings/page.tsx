@@ -32,6 +32,9 @@ const isValidUrl = (url: string): boolean => {
   }
 }
 
+// Google Maps embed URL validation prefix (STRICT)
+const GOOGLE_MAPS_EMBED_PREFIX = 'https://www.google.com/maps/embed?pb='
+
 interface FormValues {
   // General
   site_name: string
@@ -39,6 +42,7 @@ interface FormValues {
   contact_email: string
   contact_phone: string
   contact_address: string
+  google_maps_embed_url: string
   // SEO
   default_meta_title: string
   default_meta_description: string
@@ -62,6 +66,7 @@ const INITIAL_VALUES: FormValues = {
   contact_email: '',
   contact_phone: '',
   contact_address: '',
+  google_maps_embed_url: '',
   default_meta_title: '',
   default_meta_description: '',
   default_og_image_media_id: '',
@@ -92,6 +97,7 @@ const SettingsPage = () => {
         contact_email: getSettingValue('contact_email'),
         contact_phone: getSettingValue('contact_phone'),
         contact_address: getSettingValue('contact_address'),
+        google_maps_embed_url: getSettingValue('google_maps_embed_url'),
         default_meta_title: getSettingValue('default_meta_title'),
         default_meta_description: getSettingValue('default_meta_description'),
         default_og_image_media_id: getSettingValue('default_og_image_media_id'),
@@ -136,6 +142,11 @@ const SettingsPage = () => {
       if (!isValidUrl(formValues[field])) {
         errors[field] = 'Please enter a valid URL'
       }
+    }
+
+    // Google Maps embed URL validation (STRICT)
+    if (formValues.google_maps_embed_url && !formValues.google_maps_embed_url.startsWith(GOOGLE_MAPS_EMBED_PREFIX)) {
+      errors.google_maps_embed_url = 'URL must start with https://www.google.com/maps/embed?pb='
     }
 
     setFormErrors(errors)
@@ -244,6 +255,7 @@ const SettingsPage = () => {
                             contact_email: formValues.contact_email,
                             contact_phone: formValues.contact_phone,
                             contact_address: formValues.contact_address,
+                            google_maps_embed_url: formValues.google_maps_embed_url,
                           }}
                           onChange={handleChange}
                           errors={formErrors}
