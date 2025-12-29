@@ -90,7 +90,10 @@ export interface HomepageData {
     enabled?: boolean
     title?: string
     description?: string
-    image_media_id?: string
+    image_1_media_id?: string        // Main bottom image (about-bottom.jpg)
+    image_2_media_id?: string        // Top overlay image (about-top.png)
+    mission_icon_media_id?: string   // Mission section icon
+    cto_signature_media_id?: string  // CTO/Founder signature image
     cta_label?: string
     cta_url?: string
     mission_title?: string
