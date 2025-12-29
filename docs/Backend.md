@@ -3,8 +3,21 @@
 # Backend Documentation
 
 **Status:** Verified  
-**Phase:** Phase 12.4 COMPLETE (Service Details Content)  
+**Phase:** URL Fix Option A COMPLETE  
 **Last Updated:** 2025-12-29
+
+---
+
+## URL Fix Option A — Broken Service Links
+
+**Files Changed:**
+
+| File | Before | After |
+|------|--------|-------|
+| Footer.tsx | `/service-details` (no slug) | `/service` |
+| ServiceList.tsx | `/service-details` (no slug) | `/service` |
+
+**Rationale:** Hardcoded demo links without DB mapping → safe redirect to listing page.
 
 ---
 

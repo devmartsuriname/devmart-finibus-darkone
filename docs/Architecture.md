@@ -3,7 +3,7 @@
 # Architecture Documentation
 
 **Status:** Verified  
-**Phase:** Phase 12.4 COMPLETE  
+**Phase:** URL Fix Option A COMPLETE  
 **Last Updated:** 2025-12-29
 
 ---
@@ -59,6 +59,23 @@ This document outlines the architecture decisions and validation requirements fo
 - useGlobalBlocks.ts: Applied useRef pattern, removed unstable deps from `useCallback` arrays
 
 **Result:** All fixes are wiring/stability only, no new features added.
+
+### URL Fix Option A (2025-12-29)
+
+**Broken Service Links Fixed:**
+- Footer.tsx: 6 "Our Services" links changed from `/service-details` (no slug) → `/service`
+- ServiceList.tsx: 6 blog sidebar links changed from `/service-details` (no slug) → `/service`
+
+**Canonical Routes (Single Source of Truth):**
+
+| Content Type | Canonical Route |
+|--------------|-----------------|
+| Service Details | `/service-details/:slug` |
+| Project Details | `/project-details/:slug` |
+| Blog Details | `/blog/:slug` |
+| Services Listing | `/service` |
+| Projects Listing | `/project` |
+| Blog Listing | `/blog` |
 
 ---
 
