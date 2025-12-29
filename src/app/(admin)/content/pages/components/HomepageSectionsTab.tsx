@@ -5,7 +5,8 @@ import {
   SECTION_LABELS, 
   SECTION_TYPES,
   type SectionKey,
-  type HomepageData 
+  type HomepageData,
+  type StatItem
 } from '../hooks/useHomepageBlocks'
 import HomepageSectionEditModal from './HomepageSectionEditModal'
 
@@ -15,6 +16,7 @@ interface HomepageSectionsTabProps {
   onToggleEnabled: (sectionKey: SectionKey, enabled: boolean) => Promise<boolean>
   onUpdateSection: (sectionKey: SectionKey, sectionData: Record<string, unknown>) => Promise<boolean>
   getSectionEnabled: (sectionKey: SectionKey) => boolean
+  onSaveStats: (stats: StatItem[]) => Promise<boolean>
 }
 
 const HomepageSectionsTab = ({
@@ -22,7 +24,8 @@ const HomepageSectionsTab = ({
   loading,
   onToggleEnabled,
   onUpdateSection,
-  getSectionEnabled
+  getSectionEnabled,
+  onSaveStats
 }: HomepageSectionsTabProps) => {
   const [editingSection, setEditingSection] = useState<SectionKey | null>(null)
   const [togglingSection, setTogglingSection] = useState<SectionKey | null>(null)
@@ -120,6 +123,7 @@ const HomepageSectionsTab = ({
           loading={loading}
           onClose={() => setEditingSection(null)}
           onSave={(sectionData) => handleSaveSection(editingSection, sectionData)}
+          onSaveStats={onSaveStats}
         />
       )}
     </>
