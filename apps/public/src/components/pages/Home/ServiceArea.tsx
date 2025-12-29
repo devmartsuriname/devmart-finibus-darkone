@@ -2,34 +2,34 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { useServices } from "../../../hooks/useServices";
 
-// Static fallback services (Finibus defaults)
+// Static fallback services (Finibus defaults) - use correct slugs for routing
 const STATIC_SERVICES = [
   {
     id: "static-1",
     title: "web design",
     short_description: "Fusce ornare mauris nisi, id fringilla turpis vehicula justo lectus, ultricies nec sem",
-    slug: "service-details",
+    slug: "web-design",
     icon_url: "/images/icons/service-icon-1.png"
   },
   {
     id: "static-2",
     title: "App design",
     short_description: "Maecenas ut est in ante imperdiet laoreet eu quis elit laoreet Phasellus Door",
-    slug: "service-details",
+    slug: "app-design",
     icon_url: "/images/icons/service-icon-2.png"
   },
   {
     id: "static-3",
     title: "Developing",
     short_description: "Etiam eu ullamcorper ipsum. Pellentesque eu ipsum luctus libero euismod",
-    slug: "service-details",
+    slug: "developing",
     icon_url: "/images/icons/service-icon-3.png"
   },
   {
     id: "static-4",
     title: "Graphic design",
     short_description: "Quisque in massa nunc. Etiam blandit tortor nisl, auctor vulputate felis convallis at.",
-    slug: "service-details",
+    slug: "graphic-design",
     icon_url: "/images/icons/service-icon-4.png"
   }
 ];
@@ -88,7 +88,7 @@ function ServiceArea() {
                       <div className="service-content">
                         <h4>{service.title}</h4>
                         <p>{service.short_description}</p>
-                        <Link onClick={scrollTop} to={`/service/${service.slug}`}>
+                        <Link onClick={scrollTop} to={`/service-details/${service.slug}`}>
                           read more
                           <i>
                             <img
