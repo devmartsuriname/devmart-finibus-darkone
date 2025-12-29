@@ -1,7 +1,7 @@
 # Tasks — Devmart Implementation Tracker
 
 **Status:** Verified  
-**Current Phase:** Phase 11I COMPLETE  
+**Current Phase:** Phase 11J COMPLETE  
 **Last Updated:** 2025-12-29
 
 ---
@@ -27,13 +27,13 @@
 | Phase 10B Global | ✅ FINALIZED | Admin Global Text-Only Save Messages Standardized (All Modules) |
 | Phase 10B Parity | ✅ COMPLETE | Top-Right Text Banner Parity (Bootstrap Toast) |
 | Phase 10C | ✅ COMPLETE | About Page DB Wiring + Heading Color Parity |
-| Phase 11 | ✅ COMPLETE | Settings Module Expansion & Branding Rollout (through 11I) |
+| Phase 11 | ✅ COMPLETE | Settings Module Expansion & Branding Rollout (through 11J) |
 
 ---
 
 ## Phase 11 — Settings Module & Branding Rollout (✅ COMPLETE)
 
-**Status:** All Sub-phases Complete (11A through 11I)  
+**Status:** All Sub-phases Complete (11A through 11J)  
 **Completed:** 2025-12-29
 
 ### Sub-phase Summary
@@ -50,6 +50,7 @@
 | 11G-B | Mobile Menu Toggle Visibility | ✅ COMPLETE |
 | 11H | Stats Public Wiring | ✅ COMPLETE |
 | 11I | Home About Section Media Fields | ✅ COMPLETE |
+| 11J | Google Maps Settings Wiring | ✅ COMPLETE |
 
 ### Key Outcomes
 
@@ -58,6 +59,7 @@
 - All red residuals eliminated from public UI
 - Base `$theme-color` updated to Devmart Green (#1EB36B)
 - Mobile menu fully functional
+- Google Maps embed URL configurable from Admin → Settings → General
 - Stats counters wired to homepage_settings
 - About section media fields wired to database
 

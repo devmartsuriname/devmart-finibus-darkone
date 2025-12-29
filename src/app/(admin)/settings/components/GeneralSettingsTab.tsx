@@ -7,6 +7,7 @@ interface GeneralSettingsTabProps {
     contact_email: string
     contact_phone: string
     contact_address: string
+    google_maps_embed_url: string
   }
   onChange: (key: string, value: string) => void
   errors: Record<string, string>
@@ -89,6 +90,26 @@ const GeneralSettingsTab = ({ values, onChange, errors }: GeneralSettingsTabProp
         />
         <Form.Text className="text-muted">
           Physical or mailing address
+        </Form.Text>
+      </Form.Group>
+
+      <Form.Group className="mb-3">
+        <Form.Label>Google Maps Embed URL</Form.Label>
+        <Form.Control
+          type="url"
+          value={values.google_maps_embed_url}
+          onChange={(e) => onChange('google_maps_embed_url', e.target.value)}
+          placeholder="https://www.google.com/maps/embed?pb=..."
+          isInvalid={!!errors.google_maps_embed_url}
+          maxLength={2000}
+        />
+        {errors.google_maps_embed_url && (
+          <Form.Control.Feedback type="invalid">
+            {errors.google_maps_embed_url}
+          </Form.Control.Feedback>
+        )}
+        <Form.Text className="text-muted">
+          Paste the embed URL from Google Maps. Go to maps.google.com, search your location, click Share → Embed a map → Copy the src URL. Must start with https://www.google.com/maps/embed?pb=
         </Form.Text>
       </Form.Group>
     </>
