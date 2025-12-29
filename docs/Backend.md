@@ -3,8 +3,23 @@
 # Backend Documentation
 
 **Status:** Verified  
-**Phase:** Phase 12.4 COMPLETE  
+**Phase:** Phase 12.4 COMPLETE (Service Details Content)  
 **Last Updated:** 2025-12-29
+
+---
+
+## Phase 12.4 — Service Details Content Update
+
+**Tables Updated:**
+
+| Table | Records | Fields |
+|-------|---------|--------|
+| service_process_steps | 21 | title, description |
+| service_pricing_plans | 42 | plan_name, plan_subtitle, price_amount, features[], cta_label |
+
+**CTA Policy:** All 42 pricing plans now use "Get a Quote" (0 "Pay Now" remaining).
+
+**Route Fix:** Homepage ServiceArea link changed from `/service/${slug}` to `/service-details/${slug}`.
 
 ---
 

@@ -39,13 +39,13 @@
 
 **Status:** COMPLETE  
 **Completed:** 2025-12-29  
-**Type:** Content Replacement (DB Only)
+**Type:** Content Replacement (DB + Route Fix)
 
 ### Objective
 
-Apply Devmart strategic positioning content to Services page via database UPDATE.
+Apply Devmart strategic positioning content to Services page and Service Details page via database UPDATE.
 
-### Content Updated (7 Services)
+### Phase 12.4A — Services Listing (Completed Earlier)
 
 | Slug | Title (Before → After) | Short Description Length |
 |------|------------------------|--------------------------|
@@ -57,24 +57,42 @@ Apply Devmart strategic positioning content to Services page via database UPDATE
 | 3d-design | 3D Design → 3D Visualization | 87 chars |
 | ui-ux-design | UI/UX Design → UX & Service Design | 93 chars |
 
-### Fields Updated Per Service
+### Phase 12.4B — Service Details (Process Steps + Pricing Plans)
 
-- `services.title` — Devmart-aligned service names
-- `services.short_description` — Strategic positioning (60-100 chars)
-- `services.full_description` — Comprehensive service description (700-900 chars)
+**Records Updated:**
+
+| Table | Records | Fields Updated |
+|-------|---------|----------------|
+| service_process_steps | 21 | title, description |
+| service_pricing_plans | 42 | plan_name, plan_subtitle, price_amount, features[], cta_label |
+
+**CTA Policy Enforced:**
+- "Pay Now" eliminated: 0 records
+- "Get a Quote" applied: 42 records (100%)
+
+**Route Fix Applied:**
+- Homepage ServiceArea now links to `/service-details/${slug}` instead of `/service/${slug}`
 
 ### Hardcoded Elements (Gaps Documented)
 
-| Gap ID | Element | Current Value | Reason |
-|--------|---------|---------------|--------|
-| GAP-21 | Section label | "what we do" | No CMS field exists |
-| GAP-22 | Section title | "we work performed for client happy." | No CMS field exists |
-| GAP-23 | CTA label | "view all services" | No CMS field exists |
-| GAP-24 | Card CTA | "read more" | No CMS field exists |
-| GAP-25 | How We Work section | Entire section hardcoded | Template parity (known) |
-| GAP-26 | How We Work label | "How We Work" | No CMS field exists |
-| GAP-27 | How We Work title | "Our Unique Work Process." | No CMS field exists |
-| GAP-28 | Slide titles | "Brainstorm & Wirefirm" etc. | No CMS field exists |
+| Gap ID | Element | Current Value | Location |
+|--------|---------|---------------|----------|
+| GAP-21 | Section label | "what we do" | ServiceArea.tsx |
+| GAP-22 | Section title | "we work performed for client happy." | ServiceArea.tsx |
+| GAP-23 | CTA label | "view all services" | ServiceArea.tsx |
+| GAP-24 | Card CTA | "read more" | ServiceArea.tsx |
+| GAP-25 | How We Work section | Entire section hardcoded | HowWeWorkArea.tsx |
+| GAP-26 | How We Work label | "How We Work" | HowWeWorkArea.tsx |
+| GAP-27 | How We Work title | "Our Unique Work Process." | HowWeWorkArea.tsx |
+| GAP-28 | Slide titles | "Brainstorm & Wirefirm" etc. | HowWeWorkArea.tsx |
+| GAP-29 | Process Steps heading | "How We Work in our services" | ServiceDetailsWrapper.tsx |
+| GAP-30 | Sidebar title | "Services" | ServiceDetailsWrapper.tsx |
+| GAP-31 | Search placeholder | "Search Here" | ServiceDetailsWrapper.tsx |
+| GAP-32 | Pricing section label | "Pricing Plan" | ServicePrice.tsx |
+| GAP-33 | Pricing section title | "Service Plans" | ServicePrice.tsx |
+| GAP-34 | Tab label (monthly) | "Pay Monthly" | ServicePrice.tsx |
+| GAP-35 | Tab label (yearly) | "Pay Yearly" | ServicePrice.tsx |
+| GAP-36 | Price period text | "Per month/year" | PriceBox.tsx |
 
 ### Guardian Rules Verified
 
@@ -82,14 +100,15 @@ Apply Devmart strategic positioning content to Services page via database UPDATE
 - ✅ No slug changes
 - ✅ No new records added/removed
 - ✅ No type/interface changes
-- ✅ No component modifications
+- ✅ Minimal component modification (route fix only)
 - ✅ No CSS/SCSS changes
 - ✅ Darkone Admin 1:1 preserved
 - ✅ Finibus Frontend 1:1 preserved
 
-### Restore Point
+### Restore Points
 
-`docs/restore-points/Restore_Point_Phase_12_4_Services_Content.md`
+- `docs/restore-points/Restore_Point_Phase_12_4_Services_Content.md` (Phase 12.4A)
+- `docs/restore-points/Restore_Point_Phase_12_4_Service_Details_Content.md` (Phase 12.4B)
 
 ---
 
