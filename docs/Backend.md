@@ -3,8 +3,34 @@
 # Backend Documentation
 
 **Status:** Verified  
-**Phase:** Phase 12.5 COMPLETE  
+**Phase:** Phase 12.6 COMPLETE  
 **Last Updated:** 2025-12-29
+
+---
+
+## Phase 12.6 — Blog Content Swap (DB-Only)
+
+**Type:** Content Replacement  
+**Table Updated:** `blog_posts`
+
+**Records Updated:** 5 of 6 published posts
+
+| Slug | Fields Updated |
+|------|----------------|
+| `upcoming-trends-ai-machine-learning` | excerpt, content |
+| `future-of-digital-business-strategy` | title, excerpt, content, category |
+| `complete-guide-marketing-automation` | excerpt, content |
+| `building-scalable-web-applications-2025` | title, excerpt, content, category |
+| `security-best-practices-modern-applications` | excerpt, content |
+
+**Post Skipped:** `design-thinking-modern-enterprise` (production-ready, no changes per Live Document)
+
+**Fields NOT Changed:**
+- `id`, `slug`, `featured_image_media_id`, `status`, `published_at`, `author_id`
+
+**Category Changes:**
+- `future-of-digital-business-strategy`: Website → Strategy
+- `building-scalable-web-applications-2025`: Software Design → Development
 
 ---
 
