@@ -3,7 +3,7 @@
 # Backend Documentation
 
 **Status:** Verified  
-**Phase:** URL Fix Option A COMPLETE  
+**Phase:** Phase 12.5 COMPLETE  
 **Last Updated:** 2025-12-29
 
 ---
@@ -18,6 +18,26 @@
 | ServiceList.tsx | `/service-details` (no slug) | `/service` |
 
 **Rationale:** Hardcoded demo links without DB mapping → safe redirect to listing page.
+
+---
+
+## Phase 12.5 — Projects Verification & GAP Fix
+
+**Pre-Check:** DB hero slides confirmed ACTIVE with correct URLs (`/service`, `/projects`, `/about`).
+
+**GAP-PROJ-001 Fixed:**
+
+| File | Before | After |
+|------|--------|-------|
+| HeroArea.tsx (STATIC_SLIDES lines 20, 31, 42) | `/project-details` (no slug) | `/project` |
+
+**Rationale:** Fix applies to fallback only (used when DB slides are unavailable).
+
+**Verification Completed:**
+- ✅ Projects listing renders from DB
+- ✅ Project details load for all 8 slugs
+- ✅ Cross-site links use canonical routes
+- ✅ No console errors
 
 ---
 
