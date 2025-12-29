@@ -454,4 +454,477 @@ ServiceModal.tsx updated with 3 toggles in Basic Info tab under "Pricing Visibil
 | 1.4 | 2025-12-26 | Implementation Agent | Phase 10B Hotfix — Toast CSS import |
 | 1.5 | 2025-12-26 | Implementation Agent | Phase 7.2 COMPLETE — Homepage Visual Verification, Phase 7 CLOSED |
 
-**Next Review:** Before Phase 10C or Phase 11 authorization
+**Next Review:** Before Content Swap Phase Execution
+
+---
+
+## PHASE 12: CONTENT SWAP EXECUTION PLAN
+
+**Status:** PLANNING ONLY — Awaiting Authorization  
+**Created:** 2025-12-29  
+**Source Documentation:**
+- `docs/diagnostics/Phased_Content_Swap_Execution_Order.md`
+- `docs/diagnostics/pages/Frontend_*.md` (9 files)
+- `docs/diagnostics/admin/Admin_*.md` (3 files)
+
+---
+
+### Priority Order (Mandatory)
+
+1. Content structure & SEO logic (titles, descriptions, headings)
+2. CMS swapability using existing fields only
+3. Identification of missing admin/SEO capabilities (DOCUMENT ONLY)
+4. Dashboard & Analytics (LATER PHASE — NOT in Phase 12)
+5. Quote Wizard (FINAL PHASE — NOT in Phase 12)
+
+---
+
+### Phase 12.1: Homepage Content Verification & Wrapper Wiring
+
+**Scope:**
+- **Route:** `/`
+- **Component:** `HomePage.tsx` + 9 sub-components
+
+**IN Scope:**
+| Item | Current State | Action |
+|------|---------------|--------|
+| Hero Slider | ✅ WIRED | Verify only |
+| About Section | ✅ WIRED | Verify only |
+| Partners | ✅ WIRED | Verify only |
+| Why Choose Us | ✅ WIRED | Verify only |
+| Testimonials | ✅ WIRED | Verify only |
+| Let's Talk CTA | ✅ WIRED | Verify only |
+| Services wrapper labels | ❌ NOT WIRED | Wire to `homepage_settings.services` |
+| Portfolio wrapper labels | ❌ NOT WIRED | Wire to `homepage_settings.portfolio` |
+| Blog/News wrapper labels | ❌ NOT WIRED | Wire to `homepage_settings.blog` |
+
+**OUT of Scope:**
+- Newsletter labels (no Admin fields exist)
+- Service/Project/Blog card content (already wired to tables)
+- Any new Admin modal fields
+
+**Referenced Documentation:**
+- `docs/diagnostics/pages/Frontend_Home.md` — Full swapability analysis
+- `docs/diagnostics/admin/Admin_Modals_Fields_Inventory.md` — homepage_settings fields
+
+**Dependencies:** None (foundation phase)
+
+**Stop Conditions:**
+- If wrapper wiring requires layout changes → STOP, document blocker
+- If homepage_settings JSON structure differs from documentation → STOP, verify
+
+**Expected Outcome:**
+- All 9 homepage sections verified as rendering correctly
+- Wrapper labels for Services/Portfolio/News sections consume CMS values
+- Fallback to hardcoded values if DB fields are NULL
+
+**Status:** PENDING
+
+---
+
+### Phase 12.2: About Page Verification
+
+**Scope:**
+- **Route:** `/about`
+- **Component:** `AboutPage.tsx`
+
+**IN Scope:**
+| Item | Current State | Action |
+|------|---------------|--------|
+| Breadcrumb | ✅ Route-driven | Verify only |
+| Inside Story | ✅ WIRED | Verify from `page_settings` |
+| Why Choose Us | ✅ WIRED (shared) | Verify from `homepage_settings.why_choose` |
+| Testimonials | ✅ WIRED (shared) | Verify from `testimonials` table |
+| Latest News | ✅ WIRED | Verify from `blog_posts` + wrapper |
+| Let's Talk CTA | ✅ WIRED (shared) | Already verified in 12.1 |
+
+**OUT of Scope:**
+- Any new Admin fields
+- Modifications to shared components
+- SEO fields (Pages module has meta_title/meta_description)
+
+**Referenced Documentation:**
+- `docs/diagnostics/pages/Frontend_About.md` — Full section analysis
+
+**Dependencies:** Phase 12.1 complete (shared CTA verified)
+
+**Stop Conditions:**
+- None anticipated — About page is well-wired
+
+**Expected Outcome:**
+- All About page sections verified as CMS-driven
+- No gaps requiring immediate action
+
+**Status:** PENDING
+
+---
+
+### Phase 12.3: Contact Page Verification
+
+**Scope:**
+- **Route:** `/contact`
+- **Component:** `ContactPage.tsx`
+
+**IN Scope:**
+| Item | Current State | Action |
+|------|---------------|--------|
+| Breadcrumb | ✅ Route-driven | Verify only |
+| Contact Info Cards (values) | ✅ WIRED | Verify from `settings` |
+| Contact Form → Leads | ✅ WIRED | Verify submission creates `leads` record |
+| Google Map | ✅ WIRED | Verify embed URL from `settings` |
+| Let's Talk CTA | ✅ WIRED (shared) | Already verified in 12.1 |
+
+**OUT of Scope:**
+- Contact card labels ("Location", "Phone", "Email" — acceptable hardcoded)
+- Form field labels (acceptable hardcoded)
+- Form validation messages (acceptable hardcoded)
+
+**Referenced Documentation:**
+- `docs/diagnostics/pages/Frontend_Contact.md` — Full section analysis
+
+**Dependencies:** Phase 12.1 complete (shared CTA verified)
+
+**Stop Conditions:**
+- If form submission fails → STOP, verify RLS policy
+
+**Expected Outcome:**
+- Contact values display from CMS settings
+- Form submits successfully to `leads` table
+- Map renders correctly
+
+**Status:** PENDING
+
+---
+
+### Phase 12.4: Services Listing Verification
+
+**Scope:**
+- **Route:** `/service`
+- **Component:** `ServicePage.tsx`
+
+**IN Scope:**
+| Item | Current State | Action |
+|------|---------------|--------|
+| Breadcrumb | ✅ Route-driven | Verify only |
+| Services Grid | ✅ WIRED | Verify all 7 services from `services` table |
+| Service Icons | ✅ WIRED | Verify from Media Library |
+| Let's Talk CTA | ✅ WIRED (shared) | Already verified |
+
+**OUT of Scope:**
+- "What We Do" wrapper labels (no Admin fields on this page)
+- "How We Work" section (COMPLETELY HARDCODED — template parity)
+- SEO fields for services (missing — document only)
+- New Admin modal fields
+
+**Referenced Documentation:**
+- `docs/diagnostics/pages/Frontend_Services.md` — Full section analysis
+
+**Dependencies:** Phase 12.1 complete
+
+**Stop Conditions:**
+- None anticipated — Services listing is well-wired
+
+**Expected Outcome:**
+- All published services display correctly
+- Icons render from Media Library
+- Gaps documented: "How We Work" hardcoded, no SEO fields
+
+**Status:** PENDING
+
+---
+
+### Phase 12.5: Service Details Verification
+
+**Scope:**
+- **Route:** `/service-details/:slug`
+- **Component:** `ServiceDetailsPage.tsx`
+
+**IN Scope:**
+| Item | Current State | Action |
+|------|---------------|--------|
+| Breadcrumb | ✅ Route-driven | Verify only |
+| Service Content | ✅ WIRED | Verify title, description from `services` |
+| Process Steps | ✅ WIRED | Verify 3 steps from `service_process_steps` |
+| Pricing Plans | ✅ WIRED | Verify monthly/yearly tabs |
+| Sidebar | ✅ WIRED | Verify other services list |
+
+**OUT of Scope:**
+- Sidebar labels (HARDCODED — acceptable)
+- SEO fields (missing — document only)
+
+**Referenced Documentation:**
+- `docs/diagnostics/pages/Frontend_ServiceDetails.md` — Full section analysis
+
+**Dependencies:** Phase 12.4 (services table verified)
+
+**Stop Conditions:**
+- If pricing tab switching broken → STOP, debug
+- If missing service images → Verify Media Library references
+
+**Expected Outcome:**
+- Service content displays correctly
+- Process steps render in order
+- Pricing displays with tab switching
+- Not-found handling for invalid slugs
+
+**Status:** PENDING
+
+---
+
+### Phase 12.6: Projects Listing Verification
+
+**Scope:**
+- **Route:** `/projects`
+- **Component:** `ProjectPage.tsx`
+
+**IN Scope:**
+| Item | Current State | Action |
+|------|---------------|--------|
+| Breadcrumb | ✅ Route-driven | Verify only |
+| Projects Grid | ✅ WIRED | Verify all 8 projects from `projects` table |
+| Category Filter | ✅ WIRED | Test filter functionality |
+| Project Images | ✅ WIRED | Verify thumbnails render |
+| Let's Talk CTA | ✅ WIRED (shared) | Already verified |
+
+**OUT of Scope:**
+- Wrapper labels (HARDCODED — no Admin fields)
+- SEO fields (missing — document only)
+- Related projects enhancement
+
+**Referenced Documentation:**
+- `docs/diagnostics/pages/Frontend_Projects.md` — Full section analysis
+
+**Dependencies:** Phase 12.1 complete
+
+**Stop Conditions:**
+- If category filter fails → STOP, debug
+
+**Expected Outcome:**
+- All published projects display correctly
+- Category filter works
+- Images render
+- Navigation to details works
+
+**Status:** PENDING
+
+---
+
+### Phase 12.7: Project Details Verification
+
+**Scope:**
+- **Route:** `/project-details/:slug`
+- **Component:** `ProjectDetailsPage.tsx`
+
+**IN Scope:**
+| Item | Current State | Action |
+|------|---------------|--------|
+| Breadcrumb | ✅ Route-driven | Verify only |
+| Project Content | ✅ WIRED | Verify title, heading, description |
+| Process Steps | ✅ WIRED | Verify from `project_process_steps` |
+| Client Info | ✅ WIRED | Verify client, website, dates |
+| Check & Launch | ✅ WIRED | Verify content and image |
+
+**OUT of Scope:**
+- Info card labels (HARDCODED — acceptable)
+- SEO fields (missing — document only)
+
+**Referenced Documentation:**
+- `docs/diagnostics/pages/Frontend_ProjectDetails.md` — Full section analysis
+
+**Dependencies:** Phase 12.6 (projects table verified)
+
+**Stop Conditions:**
+- If missing project images → Verify Media Library references
+
+**Expected Outcome:**
+- Project content displays correctly
+- Process steps render in order
+- Check Launch section renders if data exists
+- Not-found handling for invalid slugs
+
+**Status:** PENDING
+
+---
+
+### Phase 12.8: Blog Listing Verification & Gap Documentation
+
+**Scope:**
+- **Route:** `/blog`
+- **Component:** `BlogPage.tsx`
+
+**IN Scope:**
+| Item | Current State | Action |
+|------|---------------|--------|
+| Breadcrumb | ✅ Route-driven | Verify only |
+| Blog Post Grid | ✅ WIRED | Verify all posts from `blog_posts` |
+| Post Images | ✅ WIRED | Verify featured images render |
+| Let's Talk CTA | ✅ WIRED (shared) | Already verified |
+| **Sidebar Search** | ❌ UI-ONLY | **Document as non-functional** |
+| **Service List Widget** | ❌ HARDCODED | **Document as static** |
+| **Newest Posts Widget** | ❌ HARDCODED | **Document as static** |
+| **Popular Tags Widget** | ❌ HARDCODED | **Document as static** |
+| **Banner Widget** | ❌ HARDCODED | **Document as static** |
+| **Pagination** | ❌ UI-ONLY | **Document as non-functional** |
+
+**OUT of Scope:**
+- Implementing search functionality
+- Wiring sidebar widgets to tables
+- Implementing pagination logic
+- SEO fields (missing — document only)
+- Any structural template changes
+
+**Referenced Documentation:**
+- `docs/diagnostics/pages/Frontend_Blog.md` — Full section analysis with gaps
+
+**Dependencies:** Phases 12.1-12.7 complete
+
+**Stop Conditions:**
+- None anticipated — verification and documentation only
+
+**Expected Outcome:**
+- Published blog posts display correctly
+- Featured images render
+- **Comprehensive gap documentation** produced
+
+**Status:** PENDING
+
+---
+
+### Phase 12.9: Blog Details Verification & Gap Documentation
+
+**Scope:**
+- **Route:** `/blog/:slug`
+- **Component:** `BlogDetailsPage.tsx`
+
+**IN Scope:**
+| Item | Current State | Action |
+|------|---------------|--------|
+| Breadcrumb | ✅ Route-driven | Verify only |
+| Post Content | ✅ WIRED | Verify title, content, excerpt |
+| Featured Image | ✅ WIRED | Verify image renders |
+| Category Tag | ✅ WIRED (partial) | Verify 1 CMS category |
+| Published Date | ✅ WIRED | Verify date formatting |
+| **Quote Block** | ❌ HARDCODED | **Document as static** |
+| **Banner Section** | ❌ HARDCODED | **Document as static** |
+| **Author Name** | ❌ HARDCODED | **Document "Devmart Team" fallback** |
+| **Tags Row (2 extra)** | ❌ HARDCODED | **Document 2 hardcoded + 1 CMS** |
+| **Comments Display** | ❌ HARDCODED | **Document as static** |
+| **Comment Form** | ❌ UI-ONLY | **Document as non-functional** |
+
+**OUT of Scope:**
+- Wiring comments to `blog_comments` table
+- SEO fields (missing — document only)
+- Any structural template changes
+
+**Referenced Documentation:**
+- `docs/diagnostics/pages/Frontend_BlogDetails.md` — Full section analysis with gaps
+
+**Dependencies:** Phase 12.8 (blog_posts verified)
+
+**Stop Conditions:**
+- If slug routing fails → STOP, verify route pattern
+
+**Expected Outcome:**
+- Post content displays correctly
+- Featured image renders
+- **Comprehensive gap documentation** produced for template blocks
+
+**Status:** PENDING
+
+---
+
+## Phase 12 Summary
+
+| Sub-phase | Page | Complexity | Primary Action | Status |
+|-----------|------|------------|----------------|--------|
+| 12.1 | Homepage | Medium | Wrapper wiring | PENDING |
+| 12.2 | About | Low | Verify only | PENDING |
+| 12.3 | Contact | Low | Verify + form test | PENDING |
+| 12.4 | Services | Medium | Verify only | PENDING |
+| 12.5 | Service Details | Medium | Verify only | PENDING |
+| 12.6 | Projects | Medium | Verify only | PENDING |
+| 12.7 | Project Details | Medium | Verify only | PENDING |
+| 12.8 | Blog | High | Verify + gap docs | PENDING |
+| 12.9 | Blog Details | High | Verify + gap docs | PENDING |
+
+---
+
+## Documented Gaps (No Implementation Required)
+
+| Gap ID | Location | Type | Documented In |
+|--------|----------|------|---------------|
+| GAP-001 | Homepage Services wrapper | NOT WIRED | Frontend_Home.md |
+| GAP-002 | Homepage Portfolio wrapper | NOT WIRED | Frontend_Home.md |
+| GAP-003 | Homepage News wrapper | NOT WIRED | Frontend_Home.md |
+| GAP-004 | Services "How We Work" | HARDCODED | Frontend_Services.md |
+| GAP-005 | Blog sidebar search | UI-ONLY | Frontend_Blog.md |
+| GAP-006 | Blog sidebar categories | HARDCODED | Frontend_Blog.md |
+| GAP-007 | Blog sidebar tags | HARDCODED | Frontend_Blog.md |
+| GAP-008 | Blog sidebar posts | HARDCODED | Frontend_Blog.md |
+| GAP-009 | Blog pagination | UI-ONLY | Frontend_Blog.md |
+| GAP-010 | Blog Details quote | HARDCODED | Frontend_BlogDetails.md |
+| GAP-011 | Blog Details banner | HARDCODED | Frontend_BlogDetails.md |
+| GAP-012 | Blog Details comments | HARDCODED | Frontend_BlogDetails.md |
+| GAP-013 | Blog SEO fields | MISSING | Admin_SEO_Capability_Matrix.md |
+| GAP-014 | Services SEO fields | MISSING | Admin_SEO_Capability_Matrix.md |
+| GAP-015 | Projects SEO fields | MISSING | Admin_SEO_Capability_Matrix.md |
+
+---
+
+## Guardian Rules Compliance
+
+| Rule | Compliance |
+|------|------------|
+| Darkone Admin 1:1 parity | ✅ No Admin template changes proposed |
+| Finibus Frontend 1:1 parity | ✅ No layout refactors proposed |
+| Reuse existing files only | ✅ All phases work within existing structure |
+| No Bootstrap | ✅ Not applicable |
+| No custom icons | ✅ Not applicable |
+| No custom animations | ✅ Not applicable |
+| No font changes | ✅ Not applicable |
+| No new CSS/SCSS | ✅ Not applicable |
+| No undocumented assumptions | ✅ All gaps explicitly documented |
+
+---
+
+## Phase Gate Protocol
+
+**Before each sub-phase can begin:**
+1. Previous sub-phase marked COMPLETE
+2. Explicit authorization received
+3. Restore point created
+
+**After each sub-phase:**
+1. Visual verification against Finibus reference
+2. Data verification against Supabase
+3. Status report submitted (DONE / PARTIAL / BLOCKED)
+4. Restore point updated
+
+---
+
+## Risks
+
+| Phase | Risk | Mitigation |
+|-------|------|------------|
+| 12.1 | homepage_settings wrapper fields are NULL | Seed default values or implement fallback |
+| 12.3 | Contact form fails in Lovable Preview | Known limitation — test in local/prod only |
+| 12.8 | Sidebar gaps may concern stakeholders | Document clearly as template parity |
+| 12.9 | Comments not functional | Document as known limitation |
+
+---
+
+## Confirmation
+
+- ✅ **This deliverable is documentation-only**
+- ✅ **No implementation was performed**
+- ✅ **No code changes were made**
+- ✅ **No database modifications**
+- ✅ **All phases reference existing documentation**
+
+---
+
+**HARD STOP**
+
+Implementation remains BLOCKED until this phased plan is reviewed and explicitly approved.
+
+Awaiting further instructions.
