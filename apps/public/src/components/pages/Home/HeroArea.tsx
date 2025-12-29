@@ -17,7 +17,7 @@ const STATIC_SLIDES: HeroSlide[] = [
     cta1_label: "About us",
     cta1_url: "/about",
     cta2_label: "How we work",
-    cta2_url: "/project-details"
+    cta2_url: "/project"
   },
   {
     image: "/images/hero-slider-2.png",
@@ -28,7 +28,7 @@ const STATIC_SLIDES: HeroSlide[] = [
     cta1_label: "About us",
     cta1_url: "/about",
     cta2_label: "How we work",
-    cta2_url: "/project-details"
+    cta2_url: "/project"
   },
   {
     image: "/images/hero-slider-3.png",
@@ -39,7 +39,7 @@ const STATIC_SLIDES: HeroSlide[] = [
     cta1_label: "About us",
     cta1_url: "/about",
     cta2_label: "How we work",
-    cta2_url: "/project-details"
+    cta2_url: "/project"
   }
 ];
 

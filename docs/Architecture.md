@@ -3,7 +3,7 @@
 # Architecture Documentation
 
 **Status:** Verified  
-**Phase:** URL Fix Option A COMPLETE  
+**Phase:** Phase 12.5 COMPLETE  
 **Last Updated:** 2025-12-29
 
 ---
@@ -65,6 +65,12 @@ This document outlines the architecture decisions and validation requirements fo
 **Broken Service Links Fixed:**
 - Footer.tsx: 6 "Our Services" links changed from `/service-details` (no slug) → `/service`
 - ServiceList.tsx: 6 blog sidebar links changed from `/service-details` (no slug) → `/service`
+
+### Phase 12.5 — Projects Verification (2025-12-29)
+
+**GAP-PROJ-001 Fixed:**
+- HeroArea.tsx: 3 STATIC_SLIDES fallback `cta2_url` changed from `/project-details` (no slug) → `/project`
+- Note: DB hero slides already had correct URLs — fix applies to fallback only
 
 **Canonical Routes (Single Source of Truth):**
 
