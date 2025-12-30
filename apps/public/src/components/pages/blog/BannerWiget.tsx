@@ -10,10 +10,10 @@ function BannerWiget() {
         <img src="/images/widget-banner.jpg" alt="bannerWiget" />
         <div className="banner-content">
           <div className="banner-inner">
-            <h2>About Your Next Project.</h2>
+            <h2>Ready to Build Something Great?</h2>
             <div className="cmn-btn">
               <Link onClick={scrollTop} to="/contact">
-                Contact Us
+                Start a Conversation
               </Link>
             </div>
           </div>

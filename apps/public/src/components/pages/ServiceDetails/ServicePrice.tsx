@@ -53,7 +53,7 @@ function ServicePrice({
                     aria-selected={activeTab === "monthly"}
                     onClick={() => setActiveTab("monthly")}
                   >
-                    Pay Monthly
+                    Monthly
                   </button>
                 </li>
               )}
@@ -68,7 +68,7 @@ function ServicePrice({
                     aria-selected={activeTab === "yearly"}
                     onClick={() => setActiveTab("yearly")}
                   >
-                    Pay Yearly
+                    Yearly
                   </button>
                 </li>
               )}
@@ -76,8 +76,8 @@ function ServicePrice({
           </div>
           <div className="col-12 col-lg-6 col-xl-5 or1">
             <div className="title black">
-              <span>Pricing Plan</span>
-              <h2>Service Plans</h2>
+              <span>Investment Options</span>
+              <h2>Engagement Tiers</h2>
             </div>
           </div>
         </div>

@@ -145,7 +145,7 @@ function CartFilter({ active, projects = [], loading = false }: CartFilterProps)
                       to={`/project-details/${slug}`}
                       className="case-btn"
                     >
-                      Case Study
+                      View Project
                     </Link>
                     {imageUrl && (
                       <a href={imageUrl} target="_blank" rel="noopener noreferrer">

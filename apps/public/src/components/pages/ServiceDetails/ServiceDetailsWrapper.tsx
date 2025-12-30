@@ -50,7 +50,7 @@ function ServiceDetailsWrapper({
             </div>
             <div className="col-md-6 col-lg-4 col-xl-4 or1">
               <div className="sidebar-widget">
-                <h4>Services</h4>
+                <h4>Our Services</h4>
                 <ul className="service-list placeholder-glow">
                   {[1, 2, 3, 4, 5].map((i) => (
                     <li key={i}>
@@ -97,7 +97,7 @@ function ServiceDetailsWrapper({
                   <input
                     type="search"
                     name="search"
-                    placeholder="Search Here"
+                    placeholder="Search (coming soon)"
                   />
                   <button type="submit">
                     <i className="bi bi-search" />
@@ -105,7 +105,7 @@ function ServiceDetailsWrapper({
                 </form>
               </div>
               <div className="sidebar-widget">
-                <h4>Services</h4>
+                <h4>Our Services</h4>
                 <ul className="service-list">
                   {allServices.map((svc) => (
                     <li key={svc.id}>
@@ -128,7 +128,7 @@ function ServiceDetailsWrapper({
           {/* Process Steps Section */}
           {processSteps.length > 0 && (
             <div className="single-service-work-process">
-              <h3>How We Work in our services</h3>
+              <h3>Our Delivery Process</h3>
               {processSteps.map((step, index) => {
                 const isOdd = step.step_number % 2 === 1;
                 const stepNumber = String(step.step_number).padStart(2, "0");

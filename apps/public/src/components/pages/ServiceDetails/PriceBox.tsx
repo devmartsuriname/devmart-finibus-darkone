@@ -32,7 +32,7 @@ function PriceBox({
     return `${curr} ${amount}`;
   };
 
-  const periodLabel = billingPeriod === "monthly" ? "month" : "year";
+  const periodLabel = billingPeriod === "monthly" ? "per month" : "per year";
 
   return (
     <div className="col-md-6 col-lg-4 col-xl-4">
@@ -40,7 +40,7 @@ function PriceBox({
         <h3>{planName}</h3>
         {planSubtitle && <span>{planSubtitle}</span>}
         <h2>
-          {formatPrice(priceAmount, currency)}/<sub>Per {periodLabel}</sub>
+          {formatPrice(priceAmount, currency)}/<sub>{periodLabel}</sub>
         </h2>
         <ul className="feature-list">
           {features.map((feature, index) => (
