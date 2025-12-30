@@ -119,7 +119,7 @@ function NewsLatterArea({ black = "" }: NewsLatterAreaProps) {
             <div className="col-md-6 col-lg-4 col-xl-4">
               <div className={`title ${black}`}>
                 <span>Blog</span>
-                <h2>Latest news And Article modern design.</h2>
+                <h2>Insights & Updates</h2>
                 <div className="cmn-btn">
                   <Link onClick={scrollTop} to="/blog">
                     View All Blog

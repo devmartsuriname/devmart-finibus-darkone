@@ -62,11 +62,11 @@ function ServiceArea() {
           <div className="row">
             <div className="col-md-12 col-lg-4 col-xl-4">
               <div className="title">
-                <span>what we do</span>
-                <h2>we work performed for client happy.</h2>
+                <span>Our Services</span>
+                <h2>Solutions Built for Mission-Critical Operations</h2>
                 <div className="cmn-btn">
                   <Link onClick={scrollTop} to="/service">
-                    view all services
+                    Explore All Services
                   </Link>
                 </div>
               </div>
@@ -89,7 +89,7 @@ function ServiceArea() {
                         <h4>{service.title}</h4>
                         <p>{service.short_description}</p>
                         <Link onClick={scrollTop} to={`/service-details/${service.slug}`}>
-                          read more
+                          Learn More
                           <i>
                             <img
                               src="/images/icons/arrow-circle.png"
