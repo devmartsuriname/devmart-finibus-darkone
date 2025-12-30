@@ -3,8 +3,35 @@
 # Backend Documentation
 
 **Status:** Verified  
-**Phase:** Phase 12.6 COMPLETE  
-**Last Updated:** 2025-12-29
+**Phase:** Phase 12.X COMPLETE  
+**Last Updated:** 2025-12-30
+
+---
+
+## Phase 12.X — Projects Content Swap (DB-Only)
+
+**Type:** Content Replacement  
+**Tables Updated:** `projects`, `project_process_steps`
+
+**Projects Updated:** 5 of 5 published projects
+
+| Old Slug | New Slug | Category |
+|----------|----------|----------|
+| `corporate-brand-identity` | `national-digital-services-portal` | Government Platform |
+| `ecommerce-platform-redesign` | `immigration-case-management-system` | Government Information System |
+| `saas-dashboard-interface` | `enterprise-operations-dashboard` | Enterprise Dashboard |
+| `mobile-banking-application` | `housing-registration-subsidy-platform` | Public Sector Platform |
+| `restaurant-website-ordering` | `saas-management-analytics-platform` | SaaS Platform |
+
+**Fields Updated (projects table):**
+- title, slug, heading, description, category, client, website (NULL), start_date, end_date, check_launch_content
+
+**Process Steps:**
+- Steps 1-3: Updated with new titles and descriptions
+- Step 4: Deleted from all projects (20 → 15 total steps)
+
+**Fields NOT Changed:**
+- `id`, `image_media_id`, `featured_image_media_id`, `check_launch_image_media_id`, `status`, `is_featured`, `display_order`
 
 ---
 
@@ -12,27 +39,6 @@
 
 **Type:** Content Replacement  
 **Table Updated:** `blog_posts`
-
-**Records Updated:** 5 of 6 published posts
-
-| Slug | Fields Updated |
-|------|----------------|
-| `upcoming-trends-ai-machine-learning` | excerpt, content |
-| `future-of-digital-business-strategy` | title, excerpt, content, category |
-| `complete-guide-marketing-automation` | excerpt, content |
-| `building-scalable-web-applications-2025` | title, excerpt, content, category |
-| `security-best-practices-modern-applications` | excerpt, content |
-
-**Post Skipped:** `design-thinking-modern-enterprise` (production-ready, no changes per Live Document)
-
-**Fields NOT Changed:**
-- `id`, `slug`, `featured_image_media_id`, `status`, `published_at`, `author_id`
-
-**Category Changes:**
-- `future-of-digital-business-strategy`: Website → Strategy
-- `building-scalable-web-applications-2025`: Software Design → Development
-
----
 
 ## URL Fix Option A — Broken Service Links
 

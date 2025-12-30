@@ -3,8 +3,8 @@
 # Architecture Documentation
 
 **Status:** Verified  
-**Phase:** Phase 12.6 COMPLETE  
-**Last Updated:** 2025-12-29
+**Phase:** Phase 12.X COMPLETE  
+**Last Updated:** 2025-12-30
 
 ---
 
@@ -81,6 +81,27 @@ This document outlines the architecture decisions and validation requirements fo
 
 **Fields Changed:** title, excerpt, content, category (where specified)  
 **Fields Preserved:** id, slug, featured_image_media_id, status, published_at, author_id
+
+**Structural Changes:** NONE (schema, routes, components unchanged)
+
+### Phase 12.X — Projects Content Swap (2025-12-30)
+
+**Type:** DB-Only Content Replacement (NO code changes)
+
+**Projects Updated:** 5 of 5 published projects (slugs changed to anonymized capability cases)
+
+| Old Slug | New Slug |
+|----------|----------|
+| `corporate-brand-identity` | `national-digital-services-portal` |
+| `ecommerce-platform-redesign` | `immigration-case-management-system` |
+| `saas-dashboard-interface` | `enterprise-operations-dashboard` |
+| `mobile-banking-application` | `housing-registration-subsidy-platform` |
+| `restaurant-website-ordering` | `saas-management-analytics-platform` |
+
+**Process Steps:** Step 4 deleted from all projects (20 → 15 total)
+
+**Fields Changed:** title, slug, heading, description, category, client, website (NULL), start_date, end_date, check_launch_content  
+**Fields Preserved:** id, image_media_id, featured_image_media_id, check_launch_image_media_id, status, is_featured, display_order
 
 **Structural Changes:** NONE (schema, routes, components unchanged)
 
