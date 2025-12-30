@@ -1,8 +1,9 @@
 # GAP Registry — Devmart Phase 12.x Findings
 
 **Status:** Reference Document  
-**Last Updated:** 2025-12-30  
-**Total GAPs:** 56
+**Last Updated:** 2025-12-30 (Phase 12.11 Copy Polish)  
+**Total GAPs:** 56  
+**Resolved (Phase 12.11):** 15
 
 ---
 
@@ -76,10 +77,10 @@
 
 | ID | Component | Element | Current Value | Classification | Status |
 |----|-----------|---------|---------------|----------------|--------|
-| GAP-21 | WhatWeDoArea.tsx | Section label | "what we do" | Content-Only | HARDCODED |
-| GAP-22 | WhatWeDoArea.tsx | Section title | "we work performed for client happy." | Content-Only | HARDCODED |
-| GAP-23 | WhatWeDoArea.tsx | CTA label | "view all services" | Content-Only | HARDCODED |
-| GAP-24 | WhatWeDoArea.tsx | Card CTA | "read more" | Content-Only | HARDCODED |
+| GAP-21 | WhatWeDoArea.tsx | Section label | "Our Services" | Content-Only | ✅ RESOLVED (12.11) |
+| GAP-22 | WhatWeDoArea.tsx | Section title | "Solutions Built for Mission-Critical Operations" | Content-Only | ✅ RESOLVED (12.11) |
+| GAP-23 | WhatWeDoArea.tsx | CTA label | "Explore All Services" | Content-Only | ✅ RESOLVED (12.11) |
+| GAP-24 | WhatWeDoArea.tsx | Card CTA | "Learn More" | Content-Only | ✅ RESOLVED (12.11) |
 | GAP-25 | HowWeWorkArea.tsx | Entire section | Completely hardcoded | Structural | TEMPLATE PARITY |
 | GAP-26 | HowWeWorkArea.tsx | Section label | "How We Work" | Structural | TEMPLATE PARITY |
 | GAP-27 | HowWeWorkArea.tsx | Section title | "Our Unique Work Process." | Structural | TEMPLATE PARITY |
@@ -91,14 +92,14 @@
 
 | ID | Component | Element | Current Value | Classification | Status |
 |----|-----------|---------|---------------|----------------|--------|
-| GAP-29 | ServiceDetailsWrapper.tsx | Process heading | "How We Work in our services" | Content-Only | HARDCODED |
-| GAP-30 | ServiceDetailsWrapper.tsx | Sidebar title | "Services" | Content-Only | HARDCODED |
-| GAP-31 | ServiceDetailsWrapper.tsx | Search placeholder | "Search Here" | Content-Only | HARDCODED |
-| GAP-32 | ServicePrice.tsx | Section label | "Pricing Plan" | Content-Only | HARDCODED |
-| GAP-33 | ServicePrice.tsx | Section title | "Service Plans" | Content-Only | HARDCODED |
-| GAP-34 | ServicePrice.tsx | Tab label | "Pay Monthly" | Content-Only | HARDCODED |
-| GAP-35 | ServicePrice.tsx | Tab label | "Pay Yearly" | Content-Only | HARDCODED |
-| GAP-36 | PriceBox.tsx | Price period | "Per month/year" | Content-Only | HARDCODED |
+| GAP-29 | ServiceDetailsWrapper.tsx | Process heading | "Our Delivery Process" | Content-Only | ✅ RESOLVED (12.11) |
+| GAP-30 | ServiceDetailsWrapper.tsx | Sidebar title | "Our Services" | Content-Only | ✅ RESOLVED (12.11) |
+| GAP-31 | ServiceDetailsWrapper.tsx | Search placeholder | "Search (coming soon)" | Content-Only | ✅ RESOLVED (12.11) |
+| GAP-32 | ServicePrice.tsx | Section label | "Investment Options" | Content-Only | ✅ RESOLVED (12.11) |
+| GAP-33 | ServicePrice.tsx | Section title | "Engagement Tiers" | Content-Only | ✅ RESOLVED (12.11) |
+| GAP-34 | ServicePrice.tsx | Tab label | "Monthly" | Content-Only | ✅ RESOLVED (12.11) |
+| GAP-35 | ServicePrice.tsx | Tab label | "Yearly" | Content-Only | ✅ RESOLVED (12.11) |
+| GAP-36 | PriceBox.tsx | Price period | "per month/year" | Content-Only | ✅ RESOLVED (12.11) |
 
 ---
 
@@ -106,11 +107,11 @@
 
 | ID | Component | Element | Current Value | Classification | Status |
 |----|-----------|---------|---------------|----------------|--------|
-| GAP-37 | CartFilter.tsx | Filter tab | "All" | Content-Only | HARDCODED |
-| GAP-38 | CartFilter.tsx | Card CTA | "Case Study" | Content-Only | HARDCODED |
-| GAP-39 | ProjectWrapper.tsx | Loading text | Placeholder text | Content-Only | HARDCODED |
-| GAP-40 | Breadcrumb.tsx | SVG separator | Static icon | Content-Only | HARDCODED |
-| GAP-41 | LetsTalkArea.tsx | Section label | "Let's Talk" | Content-Only | HARDCODED |
+| GAP-37 | CartFilter.tsx | Filter tab | "All" | Content-Only | NO CHANGE (standard) |
+| GAP-38 | CartFilter.tsx | Card CTA | "View Project" | Content-Only | ✅ RESOLVED (12.11) |
+| GAP-39 | ProjectWrapper.tsx | Loading text | Placeholder text | Content-Only | NO CHANGE (standard) |
+| GAP-40 | Breadcrumb.tsx | SVG separator | Static icon | Content-Only | NO CHANGE (non-text) |
+| GAP-41 | LetsTalkArea.tsx | Section label | "Let's Talk" | Content-Only | NO CHANGE (CMS-driven) |
 
 ---
 
@@ -118,8 +119,8 @@
 
 | ID | Component | Element | Issue | Classification | Status |
 |----|-----------|---------|-------|----------------|--------|
-| GAP-42 | BlogCart.tsx | Author name | "Devmart Team" hardcoded | Content-Only | HARDCODED |
-| GAP-43 | BlogCart.tsx | Card CTA | "View details" hardcoded | Structural | HARDCODED |
+| GAP-42 | BlogCart.tsx | Author name | "Devmart Team" fallback | Content-Only | ✅ RESOLVED (12.11) |
+| GAP-43 | BlogCart.tsx | Card CTA | "Read Article" | Content-Only | ✅ RESOLVED (12.11) |
 | GAP-44 | BlogCart.tsx | Category link | Links to `/` (non-functional) | Structural | NOT WIRED |
 | GAP-45 | SidebarSearch.tsx | Placeholder | "Search Here..." | Structural | UI-ONLY |
 | GAP-46 | SidebarSearch.tsx | Search function | Form does nothing | Structural | NOT FUNCTIONAL |
@@ -129,8 +130,8 @@
 | GAP-50 | NewsPost.tsx | Post data | Hardcoded, not from blog_posts | Structural | NOT WIRED |
 | GAP-51 | PopularTag.tsx | Widget title | "Popular Tags" | Structural | HARDCODED |
 | GAP-52 | PopularTag.tsx | Tag links | Hardcoded, not from blog_tags | Structural | NOT WIRED |
-| GAP-53 | BannerWiget.tsx | Banner text | "Looking For new job?" | Structural | HARDCODED |
-| GAP-54 | BannerWiget.tsx | CTA label | "Get Start" | Structural | HARDCODED |
+| GAP-53 | BannerWiget.tsx | Banner text | "Ready to Build Something Great?" | Content-Only | ✅ RESOLVED (12.11) |
+| GAP-54 | BannerWiget.tsx | CTA label | "Start a Conversation" | Content-Only | ✅ RESOLVED (12.11) |
 | GAP-55 | Pagination.tsx | Page numbers | UI-only, non-functional | Structural | NOT FUNCTIONAL |
 | GAP-56 | Pagination.tsx | Pagination logic | No limit/offset implemented | Structural | NOT FUNCTIONAL |
 
@@ -182,3 +183,4 @@ All structural GAPs are intentionally deferred per project constraints:
 | 2025-12-30 | 12.8 | GAP-29–36 | Service Details verification |
 | 2025-12-30 | 12.9 | GAP-37–41 | Projects Listing verification |
 | 2025-12-30 | 12.10 | GAP-42–56 | Blog Listing verification |
+| 2025-12-30 | 12.11 | — | **Copy Polish: 15 GAPs resolved** |

@@ -31,7 +31,7 @@ function BlogCart({
   // Default values for template parity
   const displayTitle = title || "Donec a porttitor phari sod tellus Nunc quis erosn.";
   const displayExcerpt = excerpt || "Aptent taciti sociosqu ad litora torquent pi himenaeos. Praesent nec neque at dolor ti venenatis consectetur eu quis ex.";
-  const displayAuthor = authorName || "Alen Jodge";
+  const displayAuthor = authorName || "Devmart Team";
   const displayDate = publishedAt || "05 January, 2022";
   
   return (
@@ -68,7 +68,7 @@ function BlogCart({
             </p>
             <div className="view-btn">
               <Link onClick={scrollTop} to={detailUrl}>
-                View details
+                Read Article
               </Link>
             </div>
           </div>
