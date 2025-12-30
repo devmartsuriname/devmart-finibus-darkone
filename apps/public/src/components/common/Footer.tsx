@@ -12,7 +12,7 @@ import { Link } from 'react-router-dom'
 import { usePublicSettings } from '../../hooks/usePublicSettings'
 
 function Footer() {
-  const { settings } = usePublicSettings();
+  const { settings, isLoading } = usePublicSettings();
   
   const scrollTop = () => {
     window.scrollTo({
@@ -30,7 +30,9 @@ function Footer() {
               <div className="footer-widget">
                 <div className="footer-logo">
                   <Link onClick={scrollTop} to="/">
-                    <img src={settings.logo_url} alt={`${settings.site_name} Logo`} />
+                    {!isLoading && (
+                      <img src={settings.logo_url} alt={`${settings.site_name} Logo`} />
+                    )}
                   </Link>
                 </div>
                 <address>
