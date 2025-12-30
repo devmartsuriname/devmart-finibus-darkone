@@ -1,8 +1,8 @@
 # Tasks — Devmart Implementation Tracker
 
 **Status:** Verified  
-**Current Phase:** Phase 12.6 COMPLETE  
-**Last Updated:** 2025-12-29
+**Current Phase:** Phase 12.X COMPLETE  
+**Last Updated:** 2025-12-30
 
 ---
 
@@ -35,6 +35,92 @@
 | URL Fix A | ✅ COMPLETE | Broken Service Links (Footer + Blog Sidebar) |
 | Phase 12.5 | ✅ COMPLETE | Projects Verification & GAP Fix |
 | Phase 12.6 | ✅ COMPLETE | Blog Content Swap (DB-Only) |
+| Phase 12.X | ✅ COMPLETE | Projects Content Swap (Anonymized Capability Cases) |
+
+---
+
+## Phase 12.X — Projects Content Swap (✅ COMPLETE)
+
+**Status:** COMPLETE  
+**Completed:** 2025-12-30  
+**Type:** Content Replacement (DB-Only)
+
+### Objective
+
+Replace all demo project content with anonymized Devmart capability cases per Live Document: "Devmart Projects Content — Phase 12.X (Anonymized Capability Cases)".
+
+### Projects Updated (5 of 5 Published)
+
+| Old Slug | New Slug | Category |
+|----------|----------|----------|
+| `corporate-brand-identity` | `national-digital-services-portal` | Government Platform |
+| `ecommerce-platform-redesign` | `immigration-case-management-system` | Government Information System |
+| `saas-dashboard-interface` | `enterprise-operations-dashboard` | Enterprise Dashboard |
+| `mobile-banking-application` | `housing-registration-subsidy-platform` | Public Sector Platform |
+| `restaurant-website-ordering` | `saas-management-analytics-platform` | SaaS Platform |
+
+### Fields Updated
+
+| Field | Status |
+|-------|--------|
+| title | ✅ Updated |
+| slug | ✅ Updated |
+| heading | ✅ Updated |
+| description | ✅ Updated |
+| category | ✅ Updated |
+| client | ✅ Updated (anonymized) |
+| website | ✅ Set to NULL |
+| start_date | ✅ Updated |
+| end_date | ✅ Updated |
+| check_launch_content | ✅ Updated |
+
+### Process Steps Updated
+
+| Project | Steps 1-3 | Step 4 |
+|---------|-----------|--------|
+| national-digital-services-portal | ✅ Updated | ✅ Deleted |
+| immigration-case-management-system | ✅ Updated | ✅ Deleted |
+| enterprise-operations-dashboard | ✅ Updated | ✅ Deleted |
+| housing-registration-subsidy-platform | ✅ Updated | ✅ Deleted |
+| saas-management-analytics-platform | ✅ Updated | ✅ Deleted |
+
+**Total Process Steps:** 20 → 15 (step 4 deleted from all projects)
+
+### Fields NOT Changed (Preserved)
+
+- `id` — Preserved
+- `image_media_id` — Preserved (images unchanged)
+- `featured_image_media_id` — Preserved (images unchanged)
+- `check_launch_image_media_id` — Preserved (images unchanged)
+- `status` — Preserved (all remain `published`)
+- `is_featured` — Preserved
+- `display_order` — Preserved
+
+### Character Limit Compliance
+
+All content within safe ranges per Frontend_Projects.md and Frontend_ProjectDetails.md:
+- Titles: 35-42 chars ✅
+- Headings: 35-42 chars ✅
+- Descriptions: 140-180 chars ✅
+- Check & Launch: 100-140 chars ✅
+- Step titles: 18-25 chars ✅
+- Step descriptions: 80-110 chars ✅
+
+### Guardian Rules Verified
+
+- ✅ No schema changes
+- ✅ No route changes
+- ✅ No layout changes
+- ✅ No CSS/SCSS changes
+- ✅ No component changes
+- ✅ Images preserved
+- ✅ Anonymized client names (no real entities)
+- ✅ Darkone Admin 1:1 preserved
+- ✅ Finibus Frontend 1:1 preserved
+
+### Restore Point
+
+`docs/restore-points/Restore_Point_Projects_Content_Swap.md`
 
 ---
 
