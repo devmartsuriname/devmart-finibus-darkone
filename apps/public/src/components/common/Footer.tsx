@@ -30,7 +30,7 @@ function Footer() {
               <div className="footer-widget">
                 <div className="footer-logo">
                   <Link onClick={scrollTop} to="/">
-                    <img src="/images/logo.png" alt="Devmart Logo" />
+                    <img src={settings.logo_url} alt={`${settings.site_name} Logo`} />
                   </Link>
                 </div>
                 <address>

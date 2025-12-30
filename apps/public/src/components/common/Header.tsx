@@ -12,8 +12,10 @@
 import React, { useEffect, useState } from 'react'
 import { Link, NavLink, useLocation } from 'react-router-dom'
 import AnimatedCursor from 'react-animated-cursor'
+import { usePublicSettings } from '../../hooks/usePublicSettings'
 
 function Header() {
+  const { settings } = usePublicSettings()
   const [sidebar, setSidebar] = useState<boolean | number>(false)
   const location = useLocation()
 
@@ -81,7 +83,7 @@ function Header() {
             <div className="col col-sm-3 col-md-3 col-lg-3 col-xl-2">
               <div className="logo">
                 <Link onClick={scrollTop} to="/">
-                  <img src="/images/logo.png" alt="Devmart Logo" />
+                  <img src={settings.logo_url} alt={`${settings.site_name} Logo`} />
                 </Link>
               </div>
             </div>
@@ -89,7 +91,7 @@ function Header() {
               <nav className={sidebar === 1 ? 'main-nav slidenav' : 'main-nav'}>
                 <div className="mobile-menu-logo">
                   <Link onClick={scrollTop} to="/">
-                    <img src="/images/logo.png" alt="Devmart Logo" />
+                    <img src={settings.logo_url} alt={`${settings.site_name} Logo`} />
                   </Link>
                 </div>
                 <ul>
