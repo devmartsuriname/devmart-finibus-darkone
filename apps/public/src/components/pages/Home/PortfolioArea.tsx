@@ -81,7 +81,7 @@ function PortfolioArea({ black = "" }: PortfolioAreaProps) {
           <div className="row">
             <div className="col-12 col-lg-7 col-xl-5">
               <div className={`title ${black}`}>
-                <span>Case Study</span>
+                <span>Our Portfolio</span>
                 <h2>A diversified resilient portfolio.</h2>
               </div>
             </div>
