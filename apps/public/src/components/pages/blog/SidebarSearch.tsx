@@ -5,7 +5,7 @@ function SidebarSearch() {
     <>
       <div className="sidebar-search">
         <form onSubmit={(e) => e.preventDefault()} action="#" method="post">
-          <input type="text" name="search" placeholder="Search Here" />
+          <input type="text" name="search" placeholder="Search (coming soon)" />
           <button type="submit">
             <i className="bi bi-search" />
           </button>

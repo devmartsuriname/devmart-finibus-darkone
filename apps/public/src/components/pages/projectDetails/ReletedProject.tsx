@@ -123,7 +123,7 @@ function ReletedProject({ projects, loading }: ReletedProjectProps) {
                           to={`/project-details/${project.slug}`}
                           className="case-btn"
                         >
-                          Case Study
+                          View Project
                         </Link>
                         {imageUrl && (
                           <a

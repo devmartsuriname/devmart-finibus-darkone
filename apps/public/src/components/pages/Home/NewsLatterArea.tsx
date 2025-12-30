@@ -109,7 +109,7 @@ function NewsLatterArea({ black = "" }: NewsLatterAreaProps) {
                     <p>{post.excerpt}</p>
                     <div className="view-btn">
                       <Link onClick={scrollTop} to={`/blog/${post.slug}`}>
-                        View details
+                        Read Article
                       </Link>
                     </div>
                   </div>

@@ -117,7 +117,7 @@ function PortfolioArea({ black = "" }: PortfolioAreaProps) {
                         to={`/project-details/${project.slug}`}
                         className="case-btn"
                       >
-                        Case Study
+                        View Project
                       </Link>
                       <a
                         data-lightbox="image1"
