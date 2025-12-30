@@ -1,9 +1,9 @@
 # GAP Registry — Devmart Phase 12.x Findings
 
 **Status:** Reference Document  
-**Last Updated:** 2025-12-30 (Phase 12.11 Copy Polish)  
-**Total GAPs:** 56  
-**Resolved (Phase 12.11):** 15
+**Last Updated:** 2025-12-30 (Phase 12.12 Content Gap Fixes)  
+**Total GAPs:** 62  
+**Resolved:** 21 (15 in Phase 12.11 + 6 in Phase 12.12)
 
 ---
 
@@ -184,3 +184,17 @@ All structural GAPs are intentionally deferred per project constraints:
 | 2025-12-30 | 12.9 | GAP-37–41 | Projects Listing verification |
 | 2025-12-30 | 12.10 | GAP-42–56 | Blog Listing verification |
 | 2025-12-30 | 12.11 | — | **Copy Polish: 15 GAPs resolved** |
+| 2025-12-30 | 12.12 | NEW-GAP-01–08 | **P0/P1 Content Fixes: 6 GAPs resolved** |
+
+---
+
+## Phase 12.12 — NEW GAPs Discovered & Resolved
+
+| ID | Component | Element | Old Value | New Value | Severity | Status |
+|----|-----------|---------|-----------|-----------|----------|--------|
+| NEW-GAP-01 | OurPartnerArea.tsx | Partner heading | "Join our Finibus community." | "Join Our Client Network." | P0 | ✅ RESOLVED (12.12) |
+| NEW-GAP-02 | LatesNewsArea.tsx | Card CTA | "View details" | "Read Article" | P1 | ✅ RESOLVED (12.12) |
+| NEW-GAP-03 | ReletedProject.tsx | Card CTA | "Case Study" | "View Project" | P1 | ✅ RESOLVED (12.12) |
+| NEW-GAP-04 | SidebarSearch.tsx | Placeholder | "Search Here" | "Search (coming soon)" | P1 | ✅ RESOLVED (12.12) |
+| NEW-GAP-07 | PortfolioArea.tsx | Card CTA | "Case Study" | "View Project" | P1 | ✅ RESOLVED (12.12) |
+| NEW-GAP-08 | NewsLatterArea.tsx | Card CTA | "View details" | "Read Article" | P1 | ✅ RESOLVED (12.12) |

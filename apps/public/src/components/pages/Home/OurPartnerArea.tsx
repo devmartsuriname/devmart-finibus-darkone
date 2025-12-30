@@ -83,7 +83,7 @@ function OurPartnerArea() {
                   <div className="col-md-6 col-lg-4 col-xl-6">
                     <div className="title">
                       <span>Our partner</span>
-                      <h2>Join our Finibus community.</h2>
+                      <h2>Join Our Client Network.</h2>
                     </div>
                   </div>
                   {partners.map((partner, index) => (
