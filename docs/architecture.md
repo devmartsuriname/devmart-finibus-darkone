@@ -3,7 +3,7 @@
 # Architecture Documentation
 
 **Status:** Verified  
-**Phase:** Phase 12.4 COMPLETE  
+**Phase:** Phase 12.6 COMPLETE  
 **Last Updated:** 2025-12-29
 
 ---
@@ -59,6 +59,41 @@ This document outlines the architecture decisions and validation requirements fo
 - useGlobalBlocks.ts: Applied useRef pattern, removed unstable deps from `useCallback` arrays
 
 **Result:** All fixes are wiring/stability only, no new features added.
+
+### URL Fix Option A (2025-12-29)
+
+**Broken Service Links Fixed:**
+- Footer.tsx: 6 "Our Services" links changed from `/service-details` (no slug) → `/service`
+- ServiceList.tsx: 6 blog sidebar links changed from `/service-details` (no slug) → `/service`
+
+### Phase 12.5 — Projects Verification (2025-12-29)
+
+**GAP-PROJ-001 Fixed:**
+- HeroArea.tsx: 3 STATIC_SLIDES fallback `cta2_url` changed from `/project-details` (no slug) → `/project`
+- Note: DB hero slides already had correct URLs — fix applies to fallback only
+
+### Phase 12.6 — Blog Content Swap (2025-12-29)
+
+**Type:** DB-Only Content Replacement (NO code changes)
+
+**Posts Updated:** 5 of 6 published blog posts  
+**Post Skipped:** `design-thinking-modern-enterprise` (production-ready)
+
+**Fields Changed:** title, excerpt, content, category (where specified)  
+**Fields Preserved:** id, slug, featured_image_media_id, status, published_at, author_id
+
+**Structural Changes:** NONE (schema, routes, components unchanged)
+
+**Canonical Routes (Single Source of Truth):**
+
+| Content Type | Canonical Route |
+|--------------|-----------------|
+| Service Details | `/service-details/:slug` |
+| Project Details | `/project-details/:slug` |
+| Blog Details | `/blog/:slug` |
+| Services Listing | `/service` |
+| Projects Listing | `/project` |
+| Blog Listing | `/blog` |
 
 ---
 

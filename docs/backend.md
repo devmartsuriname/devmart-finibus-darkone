@@ -3,8 +3,82 @@
 # Backend Documentation
 
 **Status:** Verified  
-**Phase:** Phase 12.4 COMPLETE  
+**Phase:** Phase 12.6 COMPLETE  
 **Last Updated:** 2025-12-29
+
+---
+
+## Phase 12.6 — Blog Content Swap (DB-Only)
+
+**Type:** Content Replacement  
+**Table Updated:** `blog_posts`
+
+**Records Updated:** 5 of 6 published posts
+
+| Slug | Fields Updated |
+|------|----------------|
+| `upcoming-trends-ai-machine-learning` | excerpt, content |
+| `future-of-digital-business-strategy` | title, excerpt, content, category |
+| `complete-guide-marketing-automation` | excerpt, content |
+| `building-scalable-web-applications-2025` | title, excerpt, content, category |
+| `security-best-practices-modern-applications` | excerpt, content |
+
+**Post Skipped:** `design-thinking-modern-enterprise` (production-ready, no changes per Live Document)
+
+**Fields NOT Changed:**
+- `id`, `slug`, `featured_image_media_id`, `status`, `published_at`, `author_id`
+
+**Category Changes:**
+- `future-of-digital-business-strategy`: Website → Strategy
+- `building-scalable-web-applications-2025`: Software Design → Development
+
+---
+
+## URL Fix Option A — Broken Service Links
+
+**Files Changed:**
+
+| File | Before | After |
+|------|--------|-------|
+| Footer.tsx | `/service-details` (no slug) | `/service` |
+| ServiceList.tsx | `/service-details` (no slug) | `/service` |
+
+**Rationale:** Hardcoded demo links without DB mapping → safe redirect to listing page.
+
+---
+
+## Phase 12.5 — Projects Verification & GAP Fix
+
+**Pre-Check:** DB hero slides confirmed ACTIVE with correct URLs (`/service`, `/projects`, `/about`).
+
+**GAP-PROJ-001 Fixed:**
+
+| File | Before | After |
+|------|--------|-------|
+| HeroArea.tsx (STATIC_SLIDES lines 20, 31, 42) | `/project-details` (no slug) | `/project` |
+
+**Rationale:** Fix applies to fallback only (used when DB slides are unavailable).
+
+**Verification Completed:**
+- ✅ Projects listing renders from DB
+- ✅ Project details load for all 8 slugs
+- ✅ Cross-site links use canonical routes
+- ✅ No console errors
+
+---
+
+## Phase 12.4 — Service Details Content Update
+
+**Tables Updated:**
+
+| Table | Records | Fields |
+|-------|---------|--------|
+| service_process_steps | 21 | title, description |
+| service_pricing_plans | 42 | plan_name, plan_subtitle, price_amount, features[], cta_label |
+
+**CTA Policy:** All 42 pricing plans now use "Get a Quote" (0 "Pay Now" remaining).
+
+**Route Fix:** Homepage ServiceArea link changed from `/service/${slug}` to `/service-details/${slug}`.
 
 ---
 
