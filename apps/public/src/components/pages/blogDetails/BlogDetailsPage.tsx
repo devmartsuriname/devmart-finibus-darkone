@@ -40,6 +40,13 @@ function BlogDetailsPage() {
                     featuredImage={post.featured_image?.public_url}
                     publishedAt={post.published_at || undefined}
                     category={post.category || undefined}
+                    // Details Layout fields (Phase 2.1a-2.3)
+                    quoteText={post.quote_text || undefined}
+                    quoteAuthor={post.quote_author || undefined}
+                    secondaryImage={post.secondary_image?.public_url}
+                    secondaryContent={post.secondary_content || undefined}
+                    authorDisplayName={post.author_display_name || undefined}
+                    tags={post.tags || undefined}
                   />
                   // Comments section permanently removed - see docs/Policy_Blog_Comments_Disabled.md
                 )}

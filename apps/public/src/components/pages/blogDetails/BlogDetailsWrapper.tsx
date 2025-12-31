@@ -8,6 +8,13 @@ interface BlogDetailsWrapperProps {
   featuredImage?: string;
   publishedAt?: string;
   category?: string;
+  // Details Layout fields (Phase 2.1a-2.3)
+  quoteText?: string;
+  quoteAuthor?: string;
+  secondaryImage?: string;
+  secondaryContent?: string;
+  authorDisplayName?: string;
+  tags?: string[];
 }
 
 function BlogDetailsWrapper({
@@ -16,7 +23,13 @@ function BlogDetailsWrapper({
   excerpt,
   featuredImage,
   publishedAt,
-  category
+  category,
+  quoteText,
+  quoteAuthor,
+  secondaryImage,
+  secondaryContent,
+  authorDisplayName,
+  tags
 }: BlogDetailsWrapperProps) {
   const scrollTop = () => window.scrollTo({ top: 0, behavior: "smooth" });
 
@@ -35,6 +48,16 @@ function BlogDetailsWrapper({
   const displayTitle = title || "Nullam lacinia magna vitae mi tincidunt tudou owner Dolebon li faucibus Aenean nec eros sagittis.";
   const displayImage = featuredImage || "/images/post/blog-list-3.jpg";
   const displayDate = formatDate(publishedAt);
+  
+  // Details Layout with fallbacks for 1:1 parity
+  const displayQuoteText = quoteText || "Donec bibendum enim ut elit porta ullamcorper. met eitye gueni iaculis vitae nulla. Morbi mattis nec mi ac mollis. Nam etjinanan consequat tellus, a varius magna. Vestibulum and";
+  const displayQuoteAuthor = quoteAuthor || "Ambrela Jwe";
+  const displaySecondaryImage = secondaryImage || "/images/blog-banner.png";
+  const displaySecondaryContent = secondaryContent || "Donec bibendum enim ut elit porta ullamcorper Vestibulum quam nulla, venenatis eget dapibus iaculis vitae nulla. Morbi mattis nec mi ac mollis Nam et consequat tellus, a varius magna. toma iaculis, ligula vitae commodo blandit, augue aburna accumsan sapien, at accumsan metus dolVivamus pharetra ullamcorper efficitur. aciyono Vestibulum quam nulla, venenatis eget dapibus iaculis vitae nulla. Morbi mattis nec mi ac tisanVestibulum at ex in massa consequat faucibus.";
+  const displayAuthorName = authorDisplayName || "Devmart Team";
+  
+  // Tags: use DB tags if available, otherwise fallback to hardcoded for parity
+  const displayTags = tags && tags.length > 0 ? tags : null;
 
   return (
     <>
@@ -51,7 +74,7 @@ function BlogDetailsWrapper({
               <img src="/images/author/author-1.jpg" alt="blog images" />
             </div>
             <div className="author-info">
-              <h5>Posted by, Devmart Team</h5>
+              <h5>Posted by, {displayAuthorName}</h5>
               <span>{displayDate}</span>
             </div>
           </div>
@@ -96,17 +119,15 @@ function BlogDetailsWrapper({
           </>
         )}
 
-        {/* ALWAYS render template quote block for demo parity */}
+        {/* Quote block - now data-driven with fallback */}
         <div className="blog-quate">
           <blockquote>
             <div className="quote-left">
               <i className="bi bi-quote" />
             </div>
             <p>
-              Donec bibendum enim ut elit porta ullamcorper. met eitye gueni
-              iaculis vitae nulla. Morbi mattis nec mi ac mollis. Nam etjinanan
-              consequat tellus, a varius magna. Vestibulum and <br />
-              <b>Ambrela Jwe</b>
+              {displayQuoteText} <br />
+              <b>{displayQuoteAuthor}</b>
             </p>
             <div className="quote-right">
               <i className="bi bi-quote" />
@@ -130,20 +151,13 @@ function BlogDetailsWrapper({
           <div className="row">
             <div className="col-xl-6">
               <div className="blog-banner-img">
-                <img src="/images/blog-banner.png" alt="blog images" />
+                <img src={displaySecondaryImage} alt="blog images" />
               </div>
             </div>
             <div className="col-xl-6">
               <div className="blog-banner-content">
                 <p>
-                  Donec bibendum enim ut elit porta ullamcorper Vestibulum quam
-                  nulla, venenatis eget dapibus iaculis vitae nulla. Morbi
-                  mattis nec mi ac mollis Nam et consequat tellus, a varius
-                  magna. toma iaculis, ligula vitae commodo blandit, augue
-                  aburna accumsan sapien, at accumsan metus dolVivamus pharetra
-                  ullamcorper efficitur. aciyono Vestibulum quam nulla,
-                  venenatis eget dapibus iaculis vitae nulla. Morbi mattis nec
-                  mi ac tisanVestibulum at ex in massa consequat faucibus.
+                  {displaySecondaryContent}
                 </p>
               </div>
             </div>
@@ -151,15 +165,27 @@ function BlogDetailsWrapper({
           <div className="row">
             <div className="col-md-6 col-xl-8">
               <div className="tags">
-                <Link onClick={scrollTop} to="#">
-                  {category || "Website"}
-                </Link>
-                <Link onClick={scrollTop} to="#">
-                  Software Design
-                </Link>
-                <Link onClick={scrollTop} to="#">
-                  UI/UX Design
-                </Link>
+                {displayTags ? (
+                  // Render tags from database
+                  displayTags.slice(0, 3).map((tag, index) => (
+                    <Link key={index} onClick={scrollTop} to="#">
+                      {tag}
+                    </Link>
+                  ))
+                ) : (
+                  // Fallback to hardcoded tags for 1:1 parity
+                  <>
+                    <Link onClick={scrollTop} to="#">
+                      {category || "Website"}
+                    </Link>
+                    <Link onClick={scrollTop} to="#">
+                      Software Design
+                    </Link>
+                    <Link onClick={scrollTop} to="#">
+                      UI/UX Design
+                    </Link>
+                  </>
+                )}
               </div>
             </div>
             <div className="col-md-6 col-xl-4">
