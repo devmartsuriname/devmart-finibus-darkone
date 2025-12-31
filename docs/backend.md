@@ -3,8 +3,29 @@
 # Backend Documentation
 
 **Status:** ✅ PHASE 12 COMPLETE — FRONTEND FROZEN  
-**Phase:** Phase 12 CLOSED | Admin Blog Enhancement Phase 2.2 COMPLETE  
+**Phase:** Phase 12 CLOSED | Admin Blog Enhancement Phase 2.1a COMPLETE  
 **Last Updated:** 2025-12-31
+
+---
+
+## Admin Blog Enhancement — Phase 2.1a: Field Parity Fix (2025-12-31)
+
+**Status:** ✅ **COMPLETE**
+
+### New Database Columns (ADDITIVE)
+
+| Column | Type | Default | Purpose |
+|--------|------|---------|---------|
+| `quote_text` | TEXT | NULL | Quote block text for blog details |
+| `quote_author` | TEXT | NULL | Quote attribution name |
+| `secondary_image_media_id` | UUID FK | NULL | Banner section image |
+| `secondary_content` | TEXT | NULL | Banner section body text |
+| `author_display_name` | TEXT | NULL | Author name (UI default: "Devmart Team") |
+
+### Admin Modal Changes
+- Tab 5 "Details Layout" added to BlogPostModal
+- All 5 fields exposed with character counters
+- MediaPicker for secondary image
 
 ---
 
