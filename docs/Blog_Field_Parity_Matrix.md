@@ -120,16 +120,37 @@ All published posts seeded with SEO + Details Layout data.
 
 ## Seeded Data Summary
 
+**Status:** ✅ PER-POST UNIQUE SEEDING COMPLETE (2025-12-31)
+
+### SEO Fields (Derived from Post Content)
+
+| Slug | meta_title_len | meta_desc_len | canonical_url | noindex |
+|------|----------------|---------------|---------------|---------|
+| building-scalable-web-applications-2025 | 42 | 138 | /blog/building-scalable-web-applications-2025 | false |
+| complete-guide-marketing-automation | 42 | 131 | /blog/complete-guide-marketing-automation | false |
+| design-thinking-modern-enterprise | 40 | 160 | /blog/design-thinking-modern-enterprise | false |
+| future-of-digital-business-strategy | 39 | 149 | /blog/future-of-digital-business-strategy | false |
+| security-best-practices-modern-applications | 47 | 108 | /blog/security-best-practices-modern-applications | false |
+| upcoming-trends-ai-machine-learning | 42 | 139 | /blog/upcoming-trends-ai-machine-learning | false |
+
+### Details Layout Fields (Unique Per-Post)
+
+| Slug | quote_text | tags |
+|------|------------|------|
+| building-scalable-web-applications-2025 | "Successful scalability depends on operational readiness..." | Development, Technology, Performance |
+| complete-guide-marketing-automation | "A sustainable approach to marketing automation..." | Marketing, Automation, Analytics |
+| design-thinking-modern-enterprise | "Great design is not about making things pretty..." | Design, Innovation, Strategy |
+| future-of-digital-business-strategy | "A future-proof digital business strategy prioritizes..." | Strategy, Digital Transformation, Business |
+| security-best-practices-modern-applications | "Best practices begin at the architectural level..." | Security, Development, Technology |
+| upcoming-trends-ai-machine-learning | "Successful AI adoption requires more than algorithms..." | Technology, AI, Machine Learning |
+
+### Common Fields (All Posts)
+
 | Field | Seeded Value | Constraint |
 |-------|--------------|------------|
-| meta_title | Post title (≤70 chars) | LEFT(title, 70) |
-| meta_description | Post excerpt (≤160 chars) | LEFT(excerpt, 160) |
-| canonical_url | `/blog/{slug}` | — |
-| noindex | false | — |
 | author_display_name | "Devmart Team" | — |
-| quote_text | Devmart innovation quote | ≤300 chars |
 | quote_author | "Devmart Team" | — |
-| secondary_content | Devmart approach paragraph | ≤500 chars |
+| secondary_content | Unique per-post (article-derived) | ≤500 chars |
 | og_image_media_id | NULL (manual later) | — |
 | secondary_image_media_id | NULL (manual later) | — |
 
