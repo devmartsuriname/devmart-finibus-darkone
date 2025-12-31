@@ -3,14 +3,14 @@
 # Backend Documentation
 
 **Status:** ✅ PHASE 12 COMPLETE — FRONTEND FROZEN  
-**Phase:** Phase 12 CLOSED | Admin Blog Enhancement Phase 3 COMPLETE  
+**Phase:** Phase 12 CLOSED | Admin Blog Enhancement Phase 3 CLOSED  
 **Last Updated:** 2025-12-31
 
 ---
 
 ## Admin Blog Enhancement — Phase 3: SEO Fallback Wiring (2025-12-31)
 
-**Status:** ✅ **COMPLETE**
+**Status:** ✅ **CLOSED**
 
 ### Objective
 Wire blog post SEO metadata to public blog details page using react-helmet-async with 3-tier fallback hierarchy.
@@ -21,6 +21,13 @@ Wire blog post SEO metadata to public blog details page using react-helmet-async
 |------|---------|
 | `apps/public/src/hooks/useGlobalSeoSettings.ts` | Fetch global SEO fallbacks from settings table |
 | `apps/public/src/components/pages/blogDetails/BlogDetailsSeo.tsx` | Render SEO meta tags with fallback resolution |
+| `apps/public/src/lib/seo/resolveSeoFallbacks.ts` | SEO utility (copied for app separation) |
+
+### Stability Fix Applied
+
+**Issue:** Cross-app import bug — BlogDetailsSeo.tsx imported from admin app path.  
+**Fix:** Copied `resolveSeoFallbacks.ts` to `apps/public/src/lib/seo/` and updated import.  
+**Result:** No cross-app imports, both apps are fully self-contained.
 
 ### SEO Fallback Hierarchy
 
@@ -40,9 +47,11 @@ Wire blog post SEO metadata to public blog details page using react-helmet-async
 - `<meta name="twitter:*">` — Twitter Card tags
 - `<meta property="article:*">` — Article metadata
 
-### Integration
+### Phase 3 Closure Confirmation
 
-BlogDetailsPage.tsx now includes `<BlogDetailsSeo post={post} />` which resolves and injects all SEO metadata.
+- **No schema changes pending** — All blog_posts columns stable
+- **App separation enforced** — Utilities duplicated, no cross-imports
+- **Blog SEO fields complete** — All 5 fields (meta_title, meta_description, og_image, canonical_url, noindex) active
 
 ---
 
