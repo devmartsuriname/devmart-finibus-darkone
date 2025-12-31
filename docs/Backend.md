@@ -3,8 +3,99 @@
 # Backend Documentation
 
 **Status:** ✅ PHASE 12 COMPLETE — FRONTEND FROZEN  
-**Phase:** Phase 12 CLOSED | Admin Blog Enhancement Phase 1 COMPLETE  
+**Phase:** Phase 12 CLOSED | Admin Blog Enhancement Phase 2.2 COMPLETE  
 **Last Updated:** 2025-12-31
+
+---
+
+## Blog Comments — DEPRECATED (2025-12-31)
+
+**Status:** ⚠️ **TABLE DEPRECATED — NOT IN USE**
+
+### Table: `blog_comments`
+| Column | Type | Notes |
+|--------|------|-------|
+| id | uuid | PK |
+| post_id | uuid | FK to blog_posts |
+| commenter_name | text | — |
+| commenter_email | text | — |
+| body | text | — |
+| created_at | timestamptz | — |
+
+### Current State
+- **Records:** 8 (seeded test data, never production)
+- **RLS:** Admin-only access (no public policies)
+- **UI:** None (removed from public frontend)
+- **Admin:** No moderation UI exists
+
+### Policy Decision
+Blog comments are permanently disabled. See: `docs/Policy_Blog_Comments_Disabled.md`
+
+**Do NOT:**
+- Create comment moderation features
+- Add comment UI to public or admin
+- Re-enable commenting functionality
+
+---
+
+## Admin Blog Enhancement — Phase 2.1: Field Parity (2025-12-31)
+
+**Status:** ✅ **VERIFIED**
+
+All blog_posts columns mapped to Admin Modal fields. See: `docs/Blog_Field_Parity_Matrix.md`
+
+---
+
+## Admin Blog Enhancement — Phase 2: Modal UX Upgrade (2025-12-31)
+
+**Status:** ✅ **COMPLETE**
+
+### Objective
+Restructure BlogPostModal to 4-tab layout with full SEO governance and taxonomy management.
+
+### Components Created
+
+| File | Purpose |
+|------|---------|
+| `ContentBlocksEditor.tsx` | Structured content blocks UI (paragraph, heading, list, quote, image) |
+| `CategorySelector.tsx` | Category dropdown with add-new option |
+| `TagsInput.tsx` | Tags array input with chips UI |
+| `compileContent.ts` | content_blocks → HTML compiler utility |
+
+### Modal Tab Structure
+
+| Tab | Fields |
+|-----|--------|
+| Content | Title, Slug, Excerpt (counter), ContentBlocksEditor or legacy textarea |
+| Taxonomy | CategorySelector, TagsInput |
+| Media & Publishing | Featured Image, Status, Publish Date |
+| SEO | Meta Title (counter), Meta Description (counter), OG Image, Canonical URL, Noindex |
+
+### useBlogPosts Hook Extended
+
+New fields in `BlogPost` and `BlogPostInput` interfaces:
+- `content_blocks: Json | null`
+- `category: string | null`
+- `tags: string[] | null`
+- `meta_title: string | null`
+- `meta_description: string | null`
+- `og_image_media_id: string | null`
+- `canonical_url: string | null`
+- `noindex: boolean | null`
+
+### Backward Compatibility
+
+- Legacy posts (empty `content_blocks`) load in HTML textarea mode
+- "Convert to Blocks" button available for migration
+- Existing posts remain fully editable
+
+### Verification
+- ✅ All 4 tabs functional
+- ✅ Content blocks compile to HTML on save
+- ✅ Legacy posts load correctly
+- ✅ SEO fields persist correctly
+- ✅ No console errors
+- ✅ Public frontend unchanged
 
 ---
 
@@ -55,17 +146,6 @@ Add SEO and taxonomy fields to `blog_posts` table with dual-storage content mode
 1. Blog post SEO fields (meta_title, meta_description, etc.)
 2. Blog static page SEO (page_settings for /blog route)
 3. Global SEO settings (settings table)
-
-### Files Updated
-- `docs/restore-points/Restore_Point_Phase1_Blog_Schema.md`
-- `docs/Backend.md` (this file)
-- `docs/Architecture.md`
-
-### Verification
-- ✅ Migration applied successfully
-- ✅ Existing blog posts load without errors
-- ✅ Public frontend unchanged
-- ✅ No console errors
 
 ---
 

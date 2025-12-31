@@ -1,6 +1,6 @@
 # Admin Modals Fields Inventory
 
-**Status:** ✅ Phase 1 Complete  
+**Status:** ✅ Phase 2 Complete  
 **Last Updated:** 2025-12-31
 
 ---
@@ -13,36 +13,51 @@ This document inventories all admin modal components and their field mappings fo
 
 ## Blog Module — `BlogPostModal.tsx`
 
-**Status:** Phase 1 Schema Complete | Phase 2 UI Pending
+**Status:** ✅ Phase 2 Complete
 
-### Current Fields (Post-Phase 1 Schema)
+### Tab Structure (Implemented)
+
+| Tab | Fields | Status |
+|-----|--------|--------|
+| Content | Title, Slug, Excerpt (counter), ContentBlocksEditor or Legacy Textarea | ✅ Complete |
+| Taxonomy | CategorySelector (dropdown + add-new), TagsInput (chips) | ✅ Complete |
+| Media & Publishing | Featured Image, Status, Publish Date | ✅ Complete |
+| SEO | Meta Title (counter), Meta Description (counter), OG Image, Canonical URL, Noindex | ✅ Complete |
+
+### Field Mapping
 
 | Tab | Field | DB Column | Type | Validation | Status |
 |-----|-------|-----------|------|------------|--------|
-| Content | Title | title | TEXT | required | ✅ Existing |
-| Content | Slug | slug | TEXT | required, unique, URL-safe | ✅ Existing |
-| Content | Excerpt | excerpt | TEXT | max 300 | ✅ Existing |
-| Content | Content | content | TEXT | HTML string | ✅ Existing |
-| Content | Content Blocks | content_blocks | JSONB | structured array | 🆕 Schema ready |
-| Taxonomy | Category | category | TEXT | dropdown + freetext | ✅ Existing |
-| Taxonomy | Tags | tags | TEXT[] | array | 🆕 Schema ready |
-| Media | Featured Image | featured_image_media_id | UUID | MediaPicker | ✅ Existing |
-| Media | Status | status | TEXT | draft/published | ✅ Existing |
-| Media | Publish Date | published_at | TIMESTAMP | date picker | ✅ Existing |
-| SEO | Meta Title | meta_title | TEXT | max 70, counter | 🆕 Schema ready |
-| SEO | Meta Description | meta_description | TEXT | max 160, counter | 🆕 Schema ready |
-| SEO | OG Image | og_image_media_id | UUID | MediaPicker | 🆕 Schema ready |
-| SEO | Canonical URL | canonical_url | TEXT | valid URL | 🆕 Schema ready |
-| SEO | Noindex | noindex | BOOLEAN | switch | 🆕 Schema ready |
+| Content | Title | title | TEXT | required, max 200 | ✅ Complete |
+| Content | Slug | slug | TEXT | required, unique, URL-safe | ✅ Complete |
+| Content | Excerpt | excerpt | TEXT | max 300, counter | ✅ Complete |
+| Content | Content | content | TEXT | compiled HTML | ✅ Complete |
+| Content | Content Blocks | content_blocks | JSONB | structured array | ✅ Complete |
+| Taxonomy | Category | category | TEXT | dropdown + freetext | ✅ Complete |
+| Taxonomy | Tags | tags | TEXT[] | chip array | ✅ Complete |
+| Media | Featured Image | featured_image_media_id | UUID | MediaPicker | ✅ Complete |
+| Media | Status | status | TEXT | draft/published | ✅ Complete |
+| Media | Publish Date | published_at | TIMESTAMP | date picker | ✅ Complete |
+| SEO | Meta Title | meta_title | TEXT | max 70, counter | ✅ Complete |
+| SEO | Meta Description | meta_description | TEXT | max 160, counter | ✅ Complete |
+| SEO | OG Image | og_image_media_id | UUID | MediaPicker | ✅ Complete |
+| SEO | Canonical URL | canonical_url | TEXT | valid URL | ✅ Complete |
+| SEO | Noindex | noindex | BOOLEAN | switch | ✅ Complete |
 
-### Modal Structure (Current vs Target)
+### Supporting Components
 
-| Aspect | Current | Target (Phase 2) |
-|--------|---------|------------------|
-| Layout | Single form | 4-tab layout |
-| Content editing | Plain textarea | Structured blocks UI |
-| Taxonomy | Category text field | Dropdown + Tags chips |
-| SEO | None | Full SEO tab |
+| Component | File | Purpose |
+|-----------|------|---------|
+| ContentBlocksEditor | `components/ContentBlocksEditor.tsx` | Structured content editing (paragraph, heading, list, quote, image) |
+| CategorySelector | `components/CategorySelector.tsx` | Category dropdown with predefined suggestions + add-new |
+| TagsInput | `components/TagsInput.tsx` | Tags array input with chip-style display |
+| compileBlocksToHtml | `utils/compileContent.ts` | Compiles ContentBlock[] → HTML string |
+
+### Legacy Mode Support
+
+- Posts with empty `content_blocks` display legacy HTML textarea
+- "Convert to Blocks" button available for migration
+- Backward compatible with all existing posts
 
 ---
 
@@ -58,7 +73,7 @@ This document inventories all admin modal components and their field mappings fo
 | Process Steps | Dynamic step management (step_number, title, description, image) | ✅ Complete |
 | Pricing | Show Pricing toggle, Monthly/Yearly toggles, Pricing plans management | ✅ Complete |
 
-### Key Patterns (To Reuse in Blog)
+### Key Patterns (Reused in Blog)
 - Tab navigation with react-bootstrap Tabs
 - Modal size="xl"
 - Footer: Cancel | Save Changes buttons
@@ -91,7 +106,7 @@ This document inventories all admin modal components and their field mappings fo
 | Content | Page-specific fields (varies by page type) | ✅ Complete |
 | SEO | Meta Title, Meta Description | ✅ Complete |
 
-### SEO Pattern (To Reuse in Blog)
+### SEO Pattern (Reused in Blog)
 - Character counters for meta fields
 - Help text for fallback behavior
 
@@ -121,38 +136,28 @@ This document inventories all admin modal components and their field mappings fo
 
 | Module | Tabs | SEO Tab | Process Steps | Pricing | Category | Tags |
 |--------|------|---------|---------------|---------|----------|------|
-| Blog | Pending | Pending | ❌ | ❌ | ✅ | Pending |
-| Services | ✅ | ❌ | ✅ | ✅ | ❌ | ❌ |
-| Projects | ✅ | ❌ | ✅ | ❌ | ✅ | ❌ |
-| Pages | ✅ | ✅ | ❌ | ❌ | ❌ | ❌ |
+| Blog | ✅ 4 tabs | ✅ | ❌ | ❌ | ✅ | ✅ |
+| Services | ✅ 3 tabs | ❌ | ✅ | ✅ | ❌ | ❌ |
+| Projects | ✅ 3 tabs | ❌ | ✅ | ❌ | ✅ | ❌ |
+| Pages | ✅ 2 tabs | ✅ | ❌ | ❌ | ❌ | ❌ |
 | Testimonials | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ |
 
 ---
 
-## Phase 2 Implementation Notes
+## Admin Modal Standard (Locked Constraint)
 
-### Blog Modal Target Structure
-```
-BlogPostModal (size="xl")
-├── Tab: Content
-│   ├── Title (text, required)
-│   ├── Slug (text, auto-generated)
-│   ├── Excerpt (textarea, counter)
-│   └── Content Blocks (structured UI)
-├── Tab: Taxonomy
-│   ├── Category (dropdown + add new)
-│   └── Tags (chip input)
-├── Tab: Media & Publishing
-│   ├── Featured Image (MediaPicker)
-│   ├── Status (dropdown)
-│   └── Publish Date (date picker)
-└── Tab: SEO
-    ├── Meta Title (text, 70 char counter)
-    ├── Meta Description (textarea, 160 char counter)
-    ├── OG Image (MediaPicker)
-    ├── Canonical URL (text, optional)
-    └── Noindex (switch)
-```
+All content module modals must conform to this pattern:
+
+| Aspect | Requirement |
+|--------|-------------|
+| Size | `size="xl"` |
+| Header | Title + close button |
+| Footer | Cancel (secondary, left) + Save Changes (primary, right) |
+| Tabs | react-bootstrap Tabs component |
+| Form Groups | Consistent spacing with `mb-3` |
+| Media Fields | MediaPicker component |
+| Character Counters | For SEO and excerpt fields |
+| Validation | Inline error display with `isInvalid` |
 
 ---
 
@@ -160,4 +165,5 @@ BlogPostModal (size="xl")
 
 | Date | Change |
 |------|--------|
+| 2025-12-31 | Phase 2 complete — Blog modal restructured to 4-tab layout |
 | 2025-12-31 | Created document, Phase 1 schema complete |

@@ -55,11 +55,7 @@ function BlogDetailsWrapper({
               <span>{displayDate}</span>
             </div>
           </div>
-          <div className="comments">
-            <span>
-              <i className="bi bi-chat-dots" /> Comments (01)
-            </span>
-          </div>
+          {/* Comments counter removed - see docs/Policy_Blog_Comments_Disabled.md */}
         </div>
         
         {/* Render DB content paragraphs */}
