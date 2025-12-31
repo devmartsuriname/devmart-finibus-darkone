@@ -133,6 +133,42 @@ All planning work complies with project rules:
 
 ---
 
+### Quote Wizard UI Flow (PROPOSED — NOT IMPLEMENTED)
+
+**Document:** `docs/phase-6/Phase_6D_Quote_Wizard_UI_Flow.md`  
+**Status:** PLANNING COMPLETE — EXECUTION NOT AUTHORIZED
+
+| Step | Name | Components | Data |
+|------|------|------------|------|
+| 1 | Service Selection | Breadcrumb, Service cards | services table |
+| 2 | Tier Configuration | PriceBox, Billing toggle | service_pricing_plans |
+| 3 | Quote Summary | Grid layout | Aggregated state |
+| 4 | Contact Form | ContactForm pattern | User input |
+| 5 | Confirmation | Success message | quotes.reference_number |
+
+#### State Flow
+
+```
+User selects services → Configures tiers per service → Reviews summary → Submits contact info → Receives confirmation
+```
+
+#### Component Reuse (Uniformity Library)
+
+- `Breadcrumb` — Page header
+- `PriceBox` pattern — Tier selection cards
+- `ServicePrice` pattern — Billing toggle
+- `ContactForm` pattern — Form fields + validation
+- `LetsTalkArea` — Footer CTA
+- Bootstrap grid — Layout structure
+
+#### Blockers
+
+- Phase 6C schema execution must complete first
+- Route `/quote` creation requires approved schema
+- UI implementation blocked until both complete
+
+---
+
 ## Phase 5 — Public SEO Wiring (2025-12-31)
 
 **Status:** ✅ **EXECUTED** (5.1 + 5.2 ONLY)
