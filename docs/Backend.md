@@ -3,8 +3,50 @@
 # Backend Documentation
 
 **Status:** ✅ PHASE 12 COMPLETE — FRONTEND FROZEN  
-**Phase:** Phase 12 CLOSED | Phase 4C CLOSED | Phase 4D Pending  
+**Phase:** Phase 12 CLOSED | Phase 4C CLOSED | Phase 4D ✅ EXECUTED  
 **Last Updated:** 2025-12-31
+
+---
+
+## Phase 4D — URL Normalization (2025-12-31)
+
+**Status:** ✅ **EXECUTED**
+
+### Execution Summary
+
+| Step | Module | Records | Result |
+|------|--------|---------|--------|
+| 1 | Services | 7 | ✅ Domain + path normalized |
+| 2 | Projects | 5 | ✅ Domain + path normalized |
+| 3 | Blog Posts | 6 | ✅ Relative → absolute |
+| 4 | Pages | 7 | ✅ Canonical URLs populated |
+
+**Total records updated:** 25
+
+### Normalization Applied
+
+| Module | Before | After |
+|--------|--------|-------|
+| Services | `https://devmart.co/services/{slug}` | `https://devmart.sr/service-details/{slug}` |
+| Projects | `https://devmart.co/projects/{slug}` | `https://devmart.sr/project-details/{slug}` |
+| Blog | `/blog/{slug}` (relative) | `https://devmart.sr/blog/{slug}` (absolute) |
+| Pages | NULL | `https://devmart.sr/{slug}` |
+
+### Verification Results
+
+| Check | Result |
+|-------|--------|
+| All canonical URLs use `https://devmart.sr` | ✅ PASS |
+| All paths match target patterns | ✅ PASS |
+| No NULL canonical_url for published records | ✅ PASS |
+| Frontend routing unchanged | ✅ VERIFIED |
+| Admin functionality unchanged | ✅ VERIFIED |
+
+### Restore Point
+
+**File:** `docs/restore-points/Restore_Point_Phase_4D_URL_Normalization.md`
+
+Contains pre-execution state snapshot and rollback SQL for all 25 records.
 
 ---
 
@@ -29,23 +71,23 @@
 **Projects:** All 5 published projects seeded with:
 - meta_title (unique, meaningful)
 - meta_description (unique, meaningful)
-- canonical_url (`https://devmart.co/project-details/{slug}`)
+- canonical_url (`https://devmart.sr/project-details/{slug}`) — **NORMALIZED**
 - noindex = false
 
 **Services:** All 7 services seeded with:
 - meta_title (unique, meaningful)
 - meta_description (unique, meaningful)
-- canonical_url (`https://devmart.co/service-details/{slug}`)
+- canonical_url (`https://devmart.sr/service-details/{slug}`) — **NORMALIZED**
 - noindex = false
 
-### Canonical Domain Note
+### Canonical Domain Status
 
-| Domain | Purpose |
-|--------|---------|
-| `https://devmart.co` | Currently stored in canonical_url fields |
-| `https://devmart.sr` | Official production domain |
+| Domain | Status |
+|--------|--------|
+| `https://devmart.sr` | ✅ Production domain (ACTIVE) |
+| `https://devmart.co` | ❌ Deprecated (normalized out) |
 
-**Status:** Domain mismatch is intentional and deferred to Phase 4D (URL Normalization).
+**Status:** Domain normalization complete via Phase 4D execution.
 
 ### Project Process Steps
 

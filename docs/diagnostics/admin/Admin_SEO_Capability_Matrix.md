@@ -107,14 +107,24 @@ All modules implement a 3-tier fallback:
 
 ---
 
-## Canonical Domain Status
+## Canonical Domain Status (Phase 4D — ✅ EXECUTED)
 
 | Setting | Value |
 |---------|-------|
-| Current canonical URLs | `https://devmart.co/...` |
-| Production domain | `https://devmart.sr` |
-| Status | INTENTIONAL MISMATCH |
-| Resolution | Deferred to Phase 4D (URL Normalization) |
+| Canonical URL domain | `https://devmart.sr` |
+| Status | ✅ NORMALIZED |
+| Execution Date | 2025-12-31 |
+
+**Records Normalized:**
+
+| Module | Records | Pattern |
+|--------|---------|---------|
+| Services | 7 | `https://devmart.sr/service-details/{slug}` |
+| Projects | 5 | `https://devmart.sr/project-details/{slug}` |
+| Blog Posts | 6 | `https://devmart.sr/blog/{slug}` |
+| Pages | 7 | `https://devmart.sr/{slug}` |
+
+**Total:** 25 records normalized
 
 **Note:** Canonical URLs are STORED ONLY — no redirects or enforcement implemented.
 
@@ -131,19 +141,20 @@ All modules implement a 3-tier fallback:
 
 ---
 
-## Phase 4C Closure Stamp
+## Phase 4D Closure Stamp
 
 **Date:** 2025-12-31  
-**Status:** CLOSED
+**Status:** ✅ EXECUTED
 
-Phase 4C (Projects SEO Expansion) verified:
-- Projects SEO coverage: COMPLETE (all 5 fields)
-- Admin modal: SEO tab functional
-- Data seeding: All projects and services populated
-- Canonical URLs: Stored (domain normalization pending Phase 4D)
+Phase 4D (URL Normalization) verified:
+- All canonical URLs normalized to `https://devmart.sr`
+- All path patterns aligned with Finibus routing
+- No NULL canonical_url for published records
+- Frontend unchanged (frozen)
+- Admin unchanged
 
 ---
 
-**Phase 4C is CLOSED. No further execution permitted.**
+**Phase 4D is COMPLETE. No further execution permitted.**
 
-Next: Phase 4D (URL Normalization Planning) — requires explicit authorization.
+Next: Phase 5 (Public SEO Wiring) — requires explicit authorization.
