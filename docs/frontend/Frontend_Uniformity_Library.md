@@ -1,9 +1,78 @@
 # Frontend Uniformity Library
 
-**Status:** DOCUMENTATION ONLY  
-**Phase:** Phase 6 (Quote Wizard Planning)  
+## ⚠️ APPROVED BASELINE — NO NEW COMPONENTS ALLOWED WITHOUT UPDATE
+
+**Status:** FINALIZED  
+**Phase:** Phase 6A (Quote Wizard Planning)  
 **Execution:** NOT AUTHORIZED  
-**Last Updated:** 2025-12-31
+**Last Updated:** 2025-12-31  
+**Approval Status:** LOCKED REFERENCE DOCUMENT
+
+---
+
+## DO / DO NOT
+
+### ✅ DO
+
+- Reuse documented components exactly as specified
+- Follow documented CSS patterns and class names
+- Reference existing grid layouts and spacing patterns
+- Use button classes (.cmn-btn, .pay-btn, .nav-link) as documented
+- Follow form patterns from ContactForm implementation
+- Maintain template parity at all times
+
+### ❌ DO NOT
+
+- Create new UI components not documented here
+- Invent new button styles or variants
+- Create custom layouts outside documented grid patterns
+- Add new CSS classes for visual styling
+- Modify existing component behavior
+- Introduce new design patterns
+
+**Any deviation requires updating this document FIRST and obtaining approval.**
+
+---
+
+## Wizard-Safe Components Only — Quick Reference
+
+The following components are PRE-APPROVED for Quote Wizard use:
+
+| Component | File Path | Wizard Use Case |
+|-----------|-----------|-----------------|
+| `Breadcrumb` | `apps/public/src/components/common/Breadcrumb.tsx` | Page header |
+| `LetsTalkArea` | `apps/public/src/components/common/LetsTalkArea.tsx` | Footer CTA |
+| `PriceBox` | `apps/public/src/components/pages/ServiceDetails/PriceBox.tsx` | Tier selection cards |
+| `ServicePrice` (pattern) | `apps/public/src/components/pages/ServiceDetails/ServicePrice.tsx` | Billing toggle tabs |
+| `ContactForm` (pattern) | `apps/public/src/components/pages/contact/ContactForm.tsx` | Lead capture form |
+| Service card (pattern) | `apps/public/src/components/pages/Home/ServiceArea.tsx` | Service selection cards |
+
+**CSS Patterns Approved:**
+
+| Pattern | Classes | Purpose |
+|---------|---------|---------|
+| Section spacing | `.sec-pad`, `.sec-mar` | Standard section padding/margin |
+| Title blocks | `.title`, `.title.black`, `.title.special` | Section headers |
+| Primary button | `.cmn-btn a` | Main CTA buttons |
+| Pricing button | `.pay-btn a` | Tier selection CTA |
+| Tab buttons | `.nav-link` (Bootstrap Pills) | Billing toggle |
+| 3-column grid | `col-md-6 col-lg-4 col-xl-4` | Card layouts |
+| 2-column grid | `col-lg-6 col-xl-6` | Form layouts |
+| Form inputs | `.form-control`, `.form-group`, `.contact-form` | Form fields |
+
+---
+
+## Home2 Exclusion Statement
+
+**Home2 components are INTENTIONALLY EXCLUDED from this library.**
+
+Reason: Home2 (`apps/public/src/components/pages/Home2/`) is an alternate homepage variant that is not part of the primary Finibus template implementation. Its components:
+
+- Are not used elsewhere in the application
+- Have different styling/behavior patterns
+- Would create inconsistency if mixed with primary components
+
+**Do not reference or reuse any Home2 components for the Quote Wizard or any future features.**
 
 ---
 
@@ -35,7 +104,7 @@ apps/public/src/components/
 │   └── WhyChooseUsArea.tsx
 ├── pages/            # Page-specific components
 │   ├── Home/
-│   ├── Home2/
+│   ├── Home2/        # ⚠️ EXCLUDED — See exclusion statement
 │   ├── ServiceDetails/
 │   ├── aboutUs/
 │   ├── blog/
@@ -460,6 +529,7 @@ These components are tightly coupled to specific pages and should NOT be reused:
 | `SidebarSearch` | Non-functional (GAP Registry) |
 | `ServiceList` | Hardcoded content |
 | `PopularTag` | Blog-specific widget |
+| **All Home2 components** | Excluded alternate template variant |
 
 ---
 
@@ -482,12 +552,13 @@ These components are tightly coupled to specific pages and should NOT be reused:
 | **Carousels** | Page-specific Swiper configurations |
 | **Blog widgets** | Blog-specific, some non-functional |
 | **Homepage sections** | Tightly coupled to homepage layout |
+| **Home2 components** | Excluded — alternate template variant |
 
 ---
 
 ## Document Status
 
-- **Status:** Draft
-- **Phase:** Planning Only
+- **Status:** FINALIZED
+- **Phase:** Phase 6A Complete
 - **Execution:** Not Authorized
-- **Next Step:** Quote Wizard Planning Document
+- **Approval:** LOCKED — Changes require document update first
