@@ -15,6 +15,12 @@ export interface Service {
   show_pricing: boolean
   pricing_monthly_enabled: boolean
   pricing_yearly_enabled: boolean
+  // Phase 4B: SEO fields
+  meta_title: string | null
+  meta_description: string | null
+  og_image_media_id: string | null
+  canonical_url: string | null
+  noindex: boolean
   created_at: string
   updated_at: string
   // Joined data
@@ -61,6 +67,12 @@ export interface ServiceInput {
   show_pricing?: boolean
   pricing_monthly_enabled?: boolean
   pricing_yearly_enabled?: boolean
+  // Phase 4B: SEO fields
+  meta_title?: string | null
+  meta_description?: string | null
+  og_image_media_id?: string | null
+  canonical_url?: string | null
+  noindex?: boolean
 }
 
 export interface ProcessStepInput {
@@ -158,6 +170,12 @@ export const useServices = () => {
           show_pricing: input.show_pricing ?? true,
           pricing_monthly_enabled: input.pricing_monthly_enabled ?? true,
           pricing_yearly_enabled: input.pricing_yearly_enabled ?? true,
+          // Phase 4B: SEO fields
+          meta_title: input.meta_title || null,
+          meta_description: input.meta_description || null,
+          og_image_media_id: input.og_image_media_id || null,
+          canonical_url: input.canonical_url || null,
+          noindex: input.noindex ?? false,
         })
         .select('id')
         .single()
@@ -202,6 +220,12 @@ export const useServices = () => {
       if (input.show_pricing !== undefined) updateData.show_pricing = input.show_pricing
       if (input.pricing_monthly_enabled !== undefined) updateData.pricing_monthly_enabled = input.pricing_monthly_enabled
       if (input.pricing_yearly_enabled !== undefined) updateData.pricing_yearly_enabled = input.pricing_yearly_enabled
+      // Phase 4B: SEO fields
+      if (input.meta_title !== undefined) updateData.meta_title = input.meta_title || null
+      if (input.meta_description !== undefined) updateData.meta_description = input.meta_description || null
+      if (input.og_image_media_id !== undefined) updateData.og_image_media_id = input.og_image_media_id || null
+      if (input.canonical_url !== undefined) updateData.canonical_url = input.canonical_url || null
+      if (input.noindex !== undefined) updateData.noindex = input.noindex
 
       const { error: updateError } = await supabase
         .from('services')

@@ -4,6 +4,7 @@ import { Service, ServiceInput, ServiceProcessStep, ServicePricingPlan, ProcessS
 import MediaPicker from '@/app/(admin)/settings/components/MediaPicker'
 import ProcessStepsEditor from './ProcessStepsEditor'
 import PricingPlansEditor from './PricingPlansEditor'
+import ServiceSeoTab from './ServiceSeoTab'
 
 interface ServiceModalProps {
   show: boolean
@@ -32,6 +33,13 @@ const ServiceModal = ({ show, onClose, onSave, onUpdate, service }: ServiceModal
   const [pricingMonthlyEnabled, setPricingMonthlyEnabled] = useState(true)
   const [pricingYearlyEnabled, setPricingYearlyEnabled] = useState(true)
 
+  // Phase 4B: SEO fields
+  const [metaTitle, setMetaTitle] = useState('')
+  const [metaDescription, setMetaDescription] = useState('')
+  const [ogImageMediaId, setOgImageMediaId] = useState('')
+  const [canonicalUrl, setCanonicalUrl] = useState('')
+  const [noindex, setNoindex] = useState(false)
+
   // Related data
   const [processSteps, setProcessSteps] = useState<ProcessStepInput[]>([])
   const [pricingPlans, setPricingPlans] = useState<PricingPlanInput[]>([])
@@ -58,6 +66,12 @@ const ServiceModal = ({ show, onClose, onSave, onUpdate, service }: ServiceModal
         setShowPricing(service.show_pricing ?? true)
         setPricingMonthlyEnabled(service.pricing_monthly_enabled ?? true)
         setPricingYearlyEnabled(service.pricing_yearly_enabled ?? true)
+        // Phase 4B: Load SEO fields
+        setMetaTitle(service.meta_title || '')
+        setMetaDescription(service.meta_description || '')
+        setOgImageMediaId(service.og_image_media_id || '')
+        setCanonicalUrl(service.canonical_url || '')
+        setNoindex(service.noindex ?? false)
         loadRelatedData(service.id)
       } else {
         resetForm()
@@ -113,6 +127,12 @@ const ServiceModal = ({ show, onClose, onSave, onUpdate, service }: ServiceModal
     setShowPricing(true)
     setPricingMonthlyEnabled(true)
     setPricingYearlyEnabled(true)
+    // Phase 4B: Reset SEO fields
+    setMetaTitle('')
+    setMetaDescription('')
+    setOgImageMediaId('')
+    setCanonicalUrl('')
+    setNoindex(false)
     setProcessSteps([])
     setPricingPlans([])
     setErrors({})
@@ -155,6 +175,21 @@ const ServiceModal = ({ show, onClose, onSave, onUpdate, service }: ServiceModal
       newErrors.displayOrder = 'Display order must be a number'
     }
 
+    // Phase 4B: SEO validation
+    if (metaTitle && metaTitle.length > 70) {
+      newErrors.metaTitle = 'Meta title must be 70 characters or less'
+    }
+    if (metaDescription && metaDescription.length > 160) {
+      newErrors.metaDescription = 'Meta description must be 160 characters or less'
+    }
+    if (canonicalUrl && canonicalUrl.trim()) {
+      try {
+        new URL(canonicalUrl.trim())
+      } catch {
+        newErrors.canonicalUrl = 'Please enter a valid URL'
+      }
+    }
+
     setErrors(newErrors)
     return Object.keys(newErrors).length === 0
   }
@@ -176,6 +211,12 @@ const ServiceModal = ({ show, onClose, onSave, onUpdate, service }: ServiceModal
       show_pricing: showPricing,
       pricing_monthly_enabled: pricingMonthlyEnabled,
       pricing_yearly_enabled: pricingYearlyEnabled,
+      // Phase 4B: Include SEO fields
+      meta_title: metaTitle.trim() || null,
+      meta_description: metaDescription.trim() || null,
+      og_image_media_id: ogImageMediaId || null,
+      canonical_url: canonicalUrl.trim() || null,
+      noindex,
     }
 
     let success = false
@@ -393,6 +434,24 @@ const ServiceModal = ({ show, onClose, onSave, onUpdate, service }: ServiceModal
                 disabled={isSaving}
               />
             )}
+          </Tab>
+
+          <Tab eventKey="seo" title="SEO" disabled={!isEditMode}>
+            <ServiceSeoTab
+              serviceTitle={title}
+              metaTitle={metaTitle}
+              metaDescription={metaDescription}
+              ogImageMediaId={ogImageMediaId}
+              canonicalUrl={canonicalUrl}
+              noindex={noindex}
+              disabled={isSaving}
+              errors={errors}
+              onMetaTitleChange={setMetaTitle}
+              onMetaDescriptionChange={setMetaDescription}
+              onOgImageMediaIdChange={setOgImageMediaId}
+              onCanonicalUrlChange={setCanonicalUrl}
+              onNoindexChange={setNoindex}
+            />
           </Tab>
         </Tabs>
       </Modal.Body>
