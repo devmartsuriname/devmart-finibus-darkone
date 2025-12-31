@@ -176,7 +176,19 @@ All content module modals must conform to this pattern:
 
 | Date | Change |
 |------|--------|
+| 2025-12-31 | **Phase 3 CLOSED** — Blog modal frozen, comments permanently removed |
 | 2025-12-31 | Phase 2.1a–2.3 complete — Public hook wired + data seeded |
 | 2025-12-31 | Phase 2.1a complete — Blog modal expanded to 5-tab layout with Details Layout tab |
 | 2025-12-31 | Phase 2 complete — Blog modal restructured to 4-tab layout |
 | 2025-12-31 | Created document, Phase 1 schema complete |
+
+---
+
+## Phase 3 Closure Notes
+
+**Blog Module Status:** FROZEN (as of 2025-12-31)
+
+- Blog modal: 5-tab layout finalized
+- Blog comments: PERMANENTLY REMOVED (UI removed, table deprecated)
+- All blog_posts fields wired to admin and public
+- No further blog modal changes authorized without explicit approval

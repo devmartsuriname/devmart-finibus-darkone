@@ -3,14 +3,43 @@
 # Architecture Documentation
 
 **Status:** ✅ PHASE 12 COMPLETE — FRONTEND FROZEN  
-**Phase:** Phase 12 CLOSED | Admin Blog Enhancement Phase 3 COMPLETE  
+**Phase:** Phase 12 CLOSED | Admin Blog Enhancement Phase 3 CLOSED  
 **Last Updated:** 2025-12-31
+
+---
+
+## App Separation Architecture
+
+### Strict Separation Between Apps
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│                  App Architecture                            │
+├─────────────────────────────────────────────────────────────┤
+│  apps/public/                                                │
+│    ├── src/hooks/           (public-only hooks)              │
+│    ├── src/lib/seo/         (public SEO utilities)           │
+│    ├── src/components/      (Finibus components)             │
+│    └── Fully self-contained — NO imports from admin          │
+│                                                              │
+│  apps/admin/ (or src/ for admin)                             │
+│    ├── src/hooks/           (admin-only hooks)               │
+│    ├── src/lib/seo/         (admin SEO utilities)            │
+│    ├── src/components/      (Darkone components)             │
+│    └── Fully self-contained — NO imports from public         │
+│                                                              │
+│  CRITICAL: No cross-app imports permitted                    │
+│  If shared utility needed → copy to both apps                │
+└─────────────────────────────────────────────────────────────┘
+```
+
+**Stability Note (Phase 3):** The `resolveSeoFallbacks.ts` utility exists in both apps to maintain strict separation.
 
 ---
 
 ## Admin Blog Enhancement — Phase 3: SEO Fallback Wiring (2025-12-31)
 
-**Status:** ✅ **COMPLETE**
+**Status:** ✅ **CLOSED**
 
 ### Public Blog SEO Architecture
 
@@ -47,6 +76,13 @@
 │        default_og_image_media_id from settings table         │
 └─────────────────────────────────────────────────────────────┘
 ```
+
+### Phase 3 Closure Confirmation
+
+- **Public SEO wiring:** Complete and verified
+- **App separation:** Enforced (no cross-app imports)
+- **Frontend layout:** Unchanged (frozen)
+- **Schema:** Unchanged (no migrations)
 
 ---
 
