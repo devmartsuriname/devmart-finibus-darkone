@@ -1,8 +1,8 @@
 # Blog Field Parity Matrix
 
 **Created:** 2025-12-31  
-**Phase:** 2.1a–2.3 — Blog Field Parity Fix + Wiring + Seeding  
-**Status:** ✅ COMPLETE — All Fields Wired + Data Seeded
+**Phase:** Phase 3 — SEO Fallback Wiring Complete  
+**Status:** ✅ COMPLETE — All Fields Wired + SEO Meta Tags Active
 
 ---
 
@@ -174,6 +174,29 @@ All published posts seeded with SEO + Details Layout data.
 
 ---
 
+## Phase 3: Public SEO Meta Tags (2025-12-31)
+
+**Status:** ✅ COMPLETE
+
+### Files Created
+
+| File | Purpose |
+|------|---------|
+| `apps/public/src/hooks/useGlobalSeoSettings.ts` | Fetch global SEO fallbacks |
+| `apps/public/src/components/pages/blogDetails/BlogDetailsSeo.tsx` | Render meta tags with fallbacks |
+
+### Integration
+
+`BlogDetailsPage.tsx` now renders `<BlogDetailsSeo post={post} />` which injects:
+- `<title>` tag with fallback resolution
+- `<meta name="description">` with fallback resolution
+- `<link rel="canonical">` pointing to /blog/{slug}
+- `<meta property="og:*">` Open Graph tags
+- `<meta name="twitter:*">` Twitter Card tags
+- `<meta property="article:*">` Article metadata
+
+---
+
 ## Conclusion
 
 **Parity Status: ✅ COMPLETE**
@@ -183,5 +206,6 @@ All 25 blog_posts columns are:
 - Auto-managed by system (id, author_id, created_at, updated_at)
 - **Wired to public frontend** (Phase 2.1a–2.3)
 - **Seeded with initial data** (except image media IDs)
+- **SEO meta tags active** (Phase 3)
 
-Phase 2.1a–2.3 resolved all missing frontend layout fields and completed public wiring with data seeding.
+Phase 3 completed public SEO wiring with 3-tier fallback hierarchy.

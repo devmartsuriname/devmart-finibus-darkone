@@ -1,8 +1,47 @@
 # Tasks — Devmart Implementation Tracker
 
 **Status:** ✅ PHASE 12 COMPLETE — FRONTEND FROZEN  
-**Current Phase:** Admin Blog Enhancement Phase 2.1a–2.3 COMPLETE  
+**Current Phase:** Admin Blog Enhancement Phase 3 COMPLETE  
 **Last Updated:** 2025-12-31
+
+---
+
+## Admin Blog Enhancement — Phase 3: SEO Fallback Wiring (✅ COMPLETE)
+
+**Status:** COMPLETE  
+**Completed:** 2025-12-31  
+**Type:** Public Blog SEO Meta Tags + Fallback Hierarchy
+
+### Implemented
+
+| Component | Status |
+|-----------|--------|
+| useGlobalSeoSettings hook | ✅ Created |
+| BlogDetailsSeo component | ✅ Created |
+| BlogDetailsPage integration | ✅ Wired |
+| 3-tier fallback hierarchy | ✅ Implemented |
+| Documentation updated | ✅ Complete |
+
+### SEO Fallback Hierarchy
+
+| Priority | Source | Fields |
+|----------|--------|--------|
+| 1 | Post SEO Fields | meta_title, meta_description, og_image, canonical_url, noindex |
+| 2 | Content-Derived | title, excerpt, featured_image, /blog/{slug} |
+| 3 | Global Settings | default_meta_title, default_meta_description, default_og_image |
+
+### Files Created
+
+- `apps/public/src/hooks/useGlobalSeoSettings.ts`
+- `apps/public/src/components/pages/blogDetails/BlogDetailsSeo.tsx`
+
+### Files Modified
+
+- `apps/public/src/components/pages/blogDetails/BlogDetailsPage.tsx`
+
+### Restore Point
+
+`docs/restore-points/Restore_Point_Phase_3_SEO_Fallback.md`
 
 ---
 
