@@ -26,9 +26,16 @@ export interface BlogPost {
   og_image_media_id: string | null
   canonical_url: string | null
   noindex: boolean | null
+  // Details Layout fields (Phase 2.1a)
+  quote_text: string | null
+  quote_author: string | null
+  secondary_image_media_id: string | null
+  secondary_content: string | null
+  author_display_name: string | null
   // Joined data
   featured_image_url?: string | null
   og_image_url?: string | null
+  secondary_image_url?: string | null
 }
 
 export interface BlogPostInput {
@@ -48,6 +55,12 @@ export interface BlogPostInput {
   og_image_media_id?: string | null
   canonical_url?: string | null
   noindex?: boolean
+  // Details Layout fields (Phase 2.1a)
+  quote_text?: string | null
+  quote_author?: string | null
+  secondary_image_media_id?: string | null
+  secondary_content?: string | null
+  author_display_name?: string | null
 }
 
 export const useBlogPosts = () => {
@@ -72,7 +85,7 @@ export const useBlogPosts = () => {
       setIsLoading(true)
       setError(null)
 
-      // Fetch posts with featured image and og image URLs via join
+      // Fetch posts with all media URLs via join
       const { data, error: fetchError } = await supabase
         .from('blog_posts')
         .select(`
@@ -81,6 +94,9 @@ export const useBlogPosts = () => {
             public_url
           ),
           og_media:og_image_media_id (
+            public_url
+          ),
+          secondary_media:secondary_image_media_id (
             public_url
           )
         `)
@@ -95,8 +111,10 @@ export const useBlogPosts = () => {
         ...post,
         featured_image_url: post.featured_media?.public_url || null,
         og_image_url: post.og_media?.public_url || null,
+        secondary_image_url: post.secondary_media?.public_url || null,
         featured_media: undefined,
         og_media: undefined,
+        secondary_media: undefined,
       }))
 
       setPosts(transformedData)
@@ -152,6 +170,12 @@ export const useBlogPosts = () => {
           og_image_media_id: input.og_image_media_id || null,
           canonical_url: input.canonical_url || null,
           noindex: input.noindex ?? false,
+          // Details Layout fields (Phase 2.1a)
+          quote_text: input.quote_text || null,
+          quote_author: input.quote_author || null,
+          secondary_image_media_id: input.secondary_image_media_id || null,
+          secondary_content: input.secondary_content || null,
+          author_display_name: input.author_display_name || null,
         })
 
       if (insertError) {
@@ -211,6 +235,13 @@ export const useBlogPosts = () => {
       if (input.og_image_media_id !== undefined) updateData.og_image_media_id = input.og_image_media_id || null
       if (input.canonical_url !== undefined) updateData.canonical_url = input.canonical_url || null
       if (input.noindex !== undefined) updateData.noindex = input.noindex
+      
+      // Details Layout fields (Phase 2.1a)
+      if (input.quote_text !== undefined) updateData.quote_text = input.quote_text || null
+      if (input.quote_author !== undefined) updateData.quote_author = input.quote_author || null
+      if (input.secondary_image_media_id !== undefined) updateData.secondary_image_media_id = input.secondary_image_media_id || null
+      if (input.secondary_content !== undefined) updateData.secondary_content = input.secondary_content || null
+      if (input.author_display_name !== undefined) updateData.author_display_name = input.author_display_name || null
 
       // Auto-set published_at when status changes to published
       if (input.status === 'published' && !input.published_at) {
