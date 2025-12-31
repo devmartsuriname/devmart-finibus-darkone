@@ -3,8 +3,81 @@
 # Architecture Documentation
 
 **Status:** ✅ PHASE 12 COMPLETE — FRONTEND FROZEN  
-**Phase:** Phase 12 CLOSED | Admin Blog Enhancement Phase 1 COMPLETE  
+**Phase:** Phase 12 CLOSED | Admin Blog Enhancement Phase 2 COMPLETE  
 **Last Updated:** 2025-12-31
+
+---
+
+## Admin Blog Enhancement — Phase 2: Modal UX Upgrade (2025-12-31)
+
+**Status:** ✅ **COMPLETE**
+
+### Component Architecture
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│                  BlogPostModal (4-Tab Layout)                │
+├─────────────────────────────────────────────────────────────┤
+│  Tab 1: Content                                              │
+│    ├── Title, Slug, Excerpt fields                           │
+│    └── ContentBlocksEditor                                   │
+│         ├── Block types: paragraph, heading, list,           │
+│         │   quote, image                                     │
+│         ├── Add/Edit/Delete/Reorder controls                 │
+│         └── Falls back to textarea for legacy posts          │
+│                                                              │
+│  Tab 2: Taxonomy                                             │
+│    ├── CategorySelector (dropdown + add-new)                 │
+│    └── TagsInput (chip-style array input)                    │
+│                                                              │
+│  Tab 3: Media & Publishing                                   │
+│    ├── Featured Image (MediaPicker)                          │
+│    ├── Status (draft/published)                              │
+│    └── Publish Date                                          │
+│                                                              │
+│  Tab 4: SEO                                                  │
+│    ├── Meta Title (70 char counter)                          │
+│    ├── Meta Description (160 char counter)                   │
+│    ├── OG Image (MediaPicker)                                │
+│    ├── Canonical URL                                         │
+│    └── Noindex toggle                                        │
+└─────────────────────────────────────────────────────────────┘
+```
+
+### Content Compile Flow
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│                  On Save (Admin Modal)                       │
+├─────────────────────────────────────────────────────────────┤
+│  1. Validate content_blocks structure                        │
+│  2. compileBlocksToHtml(content_blocks) → HTML string        │
+│  3. Save both:                                               │
+│     └── content_blocks (JSONB) - authoring source            │
+│     └── content (TEXT) - compiled HTML for public render     │
+└─────────────────────────────────────────────────────────────┘
+```
+
+### ContentBlock Type Definition
+
+```typescript
+interface ContentBlock {
+  id: string
+  type: 'paragraph' | 'heading' | 'list' | 'quote' | 'image'
+  content: string
+  level?: 2 | 3 | 4           // For headings: h2, h3, h4
+  items?: string[]            // For lists
+}
+```
+
+### Files Created
+
+| File | Purpose |
+|------|---------|
+| `components/ContentBlocksEditor.tsx` | Structured content editing UI |
+| `components/CategorySelector.tsx` | Category dropdown with add-new |
+| `components/TagsInput.tsx` | Tags array chip input |
+| `utils/compileContent.ts` | JSONB → HTML compiler + validators |
 
 ---
 
