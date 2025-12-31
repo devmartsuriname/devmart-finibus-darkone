@@ -1,8 +1,31 @@
 # Tasks — Devmart Implementation Tracker
 
 **Status:** ✅ PHASE 12 COMPLETE — FRONTEND FROZEN  
-**Current Phase:** Admin Blog Enhancement Phase 2 COMPLETE  
+**Current Phase:** Admin Blog Enhancement Phase 2.1a–2.3 COMPLETE  
 **Last Updated:** 2025-12-31
+
+---
+
+## Admin Blog Enhancement — Phase 2.1a–2.3 (✅ COMPLETE)
+
+**Status:** COMPLETE  
+**Completed:** 2025-12-31  
+**Type:** Public Hook Wiring + Data Seeding
+
+### Implemented
+
+| Component | Status |
+|-----------|--------|
+| useBlogDetails hook extended (11 new fields) | ✅ Complete |
+| BlogDetailsWrapper props wired | ✅ Complete |
+| BlogDetailsPage passes new props | ✅ Complete |
+| SEO data seeded (6 published posts) | ✅ Complete |
+| Details Layout data seeded | ✅ Complete |
+| Documentation updated | ✅ Complete |
+
+### Restore Point
+
+`docs/restore-points/Restore_Point_Phase_2_1a_Blog_Wiring.md`
 
 ---
 

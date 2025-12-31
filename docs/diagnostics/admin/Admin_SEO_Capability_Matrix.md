@@ -1,18 +1,18 @@
 # Admin Diagnostic: SEO Capability Matrix
 
-**Last Verified:** 2025-12-29  
-**Updated:** 2025-12-29 (Added Implementation Notes)
+**Last Verified:** 2025-12-31  
+**Updated:** 2025-12-31 (Phase 2.1a–2.3 Complete)
 
 ---
 
 ## Module SEO Field Support
 
-| Module | meta_title | meta_description | og_image | canonical | Status |
-|--------|:----------:|:----------------:|:--------:|:---------:|--------|
-| Pages | ✅ | ✅ | ❌ | ❌ | Partial |
-| Blog | ❌ | ❌ | ❌ | ❌ | Missing |
-| Services | ❌ | ❌ | ❌ | ❌ | Missing |
-| Projects | ❌ | ❌ | ❌ | ❌ | Missing |
+| Module | meta_title | meta_description | og_image | canonical | noindex | Status |
+|--------|:----------:|:----------------:|:--------:|:---------:|:-------:|--------|
+| Pages | ✅ | ✅ | ❌ | ❌ | ❌ | Partial |
+| **Blog** | ✅ | ✅ | ✅ | ✅ | ✅ | **COMPLETE** |
+| Services | ❌ | ❌ | ❌ | ❌ | ❌ | Missing |
+| Projects | ❌ | ❌ | ❌ | ❌ | ❌ | Missing |
 
 ---
 
@@ -26,13 +26,15 @@
 - **Character Limits:** meta_title 70, meta_description 160
 - **Public Wiring Status:** WIRED (used by react-helmet-async)
 
-### Blog Module
+### Blog Module ✅ COMPLETE (Phase 2.1a–2.3)
 - **Table:** `blog_posts`
-- **SEO Fields Present:** None (uses title/excerpt as fallback)
-- **SEO Fields Missing:** `meta_title`, `meta_description`, `og_image`, `canonical_url`
-- **Admin Modal:** No SEO tab
-- **Future Expansion Required:** Yes - modal needs SEO tab
-- **Public Wiring Status:** NOT WIRED (no SEO fields exist)
+- **SEO Fields Present:** `meta_title`, `meta_description`, `og_image_media_id`, `canonical_url`, `noindex`
+- **SEO Fields Missing:** None
+- **Admin Modal:** Has SEO tab (Tab 4) with all 5 fields
+- **Character Limits:** meta_title 70, meta_description 160
+- **Public Wiring Status:** ✅ WIRED to useBlogDetails hook
+- **Data Seeding:** ✅ All published posts seeded (except og_image)
+- **Dynamic Placeholders:** ✅ Show fallback values from title/excerpt
 
 ### Services Module
 - **Table:** `services`
@@ -66,7 +68,7 @@
 
 | Module | Schema Change | Modal Change | Priority |
 |--------|--------------|--------------|----------|
-| Blog | Add 4 columns | Add SEO tab | High |
+| ~~Blog~~ | ~~Add 5 columns~~ | ~~Add SEO tab~~ | ~~High~~ ✅ DONE |
 | Services | Add 3 columns | Add SEO tab | Medium |
 | Projects | Add 3 columns | Add SEO tab | Medium |
 | Pages | Add 2 columns | Extend SEO tab | Low |
@@ -82,12 +84,15 @@
 - ❌ `canonical_url` field missing — cannot override canonical URL
 - **Note:** Current implementation covers basic on-page SEO; advanced features require schema expansion
 
-### Blog Module (No SEO Support)
-- ❌ No dedicated SEO fields in `blog_posts` table
-- ❌ Admin modal has no SEO tab
-- ⚠️ Public frontend falls back to `title` for `<title>` and `excerpt` for meta description
-- **Future Requirement:** Add `meta_title`, `meta_description`, `og_image_media_id`, `canonical_url` columns
-- **Future Requirement:** Add SEO tab to BlogPostModal matching Pages pattern
+### Blog Module ✅ COMPLETE
+- ✅ All 5 SEO fields exist in `blog_posts` table
+- ✅ Admin modal has SEO tab (Tab 4) for editing all fields
+- ✅ Character counters with warning states (70/160)
+- ✅ Dynamic placeholders showing fallback values
+- ✅ OG Image uses MediaPicker component
+- ✅ Public hook (`useBlogDetails`) fetches all SEO fields
+- ✅ All published posts seeded with SEO data
+- **Note:** Full implementation complete as of Phase 2.1a–2.3
 
 ### Services Module (No SEO Support)
 - ❌ No dedicated SEO fields in `services` table
@@ -107,21 +112,35 @@
 
 ## SEO Tab UI Standard (Reference)
 
-When implementing SEO tabs for Blog/Services/Projects, follow the Pages module pattern:
+The Blog module SEO tab is the reference implementation:
 
 ```
-SEO Tab Structure:
+SEO Tab Structure (Blog — Tab 4):
 ├── Meta Title (input, maxLength 70)
-│   └── Helper text: "Recommended: 50-60 characters"
+│   ├── Character counter with warning at 60+
+│   └── Dynamic placeholder: post title fallback
 ├── Meta Description (textarea, maxLength 160)
-│   └── Helper text: "Recommended: 150-160 characters"
-├── OG Image (MediaPicker) [future]
+│   ├── Character counter with warning at 150+
+│   └── Dynamic placeholder: excerpt fallback
+├── OG Image (MediaPicker)
 │   └── Helper text: "Recommended: 1200x630 pixels"
-└── Canonical URL (input) [future]
-    └── Helper text: "Leave blank to use default URL"
+├── Canonical URL (input)
+│   └── Helper text: "Leave blank to use default URL"
+└── Noindex (switch)
+    └── Helper text: "Exclude from search engines"
 ```
 
 ---
 
-**Status:** DONE  
-**Execution:** Not Authorized
+## SEO Fallback Hierarchy
+
+The blog module implements a 3-tier fallback:
+
+1. **Per-Post SEO Fields** (highest priority)
+2. **Content Fallbacks** (title → meta_title, excerpt → meta_description)
+3. **Global SEO Settings** (from settings table)
+
+---
+
+**Status:** ✅ Blog SEO COMPLETE | Pending: Services, Projects  
+**Execution:** Phase 2.1a–2.3 Complete

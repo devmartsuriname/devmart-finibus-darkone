@@ -1,6 +1,6 @@
 # Admin Modals Fields Inventory
 
-**Status:** ✅ Phase 2.1a Complete  
+**Status:** ✅ Phase 2.1a–2.3 Complete  
 **Last Updated:** 2025-12-31
 
 ---
@@ -8,6 +8,11 @@
 ## Overview
 
 This document inventories all admin modal components and their field mappings for CMS modules.
+
+**Phase 2.1a–2.3 Updates:**
+- Blog module: 5-tab layout complete
+- Public hook wiring: Complete (all fields fetched)
+- Data seeding: Complete (SEO + Details Layout)
 
 ---
 
@@ -171,6 +176,7 @@ All content module modals must conform to this pattern:
 
 | Date | Change |
 |------|--------|
+| 2025-12-31 | Phase 2.1a–2.3 complete — Public hook wired + data seeded |
 | 2025-12-31 | Phase 2.1a complete — Blog modal expanded to 5-tab layout with Details Layout tab |
 | 2025-12-31 | Phase 2 complete — Blog modal restructured to 4-tab layout |
 | 2025-12-31 | Created document, Phase 1 schema complete |
