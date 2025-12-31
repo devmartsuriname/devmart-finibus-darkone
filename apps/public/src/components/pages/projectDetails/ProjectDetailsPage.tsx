@@ -3,6 +3,7 @@
  * 
  * Migrated from Finibus to React 18 - Exact 1:1 parity
  * Phase 5.4: Wired to Supabase data via useProjectDetails hook
+ * Phase 5.2: SEO wiring via ProjectDetailsSeo component
  */
 
 import React from "react";
@@ -12,6 +13,7 @@ import ProjectProcess from "./ProjectProcess";
 import ReletedProject from "./ReletedProject";
 import LetsTalkArea from "../../common/LetsTalkArea";
 import ErrorPage from "../Error/ErrorPage";
+import ProjectDetailsSeo from "./ProjectDetailsSeo";
 import { useProjectDetails } from "../../../hooks/useProjectDetails";
 
 function ProjectDetailsPage() {
@@ -25,6 +27,9 @@ function ProjectDetailsPage() {
 
   return (
     <>
+      {!loading && project && (
+        <ProjectDetailsSeo project={project} />
+      )}
       <Breadcrumb pageName={loading ? "Project Details" : (project?.title || "Project Details")} />
       <div className="project-details-area sec-mar">
         <div className="container">

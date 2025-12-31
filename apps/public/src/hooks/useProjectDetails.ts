@@ -49,16 +49,18 @@ export function useProjectDetails(slug: string | undefined): UseProjectDetailsRe
         setError(null);
         setNotFound(false);
 
-        // Fetch the project by slug with new fields
+        // Fetch the project by slug with new fields + SEO fields
         const { data: projectData, error: projectError } = await supabase
           .from('projects')
           .select(`
             id, title, heading, slug, description, category, client,
             is_featured, display_order, status, created_at, updated_at,
             website, start_date, end_date, check_launch_content,
+            meta_title, meta_description, canonical_url, noindex,
             image:media!projects_image_media_id_fkey(id, public_url, alt_text),
             featured_image:media!projects_featured_image_media_id_fkey(id, public_url, alt_text),
-            check_launch_image:media!projects_check_launch_image_media_id_fkey(id, public_url, alt_text)
+            check_launch_image:media!projects_check_launch_image_media_id_fkey(id, public_url, alt_text),
+            og_image:media!projects_og_image_media_id_fkey(id, public_url, alt_text)
           `)
           .eq('slug', slug)
           .eq('status', 'published')
@@ -118,6 +120,12 @@ export function useProjectDetails(slug: string | undefined): UseProjectDetailsRe
           featured_image: extractMedia(projectData.featured_image),
           check_launch_image: extractMedia(projectData.check_launch_image),
           process_steps: processSteps,
+          // SEO fields
+          meta_title: (projectData as any).meta_title || null,
+          meta_description: (projectData as any).meta_description || null,
+          og_image: extractMedia((projectData as any).og_image),
+          canonical_url: (projectData as any).canonical_url || null,
+          noindex: (projectData as any).noindex ?? false,
         };
 
         setProject(transformedProject);

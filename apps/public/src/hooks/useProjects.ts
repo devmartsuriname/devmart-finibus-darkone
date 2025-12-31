@@ -44,6 +44,12 @@ export interface ProjectWithMedia {
   check_launch_content: string | null;
   check_launch_image: Media | null;
   process_steps: ProjectProcessStep[];
+  // SEO fields (Phase 5.2)
+  meta_title?: string | null;
+  meta_description?: string | null;
+  og_image?: Media | null;
+  canonical_url?: string | null;
+  noindex?: boolean | null;
 }
 
 interface UseProjectsResult {

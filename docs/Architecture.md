@@ -1,14 +1,67 @@
 # Architecture Documentation
 
 **Status:** ✅ PHASE 12 COMPLETE — FRONTEND FROZEN  
-**Phase:** Phase 12 CLOSED | Phase 4C CLOSED | Phase 4D ✅ EXECUTED  
+**Phase:** Phase 12 CLOSED | Phase 4D ✅ CLOSED | Phase 5 SEO ✅ EXECUTED  
 **Last Updated:** 2025-12-31
+
+---
+
+## Phase 5 — Public SEO Wiring (2025-12-31)
+
+**Status:** ✅ **EXECUTED** (5.1 + 5.2 ONLY)
+
+### Objective
+
+Render SEO meta tags on public detail pages using existing database fields and the 3-tier fallback hierarchy.
+
+### Implementation Summary
+
+| Phase | Module | SEO Component | Status |
+|-------|--------|---------------|--------|
+| 5.1 | Services | `ServiceDetailsSeo.tsx` | ✅ COMPLETE |
+| 5.2 | Projects | `ProjectDetailsSeo.tsx` | ✅ COMPLETE |
+| Blog | Blog | `BlogDetailsSeo.tsx` | ✅ (Pre-existing) |
+
+### Files Created
+
+| File | Purpose |
+|------|---------|
+| `apps/public/src/components/pages/ServiceDetails/ServiceDetailsSeo.tsx` | SEO meta tags for service details |
+| `apps/public/src/components/pages/projectDetails/ProjectDetailsSeo.tsx` | SEO meta tags for project details |
+
+### Files Modified
+
+| File | Change |
+|------|--------|
+| `apps/public/src/hooks/useServiceDetails.ts` | Added SEO fields to SELECT query + og_image join |
+| `apps/public/src/hooks/useProjectDetails.ts` | Added SEO fields to SELECT query + og_image join |
+| `apps/public/src/hooks/useProjects.ts` | Extended ProjectWithMedia interface with SEO fields |
+| `apps/public/src/components/pages/ServiceDetails/ServiceDetailsPage.tsx` | Wired ServiceDetailsSeo |
+| `apps/public/src/components/pages/projectDetails/ProjectDetailsPage.tsx` | Wired ProjectDetailsSeo |
+
+### SEO Meta Tags Rendered
+
+- `<title>` — Resolved via fallback hierarchy
+- `<meta name="description">` — Resolved via fallback hierarchy
+- `<meta name="robots">` — noindex handling
+- `<link rel="canonical">` — From database
+- `<meta property="og:*">` — Open Graph tags
+- `<meta name="twitter:*">` — Twitter Card tags
+
+### Guardian Rules Compliance
+
+- ✅ Frontend layout unchanged (meta tags only)
+- ✅ No schema changes
+- ✅ No new packages
+- ✅ No routing changes
+- ✅ Darkone Admin 1:1 preserved
+- ✅ Finibus Public UI 1:1 preserved
 
 ---
 
 ## Phase 4D — URL Normalization (2025-12-31)
 
-**Status:** ✅ **EXECUTED**
+**Status:** ✅ **VERIFIED AND CLOSED**
 
 ### URL Normalization Strategy
 

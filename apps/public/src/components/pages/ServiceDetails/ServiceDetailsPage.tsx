@@ -3,6 +3,7 @@ import { useParams, Navigate } from "react-router-dom";
 import Breadcrumb from "../../common/Breadcrumb";
 import LetsTalkArea from "../../common/LetsTalkArea";
 import ServiceDetailsWrapper from "./ServiceDetailsWrapper";
+import ServiceDetailsSeo from "./ServiceDetailsSeo";
 import { useServiceDetails } from "../../../hooks/useServiceDetails";
 import ErrorPage from "../Error/ErrorPage";
 
@@ -38,6 +39,9 @@ function ServiceDetailsContent({ slug }: ServiceDetailsContentProps) {
 
   return (
     <>
+      {!loading && service && (
+        <ServiceDetailsSeo service={service} />
+      )}
       <Breadcrumb pageName={loading ? "Service Details" : (service?.title || "Service Details")} />
       <ServiceDetailsWrapper
         service={service}

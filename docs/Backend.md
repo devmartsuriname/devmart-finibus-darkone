@@ -3,14 +3,64 @@
 # Backend Documentation
 
 **Status:** ✅ PHASE 12 COMPLETE — FRONTEND FROZEN  
-**Phase:** Phase 12 CLOSED | Phase 4C CLOSED | Phase 4D ✅ EXECUTED  
+**Phase:** Phase 12 CLOSED | Phase 4D ✅ CLOSED | Phase 5 SEO ✅ EXECUTED  
 **Last Updated:** 2025-12-31
+
+---
+
+## Phase 5 — Public SEO Wiring (2025-12-31)
+
+**Status:** ✅ **EXECUTED** (5.1 + 5.2 ONLY)
+
+### Objective
+
+Wire SEO meta tags to public detail pages using existing database fields.
+
+### Implementation Summary
+
+| Phase | Module | SEO Component | Hook Extended |
+|-------|--------|---------------|---------------|
+| 5.1 | Services | `ServiceDetailsSeo.tsx` | `useServiceDetails.ts` |
+| 5.2 | Projects | `ProjectDetailsSeo.tsx` | `useProjectDetails.ts` |
+
+### SEO Fields Wired
+
+| Field | Services | Projects | Blog |
+|-------|----------|----------|------|
+| meta_title | ✅ | ✅ | ✅ |
+| meta_description | ✅ | ✅ | ✅ |
+| og_image_media_id | ✅ | ✅ | ✅ |
+| canonical_url | ✅ | ✅ | ✅ |
+| noindex | ✅ | ✅ | ✅ |
+
+### Fallback Hierarchy
+
+All modules use the same 3-tier fallback:
+
+1. **Content-specific SEO fields** (highest priority)
+2. **Content-derived values** (title, description, featured_image)
+3. **Global SEO settings** (from settings table)
+
+### Files Created
+
+| File | Purpose |
+|------|---------|
+| `apps/public/src/components/pages/ServiceDetails/ServiceDetailsSeo.tsx` | Service details SEO |
+| `apps/public/src/components/pages/projectDetails/ProjectDetailsSeo.tsx` | Project details SEO |
+
+### Verification Required
+
+- [ ] Service details meta tags visible in page source
+- [ ] Project details meta tags visible in page source
+- [ ] Canonical URLs render correctly (`https://devmart.sr/...`)
+- [ ] No console errors
+- [ ] No visual changes
 
 ---
 
 ## Phase 4D — URL Normalization (2025-12-31)
 
-**Status:** ✅ **EXECUTED**
+**Status:** ✅ **VERIFIED AND CLOSED**
 
 ### Execution Summary
 

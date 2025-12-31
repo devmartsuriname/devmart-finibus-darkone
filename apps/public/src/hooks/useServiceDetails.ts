@@ -11,6 +11,12 @@ import type { Service, ServiceProcessStep, ServicePricingPlan, Media } from '../
 
 interface ServiceWithIcon extends Service {
   icon: Media | null;
+  // SEO fields
+  meta_title?: string | null;
+  meta_description?: string | null;
+  og_image?: Media | null;
+  canonical_url?: string | null;
+  noindex?: boolean | null;
 }
 
 interface ProcessStepWithImage extends ServiceProcessStep {
@@ -93,7 +99,7 @@ export function useServiceDetails(slug: string | undefined): UseServiceDetailsRe
 
         setAllServices(transformedAllServices);
 
-        // Fetch single service by slug
+        // Fetch single service by slug with SEO fields
         const { data: serviceData, error: serviceError } = await supabase
           .from('services')
           .select(`
@@ -108,7 +114,17 @@ export function useServiceDetails(slug: string | undefined): UseServiceDetailsRe
             show_pricing,
             pricing_monthly_enabled,
             pricing_yearly_enabled,
+            meta_title,
+            meta_description,
+            canonical_url,
+            noindex,
             icon:media!services_icon_media_id_fkey (
+              id,
+              public_url,
+              alt_text,
+              title
+            ),
+            og_image:media!services_og_image_media_id_fkey (
               id,
               public_url,
               alt_text,
@@ -142,6 +158,12 @@ export function useServiceDetails(slug: string | undefined): UseServiceDetailsRe
           pricing_monthly_enabled: (serviceData as any).pricing_monthly_enabled ?? true,
           pricing_yearly_enabled: (serviceData as any).pricing_yearly_enabled ?? true,
           icon: (serviceData as any).icon || null,
+          // SEO fields
+          meta_title: (serviceData as any).meta_title || null,
+          meta_description: (serviceData as any).meta_description || null,
+          og_image: (serviceData as any).og_image || null,
+          canonical_url: (serviceData as any).canonical_url || null,
+          noindex: (serviceData as any).noindex ?? false,
         };
 
         setService(transformedService);
