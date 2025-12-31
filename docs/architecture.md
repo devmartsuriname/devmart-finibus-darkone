@@ -1,10 +1,87 @@
 # Architecture Documentation
 
-# Architecture Documentation
-
 **Status:** ✅ PHASE 12 COMPLETE — FRONTEND FROZEN  
-**Phase:** Phase 12 CLOSED | Admin Blog Enhancement Phase 3 CLOSED  
+**Phase:** Phase 12 CLOSED | Phase 4C CLOSED | Phase 4D PLANNING COMPLETE  
 **Last Updated:** 2025-12-31
+
+---
+
+## Phase 4D — URL Normalization Planning (2025-12-31)
+
+**Status:** PLANNING COMPLETE — EXECUTION NOT AUTHORIZED
+
+### URL Normalization Strategy
+
+Phase 4D defines the approach for normalizing canonical URLs across all content modules.
+
+#### Domain Normalization
+
+| Setting | Current | Target |
+|---------|---------|--------|
+| Domain | `https://devmart.co` | `https://devmart.sr` |
+| Status | Populated | Pending execution |
+
+#### Path Pattern Alignment (Finibus Parity)
+
+| Module | Current Path | Target Path |
+|--------|--------------|-------------|
+| Services | `/services/{slug}` | `/service-details/{slug}` |
+| Projects | `/projects/{slug}` | `/project-details/{slug}` |
+| Blog | `/blog/{slug}` (relative) | `https://devmart.sr/blog/{slug}` (absolute) |
+| Pages | Inconsistent | `https://devmart.sr/{slug}` |
+
+#### Canonical URL Behavior
+
+- Canonical URLs are **stored** in database (not enforced via redirects)
+- Canonical URLs are rendered in `<link rel="canonical">` meta tags
+- No server-side redirects implemented
+- No URL enforcement at application layer
+
+#### Prepared SQL (Documentation Only)
+
+Prepared SQL statements for domain and path normalization are documented in `docs/phase-4/Phase_4D_URL_Normalization_Plan.md`. These statements are NOT to be executed without explicit authorization.
+
+#### Execution Prerequisites (All Required)
+
+1. Domain ownership for devmart.sr confirmed
+2. DNS configuration for devmart.sr verified
+3. SSL certificate for devmart.sr active
+4. Explicit GO authorization from project owner
+
+**HARD STOP — No execution until all prerequisites met and explicit authorization granted.**
+
+See: `docs/phase-4/Phase_4D_URL_Normalization_Plan.md`
+
+---
+
+## Phase 4C — Projects SEO Expansion (2025-12-31)
+
+**Status:** ✅ **CLOSED**
+
+### SEO Parity Achievement
+
+All 4 content modules now have full SEO capability:
+
+| Module | meta_title | meta_description | og_image | canonical_url | noindex | Status |
+|--------|------------|------------------|----------|---------------|---------|--------|
+| Blog | ✅ | ✅ | ✅ | ✅ | ✅ | COMPLETE |
+| Pages | ✅ | ✅ | ✅ | ✅ | ✅ | COMPLETE |
+| Services | ✅ | ✅ | ✅ | ✅ | ✅ | COMPLETE |
+| Projects | ✅ | ✅ | ✅ | ✅ | ✅ | COMPLETE |
+
+### Project Process Steps Correction
+
+All 5 published projects now have 4 process steps (was 3).
+Step order: 1 → 2 → 3 → 4 (stored and rendered correctly).
+
+### Canonical Domain Status
+
+| Setting | Value |
+|---------|-------|
+| Current canonical URLs | `https://devmart.co/...` |
+| Production domain | `https://devmart.sr` |
+| Status | INTENTIONAL MISMATCH |
+| Resolution | Phase 4D (planning complete, execution pending) |
 
 ---
 
