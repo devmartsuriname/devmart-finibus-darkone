@@ -8,6 +8,9 @@ export interface Page {
   title: string
   meta_title: string | null
   meta_description: string | null
+  og_image_media_id: string | null
+  canonical_url: string | null
+  noindex: boolean | null
   is_published: boolean
   created_at: string
   updated_at: string
@@ -17,6 +20,9 @@ export interface PageUpdateInput {
   title: string
   meta_title?: string | null
   meta_description?: string | null
+  og_image_media_id?: string | null
+  canonical_url?: string | null
+  noindex?: boolean | null
   is_published: boolean
 }
 
@@ -74,12 +80,24 @@ export const usePages = () => {
         throw new Error('Meta description must be 160 characters or less')
       }
 
+      // Validate canonical_url format if provided
+      if (input.canonical_url && input.canonical_url.trim()) {
+        try {
+          new URL(input.canonical_url.trim())
+        } catch {
+          throw new Error('Canonical URL must be a valid URL')
+        }
+      }
+
       const { error: updateError } = await supabase
         .from('pages')
         .update({
           title: input.title,
           meta_title: input.meta_title || null,
           meta_description: input.meta_description || null,
+          og_image_media_id: input.og_image_media_id || null,
+          canonical_url: input.canonical_url || null,
+          noindex: input.noindex ?? false,
           is_published: input.is_published,
         })
         .eq('id', id)

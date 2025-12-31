@@ -7,6 +7,7 @@ import { useAboutPageBlocks } from '../hooks/useAboutPageBlocks'
 import HomepageSectionsTab from './HomepageSectionsTab'
 import HomepageSeoTab from './HomepageSeoTab'
 import AboutPageSectionsTab from './AboutPageSectionsTab'
+import PageSeoTab from './PageSeoTab'
 
 interface PageEditModalProps {
   show: boolean
@@ -20,6 +21,9 @@ const PageEditModal = ({ show, page, loading, onClose, onSave }: PageEditModalPr
   const [title, setTitle] = useState('')
   const [metaTitle, setMetaTitle] = useState('')
   const [metaDescription, setMetaDescription] = useState('')
+  const [ogImageMediaId, setOgImageMediaId] = useState('')
+  const [canonicalUrl, setCanonicalUrl] = useState('')
+  const [noindex, setNoindex] = useState(false)
   const [isPublished, setIsPublished] = useState(false)
   const [errors, setErrors] = useState<Record<string, string>>({})
   const [activeTab, setActiveTab] = useState('page-info')
@@ -55,6 +59,9 @@ const PageEditModal = ({ show, page, loading, onClose, onSave }: PageEditModalPr
       setTitle(page.title)
       setMetaTitle(page.meta_title || '')
       setMetaDescription(page.meta_description || '')
+      setOgImageMediaId(page.og_image_media_id || '')
+      setCanonicalUrl(page.canonical_url || '')
+      setNoindex(page.noindex || false)
       setIsPublished(page.is_published)
       setErrors({})
       setActiveTab('page-info')
@@ -97,6 +104,9 @@ const PageEditModal = ({ show, page, loading, onClose, onSave }: PageEditModalPr
       title: title.trim(),
       meta_title: metaTitle.trim() || null,
       meta_description: metaDescription.trim() || null,
+      og_image_media_id: ogImageMediaId || null,
+      canonical_url: canonicalUrl.trim() || null,
+      noindex: noindex,
       is_published: isPublished,
     }
 
@@ -104,6 +114,35 @@ const PageEditModal = ({ show, page, loading, onClose, onSave }: PageEditModalPr
     if (success) {
       onClose()
     }
+  }
+
+  // Handler for SEO tab save (About and Standard pages)
+  const handleSeoSave = async (seoData: {
+    meta_title: string
+    meta_description: string
+    og_image_media_id: string
+    canonical_url: string
+    noindex: boolean
+  }) => {
+    if (!page) return
+
+    setMetaTitle(seoData.meta_title)
+    setMetaDescription(seoData.meta_description)
+    setOgImageMediaId(seoData.og_image_media_id)
+    setCanonicalUrl(seoData.canonical_url)
+    setNoindex(seoData.noindex)
+
+    const input: PageUpdateInput = {
+      title: title.trim(),
+      meta_title: seoData.meta_title || null,
+      meta_description: seoData.meta_description || null,
+      og_image_media_id: seoData.og_image_media_id || null,
+      canonical_url: seoData.canonical_url || null,
+      noindex: seoData.noindex,
+      is_published: isPublished,
+    }
+
+    await onSave(page.id, input)
   }
 
   if (!page) return null
@@ -156,19 +195,16 @@ const PageEditModal = ({ show, page, loading, onClose, onSave }: PageEditModalPr
               )}
             </Tab>
             <Tab eventKey="seo" title="SEO">
-              <Form.Group className="mb-3">
-                <Form.Label>Meta Title</Form.Label>
-                <Form.Control type="text" value={metaTitle} onChange={(e) => setMetaTitle(e.target.value)} maxLength={70} placeholder="SEO meta title" />
-                <Form.Text className="text-muted">{metaTitle.length}/70</Form.Text>
-              </Form.Group>
-              <Form.Group className="mb-3">
-                <Form.Label>Meta Description</Form.Label>
-                <Form.Control as="textarea" rows={3} value={metaDescription} onChange={(e) => setMetaDescription(e.target.value)} maxLength={160} placeholder="SEO meta description" />
-                <Form.Text className="text-muted">{metaDescription.length}/160</Form.Text>
-              </Form.Group>
-              <Button variant="primary" onClick={handleSubmit} disabled={loading}>
-                {loading ? <><Spinner animation="border" size="sm" className="me-2" />Saving...</> : 'Save SEO'}
-              </Button>
+              <PageSeoTab
+                pageTitle={title}
+                metaTitle={metaTitle}
+                metaDescription={metaDescription}
+                ogImageMediaId={ogImageMediaId}
+                canonicalUrl={canonicalUrl}
+                noindex={noindex}
+                loading={loading || aboutPageLoading}
+                onSave={handleSeoSave}
+              />
             </Tab>
           </Tabs>
         </Modal.Body>
@@ -179,112 +215,100 @@ const PageEditModal = ({ show, page, loading, onClose, onSave }: PageEditModalPr
     )
   }
 
-  // Render standard page modal (non-Homepage, non-About)
+  // Render standard page modal with tabs (non-Homepage, non-About)
   if (!isHomepage) {
     return (
       <Modal show={show} onHide={onClose} centered size="xl">
         <Modal.Header closeButton className="border-bottom">
           <Modal.Title as="h5">Edit Page</Modal.Title>
         </Modal.Header>
-        <Form onSubmit={handleSubmit}>
-          <Modal.Body>
-            {/* Slug - READ ONLY */}
-            <Form.Group className="mb-3">
-              <Form.Label>Slug</Form.Label>
-              <Form.Control
-                type="text"
-                value={page.slug}
-                disabled
-                readOnly
-                className="bg-light text-muted"
-              />
-              <Form.Text className="text-muted">
-                Slug is fixed and cannot be changed.
-              </Form.Text>
-            </Form.Group>
+        <Modal.Body>
+          <Tabs 
+            activeKey={activeTab} 
+            onSelect={(k) => setActiveTab(k || 'page-info')} 
+            className="mb-3"
+          >
+            <Tab eventKey="page-info" title="Page Info">
+              <Form onSubmit={handleSubmit}>
+                {/* Slug - READ ONLY */}
+                <Form.Group className="mb-3">
+                  <Form.Label>Slug</Form.Label>
+                  <Form.Control
+                    type="text"
+                    value={page.slug}
+                    disabled
+                    readOnly
+                    className="bg-light text-muted"
+                  />
+                  <Form.Text className="text-muted">
+                    Slug is fixed and cannot be changed.
+                  </Form.Text>
+                </Form.Group>
 
-            {/* Title */}
-            <Form.Group className="mb-3">
-              <Form.Label>Title <span className="text-danger">*</span></Form.Label>
-              <Form.Control
-                type="text"
-                value={title}
-                onChange={(e) => setTitle(e.target.value)}
-                isInvalid={!!errors.title}
-                maxLength={100}
-                placeholder="Page title"
-              />
-              <Form.Control.Feedback type="invalid">{errors.title}</Form.Control.Feedback>
-              <Form.Text className="text-muted">
-                {title.length}/100 characters
-              </Form.Text>
-            </Form.Group>
+                {/* Title */}
+                <Form.Group className="mb-3">
+                  <Form.Label>Title <span className="text-danger">*</span></Form.Label>
+                  <Form.Control
+                    type="text"
+                    value={title}
+                    onChange={(e) => setTitle(e.target.value)}
+                    isInvalid={!!errors.title}
+                    maxLength={100}
+                    placeholder="Page title"
+                  />
+                  <Form.Control.Feedback type="invalid">{errors.title}</Form.Control.Feedback>
+                  <Form.Text className="text-muted">
+                    {title.length}/100 characters
+                  </Form.Text>
+                </Form.Group>
 
-            {/* Meta Title */}
-            <Form.Group className="mb-3">
-              <Form.Label>Meta Title</Form.Label>
-              <Form.Control
-                type="text"
-                value={metaTitle}
-                onChange={(e) => setMetaTitle(e.target.value)}
-                isInvalid={!!errors.metaTitle}
-                maxLength={70}
-                placeholder="SEO meta title (optional)"
-              />
-              <Form.Control.Feedback type="invalid">{errors.metaTitle}</Form.Control.Feedback>
-              <Form.Text className="text-muted">
-                {metaTitle.length}/70 characters
-              </Form.Text>
-            </Form.Group>
+                {/* Published Status */}
+                <Form.Group className="mb-3">
+                  <Form.Check
+                    type="switch"
+                    id="is-published"
+                    label="Published"
+                    checked={isPublished}
+                    onChange={(e) => setIsPublished(e.target.checked)}
+                  />
+                  <Form.Text className="text-muted">
+                    Published pages are visible to the public.
+                  </Form.Text>
+                </Form.Group>
 
-            {/* Meta Description */}
-            <Form.Group className="mb-3">
-              <Form.Label>Meta Description</Form.Label>
-              <Form.Control
-                as="textarea"
-                rows={3}
-                value={metaDescription}
-                onChange={(e) => setMetaDescription(e.target.value)}
-                isInvalid={!!errors.metaDescription}
-                maxLength={160}
-                placeholder="SEO meta description (optional)"
+                <div className="mt-4 pt-3 border-top">
+                  <Button variant="primary" type="submit" disabled={loading}>
+                    {loading ? (
+                      <>
+                        <Spinner animation="border" size="sm" className="me-2" />
+                        Saving...
+                      </>
+                    ) : (
+                      'Save Page Info'
+                    )}
+                  </Button>
+                </div>
+              </Form>
+            </Tab>
+            <Tab eventKey="seo" title="SEO">
+              <PageSeoTab
+                pageTitle={title}
+                metaTitle={metaTitle}
+                metaDescription={metaDescription}
+                ogImageMediaId={ogImageMediaId}
+                canonicalUrl={canonicalUrl}
+                noindex={noindex}
+                loading={loading}
+                onSave={handleSeoSave}
               />
-              <Form.Control.Feedback type="invalid">{errors.metaDescription}</Form.Control.Feedback>
-              <Form.Text className="text-muted">
-                {metaDescription.length}/160 characters
-              </Form.Text>
-            </Form.Group>
-
-            {/* Published Status */}
-            <Form.Group className="mb-3">
-              <Form.Check
-                type="switch"
-                id="is-published"
-                label="Published"
-                checked={isPublished}
-                onChange={(e) => setIsPublished(e.target.checked)}
-              />
-              <Form.Text className="text-muted">
-                Published pages are visible to the public.
-              </Form.Text>
-            </Form.Group>
-          </Modal.Body>
-          <Modal.Footer className="border-top">
-            <Button variant="secondary" onClick={onClose} disabled={loading}>
-              Cancel
-            </Button>
-            <Button variant="primary" type="submit" disabled={loading}>
-              {loading ? (
-                <>
-                  <Spinner animation="border" size="sm" className="me-2" />
-                  Saving...
-                </>
-              ) : (
-                'Save Changes'
-              )}
-            </Button>
-          </Modal.Footer>
-        </Form>
+            </Tab>
+          </Tabs>
+        </Modal.Body>
+        <Modal.Footer className="border-top">
+          <Button variant="secondary" onClick={onClose} disabled={loading}>
+            Close
+          </Button>
+        </Modal.Footer>
       </Modal>
     )
   }
