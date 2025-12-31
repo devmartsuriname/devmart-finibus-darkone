@@ -669,11 +669,16 @@ export type Database = {
       }
       services: {
         Row: {
+          canonical_url: string | null
           created_at: string
           display_order: number
           full_description: string | null
           icon_media_id: string | null
           id: string
+          meta_description: string | null
+          meta_title: string | null
+          noindex: boolean | null
+          og_image_media_id: string | null
           pricing_monthly_enabled: boolean
           pricing_yearly_enabled: boolean
           short_description: string
@@ -684,11 +689,16 @@ export type Database = {
           updated_at: string
         }
         Insert: {
+          canonical_url?: string | null
           created_at?: string
           display_order?: number
           full_description?: string | null
           icon_media_id?: string | null
           id?: string
+          meta_description?: string | null
+          meta_title?: string | null
+          noindex?: boolean | null
+          og_image_media_id?: string | null
           pricing_monthly_enabled?: boolean
           pricing_yearly_enabled?: boolean
           short_description: string
@@ -699,11 +709,16 @@ export type Database = {
           updated_at?: string
         }
         Update: {
+          canonical_url?: string | null
           created_at?: string
           display_order?: number
           full_description?: string | null
           icon_media_id?: string | null
           id?: string
+          meta_description?: string | null
+          meta_title?: string | null
+          noindex?: boolean | null
+          og_image_media_id?: string | null
           pricing_monthly_enabled?: boolean
           pricing_yearly_enabled?: boolean
           short_description?: string
@@ -717,6 +732,13 @@ export type Database = {
           {
             foreignKeyName: "services_icon_media_id_fkey"
             columns: ["icon_media_id"]
+            isOneToOne: false
+            referencedRelation: "media"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "services_og_image_media_id_fkey"
+            columns: ["og_image_media_id"]
             isOneToOne: false
             referencedRelation: "media"
             referencedColumns: ["id"]

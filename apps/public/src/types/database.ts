@@ -30,6 +30,12 @@ export interface Service {
   show_pricing: boolean;
   pricing_monthly_enabled: boolean;
   pricing_yearly_enabled: boolean;
+  // Phase 4B: SEO fields
+  meta_title?: string | null;
+  meta_description?: string | null;
+  og_image_media_id?: string | null;
+  canonical_url?: string | null;
+  noindex?: boolean;
   icon?: Media | null;
 }
 
