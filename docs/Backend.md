@@ -3,8 +3,57 @@
 # Backend Documentation
 
 **Status:** ✅ PHASE 12 COMPLETE — FRONTEND FROZEN  
-**Phase:** Phase 12 CLOSED | Admin Blog Enhancement Phase 3 CLOSED  
+**Phase:** Phase 12 CLOSED | Phase 4C CLOSED | Phase 4D Pending  
 **Last Updated:** 2025-12-31
+
+---
+
+## Phase 4C — Projects SEO Schema Expansion (2025-12-31)
+
+**Status:** ✅ **CLOSED**
+
+### Schema Changes
+
+**Table:** `projects`
+
+| Column Added | Type | Default | Purpose |
+|--------------|------|---------|---------|
+| `meta_title` | TEXT | NULL | SEO title override |
+| `meta_description` | TEXT | NULL | SEO description override |
+| `og_image_media_id` | UUID FK | NULL | OG image for social sharing |
+| `canonical_url` | TEXT | NULL | Canonical URL for SEO |
+| `noindex` | BOOLEAN | FALSE | Exclude from search engines |
+
+### Data Population
+
+**Projects:** All 5 published projects seeded with:
+- meta_title (unique, meaningful)
+- meta_description (unique, meaningful)
+- canonical_url (`https://devmart.co/project-details/{slug}`)
+- noindex = false
+
+**Services:** All 7 services seeded with:
+- meta_title (unique, meaningful)
+- meta_description (unique, meaningful)
+- canonical_url (`https://devmart.co/service-details/{slug}`)
+- noindex = false
+
+### Canonical Domain Note
+
+| Domain | Purpose |
+|--------|---------|
+| `https://devmart.co` | Currently stored in canonical_url fields |
+| `https://devmart.sr` | Official production domain |
+
+**Status:** Domain mismatch is intentional and deferred to Phase 4D (URL Normalization).
+
+### Project Process Steps
+
+Step 4 ("Deployment & Launch") added to all 5 published projects.
+
+| Project | Steps Before | Steps After |
+|---------|--------------|-------------|
+| All published | 3 | 4 |
 
 ---
 
