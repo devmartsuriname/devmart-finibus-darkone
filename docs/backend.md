@@ -3,16 +3,54 @@
 # Backend Documentation
 
 **Status:** ✅ PHASE 12 COMPLETE — FRONTEND FROZEN  
-**Phase:** Phase 12 CLOSED | Admin Blog Enhancement Phase 2.1a COMPLETE  
+**Phase:** Phase 12 CLOSED | Admin Blog Enhancement Phase 3 COMPLETE  
 **Last Updated:** 2025-12-31
 
 ---
 
-## Admin Blog Enhancement — Phase 2.1a: Field Parity Fix (2025-12-31)
+## Admin Blog Enhancement — Phase 3: SEO Fallback Wiring (2025-12-31)
 
 **Status:** ✅ **COMPLETE**
 
-### New Database Columns (ADDITIVE)
+### Objective
+Wire blog post SEO metadata to public blog details page using react-helmet-async with 3-tier fallback hierarchy.
+
+### Files Created
+
+| File | Purpose |
+|------|---------|
+| `apps/public/src/hooks/useGlobalSeoSettings.ts` | Fetch global SEO fallbacks from settings table |
+| `apps/public/src/components/pages/blogDetails/BlogDetailsSeo.tsx` | Render SEO meta tags with fallback resolution |
+
+### SEO Fallback Hierarchy
+
+| Priority | Source | Description |
+|----------|--------|-------------|
+| 1 | Post SEO Fields | meta_title, meta_description, og_image, canonical_url, noindex |
+| 2 | Content-Derived | title → meta_title, excerpt → description, featured_image → OG |
+| 3 | Global Settings | default_meta_title, default_meta_description, default_og_image |
+
+### Meta Tags Rendered
+
+- `<title>` — Post title or fallback
+- `<meta name="description">` — Post description or fallback
+- `<meta name="robots">` — noindex handling
+- `<link rel="canonical">` — Canonical URL
+- `<meta property="og:*">` — Open Graph tags
+- `<meta name="twitter:*">` — Twitter Card tags
+- `<meta property="article:*">` — Article metadata
+
+### Integration
+
+BlogDetailsPage.tsx now includes `<BlogDetailsSeo post={post} />` which resolves and injects all SEO metadata.
+
+---
+
+## Admin Blog Enhancement — Phase 2.1a–2.3: Field Parity + Wiring + Seeding (2025-12-31)
+
+**Status:** ✅ **COMPLETE + FINALIZED**
+
+### Phase 2.1a: New Database Columns (ADDITIVE)
 
 | Column | Type | Default | Purpose |
 |--------|------|---------|---------|
@@ -21,6 +59,21 @@
 | `secondary_image_media_id` | UUID FK | NULL | Banner section image |
 | `secondary_content` | TEXT | NULL | Banner section body text |
 | `author_display_name` | TEXT | NULL | Author name (UI default: "Devmart Team") |
+
+### Phase 2.2–2.3: Public Wiring + Per-Post Seeding
+
+**Hook Extended:** `useBlogDetails.ts` now fetches all Details Layout + SEO fields  
+**Component Wired:** `BlogDetailsWrapper.tsx` accepts new props with fallbacks  
+**Data Seeded:** All 6 published posts with unique, article-derived content
+
+| Slug | quote_text | secondary_content | tags |
+|------|------------|-------------------|------|
+| building-scalable-web-applications-2025 | Unique | Unique | Development, Technology, Performance |
+| complete-guide-marketing-automation | Unique | Unique | Marketing, Automation, Analytics |
+| design-thinking-modern-enterprise | Unique | Unique | Design, Innovation, Strategy |
+| future-of-digital-business-strategy | Unique | Unique | Strategy, Digital Transformation, Business |
+| security-best-practices-modern-applications | Unique | Unique | Security, Development, Technology |
+| upcoming-trends-ai-machine-learning | Unique | Unique | Technology, AI, Machine Learning |
 
 ### Admin Modal Changes
 - Tab 5 "Details Layout" added to BlogPostModal

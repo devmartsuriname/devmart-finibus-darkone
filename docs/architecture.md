@@ -3,16 +3,58 @@
 # Architecture Documentation
 
 **Status:** ✅ PHASE 12 COMPLETE — FRONTEND FROZEN  
-**Phase:** Phase 12 CLOSED | Admin Blog Enhancement Phase 2.1a COMPLETE  
+**Phase:** Phase 12 CLOSED | Admin Blog Enhancement Phase 3 COMPLETE  
 **Last Updated:** 2025-12-31
 
 ---
 
-## Admin Blog Enhancement — Phase 2.1a: Field Parity Fix (2025-12-31)
+## Admin Blog Enhancement — Phase 3: SEO Fallback Wiring (2025-12-31)
 
 **Status:** ✅ **COMPLETE**
 
-### Schema Migration (ADDITIVE ONLY)
+### Public Blog SEO Architecture
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│                  Blog Details SEO Flow                       │
+├─────────────────────────────────────────────────────────────┤
+│  BlogDetailsPage.tsx                                         │
+│    ├── useBlogDetails(slug) → fetches post data              │
+│    ├── <BlogDetailsSeo post={post} />                        │
+│    │     ├── useGlobalSeoSettings() → fallback tier 3        │
+│    │     ├── resolveSeoFallbacks() → 3-tier resolution       │
+│    │     └── <Helmet> → injects meta tags                    │
+│    └── <BlogDetailsWrapper ... />                            │
+└─────────────────────────────────────────────────────────────┘
+```
+
+### SEO Resolution Priority
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│                  SEO Fallback Hierarchy                      │
+├─────────────────────────────────────────────────────────────┤
+│  Priority 1: Post SEO Fields                                 │
+│    └── meta_title, meta_description, og_image_media_id,      │
+│        canonical_url, noindex                                │
+│                                                              │
+│  Priority 2: Content-Derived Values                          │
+│    └── title → meta_title, excerpt → description,            │
+│        featured_image → OG image, /blog/{slug} → canonical   │
+│                                                              │
+│  Priority 3: Global SEO Settings                             │
+│    └── default_meta_title, default_meta_description,         │
+│        default_og_image_media_id from settings table         │
+└─────────────────────────────────────────────────────────────┘
+```
+
+---
+
+## Admin Blog Enhancement — Phase 2.1a–2.3: Field Parity + Wiring + Seeding (2025-12-31)
+
+**Status:** ✅ **COMPLETE + FINALIZED**
+
+### Phase 2.1a: Schema Migration (ADDITIVE ONLY)
 Added 5 new columns to `blog_posts` for blog details page parity:
 
 | Column | Type | Purpose |
@@ -23,14 +65,23 @@ Added 5 new columns to `blog_posts` for blog details page parity:
 | `secondary_content` | TEXT | Banner section body text |
 | `author_display_name` | TEXT | Author display name (default: "Devmart Team") |
 
-### Admin Modal Update
-- BlogPostModal expanded from 4 to 5 tabs
-- New Tab 5: "Details Layout" with all 5 new fields
+### Phase 2.2–2.3: Public Wiring + Seeding
+- useBlogDetails hook extended with 11 new fields
+- BlogDetailsWrapper props wired with fallbacks
+- All 6 published posts seeded with unique, article-derived content
+- Tags populated (3 per post)
+
+### Per-Post Unique Content (2025-12-31)
+All 6 posts now have:
+- Unique `quote_text` derived from article content
+- Unique `secondary_content` derived from article content
+- Relevant `tags` array (3 tags each)
 
 ### What Was NOT Changed
-- Public frontend layout (frontend frozen)
+- Public frontend layout (frontend frozen — data binding only)
 - Existing blog_posts columns (additive only)
 - No new npm packages
+- Image fields left NULL for manual selection
 
 ---
 
