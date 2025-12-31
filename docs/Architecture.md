@@ -3,8 +3,41 @@
 # Architecture Documentation
 
 **Status:** ✅ PHASE 12 COMPLETE — FRONTEND FROZEN  
-**Phase:** Phase 12 CLOSED | Admin Blog Enhancement Phase 2 COMPLETE  
+**Phase:** Phase 12 CLOSED | Admin Blog Enhancement Phase 2.2 COMPLETE  
 **Last Updated:** 2025-12-31
+
+---
+
+## Admin Blog Enhancement — Phase 2.2: Comments Removal (2025-12-31)
+
+**Status:** ✅ **COMPLETE**
+
+### Decision
+Blog comments are **permanently disabled**. This is a policy decision documented in `docs/Policy_Blog_Comments_Disabled.md`.
+
+### Changes Made
+- Removed `<BlogDetailsComments />` from BlogDetailsPage.tsx
+- Removed "Comments (01)" counter from BlogDetailsWrapper.tsx
+- `blog_comments` table marked DEPRECATED (not dropped, 8 records preserved)
+
+### What Was NOT Changed
+- BlogDetailsComments.tsx component file retained for reference
+- Database table preserved for schema history
+- No layout or styling modifications
+
+---
+
+## Admin Blog Enhancement — Phase 2.1: Field Parity Audit (2025-12-31)
+
+**Status:** ✅ **COMPLETE**
+
+### Audit Result
+All 20 blog_posts columns verified. 18 editable via Admin Modal, 4 auto-managed (id, author_id, created_at, updated_at).
+
+See: `docs/Blog_Field_Parity_Matrix.md` for complete parity table.
+
+### Conclusion
+No missing fields. Admin → DB → Frontend parity confirmed for existing schema.
 
 ---
 
