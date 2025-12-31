@@ -1,8 +1,46 @@
-# Admin Blog Enhancement Plan — Phase 0 Planning Report
+# Admin Blog Enhancement Plan — Phase 0 & 1 Complete
 
 **Created:** 2025-12-31  
-**Status:** PLANNING ONLY — No implementation performed  
-**Scope:** Admin CMS Enhancements — Blog Module (Authoring, Taxonomy & SEO)
+**Status:** ✅ PHASE 0 COMPLETE | ✅ PHASE 1 COMPLETE  
+**Scope:** Admin CMS Enhancements — Blog Module (Authoring, Taxonomy & SEO)  
+**Last Updated:** 2025-12-31
+
+---
+
+## Phase Execution Status
+
+| Phase | Description | Status | Date |
+|-------|-------------|--------|------|
+| Phase 0 | Diagnostic + Plan | ✅ COMPLETE | 2025-12-31 |
+| Phase 1 | Schema Enhancements | ✅ COMPLETE | 2025-12-31 |
+| Phase 2 | Admin Modal UX | ⏳ PENDING AUTHORIZATION | — |
+| Phase 3 | Global SEO Fallback | ⏳ PENDING | — |
+
+---
+
+## Phase 1 Completion Summary
+
+### Columns Added to `blog_posts`
+
+| Column | Type | Default | Constraint | Status |
+|--------|------|---------|------------|--------|
+| content_blocks | JSONB | '[]' | — | ✅ Added |
+| tags | TEXT[] | '{}' | GIN indexed | ✅ Added |
+| meta_title | TEXT | NULL | max 70 chars | ✅ Added |
+| meta_description | TEXT | NULL | max 160 chars | ✅ Added |
+| og_image_media_id | UUID | NULL | FK to media | ✅ Added |
+| canonical_url | TEXT | NULL | — | ✅ Added |
+| noindex | BOOLEAN | FALSE | — | ✅ Added |
+
+### Indexes Added
+- `idx_blog_posts_tags` — GIN index for array operations
+- `idx_blog_posts_category` — B-tree index for filtering
+
+### Verification Results
+- ✅ Migration applied successfully
+- ✅ Existing 5 blog posts load without errors
+- ✅ Public frontend unchanged (frontend frozen)
+- ✅ No console errors
 
 ---
 
@@ -10,7 +48,7 @@
 
 This document provides the complete planning report for enhancing the Admin Blog module with improved taxonomy management and SEO governance. All evidence has been gathered from the codebase and database.
 
-**CRITICAL FINDING:** The `blog_posts.content` column stores **HTML strings**, NOT structured JSON. The public renderer uses `dangerouslySetInnerHTML` to render content directly. This is the current production behavior and will be preserved.
+**RESOLVED:** Dual-storage model adopted — `content` (HTML) for public rendering, `content_blocks` (JSONB) for admin authoring.
 
 ---
 
