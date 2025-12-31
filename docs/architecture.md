@@ -6,9 +6,11 @@
 
 ---
 
-## Phase 6 — Quote Wizard (PLANNING ONLY)
+## Phase 6 — Quote Wizard
 
-**Status:** 📋 **PLANNING COMPLETE** — Implementation NOT Authorized
+**Status:** 📋 **PHASE 6C PLANNING COMPLETE** — Execution NOT Authorized
+
+---
 
 ### Overview
 
@@ -21,23 +23,67 @@ The Quote Wizard feature enables users to select multiple services, choose prici
 | Frontend Uniformity Library | `docs/frontend/Frontend_Uniformity_Library.md` | Maps all reusable public UI components |
 | Quote Wizard Planning | `docs/phase-wizard/Quote_Wizard_Planning.md` | Full planning document with UX flow, data model, decisions |
 
-### Proposed Data Model (NOT AUTHORIZED)
+### Phase 6C Documents (Schema Preparation)
+
+| Document | Path | Description |
+|----------|------|-------------|
+| Execution Plan | `docs/phase-6/Phase_6C_Schema_RLS_Execution_Plan.md` | Complete schema + RLS plan |
+| SQL Drafts | `docs/phase-6/Phase_6C_SQL_Drafts.sql` | Migration SQL (draft) |
+| RLS Policies | `docs/phase-6/Phase_6C_RLS_Policies_Drafts.sql` | RLS policies (draft) |
+| Verification Checklist | `docs/phase-6/Phase_6C_Verification_Checklist.md` | Post-migration verification |
+
+---
+
+### Quote Wizard Data Flow (PROPOSED — NOT IMPLEMENTED)
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
 │                  Quote Wizard Data Flow                      │
 ├─────────────────────────────────────────────────────────────┤
-│  User Selection                                              │
-│    └── services[] (selected from UI)                         │
-│    └── plans[] (one per selected service)                    │
-│    └── billing_period (monthly/yearly)                       │
+│  STEP 1: User selects services in wizard                     │
+│    └── Reads from: services, service_pricing_plans           │
 │                                                              │
-│  Database Tables (PROPOSED — NOT AUTHORIZED)                 │
-│    └── quotes (id, lead_id, total, billing_period, status)   │
-│    └── quote_items (quote_id, service_id, plan_id, price)    │
-│    └── leads.quote_id (FK extension)                         │
+│  STEP 2: User configures tiers + billing period              │
+│    └── Client-side state only                                │
 │                                                              │
-│  Flow: User → Wizard → Lead + Quote + Items                  │
+│  STEP 3: User submits quote request                          │
+│    └── TRANSACTION:                                          │
+│        1. INSERT lead (name, email, source='quote_wizard')   │
+│        2. INSERT quote (lead_id, total, billing_period)      │
+│        3. UPDATE lead SET quote_id = quote.id                │
+│        4. INSERT quote_items (one per selected service)      │
+│                                                              │
+│  STEP 4: Admin views quote in CRM                            │
+│    └── Reads from: quotes, quote_items (via lead_id join)    │
+└─────────────────────────────────────────────────────────────┘
+```
+
+### Schema Design (DRAFT — NOT EXECUTED)
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│  public.quotes                                               │
+│    ├── id (UUID, PK)                                         │
+│    ├── reference_number (TEXT, UNIQUE) — QT-2025-XXXX        │
+│    ├── lead_id (UUID, FK → leads.id)                         │
+│    ├── total_amount (DECIMAL)                                │
+│    ├── currency (TEXT, default 'USD')                        │
+│    ├── billing_period (TEXT: monthly|yearly)                 │
+│    ├── status (TEXT: pending|reviewed|converted|expired)     │
+│    └── created_at, updated_at                                │
+├─────────────────────────────────────────────────────────────┤
+│  public.quote_items                                          │
+│    ├── id (UUID, PK)                                         │
+│    ├── quote_id (UUID, FK → quotes.id, CASCADE)              │
+│    ├── service_id (UUID, FK → services.id, optional)         │
+│    ├── plan_id (UUID, FK → service_pricing_plans.id, opt)    │
+│    ├── service_title (TEXT, snapshot)                        │
+│    ├── plan_name (TEXT, snapshot)                            │
+│    ├── price_amount (DECIMAL, snapshot)                      │
+│    └── created_at                                            │
+├─────────────────────────────────────────────────────────────┤
+│  public.leads (extension)                                    │
+│    └── quote_id (UUID, FK → quotes.id, nullable)             │
 └─────────────────────────────────────────────────────────────┘
 ```
 
@@ -51,11 +97,23 @@ The Quote Wizard feature enables users to select multiple services, choose prici
 - Bootstrap grid patterns (3-column)
 - `.cmn-btn`, `.sec-pad` CSS patterns
 
+### Decisions Closed (Phase 6C)
+
+| Decision | Recommendation | Justification |
+|----------|----------------|---------------|
+| Wizard Route | `/quote` dedicated page | Finibus parity, uses standard page patterns |
+| Quote Reference | Date-based (QT-2025-XXXX) | Human-readable, no sequence guessing |
+| Billing Period | Global toggle | Matches ServicePrice pattern |
+| Confirmation | Inline success | Matches Contact form pattern |
+| Admin Notification | DEFERRED | Not MVP |
+
 ### Hard Blockers
 
 | Blocker | Description | Status |
 |---------|-------------|--------|
-| Schema migration | `quotes` and `quote_items` tables required | NOT AUTHORIZED |
+| Schema migration | `quotes` and `quote_items` tables required | **NOT AUTHORIZED** |
+| RLS policies | Public INSERT, Admin SELECT/UPDATE | **NOT AUTHORIZED** |
+| Route creation | `/quote` page and routing | **NOT AUTHORIZED** |
 
 ### Soft Dependencies (Deferred)
 
@@ -67,11 +125,11 @@ The Quote Wizard feature enables users to select multiple services, choose prici
 ### Guardian Rules Compliance
 
 All planning work complies with project rules:
-- No code changes
-- No schema changes
-- No UI modifications
-- No new components
-- Template parity maintained
+- ✅ No code changes
+- ✅ No schema changes
+- ✅ No UI modifications
+- ✅ No new components
+- ✅ Template parity maintained
 
 ---
 
