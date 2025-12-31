@@ -3,8 +3,46 @@
 # Backend Documentation
 
 **Status:** ✅ PHASE 12 COMPLETE — FRONTEND FROZEN  
-**Phase:** Phase 12 CLOSED | Admin Blog Enhancement Phase 2 COMPLETE  
+**Phase:** Phase 12 CLOSED | Admin Blog Enhancement Phase 2.2 COMPLETE  
 **Last Updated:** 2025-12-31
+
+---
+
+## Blog Comments — DEPRECATED (2025-12-31)
+
+**Status:** ⚠️ **TABLE DEPRECATED — NOT IN USE**
+
+### Table: `blog_comments`
+| Column | Type | Notes |
+|--------|------|-------|
+| id | uuid | PK |
+| post_id | uuid | FK to blog_posts |
+| commenter_name | text | — |
+| commenter_email | text | — |
+| body | text | — |
+| created_at | timestamptz | — |
+
+### Current State
+- **Records:** 8 (seeded test data, never production)
+- **RLS:** Admin-only access (no public policies)
+- **UI:** None (removed from public frontend)
+- **Admin:** No moderation UI exists
+
+### Policy Decision
+Blog comments are permanently disabled. See: `docs/Policy_Blog_Comments_Disabled.md`
+
+**Do NOT:**
+- Create comment moderation features
+- Add comment UI to public or admin
+- Re-enable commenting functionality
+
+---
+
+## Admin Blog Enhancement — Phase 2.1: Field Parity (2025-12-31)
+
+**Status:** ✅ **VERIFIED**
+
+All blog_posts columns mapped to Admin Modal fields. See: `docs/Blog_Field_Parity_Matrix.md`
 
 ---
 

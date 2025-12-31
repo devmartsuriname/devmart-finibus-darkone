@@ -6,7 +6,7 @@ import NewsPost from "../blog/NewsPost";
 import PopularTag from "../blog/PopularTag";
 import ServiceList from "../blog/ServiceList";
 import SidebarSearch from "../blog/SidebarSearch";
-import BlogDetailsComments from "./BlogDetailsComments";
+// BlogDetailsComments removed - see docs/Policy_Blog_Comments_Disabled.md
 import BlogDetailsWrapper from "./BlogDetailsWrapper";
 import { useBlogDetails } from "../../../hooks/useBlogDetails";
 
@@ -33,17 +33,15 @@ function BlogDetailsPage() {
                   <div className="alert alert-danger">{error}</div>
                 )}
                 {!loading && !error && post && (
-                  <>
-                    <BlogDetailsWrapper
-                      title={post.title}
-                      content={post.content}
-                      excerpt={post.excerpt || undefined}
-                      featuredImage={post.featured_image?.public_url}
-                      publishedAt={post.published_at || undefined}
-                      category={post.category || undefined}
-                    />
-                    <BlogDetailsComments />
-                  </>
+                  <BlogDetailsWrapper
+                    title={post.title}
+                    content={post.content}
+                    excerpt={post.excerpt || undefined}
+                    featuredImage={post.featured_image?.public_url}
+                    publishedAt={post.published_at || undefined}
+                    category={post.category || undefined}
+                  />
+                  // Comments section permanently removed - see docs/Policy_Blog_Comments_Disabled.md
                 )}
                 {!loading && !error && !post && (
                   <div className="alert alert-warning">Post not found.</div>

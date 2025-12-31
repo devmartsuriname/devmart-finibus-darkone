@@ -448,8 +448,13 @@ const BlogPostModal = ({ show, onClose, onSave, onUpdate, post }: BlogPostModalP
 
           {/* Tab 4: SEO */}
           <Tab eventKey="seo" title="SEO">
-            <div className="alert alert-secondary small mb-4">
-              If these fields are empty, Global SEO Settings will be used as fallback.
+            <div className="alert alert-info small mb-4">
+              <strong>SEO Fallback Order:</strong>
+              <ol className="mb-0 mt-1">
+                <li><strong>Post SEO fields</strong> (set below)</li>
+                <li><strong>Post content</strong> (title → Meta Title, excerpt → Meta Description, featured image → OG Image)</li>
+                <li><strong>Global SEO Settings</strong> (Admin → Settings → SEO tab)</li>
+              </ol>
             </div>
             
             <Row>
@@ -459,7 +464,7 @@ const BlogPostModal = ({ show, onClose, onSave, onUpdate, post }: BlogPostModalP
                   <Form.Label>Meta Title</Form.Label>
                   <Form.Control
                     type="text"
-                    placeholder="SEO title (defaults to post title)"
+                    placeholder={title ? `Falls back to: "${title.substring(0, 40)}${title.length > 40 ? '...' : ''}"` : 'Falls back to post title'}
                     value={metaTitle}
                     onChange={(e) => setMetaTitle(e.target.value)}
                     isInvalid={!!errors.metaTitle}
@@ -477,7 +482,7 @@ const BlogPostModal = ({ show, onClose, onSave, onUpdate, post }: BlogPostModalP
                   value={ogImageId}
                   onChange={setOgImageId}
                   label="OG Image (Social Sharing)"
-                  helpText="Image shown when shared on social media"
+                  helpText={featuredImageId ? 'Falls back to Featured Image if not set' : 'Falls back to Global OG Image if not set'}
                 />
               </Col>
               
@@ -488,7 +493,7 @@ const BlogPostModal = ({ show, onClose, onSave, onUpdate, post }: BlogPostModalP
                   <Form.Control
                     as="textarea"
                     rows={3}
-                    placeholder="SEO description (defaults to excerpt)"
+                    placeholder={excerpt ? `Falls back to: "${excerpt.substring(0, 50)}${excerpt.length > 50 ? '...' : ''}"` : 'Falls back to excerpt → Global SEO'}
                     value={metaDescription}
                     onChange={(e) => setMetaDescription(e.target.value)}
                     isInvalid={!!errors.metaDescription}
@@ -506,7 +511,7 @@ const BlogPostModal = ({ show, onClose, onSave, onUpdate, post }: BlogPostModalP
                   <Form.Label>Canonical URL</Form.Label>
                   <Form.Control
                     type="text"
-                    placeholder="https://example.com/original-post"
+                    placeholder={slug ? `Falls back to: /blog/${slug}` : 'Auto-generated from slug'}
                     value={canonicalUrl}
                     onChange={(e) => setCanonicalUrl(e.target.value)}
                     isInvalid={!!errors.canonicalUrl}
@@ -514,7 +519,7 @@ const BlogPostModal = ({ show, onClose, onSave, onUpdate, post }: BlogPostModalP
                   />
                   {errors.canonicalUrl && <div className="invalid-feedback d-block">{errors.canonicalUrl}</div>}
                   <Form.Text className="text-muted">
-                    Only set if this is a republished post
+                    Only set if republished from another source
                   </Form.Text>
                 </Form.Group>
 
