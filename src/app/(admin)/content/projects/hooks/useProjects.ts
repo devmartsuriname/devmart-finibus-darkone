@@ -28,12 +28,19 @@ export interface Project {
   end_date: string | null
   check_launch_content: string | null
   check_launch_image_media_id: string | null
+  // SEO fields (Phase 4C)
+  meta_title: string | null
+  meta_description: string | null
+  og_image_media_id: string | null
+  canonical_url: string | null
+  noindex: boolean
   created_at: string
   updated_at: string
   // Joined data
   image_url?: string | null
   featured_image_url?: string | null
   check_launch_image_url?: string | null
+  og_image_url?: string | null
 }
 
 export interface ProjectInput {
@@ -54,6 +61,12 @@ export interface ProjectInput {
   end_date?: string | null
   check_launch_content?: string | null
   check_launch_image_media_id?: string | null
+  // SEO fields (Phase 4C)
+  meta_title?: string | null
+  meta_description?: string | null
+  og_image_media_id?: string | null
+  canonical_url?: string | null
+  noindex?: boolean
 }
 
 export interface ProjectProcessStep {
@@ -110,7 +123,8 @@ export const useProjects = () => {
           *,
           thumbnail:image_media_id (public_url),
           featured:featured_image_media_id (public_url),
-          check_launch_img:check_launch_image_media_id (public_url)
+          check_launch_img:check_launch_image_media_id (public_url),
+          og_img:og_image_media_id (public_url)
         `)
         .order('created_at', { ascending: false })
 
@@ -124,9 +138,11 @@ export const useProjects = () => {
         image_url: project.thumbnail?.public_url || null,
         featured_image_url: project.featured?.public_url || null,
         check_launch_image_url: project.check_launch_img?.public_url || null,
+        og_image_url: project.og_img?.public_url || null,
         thumbnail: undefined,
         featured: undefined,
         check_launch_img: undefined,
+        og_img: undefined,
       }))
 
       setProjects(transformedData)
@@ -176,6 +192,12 @@ export const useProjects = () => {
           end_date: input.end_date || null,
           check_launch_content: input.check_launch_content || null,
           check_launch_image_media_id: input.check_launch_image_media_id || null,
+          // SEO fields (Phase 4C)
+          meta_title: input.meta_title || null,
+          meta_description: input.meta_description || null,
+          og_image_media_id: input.og_image_media_id || null,
+          canonical_url: input.canonical_url || null,
+          noindex: input.noindex || false,
         })
         .select('id')
         .single()
@@ -230,6 +252,12 @@ export const useProjects = () => {
       if (input.end_date !== undefined) updateData.end_date = input.end_date || null
       if (input.check_launch_content !== undefined) updateData.check_launch_content = input.check_launch_content || null
       if (input.check_launch_image_media_id !== undefined) updateData.check_launch_image_media_id = input.check_launch_image_media_id || null
+      // SEO fields (Phase 4C)
+      if (input.meta_title !== undefined) updateData.meta_title = input.meta_title || null
+      if (input.meta_description !== undefined) updateData.meta_description = input.meta_description || null
+      if (input.og_image_media_id !== undefined) updateData.og_image_media_id = input.og_image_media_id || null
+      if (input.canonical_url !== undefined) updateData.canonical_url = input.canonical_url || null
+      if (input.noindex !== undefined) updateData.noindex = input.noindex
 
       const { error: updateError } = await supabase
         .from('projects')
