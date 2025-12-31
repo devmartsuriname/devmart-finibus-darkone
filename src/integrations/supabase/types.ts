@@ -259,6 +259,7 @@ export type Database = {
           message: string | null
           name: string
           notes: string | null
+          quote_id: string | null
           source: string
           status: string
           subject: string | null
@@ -271,6 +272,7 @@ export type Database = {
           message?: string | null
           name: string
           notes?: string | null
+          quote_id?: string | null
           source?: string
           status?: string
           subject?: string | null
@@ -283,12 +285,21 @@ export type Database = {
           message?: string | null
           name?: string
           notes?: string | null
+          quote_id?: string | null
           source?: string
           status?: string
           subject?: string | null
           updated_at?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "leads_quote_id_fkey"
+            columns: ["quote_id"]
+            isOneToOne: false
+            referencedRelation: "quotes"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       media: {
         Row: {
@@ -581,6 +592,108 @@ export type Database = {
             columns: ["og_image_media_id"]
             isOneToOne: false
             referencedRelation: "media"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      quote_items: {
+        Row: {
+          created_at: string
+          currency: string
+          id: string
+          plan_id: string | null
+          plan_name: string
+          price_amount: number
+          quote_id: string
+          service_id: string | null
+          service_title: string
+        }
+        Insert: {
+          created_at?: string
+          currency?: string
+          id?: string
+          plan_id?: string | null
+          plan_name: string
+          price_amount: number
+          quote_id: string
+          service_id?: string | null
+          service_title: string
+        }
+        Update: {
+          created_at?: string
+          currency?: string
+          id?: string
+          plan_id?: string | null
+          plan_name?: string
+          price_amount?: number
+          quote_id?: string
+          service_id?: string | null
+          service_title?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "quote_items_plan_id_fkey"
+            columns: ["plan_id"]
+            isOneToOne: false
+            referencedRelation: "service_pricing_plans"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "quote_items_quote_id_fkey"
+            columns: ["quote_id"]
+            isOneToOne: false
+            referencedRelation: "quotes"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "quote_items_service_id_fkey"
+            columns: ["service_id"]
+            isOneToOne: false
+            referencedRelation: "services"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      quotes: {
+        Row: {
+          billing_period: string
+          created_at: string
+          currency: string
+          id: string
+          lead_id: string | null
+          reference_number: string
+          status: string
+          total_amount: number
+          updated_at: string
+        }
+        Insert: {
+          billing_period: string
+          created_at?: string
+          currency?: string
+          id?: string
+          lead_id?: string | null
+          reference_number: string
+          status?: string
+          total_amount: number
+          updated_at?: string
+        }
+        Update: {
+          billing_period?: string
+          created_at?: string
+          currency?: string
+          id?: string
+          lead_id?: string | null
+          reference_number?: string
+          status?: string
+          total_amount?: number
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "quotes_lead_id_fkey"
+            columns: ["lead_id"]
+            isOneToOne: false
+            referencedRelation: "leads"
             referencedColumns: ["id"]
           },
         ]
