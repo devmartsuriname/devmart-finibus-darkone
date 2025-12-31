@@ -1,21 +1,57 @@
 # Tasks — Devmart Implementation Tracker
 
 **Status:** ✅ PHASE 12 COMPLETE — FRONTEND FROZEN  
-**Current Phase:** Phase 4C CLOSED | Phase 4D ✅ EXECUTED  
+**Current Phase:** Phase 4D ✅ CLOSED | Phase 5 SEO ✅ EXECUTED  
 **Last Updated:** 2025-12-31
 
 ---
 
-## === PHASE 4D EXECUTED ===
+## === PHASE 5 SEO WIRING EXECUTED ===
 
 **Execution Date:** 2025-12-31  
-**Status:** ✅ COMPLETE
+**Status:** ✅ COMPLETE (5.1 + 5.2 ONLY)
 
-Phase 4D (URL Normalization) execution complete:
+Phase 5 (Public SEO Wiring) execution complete:
+- Phase 5.1: Services SEO wiring ✅
+- Phase 5.2: Projects SEO wiring ✅
+- Pattern: 1:1 copy of BlogDetailsSeo.tsx
+- SEO fields: meta_title, meta_description, og_image, canonical_url, noindex
+
+**Implementation Summary:**
+
+| Phase | Module | Files Created | Files Modified |
+|-------|--------|---------------|----------------|
+| 5.1 | Services | `ServiceDetailsSeo.tsx` | `useServiceDetails.ts`, `ServiceDetailsPage.tsx` |
+| 5.2 | Projects | `ProjectDetailsSeo.tsx` | `useProjectDetails.ts`, `ProjectDetailsPage.tsx`, `useProjects.ts` |
+
+**SEO Fallback Hierarchy:** Same 3-tier pattern as Blog
+1. Content-specific SEO fields
+2. Content-derived (title, description, featured_image)
+3. Global SEO settings
+
+**Guardian Rules Verified:**
+- ✅ Frontend layout unchanged
+- ✅ No schema changes
+- ✅ No new packages
+- ✅ No routing changes
+- ✅ Meta tags only (invisible changes)
+
+**Restore Point:** `docs/restore-points/Restore_Point_Phase_5_SEO_Wiring.md`
+
+**Phase 5 SEO Wiring is COMPLETE. HARD STOP — Deployment NOT prepared.**
+
+---
+
+## === PHASE 4D VERIFIED & CLOSED ===
+
+**Verification Date:** 2025-12-31  
+**Status:** ✅ VERIFIED AND CLOSED
+
+Phase 4D (URL Normalization) verified and closed:
 - Domain normalization: COMPLETE (`devmart.co` → `devmart.sr`)
 - Path pattern alignment: COMPLETE (Finibus parity)
 - SQL execution: ALL 4 UPDATE statements successful
-- Verification: ALL checks passed
+- Diagnostic gate: PASSED
 
 **Execution Summary:**
 
@@ -28,18 +64,7 @@ Phase 4D (URL Normalization) execution complete:
 
 **Total records updated:** 25
 
-**Verification Results:**
-- ✅ All canonical URLs use `https://devmart.sr`
-- ✅ All paths match Finibus routing patterns
-- ✅ No NULL canonical_url for published records
-- ✅ Frontend unchanged (frozen)
-- ✅ Admin unchanged
-
-**Restore Point:** `docs/restore-points/Restore_Point_Phase_4D_URL_Normalization.md`
-
-**Documentation:** `docs/phase-4/Phase_4D_URL_Normalization_Plan.md`
-
-**Phase 4D is COMPLETE. HARD STOP — Await Phase 5 authorization.**
+**Phase 4D is CLOSED. No further URL normalization work permitted.**
 
 ---
 
