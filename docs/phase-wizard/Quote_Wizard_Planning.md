@@ -1,9 +1,41 @@
 # Quote Wizard Planning Document
 
 **Status:** PLANNING ONLY  
-**Phase:** Phase 6 (Quote Wizard)  
+**Phase:** Phase 6B (Quote Wizard Planning)  
 **Execution:** NOT AUTHORIZED  
 **Last Updated:** 2025-12-31
+
+---
+
+## NON-NEGOTIABLE CONSTRAINTS
+
+The following constraints are ABSOLUTE and cannot be overridden:
+
+| Constraint | Description |
+|------------|-------------|
+| **Finibus 1:1 Parity** | Public app UI must remain identical to Finibus template |
+| **Darkone 1:1 Parity** | Admin app UI must remain identical to Darkone template |
+| **CSS Isolation** | Public and Admin CSS/SCSS must remain completely separate |
+| **Monorepo Separation** | apps/public and apps/admin must have no cross-imports |
+| **Template Lock** | No new UI patterns, layouts, or button styles may be created |
+| **Component Reuse Only** | Only components documented in Frontend Uniformity Library may be used |
+
+**Any implementation that violates these constraints must be rejected.**
+
+---
+
+## BLOCKERS CHECKLIST
+
+| Blocker | Description | Status | Required For |
+|---------|-------------|--------|--------------|
+| Schema Migration | `quotes` table creation | **NOT AUTHORIZED** | Any wizard implementation |
+| Schema Migration | `quote_items` table creation | **NOT AUTHORIZED** | Quote line item storage |
+| Schema Migration | `leads.quote_id` FK extension | **NOT AUTHORIZED** | Quote-to-lead linking |
+| RLS Policies | Public INSERT on quotes/quote_items | **NOT AUTHORIZED** | Secure data submission |
+| RLS Policies | Admin READ on quotes/quote_items | **NOT AUTHORIZED** | Admin quote viewing |
+| Route Creation | `/quote` or equivalent route | **NOT AUTHORIZED** | Wizard page access |
+
+**Implementation cannot proceed until ALL blockers are explicitly authorized.**
 
 ---
 
@@ -12,6 +44,106 @@
 This document defines the planning and requirements for the Quote Wizard feature. It serves as the authoritative reference for implementation when authorized.
 
 **IMPORTANT:** This is a planning document only. No implementation is authorized until explicit approval is received.
+
+---
+
+## Internal Phase Structure
+
+### Phase 6B-1: UX Flow & Page Location Decision
+
+**Status:** DECISION PENDING — NO EXECUTION
+
+**Purpose:** Determine where the wizard lives and how users navigate through it.
+
+**Open Decisions:**
+
+| Decision | Options | Recommendation | Awaiting |
+|----------|---------|----------------|----------|
+| Page Location | A) Dedicated `/quote` page<br>B) Modal overlay<br>C) Embedded section | A) Dedicated page (simpler, SEO-friendly) | Product |
+| Navigation Model | A) Multi-page wizard<br>B) Single-page with sections<br>C) Stepper pattern | C) Stepper pattern (matches Finibus) | UX |
+| Mobile Behavior | A) Same as desktop<br>B) Simplified flow<br>C) Bottom sheet pattern | A) Same as desktop (template parity) | UX |
+
+**UX Flow (Conceptual):**
+
+```
+Entry → Service Selection → Configure Services → Summary → Contact → Confirmation
+         (Step 1)           (Step 2)           (Step 3)  (Step 4)   (Success)
+```
+
+---
+
+### Phase 6B-2: Data & Schema Dependencies
+
+**Status:** PLANNING ONLY — NO SCHEMA CHANGES AUTHORIZED
+
+**Existing Data (Read-Only Access):**
+
+| Table | Fields Used | Wizard Purpose |
+|-------|-------------|----------------|
+| `services` | id, title, short_description, icon_media_id, show_pricing, pricing_*_enabled, status, display_order | Service selection list |
+| `service_pricing_plans` | id, service_id, plan_name, price_amount, currency, billing_period, features, cta_label, status, display_order | Tier options and prices |
+| `media` | id, public_url | Service icons |
+
+**Current State (Verified):**
+- 7 services with `show_pricing = true`
+- 6 pricing plans per service (3 monthly + 3 yearly = 42 total)
+- 3 tiers: Small Business, Professional, Enterprise
+- Features stored as JSONB string array
+
+**New Tables Required (NOT AUTHORIZED):**
+
+```sql
+-- ⚠️ NOT AUTHORIZED — PLANNING REFERENCE ONLY
+
+-- Quote header
+CREATE TABLE public.quotes (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  lead_id UUID REFERENCES public.leads(id),
+  total_amount DECIMAL(10,2) NOT NULL,
+  currency TEXT NOT NULL DEFAULT 'USD',
+  billing_period TEXT NOT NULL, -- 'monthly' or 'yearly'
+  status TEXT NOT NULL DEFAULT 'pending',
+  created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+
+-- Quote line items
+CREATE TABLE public.quote_items (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  quote_id UUID REFERENCES public.quotes(id) ON DELETE CASCADE,
+  service_id UUID REFERENCES public.services(id),
+  plan_id UUID REFERENCES public.service_pricing_plans(id),
+  plan_name TEXT NOT NULL,
+  price_amount DECIMAL(10,2) NOT NULL,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+
+-- Lead extension
+ALTER TABLE public.leads
+ADD COLUMN quote_id UUID REFERENCES public.quotes(id);
+```
+
+---
+
+### Phase 6B-3: Frontend Step Mapping
+
+**Status:** PLANNING ONLY — NO COMPONENT CHANGES
+
+**Step-by-Component Mapping (from Frontend Uniformity Library):**
+
+| Wizard Step | Required UI | Reusable Component | Source | Adaptation |
+|-------------|-------------|-------------------|--------|------------|
+| Page Header | Breadcrumb hero | `Breadcrumb` | `common/Breadcrumb.tsx` | `pageName="Get a Quote"` |
+| Step 1: Service Selection | Selectable service cards | Service card pattern | `Home/ServiceArea.tsx` | Add checkbox state |
+| Step 2: Tier Selection | Pricing cards with radio | `PriceBox` | `ServiceDetails/PriceBox.tsx` | Add radio selection |
+| Step 2: Billing Toggle | Monthly/Yearly tabs | Tab pattern | `ServiceDetails/ServicePrice.tsx` | Extract as utility |
+| Step 3: Summary | Line item list | New layout using existing classes | `.sec-pad`, grid classes | Compose from patterns |
+| Step 4: Contact Form | Form with validation | `ContactForm` pattern | `contact/ContactForm.tsx` | Add company field |
+| Step 4: Honeypot | Hidden spam field | Honeypot pattern | `contact/ContactForm.tsx` | Copy implementation |
+| Navigation Buttons | Primary CTA style | `.cmn-btn a` | CSS pattern | Standard usage |
+| Footer | Footer CTA | `LetsTalkArea` | `common/LetsTalkArea.tsx` | Use as-is |
+
+**No new components may be created. All UI must compose from documented patterns.**
 
 ---
 
@@ -47,110 +179,7 @@ This document defines the planning and requirements for the Quote Wizard feature
 
 ---
 
-## 2. Existing Data Structure Analysis
-
-### Services Table (`services`)
-
-| Field | Type | Wizard Use |
-|-------|------|------------|
-| `id` | UUID | Service reference |
-| `title` | TEXT | Display in selection |
-| `short_description` | TEXT | Display in selection |
-| `icon_media_id` | UUID FK | Display icon in selection |
-| `show_pricing` | BOOLEAN | Filter services with pricing |
-| `pricing_monthly_enabled` | BOOLEAN | Toggle monthly tab |
-| `pricing_yearly_enabled` | BOOLEAN | Toggle yearly tab |
-| `status` | TEXT | Filter published only |
-| `display_order` | INT | Sort order |
-
-### Pricing Plans Table (`service_pricing_plans`)
-
-| Field | Type | Wizard Use |
-|-------|------|------------|
-| `id` | UUID | Plan reference |
-| `service_id` | UUID FK | Link to service |
-| `plan_name` | TEXT | Tier label (Small Business, Professional, Enterprise) |
-| `plan_subtitle` | TEXT | Optional subtitle |
-| `price_amount` | DECIMAL | Price for calculation |
-| `currency` | TEXT | Currency symbol |
-| `billing_period` | TEXT | monthly / yearly |
-| `features` | JSONB | Feature list array |
-| `cta_label` | TEXT | Button text |
-| `status` | TEXT | Filter active only |
-| `display_order` | INT | Sort order |
-
-### Current State (Verified)
-
-- **7 services** with `show_pricing = true`
-- **6 pricing plans per service** (3 monthly + 3 yearly = 42 total plans)
-- **3 tiers:** Small Business, Professional, Enterprise
-- **Features stored as JSONB array** (string[])
-
-### Existing Leads Table (`leads`)
-
-| Field | Type | Wizard Use |
-|-------|------|------------|
-| `id` | UUID | Lead reference |
-| `name` | TEXT | Required |
-| `email` | TEXT | Required |
-| `subject` | TEXT | Optional (wizard-generated) |
-| `message` | TEXT | Optional |
-| `source` | TEXT | `'quote_wizard'` |
-| `status` | TEXT | Default: 'new' |
-| `notes` | TEXT | Internal admin notes |
-
----
-
-## 3. Required Backend Data
-
-### New Tables Required (NOT AUTHORIZED)
-
-**⚠️ SCHEMA CHANGES ARE NOT AUTHORIZED IN THIS PHASE**
-
-The following tables are required for implementation but will require explicit schema migration authorization:
-
-#### `quotes` Table (Proposed)
-
-```sql
--- NOT AUTHORIZED — FOR PLANNING ONLY
-CREATE TABLE public.quotes (
-  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  lead_id UUID REFERENCES public.leads(id),
-  total_amount DECIMAL(10,2) NOT NULL,
-  currency TEXT NOT NULL DEFAULT 'USD',
-  billing_period TEXT NOT NULL, -- 'monthly' or 'yearly'
-  status TEXT NOT NULL DEFAULT 'pending',
-  created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
-  updated_at TIMESTAMPTZ NOT NULL DEFAULT now()
-);
-```
-
-#### `quote_items` Table (Proposed)
-
-```sql
--- NOT AUTHORIZED — FOR PLANNING ONLY
-CREATE TABLE public.quote_items (
-  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  quote_id UUID REFERENCES public.quotes(id) ON DELETE CASCADE,
-  service_id UUID REFERENCES public.services(id),
-  plan_id UUID REFERENCES public.service_pricing_plans(id),
-  plan_name TEXT NOT NULL,
-  price_amount DECIMAL(10,2) NOT NULL,
-  created_at TIMESTAMPTZ NOT NULL DEFAULT now()
-);
-```
-
-#### Leads Table Extension (Proposed)
-
-```sql
--- NOT AUTHORIZED — FOR PLANNING ONLY
-ALTER TABLE public.leads
-ADD COLUMN quote_id UUID REFERENCES public.quotes(id);
-```
-
----
-
-## 4. Conceptual UX Flow
+## 2. Conceptual UX Flow
 
 ### Step 1: Service Selection
 
@@ -303,27 +332,7 @@ ADD COLUMN quote_id UUID REFERENCES public.quotes(id);
 
 ---
 
-## 5. Reused UI Components
-
-Based on Frontend Uniformity Library:
-
-| Wizard Section | Reused Component | Source File | Adaptation |
-|----------------|------------------|-------------|------------|
-| Page header | `Breadcrumb` | `common/Breadcrumb.tsx` | `pageName="Get a Quote"` |
-| Section titles | `.title` pattern | CSS class | Standard usage |
-| Service cards | Service card pattern | `Home/ServiceArea.tsx` | Add selection state |
-| Tier cards | `PriceBox` | `ServiceDetails/PriceBox.tsx` | Add radio selection |
-| Billing toggle | Tab pattern | `ServiceDetails/ServicePrice.tsx` | Extract toggle |
-| Form fields | Form pattern | `contact/ContactForm.tsx` | Extend with company |
-| Honeypot | Honeypot pattern | `contact/ContactForm.tsx` | Copy implementation |
-| Submit button | `.cmn-btn` | CSS class | Standard usage |
-| Footer CTA | `LetsTalkArea` | `common/LetsTalkArea.tsx` | Use as-is |
-| Grid layout | Bootstrap grid | CSS classes | 3-column for cards |
-| Section spacing | `.sec-pad`, `.sec-mar` | CSS classes | Standard usage |
-
----
-
-## 6. Open Questions & Decision Points
+## 3. Open Questions & Decision Points
 
 | # | Question | Options | Awaiting Decision From |
 |---|----------|---------|------------------------|
@@ -336,7 +345,7 @@ Based on Frontend Uniformity Library:
 
 ---
 
-## 7. Dependencies
+## 4. Dependencies
 
 ### Hard Blockers (Cannot Implement Without)
 
@@ -356,18 +365,18 @@ Based on Frontend Uniformity Library:
 
 ---
 
-## 8. Proposed Implementation Phases
+## 5. Proposed Implementation Phases
 
 **Note:** These phases are NOT authorized. They represent a suggested implementation sequence.
 
-### Phase 6A: Schema + Data Model (Requires Migration Authorization)
+### Phase 6C: Schema + Data Model (Requires Migration Authorization)
 
 - Create `quotes` table with RLS
 - Create `quote_items` table with RLS
 - Extend `leads` table with `quote_id` FK
 - Test policies
 
-### Phase 6B: Frontend Wizard (Steps 1-3)
+### Phase 6D: Frontend Wizard (Steps 1-3)
 
 - Create wizard page/route
 - Implement service selection UI
@@ -375,14 +384,14 @@ Based on Frontend Uniformity Library:
 - Implement billing toggle
 - Implement summary calculation
 
-### Phase 6C: Quote Submission (Step 4)
+### Phase 6E: Quote Submission (Step 4)
 
 - Implement contact form
 - Wire quote + lead creation
 - Implement confirmation UI
 - Add honeypot protection
 
-### Phase 6D: Admin Quote View (Soft Dependency)
+### Phase 6F: Admin Quote View (Soft Dependency)
 
 - Add quotes list to CRM module
 - Implement quote detail view
@@ -391,7 +400,7 @@ Based on Frontend Uniformity Library:
 
 ---
 
-## 9. Risk Assessment
+## 6. Risk Assessment
 
 | Risk | Impact | Mitigation |
 |------|--------|------------|
@@ -403,7 +412,7 @@ Based on Frontend Uniformity Library:
 
 ---
 
-## 10. Acceptance Criteria (For Future Implementation)
+## 7. Acceptance Criteria (For Future Implementation)
 
 When implementation is authorized, the following criteria must be met:
 
@@ -415,11 +424,11 @@ When implementation is authorized, the following criteria must be met:
 6. **Spam Prevention:** Honeypot field prevents automated submissions
 7. **Confirmation:** User sees success message with quote reference
 8. **Template Parity:** Uses only existing Finibus UI patterns
-9. **Admin Visibility:** Quotes visible in admin (Phase 6D)
+9. **Admin Visibility:** Quotes visible in admin (Phase 6F)
 
 ---
 
-## 11. Guardian Rules Compliance
+## 8. Guardian Rules Compliance
 
 | Rule | Status |
 |------|--------|
@@ -435,8 +444,9 @@ When implementation is authorized, the following criteria must be met:
 
 ## Document Status
 
-- **Status:** Draft
-- **Phase:** Planning Only
-- **Execution:** Not Authorized
+- **Status:** REFINED
+- **Phase:** Phase 6B Complete
+- **Execution:** NOT AUTHORIZED
 - **Hard Blocker:** Schema migration required
-- **Next Step:** Await implementation authorization
+- **Decisions Pending:** 6 open questions require Product/Architecture input
+- **Next Step:** Await schema authorization and product decisions
