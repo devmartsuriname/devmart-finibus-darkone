@@ -67,17 +67,45 @@ This document defines the authoritative SEO fallback hierarchy for the Devmart p
 ### Canonical URL
 | Attribute | Value |
 |-----------|-------|
-| Format | Full absolute URL |
-| DB Column | `canonical_url` (blog_posts) |
+| Format | Full absolute URL (required) |
+| Production Domain | `https://devmart.sr` |
+| DB Column | `canonical_url` (all content tables) |
 | Fallback | Auto-generated from content URL path |
-| Use Case | Cross-posting, syndication |
+| Use Case | SEO, cross-posting, syndication |
+
+#### Canonical URL Path Patterns
+
+| Module | Pattern | Example |
+|--------|---------|---------|
+| Services | `/service-details/{slug}` | `https://devmart.sr/service-details/web-design` |
+| Projects | `/project-details/{slug}` | `https://devmart.sr/project-details/national-digital-services-portal` |
+| Blog | `/blog/{slug}` | `https://devmart.sr/blog/building-scalable-web-applications-2025` |
+| Pages | `/{slug}` | `https://devmart.sr/about` |
+
+#### Canonical URL Behavior
+
+- Canonical URLs are **stored** in the database per-record
+- Canonical URLs are rendered in `<link rel="canonical">` meta tags (Phase 5 public wiring)
+- **No server-side redirects** are implemented for canonical URLs
+- **No URL enforcement** at application layer — canonical is advisory for search engines
+
+#### Domain Status (Phase 4D)
+
+| Setting | Value |
+|---------|-------|
+| Current canonical URLs | `https://devmart.co/...` |
+| Production domain | `https://devmart.sr` |
+| Status | MISMATCH (intentional, deferred) |
+| Resolution | Phase 4D URL Normalization (planning complete, execution pending) |
+
+See: `docs/phase-4/Phase_4D_URL_Normalization_Plan.md`
 
 ### Noindex
 | Attribute | Value |
 |-----------|-------|
 | Type | Boolean |
 | Default | `false` |
-| DB Column | `noindex` (blog_posts) |
+| DB Column | `noindex` (all content tables) |
 | Effect | Prevents search engine indexing when `true` |
 
 ---
