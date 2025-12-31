@@ -1,8 +1,77 @@
 # Architecture Documentation
 
 **Status:** ✅ PHASE 12 COMPLETE — FRONTEND FROZEN  
-**Phase:** Phase 12 CLOSED | Phase 4D ✅ CLOSED | Phase 5 SEO ✅ EXECUTED  
+**Phase:** Phase 5 SEO ✅ CLOSED | Phase 6 Quote Wizard 📋 PLANNING ONLY  
 **Last Updated:** 2025-12-31
+
+---
+
+## Phase 6 — Quote Wizard (PLANNING ONLY)
+
+**Status:** 📋 **PLANNING COMPLETE** — Implementation NOT Authorized
+
+### Overview
+
+The Quote Wizard feature enables users to select multiple services, choose pricing tiers, and submit quote requests that are stored in the database and linked to leads.
+
+### Planning Documents
+
+| Document | Path | Description |
+|----------|------|-------------|
+| Frontend Uniformity Library | `docs/frontend/Frontend_Uniformity_Library.md` | Maps all reusable public UI components |
+| Quote Wizard Planning | `docs/phase-wizard/Quote_Wizard_Planning.md` | Full planning document with UX flow, data model, decisions |
+
+### Proposed Data Model (NOT AUTHORIZED)
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│                  Quote Wizard Data Flow                      │
+├─────────────────────────────────────────────────────────────┤
+│  User Selection                                              │
+│    └── services[] (selected from UI)                         │
+│    └── plans[] (one per selected service)                    │
+│    └── billing_period (monthly/yearly)                       │
+│                                                              │
+│  Database Tables (PROPOSED — NOT AUTHORIZED)                 │
+│    └── quotes (id, lead_id, total, billing_period, status)   │
+│    └── quote_items (quote_id, service_id, plan_id, price)    │
+│    └── leads.quote_id (FK extension)                         │
+│                                                              │
+│  Flow: User → Wizard → Lead + Quote + Items                  │
+└─────────────────────────────────────────────────────────────┘
+```
+
+### Reusable Components (From Uniformity Library)
+
+- `Breadcrumb` — Page header
+- `PriceBox` — Tier selection cards
+- `ServicePrice` — Billing toggle pattern
+- `ContactForm` — Form validation and honeypot patterns
+- `LetsTalkArea` — Footer CTA
+- Bootstrap grid patterns (3-column)
+- `.cmn-btn`, `.sec-pad` CSS patterns
+
+### Hard Blockers
+
+| Blocker | Description | Status |
+|---------|-------------|--------|
+| Schema migration | `quotes` and `quote_items` tables required | NOT AUTHORIZED |
+
+### Soft Dependencies (Deferred)
+
+- Admin quote management (Dashboard phase)
+- Quote analytics (Analytics phase)
+- Email notifications
+- PDF generation
+
+### Guardian Rules Compliance
+
+All planning work complies with project rules:
+- No code changes
+- No schema changes
+- No UI modifications
+- No new components
+- Template parity maintained
 
 ---
 
