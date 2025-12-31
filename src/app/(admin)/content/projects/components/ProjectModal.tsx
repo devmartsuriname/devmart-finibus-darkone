@@ -12,6 +12,7 @@ import { Modal, Button, Form, Spinner, Row, Col, Tabs, Tab } from 'react-bootstr
 import { Project, ProjectInput, PROJECT_CATEGORIES, generateSlug, isValidSlug, useProjects, ProjectProcessStepInput } from '../hooks/useProjects'
 import MediaPicker from '@/app/(admin)/settings/components/MediaPicker'
 import ProjectProcessStepsEditor from './ProjectProcessStepsEditor'
+import ProjectSeoTab from './ProjectSeoTab'
 
 interface ProjectModalProps {
   show: boolean
@@ -46,6 +47,13 @@ const ProjectModal = ({ show, onClose, onSave, onUpdate, project }: ProjectModal
   const [checkLaunchContent, setCheckLaunchContent] = useState('')
   const [checkLaunchImageId, setCheckLaunchImageId] = useState<string>('')
 
+  // SEO fields (Phase 4C)
+  const [metaTitle, setMetaTitle] = useState('')
+  const [metaDescription, setMetaDescription] = useState('')
+  const [ogImageMediaId, setOgImageMediaId] = useState<string>('')
+  const [canonicalUrl, setCanonicalUrl] = useState('')
+  const [noindex, setNoindex] = useState(false)
+
   // Process Steps
   const [processSteps, setProcessSteps] = useState<ProjectProcessStepInput[]>([])
 
@@ -77,6 +85,12 @@ const ProjectModal = ({ show, onClose, onSave, onUpdate, project }: ProjectModal
         setEndDate(project.end_date || '')
         setCheckLaunchContent(project.check_launch_content || '')
         setCheckLaunchImageId(project.check_launch_image_media_id || '')
+        // SEO fields (Phase 4C)
+        setMetaTitle(project.meta_title || '')
+        setMetaDescription(project.meta_description || '')
+        setOgImageMediaId(project.og_image_media_id || '')
+        setCanonicalUrl(project.canonical_url || '')
+        setNoindex(project.noindex || false)
         // Load process steps
         loadProcessSteps(project.id)
       } else {
@@ -122,6 +136,12 @@ const ProjectModal = ({ show, onClose, onSave, onUpdate, project }: ProjectModal
     setEndDate('')
     setCheckLaunchContent('')
     setCheckLaunchImageId('')
+    // SEO fields (Phase 4C)
+    setMetaTitle('')
+    setMetaDescription('')
+    setOgImageMediaId('')
+    setCanonicalUrl('')
+    setNoindex(false)
     setProcessSteps([])
     setErrors({})
   }, [])
@@ -168,6 +188,15 @@ const ProjectModal = ({ show, onClose, onSave, onUpdate, project }: ProjectModal
       newErrors.displayOrder = 'Display order must be a number'
     }
 
+    // Canonical URL validation (Phase 4C)
+    if (canonicalUrl.trim()) {
+      try {
+        new URL(canonicalUrl.trim())
+      } catch {
+        newErrors.canonicalUrl = 'Please enter a valid URL'
+      }
+    }
+
     setErrors(newErrors)
     return Object.keys(newErrors).length === 0
   }
@@ -194,6 +223,12 @@ const ProjectModal = ({ show, onClose, onSave, onUpdate, project }: ProjectModal
       end_date: endDate || null,
       check_launch_content: checkLaunchContent.trim() || null,
       check_launch_image_media_id: checkLaunchImageId || null,
+      // SEO fields (Phase 4C)
+      meta_title: metaTitle.trim() || null,
+      meta_description: metaDescription.trim() || null,
+      og_image_media_id: ogImageMediaId || null,
+      canonical_url: canonicalUrl.trim() || null,
+      noindex,
     }
 
     let success = false
@@ -475,6 +510,24 @@ const ProjectModal = ({ show, onClose, onSave, onUpdate, project }: ProjectModal
                 disabled={isSaving}
               />
             )}
+          </Tab>
+
+          <Tab eventKey="seo" title="SEO">
+            <ProjectSeoTab
+              projectTitle={title}
+              metaTitle={metaTitle}
+              metaDescription={metaDescription}
+              ogImageMediaId={ogImageMediaId}
+              canonicalUrl={canonicalUrl}
+              noindex={noindex}
+              disabled={isSaving}
+              errors={errors}
+              onMetaTitleChange={setMetaTitle}
+              onMetaDescriptionChange={setMetaDescription}
+              onOgImageMediaIdChange={setOgImageMediaId}
+              onCanonicalUrlChange={setCanonicalUrl}
+              onNoindexChange={setNoindex}
+            />
           </Tab>
         </Tabs>
       </Modal.Body>

@@ -477,6 +477,7 @@ export type Database = {
       }
       projects: {
         Row: {
+          canonical_url: string | null
           category: string
           check_launch_content: string | null
           check_launch_image_media_id: string | null
@@ -490,6 +491,10 @@ export type Database = {
           id: string
           image_media_id: string | null
           is_featured: boolean
+          meta_description: string | null
+          meta_title: string | null
+          noindex: boolean | null
+          og_image_media_id: string | null
           slug: string
           start_date: string | null
           status: string
@@ -498,6 +503,7 @@ export type Database = {
           website: string | null
         }
         Insert: {
+          canonical_url?: string | null
           category: string
           check_launch_content?: string | null
           check_launch_image_media_id?: string | null
@@ -511,6 +517,10 @@ export type Database = {
           id?: string
           image_media_id?: string | null
           is_featured?: boolean
+          meta_description?: string | null
+          meta_title?: string | null
+          noindex?: boolean | null
+          og_image_media_id?: string | null
           slug: string
           start_date?: string | null
           status?: string
@@ -519,6 +529,7 @@ export type Database = {
           website?: string | null
         }
         Update: {
+          canonical_url?: string | null
           category?: string
           check_launch_content?: string | null
           check_launch_image_media_id?: string | null
@@ -532,6 +543,10 @@ export type Database = {
           id?: string
           image_media_id?: string | null
           is_featured?: boolean
+          meta_description?: string | null
+          meta_title?: string | null
+          noindex?: boolean | null
+          og_image_media_id?: string | null
           slug?: string
           start_date?: string | null
           status?: string
@@ -557,6 +572,13 @@ export type Database = {
           {
             foreignKeyName: "projects_image_media_id_fkey"
             columns: ["image_media_id"]
+            isOneToOne: false
+            referencedRelation: "media"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "projects_og_image_media_id_fkey"
+            columns: ["og_image_media_id"]
             isOneToOne: false
             referencedRelation: "media"
             referencedColumns: ["id"]

@@ -79,6 +79,12 @@ export interface Project {
   featured_image_media_id: string | null;
   image?: Media | null;
   featured_image?: Media | null;
+  // SEO fields (Phase 4C)
+  meta_title?: string | null;
+  meta_description?: string | null;
+  og_image_media_id?: string | null;
+  canonical_url?: string | null;
+  noindex?: boolean;
 }
 
 // Blog
