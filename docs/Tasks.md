@@ -34,10 +34,17 @@
 
 - `apps/public/src/hooks/useGlobalSeoSettings.ts`
 - `apps/public/src/components/pages/blogDetails/BlogDetailsSeo.tsx`
+- `apps/public/src/lib/seo/resolveSeoFallbacks.ts` (Phase 3 stability fix)
 
 ### Files Modified
 
 - `apps/public/src/components/pages/blogDetails/BlogDetailsPage.tsx`
+
+### Stability Fix (2025-12-31)
+
+**Issue:** Cross-app import bug — `BlogDetailsSeo.tsx` imported from admin app path.  
+**Fix:** Copied `resolveSeoFallbacks.ts` to public app and updated import path.  
+**Restore Point:** `docs/restore-points/Restore_Point_Phase_3_CrossApp_Fix.md`
 
 ### Restore Point
 
