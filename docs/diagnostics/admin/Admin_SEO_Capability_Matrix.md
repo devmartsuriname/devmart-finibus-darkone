@@ -8,9 +8,9 @@
 ## Module SEO Field Support
 
 | Module | meta_title | meta_description | og_image | canonical | noindex | Status |
-|--------|:----------:|:----------------:|:--------:|:---------:|:-------:|--------|
-| Pages | ✅ | ✅ | ❌ | ❌ | ❌ | Partial |
-| **Blog** | ✅ | ✅ | ✅ | ✅ | ✅ | **COMPLETE** |
+|--------|------------|------------------|----------|-----------|---------|--------|
+| Pages | ✅ | ✅ | ✅ | ✅ | ✅ | **COMPLETE** |
+| Blog | ✅ | ✅ | ✅ | ✅ | ✅ | COMPLETE |
 | Services | ❌ | ❌ | ❌ | ❌ | ❌ | Missing |
 | Projects | ❌ | ❌ | ❌ | ❌ | ❌ | Missing |
 

@@ -143,6 +143,8 @@ export interface HomepageData {
     meta_title?: string
     meta_description?: string
     og_image_media_id?: string
+    canonical_url?: string
+    noindex?: boolean
   }
 }
 

@@ -1,15 +1,36 @@
 import { useState, useEffect } from 'react'
 import { Form, Button, Spinner, Row, Col, Alert } from 'react-bootstrap'
 import MediaPicker from '@/app/(admin)/settings/components/MediaPicker'
-import type { HomepageData } from '../hooks/useHomepageBlocks'
 
-interface HomepageSeoTabProps {
-  data: HomepageData | null
-  loading: boolean
-  onSave: (seoData: HomepageData['seo']) => Promise<boolean>
+interface PageSeoData {
+  meta_title: string
+  meta_description: string
+  og_image_media_id: string
+  canonical_url: string
+  noindex: boolean
 }
 
-const HomepageSeoTab = ({ data, loading, onSave }: HomepageSeoTabProps) => {
+interface PageSeoTabProps {
+  pageTitle: string
+  metaTitle: string
+  metaDescription: string
+  ogImageMediaId: string
+  canonicalUrl: string
+  noindex: boolean
+  loading: boolean
+  onSave: (data: PageSeoData) => Promise<void>
+}
+
+const PageSeoTab = ({
+  pageTitle,
+  metaTitle: initialMetaTitle,
+  metaDescription: initialMetaDescription,
+  ogImageMediaId: initialOgImageMediaId,
+  canonicalUrl: initialCanonicalUrl,
+  noindex: initialNoindex,
+  loading,
+  onSave
+}: PageSeoTabProps) => {
   const [metaTitle, setMetaTitle] = useState('')
   const [metaDescription, setMetaDescription] = useState('')
   const [ogImageMediaId, setOgImageMediaId] = useState('')
@@ -20,16 +41,14 @@ const HomepageSeoTab = ({ data, loading, onSave }: HomepageSeoTabProps) => {
   const [errors, setErrors] = useState<Record<string, string>>({})
 
   useEffect(() => {
-    if (data?.seo) {
-      setMetaTitle(data.seo.meta_title || '')
-      setMetaDescription(data.seo.meta_description || '')
-      setOgImageMediaId(data.seo.og_image_media_id || '')
-      setCanonicalUrl(data.seo.canonical_url || '')
-      setNoindex(data.seo.noindex || false)
-    }
+    setMetaTitle(initialMetaTitle || '')
+    setMetaDescription(initialMetaDescription || '')
+    setOgImageMediaId(initialOgImageMediaId || '')
+    setCanonicalUrl(initialCanonicalUrl || '')
+    setNoindex(initialNoindex || false)
     setHasChanges(false)
     setErrors({})
-  }, [data])
+  }, [initialMetaTitle, initialMetaDescription, initialOgImageMediaId, initialCanonicalUrl, initialNoindex])
 
   const handleFieldChange = <T,>(setter: (value: T) => void) => (value: T) => {
     setter(value)
@@ -63,17 +82,18 @@ const HomepageSeoTab = ({ data, loading, onSave }: HomepageSeoTabProps) => {
     if (!validate()) return
     
     setIsSaving(true)
-    const success = await onSave({
-      meta_title: metaTitle || undefined,
-      meta_description: metaDescription || undefined,
-      og_image_media_id: ogImageMediaId || undefined,
-      canonical_url: canonicalUrl || undefined,
-      noindex: noindex || undefined
-    })
-    if (success) {
+    try {
+      await onSave({
+        meta_title: metaTitle.trim(),
+        meta_description: metaDescription.trim(),
+        og_image_media_id: ogImageMediaId,
+        canonical_url: canonicalUrl.trim(),
+        noindex
+      })
       setHasChanges(false)
+    } finally {
+      setIsSaving(false)
     }
-    setIsSaving(false)
   }
 
   const getCharacterCountClass = (current: number, max: number): string => {
@@ -89,7 +109,7 @@ const HomepageSeoTab = ({ data, loading, onSave }: HomepageSeoTabProps) => {
         <strong>SEO Fallback Order</strong>
         <p className="mb-0 small mt-1">
           If these fields are empty, SEO values will fall back to:<br />
-          1. Homepage Title<br />
+          1. Page Title ("{pageTitle}")<br />
           2. Global SEO Settings
         </p>
       </Alert>
@@ -102,7 +122,7 @@ const HomepageSeoTab = ({ data, loading, onSave }: HomepageSeoTabProps) => {
             type="text"
             value={metaTitle}
             onChange={(e) => handleFieldChange(setMetaTitle)(e.target.value)}
-            placeholder="Devmart | Professional Software Development"
+            placeholder={pageTitle || 'Page title will be used'}
             maxLength={70}
             isInvalid={!!errors.metaTitle}
             disabled={isSaving || loading}
@@ -123,7 +143,7 @@ const HomepageSeoTab = ({ data, loading, onSave }: HomepageSeoTabProps) => {
             rows={3}
             value={metaDescription}
             onChange={(e) => handleFieldChange(setMetaDescription)(e.target.value)}
-            placeholder="Devmart provides innovative software solutions..."
+            placeholder="Enter a compelling description for search engines..."
             maxLength={160}
             isInvalid={!!errors.metaDescription}
             disabled={isSaving || loading}
@@ -155,7 +175,7 @@ const HomepageSeoTab = ({ data, loading, onSave }: HomepageSeoTabProps) => {
             type="url"
             value={canonicalUrl}
             onChange={(e) => handleFieldChange(setCanonicalUrl)(e.target.value)}
-            placeholder="https://example.com/"
+            placeholder="https://example.com/page"
             isInvalid={!!errors.canonicalUrl}
             disabled={isSaving || loading}
           />
@@ -163,7 +183,7 @@ const HomepageSeoTab = ({ data, loading, onSave }: HomepageSeoTabProps) => {
             <Form.Text className="text-danger">{errors.canonicalUrl}</Form.Text>
           )}
           <Form.Text className="text-muted">
-            Optional. Use to specify the preferred URL for the homepage.
+            Optional. Use to specify the preferred URL if this page has duplicate content.
           </Form.Text>
         </Form.Group>
 
@@ -171,7 +191,7 @@ const HomepageSeoTab = ({ data, loading, onSave }: HomepageSeoTabProps) => {
         <Form.Group className="mb-3">
           <Form.Check
             type="switch"
-            id="homepage-noindex-switch"
+            id="noindex-switch"
             label="Exclude from search engines (noindex)"
             checked={noindex}
             onChange={(e) => handleFieldChange(setNoindex)(e.target.checked)}
@@ -183,9 +203,9 @@ const HomepageSeoTab = ({ data, loading, onSave }: HomepageSeoTabProps) => {
         </Form.Group>
 
         <div className="mt-4 pt-3 border-top">
-          <Button 
-            variant="primary" 
-            onClick={handleSave} 
+          <Button
+            variant="primary"
+            onClick={handleSave}
             disabled={isSaving || loading || !hasChanges}
           >
             {isSaving ? (
@@ -208,4 +228,4 @@ const HomepageSeoTab = ({ data, loading, onSave }: HomepageSeoTabProps) => {
   )
 }
 
-export default HomepageSeoTab
+export default PageSeoTab

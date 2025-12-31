@@ -379,36 +379,53 @@ export type Database = {
       }
       pages: {
         Row: {
+          canonical_url: string | null
           created_at: string
           id: string
           is_published: boolean
           meta_description: string | null
           meta_title: string | null
+          noindex: boolean | null
+          og_image_media_id: string | null
           slug: string
           title: string
           updated_at: string
         }
         Insert: {
+          canonical_url?: string | null
           created_at?: string
           id?: string
           is_published?: boolean
           meta_description?: string | null
           meta_title?: string | null
+          noindex?: boolean | null
+          og_image_media_id?: string | null
           slug: string
           title: string
           updated_at?: string
         }
         Update: {
+          canonical_url?: string | null
           created_at?: string
           id?: string
           is_published?: boolean
           meta_description?: string | null
           meta_title?: string | null
+          noindex?: boolean | null
+          og_image_media_id?: string | null
           slug?: string
           title?: string
           updated_at?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "pages_og_image_media_id_fkey"
+            columns: ["og_image_media_id"]
+            isOneToOne: false
+            referencedRelation: "media"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       project_process_steps: {
         Row: {
