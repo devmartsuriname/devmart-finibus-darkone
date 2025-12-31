@@ -3,8 +3,69 @@
 # Backend Documentation
 
 **Status:** ✅ PHASE 12 COMPLETE — FRONTEND FROZEN  
-**Phase:** Phase 12 CLOSED  
-**Last Updated:** 2025-12-30
+**Phase:** Phase 12 CLOSED | Admin Blog Enhancement Phase 1 COMPLETE  
+**Last Updated:** 2025-12-31
+
+---
+
+## Admin Blog Enhancement — Phase 1: Schema Enhancements (2025-12-31)
+
+**Status:** ✅ **COMPLETE**
+
+### Objective
+Add SEO and taxonomy fields to `blog_posts` table with dual-storage content model.
+
+### Database Changes (ADDITIVE ONLY)
+
+| Column | Type | Default | Constraint | Purpose |
+|--------|------|---------|------------|---------|
+| content_blocks | JSONB | '[]' | — | Structured blocks for admin editor |
+| tags | TEXT[] | '{}' | GIN indexed | Taxonomy tags array |
+| meta_title | TEXT | NULL | max 70 chars | SEO title override |
+| meta_description | TEXT | NULL | max 160 chars | SEO description |
+| og_image_media_id | UUID | NULL | FK to media | OG image override |
+| canonical_url | TEXT | NULL | — | Canonical URL |
+| noindex | BOOLEAN | FALSE | — | Search engine indexing |
+
+### Indexes Added
+- `idx_blog_posts_tags` — GIN index on tags array
+- `idx_blog_posts_category` — B-tree index on category
+
+### Check Constraints
+- `blog_posts_meta_title_length` — max 70 characters
+- `blog_posts_meta_description_length` — max 160 characters
+
+### Dual-Storage Content Model
+```
+┌─────────────────────────────────────────────────────────────┐
+│                  Content Storage Architecture                │
+├─────────────────────────────────────────────────────────────┤
+│  blog_posts.content (TEXT)                                   │
+│    └── HTML string for public rendering (UNCHANGED)         │
+│                                                              │
+│  blog_posts.content_blocks (JSONB)                           │
+│    └── Structured blocks for admin authoring (NEW)          │
+│                                                              │
+│  Compile Flow:                                               │
+│    Admin Editor → content_blocks → [Compile] → content       │
+└─────────────────────────────────────────────────────────────┘
+```
+
+### SEO Fallback Order
+1. Blog post SEO fields (meta_title, meta_description, etc.)
+2. Blog static page SEO (page_settings for /blog route)
+3. Global SEO settings (settings table)
+
+### Files Updated
+- `docs/restore-points/Restore_Point_Phase1_Blog_Schema.md`
+- `docs/Backend.md` (this file)
+- `docs/Architecture.md`
+
+### Verification
+- ✅ Migration applied successfully
+- ✅ Existing blog posts load without errors
+- ✅ Public frontend unchanged
+- ✅ No console errors
 
 ---
 

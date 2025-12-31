@@ -3,8 +3,74 @@
 # Architecture Documentation
 
 **Status:** ✅ PHASE 12 COMPLETE — FRONTEND FROZEN  
-**Phase:** Phase 12 CLOSED  
-**Last Updated:** 2025-12-30
+**Phase:** Phase 12 CLOSED | Admin Blog Enhancement Phase 1 COMPLETE  
+**Last Updated:** 2025-12-31
+
+---
+
+## Admin Blog Enhancement — Phase 1: Schema Enhancements (2025-12-31)
+
+**Status:** ✅ **COMPLETE**
+
+### Dual-Storage Content Model
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│                  Blog Content Architecture                   │
+├─────────────────────────────────────────────────────────────┤
+│  AUTHORING (Admin)                                           │
+│    └── content_blocks (JSONB)                                │
+│         └── Structured block array                           │
+│         └── Edited via structured UI (Phase 2)               │
+│                                                              │
+│  RENDERING (Public)                                          │
+│    └── content (TEXT)                                        │
+│         └── HTML string                                      │
+│         └── Rendered via dangerouslySetInnerHTML             │
+│         └── UNCHANGED (frontend frozen)                      │
+│                                                              │
+│  COMPILE (On Save)                                           │
+│    └── content_blocks → [compileBlocksToHtml] → content      │
+└─────────────────────────────────────────────────────────────┘
+```
+
+### SEO Governance Model
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│                  SEO Field Fallback Order                    │
+├─────────────────────────────────────────────────────────────┤
+│  Priority 1: Blog Post SEO Fields                            │
+│    └── meta_title, meta_description, og_image_media_id,      │
+│        canonical_url, noindex                                │
+│                                                              │
+│  Priority 2: Blog Static Page SEO                            │
+│    └── page_settings where page_slug = 'blog'                │
+│                                                              │
+│  Priority 3: Global SEO Settings                             │
+│    └── settings table (seo category)                         │
+└─────────────────────────────────────────────────────────────┘
+```
+
+### New Database Columns (blog_posts)
+
+| Column | Type | Purpose |
+|--------|------|---------|
+| content_blocks | JSONB | Structured authoring data |
+| tags | TEXT[] | Taxonomy tags array |
+| meta_title | TEXT | SEO title (max 70) |
+| meta_description | TEXT | SEO description (max 160) |
+| og_image_media_id | UUID | OG image FK |
+| canonical_url | TEXT | Canonical URL |
+| noindex | BOOLEAN | Search indexing control |
+
+### Constraints Applied
+- `blog_posts_meta_title_length` — max 70 chars
+- `blog_posts_meta_description_length` — max 160 chars
+
+### Indexes Added
+- GIN index on `tags` for array operations
+- B-tree index on `category` for filtering
 
 ---
 

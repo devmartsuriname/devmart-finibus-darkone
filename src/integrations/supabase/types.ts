@@ -85,43 +85,64 @@ export type Database = {
       blog_posts: {
         Row: {
           author_id: string
+          canonical_url: string | null
           category: string | null
           content: string
+          content_blocks: Json | null
           created_at: string
           excerpt: string | null
           featured_image_media_id: string | null
           id: string
+          meta_description: string | null
+          meta_title: string | null
+          noindex: boolean | null
+          og_image_media_id: string | null
           published_at: string | null
           slug: string
           status: string
+          tags: string[] | null
           title: string
           updated_at: string
         }
         Insert: {
           author_id: string
+          canonical_url?: string | null
           category?: string | null
           content: string
+          content_blocks?: Json | null
           created_at?: string
           excerpt?: string | null
           featured_image_media_id?: string | null
           id?: string
+          meta_description?: string | null
+          meta_title?: string | null
+          noindex?: boolean | null
+          og_image_media_id?: string | null
           published_at?: string | null
           slug: string
           status?: string
+          tags?: string[] | null
           title: string
           updated_at?: string
         }
         Update: {
           author_id?: string
+          canonical_url?: string | null
           category?: string | null
           content?: string
+          content_blocks?: Json | null
           created_at?: string
           excerpt?: string | null
           featured_image_media_id?: string | null
           id?: string
+          meta_description?: string | null
+          meta_title?: string | null
+          noindex?: boolean | null
+          og_image_media_id?: string | null
           published_at?: string | null
           slug?: string
           status?: string
+          tags?: string[] | null
           title?: string
           updated_at?: string
         }
@@ -129,6 +150,13 @@ export type Database = {
           {
             foreignKeyName: "blog_posts_featured_image_media_id_fkey"
             columns: ["featured_image_media_id"]
+            isOneToOne: false
+            referencedRelation: "media"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "blog_posts_og_image_media_id_fkey"
+            columns: ["og_image_media_id"]
             isOneToOne: false
             referencedRelation: "media"
             referencedColumns: ["id"]
