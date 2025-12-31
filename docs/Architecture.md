@@ -3,8 +3,41 @@
 # Architecture Documentation
 
 **Status:** ✅ PHASE 12 COMPLETE — FRONTEND FROZEN  
-**Phase:** Phase 12 CLOSED | Admin Blog Enhancement Phase 3 CLOSED  
+**Phase:** Phase 12 CLOSED | Phase 4C CLOSED | Phase 4D Pending  
 **Last Updated:** 2025-12-31
+
+---
+
+## Phase 4C — Projects SEO Expansion (2025-12-31)
+
+**Status:** ✅ **CLOSED**
+
+### SEO Parity Achievement
+
+All 4 content modules now have full SEO capability:
+
+| Module | meta_title | meta_description | og_image | canonical_url | noindex | Status |
+|--------|------------|------------------|----------|---------------|---------|--------|
+| Blog | ✅ | ✅ | ✅ | ✅ | ✅ | COMPLETE |
+| Pages | ✅ | ✅ | ✅ | ✅ | ✅ | COMPLETE |
+| Services | ✅ | ✅ | ✅ | ✅ | ✅ | COMPLETE |
+| Projects | ✅ | ✅ | ✅ | ✅ | ✅ | COMPLETE |
+
+### Project Process Steps Correction
+
+All 5 published projects now have 4 process steps (was 3).
+Step order: 1 → 2 → 3 → 4 (stored and rendered correctly).
+
+### Canonical Domain Status
+
+| Setting | Value |
+|---------|-------|
+| Current canonical URLs | `https://devmart.co/...` |
+| Production domain | `https://devmart.sr` |
+| Status | INTENTIONAL MISMATCH |
+| Resolution | Deferred to Phase 4D |
+
+**URL Normalization (Phase 4D):** Planning only — no implementation without explicit authorization.
 
 ---
 

@@ -1,7 +1,7 @@
 # Admin Diagnostic: SEO Capability Matrix
 
 **Last Verified:** 2025-12-31  
-**Updated:** 2025-12-31 (Phase 2.1a–2.3 Complete)
+**Updated:** 2025-12-31 (Phase 4C Complete — All Modules SEO Parity Achieved)
 
 ---
 
@@ -10,47 +10,45 @@
 | Module | meta_title | meta_description | og_image | canonical | noindex | Status |
 |--------|------------|------------------|----------|-----------|---------|--------|
 | Pages | ✅ | ✅ | ✅ | ✅ | ✅ | **COMPLETE** |
-| Blog | ✅ | ✅ | ✅ | ✅ | ✅ | COMPLETE |
-| Services | ❌ | ❌ | ❌ | ❌ | ❌ | Missing |
-| Projects | ❌ | ❌ | ❌ | ❌ | ❌ | Missing |
+| Blog | ✅ | ✅ | ✅ | ✅ | ✅ | **COMPLETE** |
+| Services | ✅ | ✅ | ✅ | ✅ | ✅ | **COMPLETE** |
+| Projects | ✅ | ✅ | ✅ | ✅ | ✅ | **COMPLETE** |
+
+**All 4 content modules now have full SEO parity.**
 
 ---
 
 ## Detailed Breakdown
 
-### Pages Module
+### Pages Module ✅ COMPLETE
 - **Table:** `pages`
-- **SEO Fields Present:** `meta_title`, `meta_description`
-- **SEO Fields Missing:** `og_image`, `canonical_url`, `robots`
-- **Admin Modal:** Has SEO tab with title/description fields
+- **SEO Fields Present:** `meta_title`, `meta_description`, `og_image_media_id`, `canonical_url`, `noindex`
+- **Admin Modal:** Has SEO tab with all 5 fields
 - **Character Limits:** meta_title 70, meta_description 160
-- **Public Wiring Status:** WIRED (used by react-helmet-async)
+- **Public Wiring Status:** Pending Phase 5
 
-### Blog Module ✅ COMPLETE (Phase 2.1a–2.3)
+### Blog Module ✅ COMPLETE
 - **Table:** `blog_posts`
 - **SEO Fields Present:** `meta_title`, `meta_description`, `og_image_media_id`, `canonical_url`, `noindex`
-- **SEO Fields Missing:** None
 - **Admin Modal:** Has SEO tab (Tab 4) with all 5 fields
 - **Character Limits:** meta_title 70, meta_description 160
 - **Public Wiring Status:** ✅ WIRED to useBlogDetails hook
-- **Data Seeding:** ✅ All published posts seeded (except og_image)
-- **Dynamic Placeholders:** ✅ Show fallback values from title/excerpt
 
-### Services Module
+### Services Module ✅ COMPLETE (Phase 4B)
 - **Table:** `services`
-- **SEO Fields Present:** None
-- **SEO Fields Missing:** `meta_title`, `meta_description`, `og_image`
-- **Admin Modal:** No SEO tab
-- **Future Expansion Required:** Yes
-- **Public Wiring Status:** NOT WIRED (no SEO fields exist)
+- **SEO Fields Present:** `meta_title`, `meta_description`, `og_image_media_id`, `canonical_url`, `noindex`
+- **Admin Modal:** Has SEO tab with all 5 fields
+- **Character Limits:** meta_title 70, meta_description 160
+- **Public Wiring Status:** Pending Phase 5
+- **Data Seeding:** ✅ All 7 services populated
 
-### Projects Module
+### Projects Module ✅ COMPLETE (Phase 4C)
 - **Table:** `projects`
-- **SEO Fields Present:** None
-- **SEO Fields Missing:** `meta_title`, `meta_description`, `og_image`
-- **Admin Modal:** No SEO tab
-- **Future Expansion Required:** Yes
-- **Public Wiring Status:** NOT WIRED (no SEO fields exist)
+- **SEO Fields Present:** `meta_title`, `meta_description`, `og_image_media_id`, `canonical_url`, `noindex`
+- **Admin Modal:** Has SEO tab (Tab 3) with all 5 fields
+- **Character Limits:** meta_title 70, meta_description 160
+- **Public Wiring Status:** Pending Phase 5
+- **Data Seeding:** ✅ All 5 published projects populated
 
 ---
 
@@ -64,64 +62,29 @@
 
 ---
 
-## Future Expansion Needs
+## SEO Expansion Complete
 
-| Module | Schema Change | Modal Change | Priority |
-|--------|--------------|--------------|----------|
-| ~~Blog~~ | ~~Add 5 columns~~ | ~~Add SEO tab~~ | ~~High~~ ✅ DONE |
-| Services | Add 3 columns | Add SEO tab | Medium |
-| Projects | Add 3 columns | Add SEO tab | Medium |
-| Pages | Add 2 columns | Extend SEO tab | Low |
-
----
-
-## Implementation Notes
-
-### Pages Module (Partial Implementation)
-- ✅ `meta_title` and `meta_description` fields exist in `pages` table
-- ✅ Admin modal has SEO tab for editing these fields
-- ❌ `og_image` field missing — cannot set social sharing image per page
-- ❌ `canonical_url` field missing — cannot override canonical URL
-- **Note:** Current implementation covers basic on-page SEO; advanced features require schema expansion
-
-### Blog Module ✅ COMPLETE
-- ✅ All 5 SEO fields exist in `blog_posts` table
-- ✅ Admin modal has SEO tab (Tab 4) for editing all fields
-- ✅ Character counters with warning states (70/160)
-- ✅ Dynamic placeholders showing fallback values
-- ✅ OG Image uses MediaPicker component
-- ✅ Public hook (`useBlogDetails`) fetches all SEO fields
-- ✅ All published posts seeded with SEO data
-- **Note:** Full implementation complete as of Phase 2.1a–2.3
-
-### Services Module (No SEO Support)
-- ❌ No dedicated SEO fields in `services` table
-- ❌ Admin modal has no SEO tab
-- ⚠️ Public frontend uses `title` and `short_description` as fallbacks
-- **Future Requirement:** Add `meta_title`, `meta_description`, `og_image_media_id` columns
-- **Future Requirement:** Add SEO tab to ServiceModal
-
-### Projects Module (No SEO Support)
-- ❌ No dedicated SEO fields in `projects` table
-- ❌ Admin modal has no SEO tab
-- ⚠️ Public frontend uses `title` and `description` as fallbacks
-- **Future Requirement:** Add `meta_title`, `meta_description`, `og_image_media_id` columns
-- **Future Requirement:** Add SEO tab to ProjectModal
+| Module | Schema Change | Modal Change | Status |
+|--------|--------------|--------------|--------|
+| Blog | ✅ 5 columns added | ✅ SEO tab added | COMPLETE |
+| Pages | ✅ 5 columns present | ✅ SEO tab present | COMPLETE |
+| Services | ✅ 5 columns added (Phase 4B) | ✅ SEO tab added | COMPLETE |
+| Projects | ✅ 5 columns added (Phase 4C) | ✅ SEO tab added | COMPLETE |
 
 ---
 
 ## SEO Tab UI Standard (Reference)
 
-The Blog module SEO tab is the reference implementation:
+All modules follow the Blog module reference implementation:
 
 ```
-SEO Tab Structure (Blog — Tab 4):
+SEO Tab Structure:
 ├── Meta Title (input, maxLength 70)
 │   ├── Character counter with warning at 60+
-│   └── Dynamic placeholder: post title fallback
+│   └── Dynamic placeholder: content title fallback
 ├── Meta Description (textarea, maxLength 160)
 │   ├── Character counter with warning at 150+
-│   └── Dynamic placeholder: excerpt fallback
+│   └── Dynamic placeholder: content description fallback
 ├── OG Image (MediaPicker)
 │   └── Helper text: "Recommended: 1200x630 pixels"
 ├── Canonical URL (input)
@@ -134,28 +97,53 @@ SEO Tab Structure (Blog — Tab 4):
 
 ## SEO Fallback Hierarchy
 
-The blog module implements a 3-tier fallback:
+All modules implement a 3-tier fallback:
 
-1. **Per-Post SEO Fields** (highest priority)
-2. **Content Fallbacks** (title → meta_title, excerpt → meta_description)
+1. **Per-Record SEO Fields** (highest priority)
+2. **Content Fallbacks** (title → meta_title, description → meta_description)
 3. **Global SEO Settings** (from settings table)
 
-**Implementation Status:** ✅ IMPLEMENTED AND VERIFIED (Phase 3)
+**Implementation Status:** ✅ Blog WIRED | Services, Projects, Pages pending Phase 5
 
 ---
 
-## Phase 3 Closure Stamp
+## Canonical Domain Status
+
+| Setting | Value |
+|---------|-------|
+| Current canonical URLs | `https://devmart.co/...` |
+| Production domain | `https://devmart.sr` |
+| Status | INTENTIONAL MISMATCH |
+| Resolution | Deferred to Phase 4D (URL Normalization) |
+
+**Note:** Canonical URLs are STORED ONLY — no redirects or enforcement implemented.
+
+---
+
+## Public SEO Wiring Status
+
+| Module | Admin Complete | Public Wiring | Phase |
+|--------|----------------|---------------|-------|
+| Blog | ✅ | ✅ COMPLETE | Phase 3 |
+| Pages | ✅ | Pending | Phase 5 |
+| Services | ✅ | Pending | Phase 5 |
+| Projects | ✅ | Pending | Phase 5 |
+
+---
+
+## Phase 4C Closure Stamp
 
 **Date:** 2025-12-31  
 **Status:** CLOSED
 
-Phase 3 (SEO Fallback Wiring) verified:
-- Blog SEO coverage: COMPLETE (all 5 fields)
-- Fallback order: IMPLEMENTED AND VERIFIED
-- Public wiring: ACTIVE on all 6 published posts
-- Meta tags render correctly in page source
+Phase 4C (Projects SEO Expansion) verified:
+- Projects SEO coverage: COMPLETE (all 5 fields)
+- Admin modal: SEO tab functional
+- Data seeding: All projects and services populated
+- Canonical URLs: Stored (domain normalization pending Phase 4D)
 
 ---
 
-**Status:** ✅ Blog SEO CLOSED | Pending: Services, Projects (requires Phase 4 authorization)  
-**Phase 3 Execution:** Complete and Verified
+**Phase 4C is CLOSED. No further execution permitted.**
+
+Next: Phase 4D (URL Normalization Planning) — requires explicit authorization.
