@@ -8,6 +8,7 @@ import ServiceList from "../blog/ServiceList";
 import SidebarSearch from "../blog/SidebarSearch";
 // BlogDetailsComments removed - see docs/Policy_Blog_Comments_Disabled.md
 import BlogDetailsWrapper from "./BlogDetailsWrapper";
+import BlogDetailsSeo from "./BlogDetailsSeo";
 import { useBlogDetails } from "../../../hooks/useBlogDetails";
 
 function BlogDetailsPage() {
@@ -33,22 +34,25 @@ function BlogDetailsPage() {
                   <div className="alert alert-danger">{error}</div>
                 )}
                 {!loading && !error && post && (
-                  <BlogDetailsWrapper
-                    title={post.title}
-                    content={post.content}
-                    excerpt={post.excerpt || undefined}
-                    featuredImage={post.featured_image?.public_url}
-                    publishedAt={post.published_at || undefined}
-                    category={post.category || undefined}
-                    // Details Layout fields (Phase 2.1a-2.3)
-                    quoteText={post.quote_text || undefined}
-                    quoteAuthor={post.quote_author || undefined}
-                    secondaryImage={post.secondary_image?.public_url}
-                    secondaryContent={post.secondary_content || undefined}
-                    authorDisplayName={post.author_display_name || undefined}
-                    tags={post.tags || undefined}
-                  />
-                  // Comments section permanently removed - see docs/Policy_Blog_Comments_Disabled.md
+                  <>
+                    <BlogDetailsSeo post={post} />
+                    <BlogDetailsWrapper
+                      title={post.title}
+                      content={post.content}
+                      excerpt={post.excerpt || undefined}
+                      featuredImage={post.featured_image?.public_url}
+                      publishedAt={post.published_at || undefined}
+                      category={post.category || undefined}
+                      // Details Layout fields (Phase 2.1a-2.3)
+                      quoteText={post.quote_text || undefined}
+                      quoteAuthor={post.quote_author || undefined}
+                      secondaryImage={post.secondary_image?.public_url}
+                      secondaryContent={post.secondary_content || undefined}
+                      authorDisplayName={post.author_display_name || undefined}
+                      tags={post.tags || undefined}
+                    />
+                    {/* Comments section permanently removed - see docs/Policy_Blog_Comments_Disabled.md */}
+                  </>
                 )}
                 {!loading && !error && !post && (
                   <div className="alert alert-warning">Post not found.</div>

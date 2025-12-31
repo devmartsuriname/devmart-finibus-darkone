@@ -3,8 +3,50 @@
 # Architecture Documentation
 
 **Status:** ✅ PHASE 12 COMPLETE — FRONTEND FROZEN  
-**Phase:** Phase 12 CLOSED | Admin Blog Enhancement Phase 2.1a–2.3 FINALIZED  
+**Phase:** Phase 12 CLOSED | Admin Blog Enhancement Phase 3 COMPLETE  
 **Last Updated:** 2025-12-31
+
+---
+
+## Admin Blog Enhancement — Phase 3: SEO Fallback Wiring (2025-12-31)
+
+**Status:** ✅ **COMPLETE**
+
+### Public Blog SEO Architecture
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│                  Blog Details SEO Flow                       │
+├─────────────────────────────────────────────────────────────┤
+│  BlogDetailsPage.tsx                                         │
+│    ├── useBlogDetails(slug) → fetches post data              │
+│    ├── <BlogDetailsSeo post={post} />                        │
+│    │     ├── useGlobalSeoSettings() → fallback tier 3        │
+│    │     ├── resolveSeoFallbacks() → 3-tier resolution       │
+│    │     └── <Helmet> → injects meta tags                    │
+│    └── <BlogDetailsWrapper ... />                            │
+└─────────────────────────────────────────────────────────────┘
+```
+
+### SEO Resolution Priority
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│                  SEO Fallback Hierarchy                      │
+├─────────────────────────────────────────────────────────────┤
+│  Priority 1: Post SEO Fields                                 │
+│    └── meta_title, meta_description, og_image_media_id,      │
+│        canonical_url, noindex                                │
+│                                                              │
+│  Priority 2: Content-Derived Values                          │
+│    └── title → meta_title, excerpt → description,            │
+│        featured_image → OG image, /blog/{slug} → canonical   │
+│                                                              │
+│  Priority 3: Global SEO Settings                             │
+│    └── default_meta_title, default_meta_description,         │
+│        default_og_image_media_id from settings table         │
+└─────────────────────────────────────────────────────────────┘
+```
 
 ---
 

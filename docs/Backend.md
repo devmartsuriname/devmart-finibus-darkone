@@ -3,8 +3,46 @@
 # Backend Documentation
 
 **Status:** ✅ PHASE 12 COMPLETE — FRONTEND FROZEN  
-**Phase:** Phase 12 CLOSED | Admin Blog Enhancement Phase 2.1a–2.3 FINALIZED  
+**Phase:** Phase 12 CLOSED | Admin Blog Enhancement Phase 3 COMPLETE  
 **Last Updated:** 2025-12-31
+
+---
+
+## Admin Blog Enhancement — Phase 3: SEO Fallback Wiring (2025-12-31)
+
+**Status:** ✅ **COMPLETE**
+
+### Objective
+Wire blog post SEO metadata to public blog details page using react-helmet-async with 3-tier fallback hierarchy.
+
+### Files Created
+
+| File | Purpose |
+|------|---------|
+| `apps/public/src/hooks/useGlobalSeoSettings.ts` | Fetch global SEO fallbacks from settings table |
+| `apps/public/src/components/pages/blogDetails/BlogDetailsSeo.tsx` | Render SEO meta tags with fallback resolution |
+
+### SEO Fallback Hierarchy
+
+| Priority | Source | Description |
+|----------|--------|-------------|
+| 1 | Post SEO Fields | meta_title, meta_description, og_image, canonical_url, noindex |
+| 2 | Content-Derived | title → meta_title, excerpt → description, featured_image → OG |
+| 3 | Global Settings | default_meta_title, default_meta_description, default_og_image |
+
+### Meta Tags Rendered
+
+- `<title>` — Post title or fallback
+- `<meta name="description">` — Post description or fallback
+- `<meta name="robots">` — noindex handling
+- `<link rel="canonical">` — Canonical URL
+- `<meta property="og:*">` — Open Graph tags
+- `<meta name="twitter:*">` — Twitter Card tags
+- `<meta property="article:*">` — Article metadata
+
+### Integration
+
+BlogDetailsPage.tsx now includes `<BlogDetailsSeo post={post} />` which resolves and injects all SEO metadata.
 
 ---
 
