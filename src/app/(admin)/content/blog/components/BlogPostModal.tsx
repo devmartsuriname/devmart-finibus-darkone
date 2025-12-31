@@ -46,6 +46,13 @@ const BlogPostModal = ({ show, onClose, onSave, onUpdate, post }: BlogPostModalP
   const [canonicalUrl, setCanonicalUrl] = useState('')
   const [noindex, setNoindex] = useState(false)
 
+  // Details Layout tab state (Phase 2.1a)
+  const [quoteText, setQuoteText] = useState('')
+  const [quoteAuthor, setQuoteAuthor] = useState('')
+  const [secondaryImageId, setSecondaryImageId] = useState('')
+  const [secondaryContent, setSecondaryContent] = useState('')
+  const [authorDisplayName, setAuthorDisplayName] = useState('')
+
   // UI state
   const [isSaving, setIsSaving] = useState(false)
   const [errors, setErrors] = useState<Record<string, string>>({})
@@ -87,6 +94,13 @@ const BlogPostModal = ({ show, onClose, onSave, onUpdate, post }: BlogPostModalP
         setOgImageId(post.og_image_media_id || '')
         setCanonicalUrl(post.canonical_url || '')
         setNoindex(post.noindex ?? false)
+        
+        // Details Layout (Phase 2.1a)
+        setQuoteText(post.quote_text || '')
+        setQuoteAuthor(post.quote_author || '')
+        setSecondaryImageId(post.secondary_image_media_id || '')
+        setSecondaryContent(post.secondary_content || '')
+        setAuthorDisplayName(post.author_display_name || '')
       } else {
         resetForm()
       }
@@ -113,6 +127,12 @@ const BlogPostModal = ({ show, onClose, onSave, onUpdate, post }: BlogPostModalP
     setOgImageId('')
     setCanonicalUrl('')
     setNoindex(false)
+    // Details Layout (Phase 2.1a)
+    setQuoteText('')
+    setQuoteAuthor('')
+    setSecondaryImageId('')
+    setSecondaryContent('')
+    setAuthorDisplayName('')
     setErrors({})
   }, [])
 
@@ -228,6 +248,12 @@ const BlogPostModal = ({ show, onClose, onSave, onUpdate, post }: BlogPostModalP
       og_image_media_id: ogImageId || null,
       canonical_url: canonicalUrl.trim() || null,
       noindex,
+      // Details Layout fields (Phase 2.1a)
+      quote_text: quoteText.trim() || null,
+      quote_author: quoteAuthor.trim() || null,
+      secondary_image_media_id: secondaryImageId || null,
+      secondary_content: secondaryContent.trim() || null,
+      author_display_name: authorDisplayName.trim() || null,
     }
 
     let success = false
@@ -535,6 +561,93 @@ const BlogPostModal = ({ show, onClose, onSave, onUpdate, post }: BlogPostModalP
                   />
                   <Form.Text className="text-muted">
                     Enable to prevent search engines from indexing this post
+                  </Form.Text>
+                </Form.Group>
+              </Col>
+            </Row>
+          </Tab>
+
+          {/* Tab 5: Details Layout (Phase 2.1a) */}
+          <Tab eventKey="details" title="Details Layout">
+            <div className="alert alert-info small mb-4">
+              <strong>Blog Details Page Layout:</strong> These fields populate the quote block and banner section that appear after the main content on the blog details page.
+            </div>
+            
+            <Row>
+              <Col md={6}>
+                {/* Quote Text */}
+                <Form.Group className="mb-3">
+                  <Form.Label>Quote Text</Form.Label>
+                  <Form.Control
+                    as="textarea"
+                    rows={3}
+                    placeholder="Enter a featured quote (optional)"
+                    value={quoteText}
+                    onChange={(e) => setQuoteText(e.target.value)}
+                    disabled={isSaving}
+                    maxLength={300}
+                  />
+                  <Form.Text className={quoteText.length > 280 ? 'text-warning' : 'text-muted'}>
+                    {quoteText.length}/300 characters
+                  </Form.Text>
+                </Form.Group>
+
+                {/* Quote Author */}
+                <Form.Group className="mb-3">
+                  <Form.Label>Quote Author</Form.Label>
+                  <Form.Control
+                    type="text"
+                    placeholder="Quote attribution (optional)"
+                    value={quoteAuthor}
+                    onChange={(e) => setQuoteAuthor(e.target.value)}
+                    disabled={isSaving}
+                    maxLength={100}
+                  />
+                  <Form.Text className="text-muted">
+                    Name of the person being quoted
+                  </Form.Text>
+                </Form.Group>
+
+                {/* Author Display Name */}
+                <Form.Group className="mb-3">
+                  <Form.Label>Author Display Name</Form.Label>
+                  <Form.Control
+                    type="text"
+                    placeholder="Devmart Team"
+                    value={authorDisplayName}
+                    onChange={(e) => setAuthorDisplayName(e.target.value)}
+                    disabled={isSaving}
+                    maxLength={100}
+                  />
+                  <Form.Text className="text-muted">
+                    Displayed as the post author. Defaults to "Devmart Team" if empty.
+                  </Form.Text>
+                </Form.Group>
+              </Col>
+              
+              <Col md={6}>
+                {/* Secondary Image */}
+                <MediaPicker
+                  value={secondaryImageId}
+                  onChange={setSecondaryImageId}
+                  label="Secondary Image (Banner)"
+                  helpText="Image displayed in the banner section after the quote block"
+                />
+
+                {/* Secondary Content */}
+                <Form.Group className="mb-3">
+                  <Form.Label>Secondary Content</Form.Label>
+                  <Form.Control
+                    as="textarea"
+                    rows={4}
+                    placeholder="Additional body text for banner section (optional)"
+                    value={secondaryContent}
+                    onChange={(e) => setSecondaryContent(e.target.value)}
+                    disabled={isSaving}
+                    maxLength={500}
+                  />
+                  <Form.Text className={secondaryContent.length > 450 ? 'text-warning' : 'text-muted'}>
+                    {secondaryContent.length}/500 characters
                   </Form.Text>
                 </Form.Group>
               </Col>

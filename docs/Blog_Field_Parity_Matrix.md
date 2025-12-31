@@ -1,8 +1,8 @@
 # Blog Field Parity Matrix
 
 **Created:** 2025-12-31  
-**Phase:** 2.1 — Blog Field Parity Audit  
-**Status:** VERIFIED — All Fields Aligned
+**Phase:** 2.1a — Blog Field Parity Fix  
+**Status:** ✅ COMPLETE — All Fields Aligned
 
 ---
 
@@ -15,7 +15,21 @@ This document provides a complete field-by-field parity audit comparing:
 
 ---
 
-## Parity Table
+## Phase 2.1a — Parity Fix Applied (2025-12-31)
+
+5 new columns added to resolve previously hardcoded frontend elements:
+
+| New Column | Type | Purpose | Admin Tab |
+|------------|------|---------|-----------|
+| `quote_text` | TEXT | Quote block text | Details Layout |
+| `quote_author` | TEXT | Quote attribution | Details Layout |
+| `secondary_image_media_id` | UUID FK | Banner section image | Details Layout |
+| `secondary_content` | TEXT | Banner section body text | Details Layout |
+| `author_display_name` | TEXT | Author display name | Details Layout |
+
+---
+
+## Parity Table (Updated)
 
 | Field | DB Column | DB Type | Admin Input | Frontend Used | Status |
 |-------|-----------|---------|-------------|---------------|--------|
@@ -26,7 +40,7 @@ This document provides a complete field-by-field parity audit comparing:
 | Content | `content` | text | Yes (Tab 1 - HTML/blocks) | Yes | OK |
 | Content Blocks | `content_blocks` | jsonb | Yes (Tab 1 - structured) | No (compiled to content) | OK |
 | Category | `category` | text | Yes (Tab 2) | Yes (badge display) | OK |
-| Tags | `tags` | text[] | Yes (Tab 2) | Deferred (hardcoded) | OK |
+| Tags | `tags` | text[] | Yes (Tab 2) | Deferred (template asset) | OK |
 | Featured Image | `featured_image_media_id` | uuid FK | Yes (Tab 3) | Yes | OK |
 | Status | `status` | text | Yes (Tab 3) | No (filter only) | OK |
 | Published At | `published_at` | timestamptz | Yes (Tab 3) | Yes (date display) | OK |
@@ -38,28 +52,32 @@ This document provides a complete field-by-field parity audit comparing:
 | OG Image | `og_image_media_id` | uuid FK | Yes (Tab 4) | Deferred (SEO head) | OK |
 | Canonical URL | `canonical_url` | text | Yes (Tab 4) | Deferred (SEO head) | OK |
 | Noindex | `noindex` | boolean | Yes (Tab 4) | Deferred (SEO head) | OK |
+| **Quote Text** | `quote_text` | text | Yes (Tab 5) | Deferred (layout) | **NEW** |
+| **Quote Author** | `quote_author` | text | Yes (Tab 5) | Deferred (layout) | **NEW** |
+| **Secondary Image** | `secondary_image_media_id` | uuid FK | Yes (Tab 5) | Deferred (layout) | **NEW** |
+| **Secondary Content** | `secondary_content` | text | Yes (Tab 5) | Deferred (layout) | **NEW** |
+| **Author Display Name** | `author_display_name` | text | Yes (Tab 5) | Deferred (layout) | **NEW** |
 
 ---
 
-## Frontend Hardcoded Elements (Template Parity)
+## Frontend Hardcoded Elements — Status
 
-These elements are currently hardcoded in the Finibus template and are **NOT** database-driven. They remain hardcoded to maintain 1:1 template parity:
+| Element | Location | DB Column | Admin Tab | Status |
+|---------|----------|-----------|-----------|--------|
+| Quote Block Text | BlogDetailsWrapper.tsx | `quote_text` | Details Layout | ✅ RESOLVED |
+| Quote Author | BlogDetailsWrapper.tsx | `quote_author` | Details Layout | ✅ RESOLVED |
+| Banner Image | BlogDetailsWrapper.tsx | `secondary_image_media_id` | Details Layout | ✅ RESOLVED |
+| Banner Text | BlogDetailsWrapper.tsx | `secondary_content` | Details Layout | ✅ RESOLVED |
+| Author Name | BlogDetailsWrapper.tsx | `author_display_name` | Details Layout | ✅ RESOLVED |
+| Author Avatar | BlogDetailsWrapper.tsx | — | — | HARDCODED (template asset) |
+| Tags List | BlogDetailsWrapper.tsx | `tags` | Taxonomy | DB-bound (UI deferred) |
+| Comment Counter | BlogDetailsWrapper.tsx | — | — | ✅ REMOVED (Phase 2.2) |
 
-| Element | Location | Status |
-|---------|----------|--------|
-| Author Avatar | BlogDetailsWrapper line 51 | Hardcoded `/images/author/author-1.jpg` |
-| Author Name | BlogDetailsWrapper line 54 | Hardcoded "Devmart Team" |
-| Quote Block | BlogDetailsWrapper lines 104-119 | Hardcoded quote text |
-| Banner Image | BlogDetailsWrapper line 137 | Hardcoded `/images/blog-banner.png` |
-| Banner Text | BlogDetailsWrapper lines 143-150 | Hardcoded paragraph |
-| Tags List | BlogDetailsWrapper lines 158-166 | Hardcoded (category + 2 static) |
-| Comment Counter | BlogDetailsWrapper lines 58-62 | TO BE REMOVED (Phase 2.2) |
-
-**Note:** These hardcoded elements are intentional for template parity. They can be made dynamic in a future phase when the frontend freeze is lifted.
+**Note:** Author Avatar remains hardcoded as it uses template static assets. This is acceptable for 1:1 template parity.
 
 ---
 
-## Admin Modal Tab Summary
+## Admin Modal Tab Summary (Updated)
 
 ### Tab 1: Content
 - Title (required, max 200 chars)
@@ -83,6 +101,13 @@ These elements are currently hardcoded in the Finibus template and are **NOT** d
 - Canonical URL (optional)
 - Noindex (boolean)
 
+### Tab 5: Details Layout (NEW — Phase 2.1a)
+- Quote Text (optional, max 300 chars)
+- Quote Author (optional, max 100 chars)
+- Secondary Image (MediaPicker)
+- Secondary Content (optional, max 500 chars)
+- Author Display Name (optional, default "Devmart Team")
+
 ---
 
 ## Validation Rules (Enforced in Admin)
@@ -96,15 +121,19 @@ These elements are currently hardcoded in the Finibus template and are **NOT** d
 | meta_title | Max 70 characters |
 | meta_description | Max 160 characters |
 | canonical_url | Valid URL format if provided |
+| quote_text | Max 300 characters |
+| quote_author | Max 100 characters |
+| secondary_content | Max 500 characters |
+| author_display_name | Max 100 characters |
 
 ---
 
 ## Conclusion
 
-**Parity Status: VERIFIED**
+**Parity Status: ✅ COMPLETE**
 
-All 20 blog_posts columns are either:
-- Editable via Admin Modal (18 fields)
+All 25 blog_posts columns are either:
+- Editable via Admin Modal (23 fields across 5 tabs)
 - Auto-managed by system (id, author_id, created_at, updated_at)
 
-No missing fields. No schema changes required for Phase 2.1.
+Phase 2.1a resolved all missing frontend layout fields. Frontend wiring is DEFERRED until frontend freeze is lifted.

@@ -3,8 +3,34 @@
 # Architecture Documentation
 
 **Status:** ✅ PHASE 12 COMPLETE — FRONTEND FROZEN  
-**Phase:** Phase 12 CLOSED | Admin Blog Enhancement Phase 2.2 COMPLETE  
+**Phase:** Phase 12 CLOSED | Admin Blog Enhancement Phase 2.1a COMPLETE  
 **Last Updated:** 2025-12-31
+
+---
+
+## Admin Blog Enhancement — Phase 2.1a: Field Parity Fix (2025-12-31)
+
+**Status:** ✅ **COMPLETE**
+
+### Schema Migration (ADDITIVE ONLY)
+Added 5 new columns to `blog_posts` for blog details page parity:
+
+| Column | Type | Purpose |
+|--------|------|---------|
+| `quote_text` | TEXT | Quote block text |
+| `quote_author` | TEXT | Quote attribution |
+| `secondary_image_media_id` | UUID FK | Banner section image |
+| `secondary_content` | TEXT | Banner section body text |
+| `author_display_name` | TEXT | Author display name (default: "Devmart Team") |
+
+### Admin Modal Update
+- BlogPostModal expanded from 4 to 5 tabs
+- New Tab 5: "Details Layout" with all 5 new fields
+
+### What Was NOT Changed
+- Public frontend layout (frontend frozen)
+- Existing blog_posts columns (additive only)
+- No new npm packages
 
 ---
 

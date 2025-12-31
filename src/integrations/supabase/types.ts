@@ -84,6 +84,7 @@ export type Database = {
       }
       blog_posts: {
         Row: {
+          author_display_name: string | null
           author_id: string
           canonical_url: string | null
           category: string | null
@@ -98,6 +99,10 @@ export type Database = {
           noindex: boolean | null
           og_image_media_id: string | null
           published_at: string | null
+          quote_author: string | null
+          quote_text: string | null
+          secondary_content: string | null
+          secondary_image_media_id: string | null
           slug: string
           status: string
           tags: string[] | null
@@ -105,6 +110,7 @@ export type Database = {
           updated_at: string
         }
         Insert: {
+          author_display_name?: string | null
           author_id: string
           canonical_url?: string | null
           category?: string | null
@@ -119,6 +125,10 @@ export type Database = {
           noindex?: boolean | null
           og_image_media_id?: string | null
           published_at?: string | null
+          quote_author?: string | null
+          quote_text?: string | null
+          secondary_content?: string | null
+          secondary_image_media_id?: string | null
           slug: string
           status?: string
           tags?: string[] | null
@@ -126,6 +136,7 @@ export type Database = {
           updated_at?: string
         }
         Update: {
+          author_display_name?: string | null
           author_id?: string
           canonical_url?: string | null
           category?: string | null
@@ -140,6 +151,10 @@ export type Database = {
           noindex?: boolean | null
           og_image_media_id?: string | null
           published_at?: string | null
+          quote_author?: string | null
+          quote_text?: string | null
+          secondary_content?: string | null
+          secondary_image_media_id?: string | null
           slug?: string
           status?: string
           tags?: string[] | null
@@ -157,6 +172,13 @@ export type Database = {
           {
             foreignKeyName: "blog_posts_og_image_media_id_fkey"
             columns: ["og_image_media_id"]
+            isOneToOne: false
+            referencedRelation: "media"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "blog_posts_secondary_image_media_id_fkey"
+            columns: ["secondary_image_media_id"]
             isOneToOne: false
             referencedRelation: "media"
             referencedColumns: ["id"]
