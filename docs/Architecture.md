@@ -106,7 +106,7 @@ The Quote Wizard feature enables users to select multiple services, choose prici
 │  WizardState: {                                              │
 │    currentStep: number (1-5)                                 │
 │                                                              │
-│    // Step 1: Service Selection                              │
+│    // Step 1: Service Selection (✅ IMPLEMENTED)             │
 │    selectedServiceIds: string[]                              │
 │      └── Populated by clicking service cards                 │
 │      └── Multi-select enabled                                │
@@ -130,12 +130,47 @@ The Quote Wizard feature enables users to select multiple services, choose prici
 │      └── Tracks which service is being configured            │
 │      └── Enables per-service navigation in Step 2            │
 │                                                              │
+│    // Step 3: Quote Summary (✅ IMPLEMENTED)                 │
+│    // Read-only step, displays:                              │
+│    //   - All selected services with tier names              │
+│    //   - Price per service                                  │
+│    //   - Billing period label                               │
+│    //   - Calculated total (sum of all priceAmounts)         │
+│                                                              │
 │    // Step 4: Contact (pending)                              │
 │    name, email, company, message, honeypot                   │
 │                                                              │
 │    // Step 5: Result (pending)                               │
 │    referenceNumber, submitStatus                             │
 │  }                                                           │
+└─────────────────────────────────────────────────────────────┘
+```
+
+### Quote Summary Data Flow (Step 6D-4)
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│                Quote Summary Data Flow                       │
+├─────────────────────────────────────────────────────────────┤
+│  INPUT:                                                      │
+│    selectedServiceIds[] from Step 1                          │
+│    selections{} from Step 2                                  │
+│    billingPeriod from Step 2                                 │
+│                                                              │
+│  DISPLAY:                                                    │
+│    FOR EACH serviceId:                                       │
+│      1. Get service title from useServices()                 │
+│      2. Get tier name from selections[serviceId].planName    │
+│      3. Get price from selections[serviceId].priceAmount     │
+│      4. Render summary card with service/tier/price          │
+│                                                              │
+│  CALCULATE:                                                  │
+│    total = SUM(selections[id].priceAmount for all ids)       │
+│                                                              │
+│  OUTPUT:                                                     │
+│    Read-only display of all selections                       │
+│    Total estimated amount                                    │
+│    Navigation: Previous → Step 2, Continue → Step 4          │
 └─────────────────────────────────────────────────────────────┘
 ```
 

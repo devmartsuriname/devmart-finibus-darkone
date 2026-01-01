@@ -20,6 +20,7 @@
 import React, { useState } from 'react';
 import ServiceSelection from './steps/ServiceSelection';
 import TierConfiguration from './steps/TierConfiguration';
+import QuoteSummary from './steps/QuoteSummary';
 
 // Step labels for wizard navigation
 const WIZARD_STEPS = [
@@ -175,17 +176,13 @@ function QuoteWizard() {
         );
       case 3:
         return (
-          <div className="row">
-            <div className="col-12">
-              <div className="title black text-center">
-                <span>Step 3</span>
-                <h2>Quote Summary</h2>
-              </div>
-              <p className="text-center text-muted">
-                Review your selections. (Implementation pending Step 6D-4)
-              </p>
-            </div>
-          </div>
+          <QuoteSummary
+            selectedServiceIds={state.selectedServiceIds}
+            billingPeriod={state.billingPeriod}
+            selections={state.selections}
+            onNext={goNext}
+            onPrev={goPrev}
+          />
         );
       case 4:
         return (
