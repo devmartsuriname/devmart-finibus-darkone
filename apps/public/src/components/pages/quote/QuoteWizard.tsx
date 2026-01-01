@@ -195,7 +195,7 @@ function QuoteWizard() {
       const firstSelection = state.selections[state.selectedServiceIds[0]];
       const currency = firstSelection?.currency || 'USD';
 
-      // 1. Insert lead first (with pre-generated ID)
+      // 1. Insert lead first (quote_id stays null - quote links via quotes.lead_id)
       const { error: leadError } = await supabase
         .from('leads')
         .insert({
@@ -205,7 +205,7 @@ function QuoteWizard() {
           subject: 'Quote Request',
           message: state.message.trim() || null,
           source: 'quote_wizard',
-          quote_id: quoteId,
+          // Note: quote_id intentionally omitted - quotes.lead_id provides the link
         });
 
       if (leadError) throw leadError;
