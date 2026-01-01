@@ -211,6 +211,30 @@ The Quote Wizard feature enables users to select multiple services, choose prici
 └─────────────────────────────────────────────────────────────┘
 ```
 
+### Quote Wizard UI Parity (6D-UI)
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│              Quote Wizard UI Adjustments                     │
+├─────────────────────────────────────────────────────────────┤
+│  BACKGROUND PARITY:                                          │
+│    Section class: "service-area sec-pad"                     │
+│    Reuses existing dark background from Services page        │
+│    No new CSS added                                          │
+│                                                              │
+│  STEP INDICATOR LAYOUT:                                      │
+│    flexWrap: 'nowrap' → prevents line wrap                   │
+│    overflowX: 'auto' → horizontal scroll on mobile           │
+│    minWidth: '120px' → fits 5 tabs in single row             │
+│    whiteSpace: 'nowrap' → prevents text wrap in buttons      │
+│                                                              │
+│  MOBILE RESPONSIVENESS:                                      │
+│    Horizontal scroll for step indicators                     │
+│    Touch-friendly with -webkit-overflow-scrolling: touch     │
+│    Service cards readable on dark background                 │
+└─────────────────────────────────────────────────────────────┘
+```
+
 ### Tier Configuration Data Flow (Step 6D-3)
 
 ```
