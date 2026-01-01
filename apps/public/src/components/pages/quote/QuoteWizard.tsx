@@ -18,6 +18,7 @@
  */
 
 import React, { useState } from 'react';
+import ServiceSelection from './steps/ServiceSelection';
 
 // Step labels for wizard navigation
 const WIZARD_STEPS = [
@@ -132,22 +133,16 @@ function QuoteWizard() {
     </div>
   );
 
-  // Render placeholder content per step (Step 6D-1: skeleton only)
+  // Render content per step
   const renderStepContent = () => {
     switch (currentStep) {
       case 1:
         return (
-          <div className="row">
-            <div className="col-12">
-              <div className="title black text-center">
-                <span>Step 1</span>
-                <h2>Select Services</h2>
-              </div>
-              <p className="text-center text-muted">
-                Choose the services you need. (Implementation pending Step 6D-2)
-              </p>
-            </div>
-          </div>
+          <ServiceSelection
+            selectedServiceIds={state.selectedServiceIds}
+            onSelectionChange={(ids) => updateState({ selectedServiceIds: ids })}
+            onNext={goNext}
+          />
         );
       case 2:
         return (
@@ -210,10 +205,30 @@ function QuoteWizard() {
     }
   };
 
+  // Check if current step can proceed
+  const canProceed = () => {
+    switch (currentStep) {
+      case 1:
+        return state.selectedServiceIds.length > 0;
+      case 2:
+        // Will be implemented in Step 6D-3
+        return Object.keys(state.selections).length === state.selectedServiceIds.length;
+      case 3:
+        return true; // Summary is read-only
+      case 4:
+        // Will be implemented in Step 6D-5
+        return state.name.trim() !== '' && state.email.trim() !== '';
+      default:
+        return true;
+    }
+  };
+
   // Render navigation buttons
   const renderNavigation = () => {
     // Don't show navigation on confirmation step
     if (currentStep === 5) return null;
+
+    const nextDisabled = !canProceed();
 
     return (
       <div className="row justify-content-center mt-5">
@@ -221,25 +236,26 @@ function QuoteWizard() {
           <div className="d-flex justify-content-between">
             {currentStep > 1 ? (
               <div className="cmn-btn">
-                <button 
-                  type="button" 
-                  onClick={goPrev}
-                  style={{ 
-                    background: 'transparent', 
-                    border: 'none', 
-                    cursor: 'pointer',
-                    padding: 0
-                  }}
-                >
-                  <span className="cmn-btn"><a href="#!" onClick={(e) => { e.preventDefault(); goPrev(); }}>Previous</a></span>
-                </button>
+                <a href="#!" onClick={(e) => { e.preventDefault(); goPrev(); }}>
+                  Previous
+                </a>
               </div>
             ) : (
               <div />
             )}
             {currentStep < 5 && (
               <div className="cmn-btn">
-                <a href="#!" onClick={(e) => { e.preventDefault(); goNext(); }}>
+                <a 
+                  href="#!" 
+                  onClick={(e) => { 
+                    e.preventDefault(); 
+                    if (!nextDisabled) goNext(); 
+                  }}
+                  style={{ 
+                    opacity: nextDisabled ? 0.5 : 1,
+                    cursor: nextDisabled ? 'not-allowed' : 'pointer'
+                  }}
+                >
                   {currentStep === 4 ? 'Submit' : 'Next'}
                 </a>
               </div>

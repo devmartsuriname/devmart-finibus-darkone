@@ -80,11 +80,36 @@
 |------|-------------|--------|
 | 6D-0 | Restore Point | ✅ Created |
 | 6D-1 | Wizard Skeleton + Route | ✅ Complete |
-| 6D-2 | Service Selection UI | ⏳ Pending |
+| 6D-2 | Service Selection UI | ✅ Complete |
 | 6D-3 | Tier Configuration UI | ⏳ Pending |
 | 6D-4 | Quote Summary UI | ⏳ Pending |
 | 6D-5 | Data Submission Wiring | ⏳ Pending |
 | 6D-6 | Confirmation UI | ⏳ Pending |
+
+#### Step 6D-2 Implementation Summary
+
+**Files Created:**
+- `apps/public/src/components/pages/quote/steps/ServiceSelection.tsx` — Service multi-select UI
+
+**Files Modified:**
+- `apps/public/src/components/pages/quote/QuoteWizard.tsx` — Integrated ServiceSelection component
+
+**Reused Finibus Patterns:**
+- `.single-service` card structure from ServiceArea.tsx
+- `.service-icon`, `.service-content` patterns
+- `.title.black` for section header
+- `.cmn-btn` for navigation buttons
+- Bootstrap grid: `col-sm-6 col-md-6 col-lg-4 col-xl-4`
+
+**Verified:**
+- Services load dynamically from database via `useServices` hook
+- Cards display icon, title, short_description
+- Multi-select checkbox behavior works
+- Selection state stored in wizard state (`selectedServiceIds[]`)
+- Next button disabled until 1+ services selected
+- No CSS/SCSS changes made
+- No Admin (Darkone) changes made
+- No schema changes made
 
 #### Step 6D-1 Implementation Summary
 

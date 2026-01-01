@@ -97,6 +97,34 @@ The Quote Wizard feature enables users to select multiple services, choose prici
 - Bootstrap grid patterns (3-column)
 - `.cmn-btn`, `.sec-pad` CSS patterns
 
+### Quote Wizard UI State Flow (Phase 6D — Active)
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│           Quote Wizard UI State (Client-Side)                │
+├─────────────────────────────────────────────────────────────┤
+│  WizardState: {                                              │
+│    currentStep: number (1-5)                                 │
+│                                                              │
+│    // Step 1: Service Selection                              │
+│    selectedServiceIds: string[]                              │
+│      └── Populated by clicking service cards                 │
+│      └── Multi-select enabled                                │
+│      └── Next disabled if empty                              │
+│                                                              │
+│    // Step 2: Tier Configuration (pending)                   │
+│    billingPeriod: 'monthly' | 'yearly'                       │
+│    selections: { [serviceId]: { planId, price, etc } }       │
+│                                                              │
+│    // Step 4: Contact (pending)                              │
+│    name, email, company, message, honeypot                   │
+│                                                              │
+│    // Step 5: Result (pending)                               │
+│    referenceNumber, submitStatus                             │
+│  }                                                           │
+└─────────────────────────────────────────────────────────────┘
+```
+
 ### Decisions Closed (Phase 6C)
 
 | Decision | Recommendation | Justification |
