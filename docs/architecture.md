@@ -1,14 +1,14 @@
 # Architecture Documentation
 
 **Status:** ✅ PHASE 12 COMPLETE — FRONTEND FROZEN  
-**Phase:** Phase 5 SEO ✅ CLOSED | Phase 6C Schema ✅ EXECUTED | Phase 6D UI 📋 PLANNING ONLY  
-**Last Updated:** 2025-12-31
+**Phase:** Phase 5 SEO ✅ CLOSED | Phase 6C Schema ✅ EXECUTED | Phase 6D UI ✅ COMPLETE | Phase 6D Admin ✅ COMPLETE  
+**Last Updated:** 2026-01-01
 
 ---
 
 ## Phase 6 — Quote Wizard
 
-**Status:** ✅ **PHASE 6C EXECUTED AND VERIFIED** — Phase 6D NOT Authorized
+**Status:** ✅ **PHASE 6 COMPLETE** (Schema + Public UI + Admin UI)
 
 ---
 
@@ -279,7 +279,56 @@ The Quote Wizard feature enables users to select multiple services, choose prici
 |------|-------------|--------|
 | Schema migration | `quotes` and `quote_items` tables | ✅ **EXECUTED** |
 | RLS policies | Public INSERT, Admin SELECT/UPDATE | ✅ **EXECUTED** |
-| Route creation | `/quote` page and routing | **NOT AUTHORIZED** |
+| Route creation | `/quote` page and routing | ✅ **EXECUTED** |
+| Admin UI | `/crm/quotes` management page | ✅ **EXECUTED** |
+
+---
+
+### Admin Quote Management (Phase 6D Admin)
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│              Admin Quote Management Flow                     │
+├─────────────────────────────────────────────────────────────┤
+│  ROUTE: /crm/quotes                                          │
+│                                                              │
+│  LIST VIEW:                                                  │
+│    - Table: Reference, Name, Email, Total, Billing, Status   │
+│    - Search: by reference, name, email                       │
+│    - Filter: by status (pending, reviewed, converted, expired)│
+│    - Action: View button opens detail modal                  │
+│                                                              │
+│  DETAIL VIEW (Modal):                                        │
+│    - Left column: Read-only quote info                       │
+│      └── Reference, Total, Billing, Contact, Dates           │
+│    - Right column: Editable status                           │
+│      └── Status dropdown (pending → reviewed → converted)    │
+│    - Bottom: Quote items table                               │
+│      └── Service | Tier | Price                              │
+│      └── Total row                                           │
+│                                                              │
+│  DATA FLOW:                                                  │
+│    1. useQuotes() → SELECT quotes JOIN leads                 │
+│    2. fetchQuoteItems(id) → SELECT quote_items               │
+│    3. updateQuote(id, {status}) → UPDATE quotes              │
+└─────────────────────────────────────────────────────────────┘
+```
+
+### Admin Quote UI Components
+
+| Component | Pattern Source | Description |
+|-----------|----------------|-------------|
+| `QuotesPage` | `LeadsPage` | List view with table, search, filter |
+| `QuoteDetailModal` | `LeadDetailModal` | XL modal with two columns |
+| `useQuotes` | `useLeads` | Hook with fetch, update functions |
+
+### Admin Menu Structure
+
+```
+CRM
+├── Leads (/crm/leads)
+└── Quotes (/crm/quotes) ← NEW
+```
 
 ### Soft Dependencies (Deferred)
 
