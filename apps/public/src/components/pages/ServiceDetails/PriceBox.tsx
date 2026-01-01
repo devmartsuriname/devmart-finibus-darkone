@@ -51,7 +51,7 @@ function PriceBox({
           ))}
         </ul>
         <div className="pay-btn">
-          <Link onClick={scrollTop} to="/contact">
+          <Link onClick={scrollTop} to="/quote">
             {ctaLabel}
           </Link>
         </div>

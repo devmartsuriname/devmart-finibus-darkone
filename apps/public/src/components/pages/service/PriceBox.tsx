@@ -53,7 +53,7 @@ function PriceBox(props: PriceBoxProps) {
             </li>
           </ul>
           <div className="pay-btn">
-            <Link onClick={scrollTop} to="/contact">
+            <Link onClick={scrollTop} to="/quote">
               Pay Now
             </Link>
           </div>
