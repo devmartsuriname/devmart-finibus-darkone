@@ -74,17 +74,42 @@
 ### Phase 6D: Quote Wizard UI Implementation (🚧 IN PROGRESS)
 
 **Started:** 2026-01-01  
-**Status:** 🚧 IN PROGRESS — Step 6D-1 Complete
+**Status:** 🚧 IN PROGRESS — Step 6D-3 Complete
 
 | Step | Description | Status |
 |------|-------------|--------|
 | 6D-0 | Restore Point | ✅ Created |
 | 6D-1 | Wizard Skeleton + Route | ✅ Complete |
 | 6D-2 | Service Selection UI | ✅ Complete |
-| 6D-3 | Tier Configuration UI | ⏳ Pending |
+| 6D-3 | Tier Configuration UI | ✅ Complete |
 | 6D-4 | Quote Summary UI | ⏳ Pending |
 | 6D-5 | Data Submission Wiring | ⏳ Pending |
 | 6D-6 | Confirmation UI | ⏳ Pending |
+
+#### Step 6D-3 Implementation Summary
+
+**Files Created:**
+- `apps/public/src/hooks/useServicePricingPlans.ts` — Fetches pricing plans by service and billing period
+- `apps/public/src/components/pages/quote/steps/TierConfiguration.tsx` — Tier selection with billing toggle
+
+**Files Modified:**
+- `apps/public/src/components/pages/quote/QuoteWizard.tsx` — Integrated TierConfiguration component
+
+**Restore Point:**
+- `docs/restore-points/Restore_Point_Phase_6D_3_Tier_Config.md`
+
+**Reused Finibus Patterns:**
+- `.nav-pills`, `.nav-link` for billing toggle (from ServicePrice.jsx)
+- `.single-price-box`, `.feature-list` for tier cards (from PriceBox.jsx)
+- `.title.black` for section header
+- Selection border/shadow pattern from ServiceSelection.tsx
+- `.cmn-btn` for navigation buttons
+
+**Guardian Rules Verified:**
+- ✅ No new CSS/SCSS files
+- ✅ No Admin (Darkone) changes
+- ✅ No schema changes
+- ✅ Finibus 1:1 parity maintained
 
 #### Step 6D-2 Implementation Summary
 

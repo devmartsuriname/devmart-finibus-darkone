@@ -19,6 +19,7 @@
 
 import React, { useState } from 'react';
 import ServiceSelection from './steps/ServiceSelection';
+import TierConfiguration from './steps/TierConfiguration';
 
 // Step labels for wizard navigation
 const WIZARD_STEPS = [
@@ -104,6 +105,20 @@ function QuoteWizard() {
     setState(prev => ({ ...prev, ...updates }));
   };
 
+  // Tier selection handler
+  const handleTierSelection = (
+    serviceId: string, 
+    plan: { planId: string; planName: string; priceAmount: number; currency: string }
+  ) => {
+    setState(prev => ({
+      ...prev,
+      selections: {
+        ...prev.selections,
+        [serviceId]: plan,
+      },
+    }));
+  };
+
   // Render step indicator (nav-pills pattern from ServicePrice)
   const renderStepIndicator = () => (
     <div className="row justify-content-center">
@@ -146,17 +161,17 @@ function QuoteWizard() {
         );
       case 2:
         return (
-          <div className="row">
-            <div className="col-12">
-              <div className="title black text-center">
-                <span>Step 2</span>
-                <h2>Choose Your Tiers</h2>
-              </div>
-              <p className="text-center text-muted">
-                Select engagement tiers for each service. (Implementation pending Step 6D-3)
-              </p>
-            </div>
-          </div>
+          <TierConfiguration
+            selectedServiceIds={state.selectedServiceIds}
+            billingPeriod={state.billingPeriod}
+            selections={state.selections}
+            currentServiceIndex={state.currentServiceIndex}
+            onBillingPeriodChange={(period) => updateState({ billingPeriod: period })}
+            onSelectionChange={handleTierSelection}
+            onServiceIndexChange={(idx) => updateState({ currentServiceIndex: idx })}
+            onNext={goNext}
+            onPrev={goPrev}
+          />
         );
       case 3:
         return (
@@ -211,8 +226,9 @@ function QuoteWizard() {
       case 1:
         return state.selectedServiceIds.length > 0;
       case 2:
-        // Will be implemented in Step 6D-3
-        return Object.keys(state.selections).length === state.selectedServiceIds.length;
+        // All selected services must have a tier selection
+        return state.selectedServiceIds.length > 0 && 
+          state.selectedServiceIds.every(id => state.selections[id]?.planId);
       case 3:
         return true; // Summary is read-only
       case 4:
