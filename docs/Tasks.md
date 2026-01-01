@@ -1,8 +1,8 @@
 # Tasks — Devmart Implementation Tracker
 
 **Status:** ✅ PHASE 12 COMPLETE — FRONTEND FROZEN  
-**Current Phase:** Phase 5 SEO ✅ CLOSED | Phase 6C Schema ✅ EXECUTED | Phase 6D UI 📋 PLANNING ONLY  
-**Last Updated:** 2025-12-31
+**Current Phase:** Phase 5 SEO ✅ CLOSED | Phase 6C Schema ✅ EXECUTED | Phase 6D UI ✅ COMPLETE  
+**Last Updated:** 2026-01-01
 
 ---
 
@@ -71,10 +71,11 @@
 
 ---
 
-### Phase 6D: Quote Wizard UI Implementation (🚧 IN PROGRESS)
+### Phase 6D: Quote Wizard UI Implementation (✅ COMPLETE)
 
 **Started:** 2026-01-01  
-**Status:** 🚧 IN PROGRESS — Step 6D-5 Complete
+**Completed:** 2026-01-01  
+**Status:** ✅ COMPLETE — Public UI Ready
 
 | Step | Description | Status |
 |------|-------------|--------|
@@ -85,6 +86,17 @@
 | 6D-4 | Quote Summary UI | ✅ Complete |
 | 6D-5 | Contact & Submit | ✅ Complete |
 | 6D-6 | Confirmation UI | ✅ Complete (bundled with 6D-5) |
+| 6D-UI | Background + Step Layout | ✅ Complete |
+
+#### Public UI Adjustments (6D-UI)
+
+**Applied:**
+- Section class: `quote-wizard sec-pad` → `service-area sec-pad` (dark background parity)
+- Step indicators: `flexWrap: 'nowrap'` + `overflowX: 'auto'` (single-row + mobile scroll)
+- Button min-width: 120px to fit 5 tabs
+
+**Restore Point:** `docs/restore-points/Restore_Point_Phase_6D_Public_UI_Adjustments.md`
+
 
 #### Step 6D-5 Implementation Summary
 
