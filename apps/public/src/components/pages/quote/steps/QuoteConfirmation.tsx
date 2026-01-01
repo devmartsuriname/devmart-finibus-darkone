@@ -21,7 +21,7 @@ function QuoteConfirmation({ referenceNumber }: QuoteConfirmationProps) {
     <div className="row justify-content-center">
       <div className="col-12 col-lg-8 col-xl-6">
         {/* Step header - .title.black pattern */}
-        <div className="title black text-center">
+        <div className="title text-center">
           <span>Step 5</span>
           <h2>Quote Submitted!</h2>
         </div>

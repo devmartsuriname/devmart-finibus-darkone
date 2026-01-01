@@ -78,7 +78,7 @@ function QuoteSummary({
     return (
       <div className="row">
         <div className="col-12">
-          <div className="title black text-center">
+          <div className="title text-center">
             <span>Step 3</span>
             <h2>Quote Summary</h2>
           </div>
@@ -104,7 +104,7 @@ function QuoteSummary({
     return (
       <div className="row">
         <div className="col-12">
-          <div className="title black text-center">
+          <div className="title text-center">
             <span>Step 3</span>
             <h2>Quote Summary</h2>
           </div>
@@ -118,7 +118,7 @@ function QuoteSummary({
     <div className="row">
       {/* Header */}
       <div className="col-12">
-        <div className="title black text-center">
+        <div className="title text-center">
           <span>Step 3</span>
           <h2>Quote Summary</h2>
           <p>Review your selections before proceeding</p>
