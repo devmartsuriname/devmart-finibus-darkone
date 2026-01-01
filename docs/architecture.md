@@ -112,9 +112,23 @@ The Quote Wizard feature enables users to select multiple services, choose prici
 │      └── Multi-select enabled                                │
 │      └── Next disabled if empty                              │
 │                                                              │
-│    // Step 2: Tier Configuration (pending)                   │
+│    // Step 2: Tier Configuration (✅ IMPLEMENTED)            │
 │    billingPeriod: 'monthly' | 'yearly'                       │
-│    selections: { [serviceId]: { planId, price, etc } }       │
+│      └── Global toggle affects all services                  │
+│      └── Persists across service navigation                  │
+│    selections: {                                             │
+│      [serviceId]: {                                          │
+│        planId: string,                                       │
+│        planName: string,                                     │
+│        priceAmount: number,                                  │
+│        currency: string                                      │
+│      }                                                       │
+│    }                                                         │
+│      └── Populated per-service by selecting tier cards       │
+│      └── All services must have selection before Step 3      │
+│    currentServiceIndex: number                               │
+│      └── Tracks which service is being configured            │
+│      └── Enables per-service navigation in Step 2            │
 │                                                              │
 │    // Step 4: Contact (pending)                              │
 │    name, email, company, message, honeypot                   │
@@ -122,6 +136,34 @@ The Quote Wizard feature enables users to select multiple services, choose prici
 │    // Step 5: Result (pending)                               │
 │    referenceNumber, submitStatus                             │
 │  }                                                           │
+└─────────────────────────────────────────────────────────────┘
+```
+
+### Tier Configuration Data Flow (Step 6D-3)
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│              Tier Configuration Data Flow                    │
+├─────────────────────────────────────────────────────────────┤
+│  INPUT:                                                      │
+│    selectedServiceIds[] from Step 1                          │
+│                                                              │
+│  FOR EACH serviceId:                                         │
+│    1. Fetch service title from useServices()                 │
+│    2. Fetch pricing plans from useServicePricingPlans()      │
+│       └── Filters by service_id AND billing_period           │
+│       └── Returns published plans only                       │
+│    3. Display tier cards (PriceBox pattern)                  │
+│    4. User selects tier → updates selections[serviceId]      │
+│                                                              │
+│  VALIDATION:                                                 │
+│    canProceed = selectedServiceIds.every(                    │
+│      id => selections[id]?.planId                            │
+│    )                                                         │
+│                                                              │
+│  OUTPUT:                                                     │
+│    selections object with all service tiers configured       │
+│    billingPeriod (global setting)                            │
 └─────────────────────────────────────────────────────────────┘
 ```
 
