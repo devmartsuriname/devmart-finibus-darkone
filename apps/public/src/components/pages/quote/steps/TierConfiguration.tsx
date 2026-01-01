@@ -105,7 +105,7 @@ function TierConfiguration({
     return (
       <div className="row">
         <div className="col-12">
-          <div className="title black text-center">
+          <div className="title text-center">
             <span>Step 2</span>
             <h2>Choose Your Tiers</h2>
           </div>
@@ -130,7 +130,7 @@ function TierConfiguration({
     <div className="row">
       {/* Header */}
       <div className="col-12">
-        <div className="title black text-center">
+        <div className="title text-center">
           <span>Step 2</span>
           <h2>Choose Your Tiers</h2>
           <p>

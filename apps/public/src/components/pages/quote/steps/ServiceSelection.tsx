@@ -57,7 +57,7 @@ function ServiceSelection({
     return (
       <div className="row">
         <div className="col-12">
-          <div className="title black text-center">
+        <div className="title text-center">
             <span>Step 1</span>
             <h2>Select Services</h2>
           </div>
@@ -72,7 +72,7 @@ function ServiceSelection({
     return (
       <div className="row">
         <div className="col-12">
-          <div className="title black text-center">
+        <div className="title text-center">
             <span>Step 1</span>
             <h2>Select Services</h2>
           </div>
@@ -89,7 +89,7 @@ function ServiceSelection({
     return (
       <div className="row">
         <div className="col-12">
-          <div className="title black text-center">
+        <div className="title text-center">
             <span>Step 1</span>
             <h2>Select Services</h2>
           </div>
@@ -107,7 +107,7 @@ function ServiceSelection({
     <div className="row">
       {/* Header */}
       <div className="col-12">
-        <div className="title black text-center">
+        <div className="title text-center">
           <span>Step 1</span>
           <h2>Select Services</h2>
           <p>Choose one or more services for your quote. Click to select.</p>

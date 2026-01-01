@@ -57,7 +57,7 @@ function ContactSubmit({
     <div className="row justify-content-center">
       <div className="col-12">
         {/* Step header - .title.black pattern */}
-        <div className="title black text-center">
+        <div className="title text-center">
           <span>Step 4</span>
           <h2>Your Information</h2>
         </div>
