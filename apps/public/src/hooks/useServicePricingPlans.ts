@@ -8,7 +8,7 @@
  */
 
 import { useState, useEffect } from 'react';
-import { supabase } from '../lib/supabaseClient';
+import { supabase } from '../lib/supabase';
 import type { ServicePricingPlan } from '../types/database';
 
 interface UseServicePricingPlansResult {
