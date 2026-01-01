@@ -11,6 +11,7 @@ const Testimonials = lazy(() => import('@/app/(admin)/content/testimonials/page'
 const Services = lazy(() => import('@/app/(admin)/content/services/page'))
 const GlobalBlocks = lazy(() => import('@/app/(admin)/content/global-blocks/page'))
 const Leads = lazy(() => import('@/app/(admin)/crm/leads/page'))
+const Quotes = lazy(() => import('@/app/(admin)/crm/quotes/page'))
 const Analytics = lazy(() => import('@/app/(admin)/analytics/page'))
 const Settings = lazy(() => import('@/app/(admin)/settings/page'))
 
@@ -82,6 +83,11 @@ const adminRoutes: RoutesProps[] = [
     path: '/crm/leads',
     name: 'Leads',
     element: <Leads />,
+  },
+  {
+    path: '/crm/quotes',
+    name: 'Quotes',
+    element: <Quotes />,
   },
   {
     path: '/analytics',

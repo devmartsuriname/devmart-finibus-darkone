@@ -76,6 +76,12 @@ export const MENU_ITEMS: MenuItemType[] = [
     icon: 'mingcute:user-add-line',
     url: '/crm/leads',
   },
+  {
+    key: 'quotes',
+    label: 'Quotes',
+    icon: 'mingcute:document-2-line',
+    url: '/crm/quotes',
+  },
 
   // ====================ANALYTICS===============
   {

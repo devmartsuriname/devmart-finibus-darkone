@@ -1,7 +1,7 @@
 # Tasks — Devmart Implementation Tracker
 
 **Status:** ✅ PHASE 12 COMPLETE — FRONTEND FROZEN  
-**Current Phase:** Phase 5 SEO ✅ CLOSED | Phase 6C Schema ✅ EXECUTED | Phase 6D UI ✅ COMPLETE  
+**Current Phase:** Phase 5 SEO ✅ CLOSED | Phase 6C Schema ✅ EXECUTED | Phase 6D UI ✅ COMPLETE | Phase 6D Admin ✅ COMPLETE  
 **Last Updated:** 2026-01-01
 
 ---
@@ -9,7 +9,7 @@
 ## === PHASE 6 QUOTE WIZARD ===
 
 **Execution Date:** 2025-12-31  
-**Status:** ✅ PHASE 6C EXECUTED AND VERIFIED — Phase 6D PLANNING ONLY
+**Status:** ✅ PHASE 6 COMPLETE (6C Schema + 6D Public UI + 6D Admin UI)
 
 ---
 
@@ -88,14 +88,56 @@
 | 6D-6 | Confirmation UI | ✅ Complete (bundled with 6D-5) |
 | 6D-UI | Background + Step Layout | ✅ Complete |
 
+---
+
+### Phase 6D Admin: Quote Management UI (✅ COMPLETE)
+
+**Executed:** 2026-01-01  
+**Status:** ✅ COMPLETE
+
+| Step | Description | Status |
+|------|-------------|--------|
+| 6D-A0 | Pre-Implementation Restore Point | ✅ Created |
+| 6D-A1 | useQuotes Hook | ✅ Created |
+| 6D-A2 | QuotesPage (List View) | ✅ Created |
+| 6D-A3 | QuoteDetailModal | ✅ Created |
+| 6D-A4 | Route Registration | ✅ /crm/quotes |
+| 6D-A5 | Menu Item | ✅ CRM → Quotes |
+| 6D-A6 | Post-Implementation Restore Point | ✅ Created |
+
+#### Files Created
+
+| File | Description |
+|------|-------------|
+| `src/app/(admin)/crm/quotes/page.tsx` | Quotes list page |
+| `src/app/(admin)/crm/quotes/hooks/useQuotes.ts` | Data fetching hook |
+| `src/app/(admin)/crm/quotes/components/QuoteDetailModal.tsx` | View/edit modal |
+
+#### Files Modified
+
+| File | Change |
+|------|--------|
+| `src/routes/index.tsx` | Added /crm/quotes route |
+| `src/assets/data/menu-items.ts` | Added Quotes menu item |
+
+#### Features Implemented
+
+- Quotes list with table (Reference, Name, Email, Total, Billing, Date, Status)
+- Search by reference, name, email
+- Status filter dropdown
+- Quote detail modal with items table
+- Status update functionality
+- Empty state, loading state, error state
+- Darkone Admin 1:1 parity (Leads pattern reuse)
+
+#### Restore Points
+
+- `docs/restore-points/Restore_Point_Phase_6D_Admin_Pre_Implementation.md`
+- `docs/restore-points/Restore_Point_Phase_6D_Admin_UI.md`
+
+---
+
 #### Public UI Adjustments (6D-UI)
-
-**Applied:**
-- Section class: `quote-wizard sec-pad` → `service-area sec-pad` (dark background parity)
-- Step indicators: `flexWrap: 'nowrap'` + `overflowX: 'auto'` (single-row + mobile scroll)
-- Button min-width: 120px to fit 5 tabs
-
-**Restore Point:** `docs/restore-points/Restore_Point_Phase_6D_Public_UI_Adjustments.md`
 
 
 #### Step 6D-5 Implementation Summary
