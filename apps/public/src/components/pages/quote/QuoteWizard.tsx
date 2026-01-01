@@ -278,8 +278,17 @@ function QuoteWizard() {
   // Render step indicator (nav-pills pattern from ServicePrice)
   const renderStepIndicator = () => (
     <div className="row justify-content-center">
-      <div className="col-12 col-lg-10 col-xl-8">
-        <ul className="nav nav-pills mb-4 justify-content-center" role="tablist">
+      <div className="col-12">
+        <ul 
+          className="nav nav-pills mb-4 justify-content-center" 
+          role="tablist"
+          style={{
+            flexWrap: 'nowrap',
+            overflowX: 'auto',
+            paddingBottom: '10px',
+            WebkitOverflowScrolling: 'touch',
+          }}
+        >
           {WIZARD_STEPS.map((step) => (
             <li key={step.number} className="nav-item" role="presentation">
               <button
@@ -291,7 +300,10 @@ function QuoteWizard() {
                 onClick={() => step.number < currentStep && goToStep(step.number)}
                 style={{ 
                   cursor: step.number < currentStep ? 'pointer' : 'default',
-                  opacity: step.number > currentStep ? 0.5 : 1
+                  opacity: step.number > currentStep ? 0.5 : 1,
+                  minWidth: '120px',
+                  marginRight: '10px',
+                  whiteSpace: 'nowrap',
                 }}
               >
                 <span style={{ marginRight: '8px' }}>{step.number}.</span>
@@ -429,7 +441,7 @@ function QuoteWizard() {
   };
 
   return (
-    <section className="quote-wizard sec-pad">
+    <section className="service-area sec-pad">
       <div className="container">
         {renderStepIndicator()}
         {renderStepContent()}
