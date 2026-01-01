@@ -180,7 +180,9 @@ function QuoteWizard() {
     setState(prev => ({ ...prev, isSubmitting: true, submitStatus: 'idle', errorMessage: null }));
 
     try {
-      // Generate reference number
+      // Generate IDs client-side to avoid needing SELECT permission after INSERT
+      const quoteId = crypto.randomUUID();
+      const leadId = crypto.randomUUID();
       const referenceNumber = generateReferenceNumber();
 
       // Calculate total amount
@@ -193,24 +195,37 @@ function QuoteWizard() {
       const firstSelection = state.selections[state.selectedServiceIds[0]];
       const currency = firstSelection?.currency || 'USD';
 
-      // 1. Insert quote
-      const { data: quoteData, error: quoteError } = await supabase
+      // 1. Insert lead first (with pre-generated ID)
+      const { error: leadError } = await supabase
+        .from('leads')
+        .insert({
+          id: leadId,
+          name: trimmedName,
+          email: trimmedEmail,
+          subject: 'Quote Request',
+          message: state.message.trim() || null,
+          source: 'quote_wizard',
+          quote_id: quoteId,
+        });
+
+      if (leadError) throw leadError;
+
+      // 2. Insert quote with lead_id already set (no UPDATE needed)
+      const { error: quoteError } = await supabase
         .from('quotes')
         .insert({
+          id: quoteId,
           reference_number: referenceNumber,
           total_amount: totalAmount,
           currency: currency,
           billing_period: state.billingPeriod,
           status: 'pending',
-        })
-        .select('id')
-        .single();
+          lead_id: leadId,
+        });
 
       if (quoteError) throw quoteError;
 
-      const quoteId = quoteData.id;
-
-      // 2. Insert quote items
+      // 3. Insert quote items
       const quoteItems = state.selectedServiceIds.map(serviceId => {
         const selection = state.selections[serviceId];
         const service = services.find(s => s.id === serviceId);
@@ -230,30 +245,6 @@ function QuoteWizard() {
         .insert(quoteItems);
 
       if (itemsError) throw itemsError;
-
-      // 3. Insert lead
-      const { data: leadData, error: leadError } = await supabase
-        .from('leads')
-        .insert({
-          name: trimmedName,
-          email: trimmedEmail,
-          subject: 'Quote Request',
-          message: state.message.trim() || null,
-          source: 'quote_wizard',
-          quote_id: quoteId,
-        })
-        .select('id')
-        .single();
-
-      if (leadError) throw leadError;
-
-      // 4. Update quote with lead_id
-      const { error: updateError } = await supabase
-        .from('quotes')
-        .update({ lead_id: leadData.id })
-        .eq('id', quoteId);
-
-      if (updateError) throw updateError;
 
       // Success!
       setState(prev => ({
