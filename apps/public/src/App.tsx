@@ -44,6 +44,7 @@ import BlogDetailsPage from './components/pages/blogDetails/BlogDetailsPage'
 import ContactPage from './components/pages/contact/ContactPage'
 import CommingSoonPage from './components/pages/commingSoon/CommingSoonPage'
 import ErrorPage from './components/pages/Error/ErrorPage'
+import QuotePage from './components/pages/quote/QuotePage'
 
 /**
  * Main Layout wrapper with Header/Footer
@@ -151,6 +152,7 @@ function App() {
           <Route path="/blog/:slug" element={<BlogDetailsPage />} />
           <Route path="/blog-standard" element={<BlogStandardPage />} />
           <Route path="/contact" element={<ContactPage />} />
+          <Route path="/quote" element={<QuotePage />} />
           <Route path="/error" element={<ErrorPage />} />
           {/* Catch-all for 404 - inside MainLayout for Header/Footer */}
           <Route path="*" element={<ErrorPage />} />
