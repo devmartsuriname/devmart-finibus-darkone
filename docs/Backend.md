@@ -3,12 +3,99 @@
 # Backend Documentation
 
 **Status:** ✅ PHASE 12 COMPLETE — FRONTEND FROZEN  
-**Phase:** Phase 12 CLOSED | Phase 4D ✅ CLOSED | Phase 5 SEO ✅ EXECUTED  
+**Phase:** Phase 12 CLOSED | Phase 6C Schema ✅ EXECUTED | Phase 5 SEO ✅ EXECUTED  
 **Last Updated:** 2025-12-31
 
 ---
 
-## Phase 5 — Public SEO Wiring (2025-12-31)
+## Phase 6C — Quote Wizard Schema & RLS (2025-12-31)
+
+**Status:** ✅ **EXECUTED AND VERIFIED**
+
+### Objective
+
+Create database schema and RLS policies for the Quote Wizard feature.
+
+### Tables Created
+
+#### public.quotes
+
+| Column | Type | Nullable | Default | Constraint |
+|--------|------|----------|---------|------------|
+| id | uuid | NO | gen_random_uuid() | PRIMARY KEY |
+| reference_number | text | NO | — | UNIQUE |
+| lead_id | uuid | YES | — | FK → leads(id) |
+| total_amount | numeric | NO | — | — |
+| currency | text | NO | 'USD' | — |
+| billing_period | text | NO | — | CHECK (monthly, yearly) |
+| status | text | NO | 'pending' | CHECK (pending, reviewed, converted, expired) |
+| created_at | timestamptz | NO | now() | — |
+| updated_at | timestamptz | NO | now() | — |
+
+#### public.quote_items
+
+| Column | Type | Nullable | Default | Constraint |
+|--------|------|----------|---------|------------|
+| id | uuid | NO | gen_random_uuid() | PRIMARY KEY |
+| quote_id | uuid | NO | — | FK → quotes(id) CASCADE |
+| service_id | uuid | YES | — | FK → services(id) |
+| plan_id | uuid | YES | — | FK → service_pricing_plans(id) |
+| service_title | text | NO | — | — |
+| plan_name | text | NO | — | — |
+| price_amount | numeric | NO | — | — |
+| currency | text | NO | 'USD' | — |
+| created_at | timestamptz | NO | now() | — |
+
+#### public.leads (Extended)
+
+| Column Added | Type | Nullable | Constraint |
+|--------------|------|----------|------------|
+| quote_id | uuid | YES | FK → quotes(id) |
+
+### Indexes Created
+
+| Index | Table | Columns |
+|-------|-------|---------|
+| idx_quotes_lead_id | quotes | lead_id |
+| idx_quotes_status_created | quotes | status, created_at DESC |
+| idx_quote_items_quote_id | quote_items | quote_id |
+| idx_leads_quote_id | leads | quote_id |
+
+### Trigger
+
+| Trigger | Table | Function |
+|---------|-------|----------|
+| update_quotes_updated_at | quotes | update_updated_at_column() |
+
+### RLS Policies
+
+#### quotes table
+
+| Policy | Command | Expression |
+|--------|---------|------------|
+| Public can submit quotes | INSERT | WITH CHECK (true) |
+| Admins can view all quotes | SELECT | USING (has_role(auth.uid(), 'admin')) |
+| Admins can update quotes | UPDATE | USING (has_role(auth.uid(), 'admin')) |
+
+#### quote_items table
+
+| Policy | Command | Expression |
+|--------|---------|------------|
+| Public can submit quote items | INSERT | WITH CHECK (true) |
+| Admins can view all quote items | SELECT | USING (has_role(auth.uid(), 'admin')) |
+
+### Security Notes
+
+- **No DELETE policies:** Quotes are immutable for audit trail
+- **Public INSERT:** Allows anonymous quote submissions (like contact forms)
+- **No public SELECT:** Users cannot view other quotes
+- **Admin only:** Full visibility and status management
+
+### Restore Point
+
+**File:** `docs/restore-points/Restore_Point_Phase_6C_Schema_Execution.md`
+
+---
 
 **Status:** ✅ **EXECUTED** (5.1 + 5.2 ONLY)
 
