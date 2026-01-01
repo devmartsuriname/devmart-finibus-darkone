@@ -47,24 +47,43 @@ export const useQuotes = () => {
       setIsLoading(true)
       setError(null)
 
-      // Fetch quotes with LEFT JOIN on leads for name/email
-      const { data, error: fetchError } = await supabase
+      // Two-query pattern: fetch quotes and leads separately to avoid RLS join issues
+      // Step 1: Fetch quotes
+      const { data: quotesData, error: quotesError } = await supabase
         .from('quotes')
-        .select(`
-          *,
-          leads (
-            name,
-            email
-          )
-        `)
+        .select('*')
         .order('created_at', { ascending: false })
 
-      if (fetchError) {
-        throw fetchError
+      if (quotesError) {
+        throw quotesError
       }
 
-      // Transform data to include lead_name and lead_email at top level
-      const typedData: Quote[] = (data || []).map((quote: any) => ({
+      // Step 2: Extract unique lead_ids and fetch leads separately
+      const leadIds = (quotesData || [])
+        .map(q => q.lead_id)
+        .filter((id): id is string => id !== null)
+
+      let leadsMap: Record<string, { name: string; email: string }> = {}
+
+      if (leadIds.length > 0) {
+        const { data: leadsData, error: leadsError } = await supabase
+          .from('leads')
+          .select('id, name, email')
+          .in('id', leadIds)
+
+        if (leadsError) {
+          console.warn('Error fetching leads for quotes:', leadsError)
+          // Continue without lead data rather than failing entirely
+        } else {
+          leadsMap = (leadsData || []).reduce((acc, lead) => {
+            acc[lead.id] = { name: lead.name, email: lead.email }
+            return acc
+          }, {} as Record<string, { name: string; email: string }>)
+        }
+      }
+
+      // Step 3: Merge lead info into quotes
+      const typedData: Quote[] = (quotesData || []).map((quote) => ({
         id: quote.id,
         reference_number: quote.reference_number,
         lead_id: quote.lead_id,
@@ -74,8 +93,8 @@ export const useQuotes = () => {
         status: quote.status as QuoteStatus,
         created_at: quote.created_at,
         updated_at: quote.updated_at,
-        lead_name: quote.leads?.name || null,
-        lead_email: quote.leads?.email || null,
+        lead_name: quote.lead_id ? leadsMap[quote.lead_id]?.name : undefined,
+        lead_email: quote.lead_id ? leadsMap[quote.lead_id]?.email : undefined,
       }))
 
       setQuotes(typedData)
