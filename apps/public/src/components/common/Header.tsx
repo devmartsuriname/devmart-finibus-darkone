@@ -167,7 +167,7 @@ function Header() {
                 </ul>
                 <div className="get-quate dn">
                   <div className="cmn-btn">
-                    <Link onClick={scrollTop} to="/contact">
+                    <Link onClick={scrollTop} to="/quote">
                       Get a quote
                     </Link>
                   </div>
@@ -187,7 +187,7 @@ function Header() {
             <div className="col-12 col-sm-4 col-md-3 col-lg-3 col-xl-2 text-end">
               <div className="get-quate">
                 <div className="cmn-btn">
-                  <Link onClick={scrollTop} to="/contact">
+                  <Link onClick={scrollTop} to="/quote">
                     Get a quote
                   </Link>
                 </div>
