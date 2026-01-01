@@ -18,9 +18,13 @@
  */
 
 import React, { useState } from 'react';
+import { supabase } from '../../../lib/supabase';
+import { useServices } from '../../../hooks/useServices';
 import ServiceSelection from './steps/ServiceSelection';
 import TierConfiguration from './steps/TierConfiguration';
 import QuoteSummary from './steps/QuoteSummary';
+import ContactSubmit from './steps/ContactSubmit';
+import QuoteConfirmation from './steps/QuoteConfirmation';
 
 // Step labels for wizard navigation
 const WIZARD_STEPS = [
@@ -51,6 +55,7 @@ export interface WizardState {
   name: string;
   email: string;
   company: string;
+  phone: string;
   message: string;
   honeypot: string;
   // Step 5: Result
@@ -70,6 +75,7 @@ const initialState: WizardState = {
   name: '',
   email: '',
   company: '',
+  phone: '',
   message: '',
   honeypot: '',
   isSubmitting: false,
@@ -78,9 +84,19 @@ const initialState: WizardState = {
   errorMessage: null,
 };
 
+// Generate reference number: QT-{YEAR}-{XXXX}
+const generateReferenceNumber = (): string => {
+  const year = new Date().getFullYear();
+  const random = Math.floor(1000 + Math.random() * 9000);
+  return `QT-${year}-${random}`;
+};
+
 function QuoteWizard() {
   const [state, setState] = useState<WizardState>(initialState);
   const { currentStep } = state;
+  
+  // Fetch services for title lookups
+  const { services } = useServices();
 
   // Navigation handlers
   const goToStep = (step: number) => {
@@ -106,6 +122,11 @@ function QuoteWizard() {
     setState(prev => ({ ...prev, ...updates }));
   };
 
+  // Field change handler for contact form
+  const handleFieldChange = (field: string, value: string) => {
+    setState(prev => ({ ...prev, [field]: value }));
+  };
+
   // Tier selection handler
   const handleTierSelection = (
     serviceId: string, 
@@ -118,6 +139,140 @@ function QuoteWizard() {
         [serviceId]: plan,
       },
     }));
+  };
+
+  // Quote submission handler
+  const handleQuoteSubmit = async (): Promise<void> => {
+    // Anti-spam: if honeypot is filled, silently "succeed"
+    if (state.honeypot) {
+      setState(prev => ({
+        ...prev,
+        submitStatus: 'success',
+        referenceNumber: generateReferenceNumber(),
+        currentStep: 5,
+      }));
+      return;
+    }
+
+    // Validate required fields
+    const trimmedName = state.name.trim();
+    const trimmedEmail = state.email.trim();
+
+    if (!trimmedName) {
+      setState(prev => ({
+        ...prev,
+        submitStatus: 'error',
+        errorMessage: 'Please enter your name.',
+      }));
+      return;
+    }
+
+    if (!trimmedEmail || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(trimmedEmail)) {
+      setState(prev => ({
+        ...prev,
+        submitStatus: 'error',
+        errorMessage: 'Please enter a valid email address.',
+      }));
+      return;
+    }
+
+    // Start submission
+    setState(prev => ({ ...prev, isSubmitting: true, submitStatus: 'idle', errorMessage: null }));
+
+    try {
+      // Generate reference number
+      const referenceNumber = generateReferenceNumber();
+
+      // Calculate total amount
+      const totalAmount = state.selectedServiceIds.reduce((sum, serviceId) => {
+        const selection = state.selections[serviceId];
+        return sum + (selection?.priceAmount || 0);
+      }, 0);
+
+      // Get currency from first selection
+      const firstSelection = state.selections[state.selectedServiceIds[0]];
+      const currency = firstSelection?.currency || 'USD';
+
+      // 1. Insert quote
+      const { data: quoteData, error: quoteError } = await supabase
+        .from('quotes')
+        .insert({
+          reference_number: referenceNumber,
+          total_amount: totalAmount,
+          currency: currency,
+          billing_period: state.billingPeriod,
+          status: 'pending',
+        })
+        .select('id')
+        .single();
+
+      if (quoteError) throw quoteError;
+
+      const quoteId = quoteData.id;
+
+      // 2. Insert quote items
+      const quoteItems = state.selectedServiceIds.map(serviceId => {
+        const selection = state.selections[serviceId];
+        const service = services.find(s => s.id === serviceId);
+        return {
+          quote_id: quoteId,
+          service_id: serviceId,
+          plan_id: selection.planId,
+          service_title: service?.title || 'Unknown Service',
+          plan_name: selection.planName,
+          price_amount: selection.priceAmount,
+          currency: selection.currency,
+        };
+      });
+
+      const { error: itemsError } = await supabase
+        .from('quote_items')
+        .insert(quoteItems);
+
+      if (itemsError) throw itemsError;
+
+      // 3. Insert lead
+      const { data: leadData, error: leadError } = await supabase
+        .from('leads')
+        .insert({
+          name: trimmedName,
+          email: trimmedEmail,
+          subject: 'Quote Request',
+          message: state.message.trim() || null,
+          source: 'quote_wizard',
+          quote_id: quoteId,
+        })
+        .select('id')
+        .single();
+
+      if (leadError) throw leadError;
+
+      // 4. Update quote with lead_id
+      const { error: updateError } = await supabase
+        .from('quotes')
+        .update({ lead_id: leadData.id })
+        .eq('id', quoteId);
+
+      if (updateError) throw updateError;
+
+      // Success!
+      setState(prev => ({
+        ...prev,
+        isSubmitting: false,
+        submitStatus: 'success',
+        referenceNumber: referenceNumber,
+        currentStep: 5,
+      }));
+
+    } catch (error) {
+      console.error('Quote submission error:', error);
+      setState(prev => ({
+        ...prev,
+        isSubmitting: false,
+        submitStatus: 'error',
+        errorMessage: 'Something went wrong. Please try again.',
+      }));
+    }
   };
 
   // Render step indicator (nav-pills pattern from ServicePrice)
@@ -186,31 +341,24 @@ function QuoteWizard() {
         );
       case 4:
         return (
-          <div className="row">
-            <div className="col-12">
-              <div className="title black text-center">
-                <span>Step 4</span>
-                <h2>Your Information</h2>
-              </div>
-              <p className="text-center text-muted">
-                Enter your contact details. (Implementation pending Step 6D-5)
-              </p>
-            </div>
-          </div>
+          <ContactSubmit
+            name={state.name}
+            email={state.email}
+            company={state.company}
+            phone={state.phone}
+            message={state.message}
+            honeypot={state.honeypot}
+            isSubmitting={state.isSubmitting}
+            submitStatus={state.submitStatus}
+            errorMessage={state.errorMessage}
+            onFieldChange={handleFieldChange}
+            onSubmit={handleQuoteSubmit}
+            onPrev={goPrev}
+          />
         );
       case 5:
         return (
-          <div className="row">
-            <div className="col-12">
-              <div className="title black text-center">
-                <span>Step 5</span>
-                <h2>Confirmation</h2>
-              </div>
-              <p className="text-center text-muted">
-                Quote submitted successfully. (Implementation pending Step 6D-6)
-              </p>
-            </div>
-          </div>
+          <QuoteConfirmation referenceNumber={state.referenceNumber} />
         );
       default:
         return null;
@@ -229,17 +377,20 @@ function QuoteWizard() {
       case 3:
         return true; // Summary is read-only
       case 4:
-        // Will be implemented in Step 6D-5
-        return state.name.trim() !== '' && state.email.trim() !== '';
+        // Validate name and email
+        const trimmedName = state.name.trim();
+        const trimmedEmail = state.email.trim();
+        const emailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(trimmedEmail);
+        return trimmedName !== '' && emailValid;
       default:
         return true;
     }
   };
 
-  // Render navigation buttons
+  // Render navigation buttons (Steps 1-3 only, Step 4 has its own, Step 5 none)
   const renderNavigation = () => {
-    // Don't show navigation on confirmation step
-    if (currentStep === 5) return null;
+    // Step 4 and 5 handle their own navigation
+    if (currentStep >= 4) return null;
 
     const nextDisabled = !canProceed();
 
@@ -256,23 +407,21 @@ function QuoteWizard() {
             ) : (
               <div />
             )}
-            {currentStep < 5 && (
-              <div className="cmn-btn">
-                <a 
-                  href="#!" 
-                  onClick={(e) => { 
-                    e.preventDefault(); 
-                    if (!nextDisabled) goNext(); 
-                  }}
-                  style={{ 
-                    opacity: nextDisabled ? 0.5 : 1,
-                    cursor: nextDisabled ? 'not-allowed' : 'pointer'
-                  }}
-                >
-                  {currentStep === 4 ? 'Submit' : 'Next'}
-                </a>
-              </div>
-            )}
+            <div className="cmn-btn">
+              <a 
+                href="#!" 
+                onClick={(e) => { 
+                  e.preventDefault(); 
+                  if (!nextDisabled) goNext(); 
+                }}
+                style={{ 
+                  opacity: nextDisabled ? 0.5 : 1,
+                  cursor: nextDisabled ? 'not-allowed' : 'pointer'
+                }}
+              >
+                Next
+              </a>
+            </div>
           </div>
         </div>
       </div>

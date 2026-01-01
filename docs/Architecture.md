@@ -137,11 +137,16 @@ The Quote Wizard feature enables users to select multiple services, choose prici
 │    //   - Billing period label                               │
 │    //   - Calculated total (sum of all priceAmounts)         │
 │                                                              │
-│    // Step 4: Contact (pending)                              │
-│    name, email, company, message, honeypot                   │
+│    // Step 4: Contact & Submit (✅ IMPLEMENTED)              │
+│    name, email, company, phone, message, honeypot            │
+│      └── Required: name, email                               │
+│      └── Optional: company, phone, message                   │
+│      └── Honeypot for anti-spam                              │
 │                                                              │
-│    // Step 5: Result (pending)                               │
-│    referenceNumber, submitStatus                             │
+│    // Step 5: Confirmation (✅ IMPLEMENTED)                  │
+│    referenceNumber, submitStatus, errorMessage               │
+│      └── Displays generated reference number                 │
+│      └── Return to Home navigation                           │
 │  }                                                           │
 └─────────────────────────────────────────────────────────────┘
 ```
@@ -171,6 +176,38 @@ The Quote Wizard feature enables users to select multiple services, choose prici
 │    Read-only display of all selections                       │
 │    Total estimated amount                                    │
 │    Navigation: Previous → Step 2, Continue → Step 4          │
+└─────────────────────────────────────────────────────────────┘
+```
+
+### Contact & Submit Data Flow (Step 6D-5)
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│              Contact & Submit Data Flow                      │
+├─────────────────────────────────────────────────────────────┤
+│  INPUT:                                                      │
+│    User enters: name, email, company, phone, message         │
+│    From wizard state: selectedServiceIds, selections,        │
+│                       billingPeriod                          │
+│                                                              │
+│  VALIDATION:                                                 │
+│    1. Check honeypot (if filled, silently succeed)           │
+│    2. Validate name (required, non-empty)                    │
+│    3. Validate email (required, valid format)                │
+│                                                              │
+│  SUBMISSION FLOW:                                            │
+│    1. Generate reference: QT-{YEAR}-{XXXX}                   │
+│    2. Calculate total from selections                        │
+│    3. INSERT quotes (reference, total, billing_period)       │
+│    4. INSERT quote_items (one per selected service)          │
+│       └── service_id, plan_id, title, name, price snapshots  │
+│    5. INSERT leads (name, email, source='quote_wizard')      │
+│       └── Links to quote via quote_id                        │
+│    6. UPDATE quotes.lead_id with new lead.id                 │
+│                                                              │
+│  OUTPUT:                                                     │
+│    Success: Display confirmation with reference number       │
+│    Error: Display inline error message                       │
 └─────────────────────────────────────────────────────────────┘
 ```
 
