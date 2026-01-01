@@ -74,7 +74,7 @@
 ### Phase 6D: Quote Wizard UI Implementation (🚧 IN PROGRESS)
 
 **Started:** 2026-01-01  
-**Status:** 🚧 IN PROGRESS — Step 6D-4 Complete
+**Status:** 🚧 IN PROGRESS — Step 6D-5 Complete
 
 | Step | Description | Status |
 |------|-------------|--------|
@@ -83,8 +83,50 @@
 | 6D-2 | Service Selection UI | ✅ Complete |
 | 6D-3 | Tier Configuration UI | ✅ Complete |
 | 6D-4 | Quote Summary UI | ✅ Complete |
-| 6D-5 | Data Submission Wiring | ⏳ Pending |
-| 6D-6 | Confirmation UI | ⏳ Pending |
+| 6D-5 | Contact & Submit | ✅ Complete |
+| 6D-6 | Confirmation UI | ✅ Complete (bundled with 6D-5) |
+
+#### Step 6D-5 Implementation Summary
+
+**Files Created:**
+- `apps/public/src/components/pages/quote/steps/ContactSubmit.tsx` — Contact form with validation
+- `apps/public/src/components/pages/quote/steps/QuoteConfirmation.tsx` — Success confirmation display
+
+**Files Modified:**
+- `apps/public/src/components/pages/quote/QuoteWizard.tsx` — Added handleQuoteSubmit, phone field, wired components
+
+**Restore Point:**
+- `docs/restore-points/Restore_Point_Phase_6D_5_Contact_Submit.md`
+
+**Functionality:**
+- Contact form with name (required), email (required), company, phone, message fields
+- Honeypot anti-spam mechanism
+- Client-side validation with inline error messages
+- Database inserts: quotes → quote_items → leads (with linking)
+- Reference number generation: QT-{YEAR}-{XXXX}
+- Success confirmation with reference number display
+- Return to Home navigation
+
+**Database Operations:**
+- INSERT into `quotes` table
+- INSERT into `quote_items` table (per selection)
+- INSERT into `leads` table with quote_id
+- UPDATE `quotes.lead_id` with new lead id
+
+**Reused Finibus Patterns:**
+- `.contact-form` for form layout (from ContactForm.tsx)
+- `.title.black` for section header
+- `.cmn-btn a` for navigation buttons
+- Honeypot pattern from ContactForm.tsx
+- Inline status messages pattern
+
+**Guardian Rules Verified:**
+- ✅ No new CSS/SCSS files
+- ✅ No Admin (Darkone) changes
+- ✅ No schema changes (using Phase 6C schema)
+- ✅ Database writes to authorized tables only
+- ✅ No email/notification logic
+- ✅ Finibus 1:1 parity maintained
 
 #### Step 6D-4 Implementation Summary
 
