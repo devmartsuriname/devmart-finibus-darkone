@@ -93,7 +93,7 @@
 ### Phase 6D Admin: Quote Management UI (✅ COMPLETE)
 
 **Executed:** 2026-01-01  
-**Status:** ✅ COMPLETE
+**Status:** ✅ COMPLETE — DATA LINK VERIFIED
 
 | Step | Description | Status |
 |------|-------------|--------|
@@ -104,6 +104,22 @@
 | 6D-A4 | Route Registration | ✅ /crm/quotes |
 | 6D-A5 | Menu Item | ✅ CRM → Quotes |
 | 6D-A6 | Post-Implementation Restore Point | ✅ Created |
+| 6D-A7 | Data Link Fix | ✅ RLS Conflict Resolved |
+
+#### Data Link Diagnosis (2026-01-01)
+
+**Root Cause:** `.insert().select('id')` pattern requires SELECT permission, but RLS only grants SELECT to admin role. Public users could INSERT but not SELECT the ID back.
+
+**Fix Applied:** Modified `QuoteWizard.tsx` to generate UUIDs client-side (`crypto.randomUUID()`) before insert, eliminating the need for `.select()` and subsequent `.update()` calls.
+
+**Files Modified:**
+- `apps/public/src/components/pages/quote/QuoteWizard.tsx` — Client-side UUID generation, reordered inserts
+
+**Verification:**
+- ✅ No schema changes required
+- ✅ No RLS policy changes required
+- ✅ Public app only (Finibus 1:1 preserved)
+- ✅ Admin app untouched (Darkone 1:1 preserved)
 
 #### Files Created
 
