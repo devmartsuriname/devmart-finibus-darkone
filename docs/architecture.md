@@ -1,7 +1,7 @@
 # Architecture Documentation
 
-**Status:** ✅ PHASE 12 COMPLETE — FRONTEND FROZEN  
-**Phase:** Phase 5 SEO ✅ CLOSED | Phase 6C Schema ✅ EXECUTED | Phase 6D UI ✅ COMPLETE | Phase 6D Admin ✅ COMPLETE | Phase 7A ✅ EXECUTED | Phase 7B ✅ EXECUTED  
+**Status:** ✅ PHASE 7C COMPLETE — ADMIN DASHBOARD LIVE  
+**Phase:** Phase 5 SEO ✅ CLOSED | Phase 6C Schema ✅ EXECUTED | Phase 6D UI ✅ COMPLETE | Phase 6D Admin ✅ COMPLETE | Phase 7A ✅ EXECUTED | Phase 7B ✅ EXECUTED | Phase 7C ✅ EXECUTED  
 **Last Updated:** 2026-01-02
 
 ---
@@ -54,6 +54,77 @@
 | `src/app/(admin)/crm/quotes/hooks/useQuotes.ts` | Added UTM fields to Quote interface |
 | `src/app/(admin)/crm/leads/components/LeadDetailModal.tsx` | Added Marketing Attribution section (read-only) |
 | `src/app/(admin)/crm/quotes/components/QuoteDetailModal.tsx` | Added Source Attribution section (read-only) |
+
+---
+
+## Phase 7C — Internal Admin Dashboard (✅ EXECUTED)
+
+### Dashboard Data Flow
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│              Admin Dashboard Flow (Phase 7C)                 │
+├─────────────────────────────────────────────────────────────┤
+│  STEP 1: Dashboard page loads                                │
+│    └── useDashboardStats() initializes                       │
+│                                                              │
+│  STEP 2: Parallel data fetching                              │
+│    └── KPIs: leads, quotes, blog_posts, projects, services   │
+│    └── Source chart: GROUP BY leads.source                   │
+│    └── Funnel: GROUP BY marketing_events.event_type          │
+│    └── Recent tables: LIMIT 5 recent leads/quotes            │
+│                                                              │
+│  STEP 3: Render dashboard components                         │
+│    └── DashboardKPICards (4 stat cards)                      │
+│    └── DashboardFunnelChart (marketing events bar)           │
+│    └── DashboardSourceChart (leads by source donut)          │
+│    └── DashboardRecentLeads (table)                          │
+│    └── DashboardRecentQuotes (table)                         │
+└─────────────────────────────────────────────────────────────┘
+```
+
+### Dashboard Layout
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│ Row 1: KPI Cards                                             │
+│ ┌─────────┬─────────┬─────────┬─────────┐                   │
+│ │ Leads   │ Quotes  │ Value   │ Content │                   │
+│ └─────────┴─────────┴─────────┴─────────┘                   │
+├─────────────────────────────────────────────────────────────┤
+│ Row 2: Charts                                                │
+│ ┌─────────────────────────┬─────────────┐                   │
+│ │ Marketing Funnel (Col-8)│ Source      │                   │
+│ │ (Bar Chart)             │ (Donut)     │                   │
+│ └─────────────────────────┴─────────────┘                   │
+├─────────────────────────────────────────────────────────────┤
+│ Row 3: Tables                                                │
+│ ┌─────────────────────────┬─────────────────────────┐       │
+│ │ Recent Leads (Col-6)    │ Recent Quotes (Col-6)   │       │
+│ └─────────────────────────┴─────────────────────────┘       │
+└─────────────────────────────────────────────────────────────┘
+```
+
+### Files Created
+
+| File | Purpose |
+|------|---------|
+| `src/app/(admin)/dashboard/hooks/useDashboardStats.ts` | Dashboard data fetching |
+| `src/app/(admin)/dashboard/components/DashboardKPICards.tsx` | KPI stat cards |
+| `src/app/(admin)/dashboard/components/DashboardSourceChart.tsx` | Leads by source donut |
+| `src/app/(admin)/dashboard/components/DashboardFunnelChart.tsx` | Marketing events bar |
+| `src/app/(admin)/dashboard/components/DashboardRecentLeads.tsx` | Recent leads table |
+| `src/app/(admin)/dashboard/components/DashboardRecentQuotes.tsx` | Recent quotes table |
+
+### Darkone Component Parity
+
+| Dashboard Component | Darkone Reference |
+|---------------------|-------------------|
+| KPICard | Darkone Cards.tsx StatCard |
+| SourceChart | Darkone SaleChart.tsx donut |
+| FunnelChart | Darkone Chart.tsx bar |
+| RecentLeads | Darkone User.tsx table |
+| RecentQuotes | Darkone User.tsx table |
 
 ---
 
