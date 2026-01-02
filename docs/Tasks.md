@@ -42,9 +42,9 @@ Consolidate and refine the Admin Dashboard and Analytics section using **first-p
 
 ---
 
-### Phase 8B — Analytics Page Replacement ✅ COMPLETE & VERIFIED
+### Phase 8B — Analytics Page Replacement ✅ COMPLETE & PARITY RESTORED
 
-**Status:** ✅ EXECUTED & FIXED — 2026-01-02
+**Status:** ✅ EXECUTED, FIXED & PARITY RESTORED — 2026-01-02
 
 **Implemented:**
 - [x] Analytics KPI Cards (Total Leads, Total Quotes, Total Events, Funnel Conversion)
@@ -61,10 +61,12 @@ Consolidate and refine the Admin Dashboard and Analytics section using **first-p
 - `src/app/(admin)/analytics/components/AnalyticsSourceChart.tsx`
 - `docs/restore-points/Restore_Point_Phase_8B_Pre_Execution.md`
 - `docs/restore-points/Restore_Point_Phase_8B_Analytics_QueryClient_Fix.md`
+- `docs/restore-points/Restore_Point_Phase_8B_Analytics_Darkone_Parity_Fix.md`
 
 **Files Modified:**
 - `src/app/(admin)/analytics/page.tsx` — Replaced placeholder with analytics dashboard
 - `src/app/(admin)/analytics/hooks/useAnalyticsStats.ts` — Fixed QueryClient error
+- All Analytics components — Corrected to match Dashboard 1:1 parity
 
 **Runtime Fix Applied (2026-01-02):**
 
@@ -72,16 +74,28 @@ Consolidate and refine the Admin Dashboard and Analytics section using **first-p
 |-------|-----------|-----|
 | "No QueryClient set" error | `useAnalyticsStats` used `@tanstack/react-query` (`useQuery`) without `QueryClientProvider` in admin app | Rewrote hook to use `useState` + `useEffect` pattern matching `useDashboardStats` |
 
+**Parity Correction Applied (2026-01-02):**
+
+| Component | Issue | Fix |
+|-----------|-------|-----|
+| AnalyticsKPICards | Wrong icon wrapper, chart position | Matched DashboardKPICards: IconifyIcon + avatar-md wrapper, chart outside CardBody, height=50 |
+| AnalyticsBillingChart | Missing stroke/fill, center label | Matched DashboardSourceChart: stroke: { width: 0 }, fill: { type: 'gradient' }, labels.show: false |
+| AnalyticsSourceChart | Same as Billing | Same fixes applied |
+| AnalyticsEventsChart | Wrong config/header | Matched DashboardFunnelChart: dataLabels, CardHeader pattern, card-height-100 |
+
 **Why Dashboard Worked:**
 - `useDashboardStats.ts` uses `useState` + `useEffect` (no external dependencies)
+- Dashboard components follow Darkone template exactly
 
 **Why Analytics Failed:**
 - `useAnalyticsStats.ts` used `useQuery` from `@tanstack/react-query`
-- Admin app's `AppProvidersWrapper` has no `QueryClientProvider`
+- Analytics components used custom configurations instead of Darkone patterns
 
-**Fix Strategy:** A (Parity-safe) — Removed react-query usage, matched Dashboard pattern
+**Fix Strategy:** A (Parity-safe) — Removed react-query usage, rewrote all components to match Dashboard 1:1
 
 **Guardian Rules Compliance:** ✅ All rules followed
+**Darkone_Reusability_Registry:** ✅ Referenced and respected
+**darkone-assets-map:** ✅ Referenced and respected
 
 ---
 
