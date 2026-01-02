@@ -102,7 +102,7 @@ export const MENU_ITEMS: MenuItemType[] = [
       },
       {
         key: 'marketing-events',
-        label: 'Events',
+        label: 'Marketing Events',
         url: '/analytics/events',
         parentKey: 'analytics',
       },
