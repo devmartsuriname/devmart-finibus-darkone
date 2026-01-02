@@ -1,8 +1,180 @@
 # Tasks — Devmart Implementation Tracker
 
 **Status:** ✅ PHASE 12 COMPLETE — FRONTEND FROZEN  
-**Current Phase:** Phase 5 SEO ✅ CLOSED | Phase 6 Quote Wizard ✅ COMPLETED AND VERIFIED  
-**Last Updated:** 2026-01-01
+**Current Phase:** Phase 6 ✅ COMPLETED | Phase 7 ⏳ PLANNING IN PROGRESS  
+**Last Updated:** 2026-01-02
+
+---
+
+## === PHASE 7 MARKETING ANALYTICS & ADMIN DASHBOARD ===
+
+**Planning Start:** 2026-01-02  
+**Status:** ⏳ PLANNING IN PROGRESS — EXECUTION NOT AUTHORIZED
+
+---
+
+### Phase 7 Objective
+
+Finalize Devmart for go-live by implementing marketing tracking foundations and an internal-only Admin Dashboard using existing Darkone components and mapped data.
+
+---
+
+### Phase 7A — Marketing Data Foundations (PLANNING)
+
+**Status:** ✅ PLAN APPROVED — EXECUTION GATED
+
+| Item | Description | Requires Approval |
+|------|-------------|-------------------|
+| UTM Schema Extension | Add utm_source, utm_medium, utm_campaign, utm_content, utm_term to `leads` and `quotes` tables | **YES — Explicit GO required** |
+| UTM Capture Hook | `apps/public/src/hooks/useUtmCapture.ts` — sessionStorage persistence | SAFE to batch |
+| Form Integration | Wire UTM data to ContactForm and QuoteWizard inserts | SAFE to batch |
+| Admin Display | Read-only UTM fields in LeadDetailModal and QuoteDetailModal | SAFE to batch |
+
+**Data Flow:**
+```
+[Public Site] → UTM params in URL
+    ↓
+[sessionStorage] → Persist across navigation
+    ↓
+[Form Submission] → Include UTM in INSERT
+    ↓
+[Database] → leads/quotes tables
+    ↓
+[Admin UI] → Read-only display
+```
+
+---
+
+### Phase 7B — Tracking & Events (PLANNING)
+
+**Status:** ✅ PLAN APPROVED — EXECUTION GATED
+
+| Platform | Event | Trigger Point |
+|----------|-------|---------------|
+| Meta Pixel | PageView | Route change (App.tsx) |
+| Meta Pixel | ViewContent | Service details page load |
+| Meta Pixel | InitiateCheckout | Quote wizard Step 1 → Step 2 |
+| Meta Pixel | Purchase | Quote submission success |
+| Google Ads | conversion | Quote submission success |
+
+**Environment Variables:**
+- `VITE_GOOGLE_ADS_CONVERSION_ID`
+- `VITE_GOOGLE_ADS_CONVERSION_LABEL`
+- `VITE_META_PIXEL_ID`
+
+**Files to Create:**
+- `apps/public/src/lib/tracking/index.ts` — Tracking wrapper
+
+**Files to Modify:**
+- `apps/public/index.html` — Add gtag.js + Meta Pixel scripts
+
+**Zero UI Impact Guarantee:** All tracking code is invisible to users.
+
+---
+
+### Phase 7C — Internal Admin Dashboard (PLANNING)
+
+**Status:** ✅ PLAN APPROVED — EXECUTION GATED
+
+**Constraints:**
+- INTERNAL ONLY — no client visibility
+- Darkone components ONLY — no custom charts
+- Existing data ONLY — no new tables
+- Read-only analytics — no CRUD operations
+
+**Dashboard Layout (Darkone Pattern):**
+```
+Row 1: [KPI Card] [KPI Card] [KPI Card] [KPI Card]
+Row 2: [Trends Chart (Col-8)] [Source Chart (Col-4)]
+Row 3: [Quote Insights (Col-6)] [Top Services (Col-6)]
+```
+
+**Section 1: Top KPIs** (Reuse Cards.tsx pattern)
+
+| Metric | Source |
+|--------|--------|
+| New Leads (7d) | `leads` table |
+| Quotes Created | `quotes` table |
+| Total Quote Value | `quotes.total_amount` |
+| Conversion Rate | leads with quote_id / total leads |
+
+**Section 2: Marketing Performance** (Reuse SaleChart.tsx pattern)
+- Leads by Source (donut chart)
+
+**Section 3: Quote Insights** (Reuse SaleChart.tsx pattern)
+- Tier Distribution
+- Monthly vs Yearly Split
+
+**Section 4: Trends** (Reuse Chart.tsx pattern)
+- Leads over Time (area chart)
+- Quotes over Time (area chart)
+
+**Files to Create:**
+- `src/app/(admin)/dashboard/hooks/useDashboardStats.ts`
+- `src/app/(admin)/dashboard/components/DashboardKPICards.tsx`
+- `src/app/(admin)/dashboard/components/DashboardSourceChart.tsx`
+- `src/app/(admin)/dashboard/components/DashboardInsightsChart.tsx`
+- `src/app/(admin)/dashboard/components/DashboardTrendsChart.tsx`
+
+**Files to Modify:**
+- `src/app/(admin)/dashboard/page.tsx` — Replace placeholder
+
+---
+
+### Execution Gates
+
+| Gate | Description | Status |
+|------|-------------|--------|
+| Gate 1 | Schema Migration (UTM columns) | ❌ REQUIRES EXPLICIT GO |
+| Gate 2 | Phase 7A Execution | ⏳ Blocked by Gate 1 |
+| Gate 3 | Phase 7B Execution | ⏳ Can run parallel to Gate 2 |
+| Gate 4 | Phase 7C Execution | ⏳ Blocked by Gate 2 + 3 |
+
+---
+
+### Guardian Rules Compliance
+
+| Rule | Status |
+|------|--------|
+| Public Finibus 1:1 | COMPLIANT — tracking is invisible |
+| Admin Darkone 1:1 | COMPLIANT — reuses existing components |
+| NO new routes | COMPLIANT — uses existing /dashboard |
+| NO schema changes without approval | Gate 1 requires explicit GO |
+| NO client-facing dashboards | COMPLIANT — internal only |
+| NO experimental features | COMPLIANT — standard patterns |
+| NO scope creep | COMPLIANT — intake focus only |
+
+---
+
+### NOT Included (Per Constraints)
+
+| Feature | Reason |
+|---------|--------|
+| Per-page analytics | Requires external analytics |
+| Heatmaps | Requires Hotjar/similar |
+| User session tracking | Privacy scope |
+| Client-visible metrics | Internal only |
+| Sales pipeline | Quotes = intake only |
+| Deal stages | Out of scope |
+| Forecasting | Out of scope |
+
+---
+
+### Phase 7 Deliverables (Upon Completion)
+
+1. Working Admin Dashboard with live data
+2. Verified Google Ads + Meta event firing
+3. UTM data visible in Admin (read-only)
+4. Updated documentation: Tasks.md, Architecture.md, Backend.md
+5. Restore Point created for Phase 7 completion
+
+---
+
+### STOP CONDITION
+
+After Phase 7 completion: HARD STOP. Await explicit authorization before ANY further work.
+
+---
 
 ---
 
