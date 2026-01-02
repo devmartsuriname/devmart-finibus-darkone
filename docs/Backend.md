@@ -3,8 +3,52 @@
 # Backend Documentation
 
 **Status:** ✅ PHASE 12 COMPLETE — FRONTEND FROZEN  
-**Phase:** Phase 12 CLOSED | Phase 6C Schema ✅ EXECUTED | Phase 5 SEO ✅ EXECUTED  
-**Last Updated:** 2025-12-31
+**Phase:** Phase 12 CLOSED | Phase 6C Schema ✅ EXECUTED | Phase 5 SEO ✅ EXECUTED | Phase 7A ✅ EXECUTED  
+**Last Updated:** 2026-01-02
+
+---
+
+## Phase 7A — UTM Marketing Attribution Schema (2026-01-02)
+
+**Status:** ✅ **EXECUTED AND VERIFIED**
+
+### Objective
+
+Add UTM tracking fields to leads and quotes tables for marketing attribution.
+
+### Schema Changes
+
+#### public.leads (Extended)
+
+| Column Added | Type | Nullable | Purpose |
+|--------------|------|----------|---------|
+| `utm_source` | TEXT | YES | Traffic source (google, facebook, etc.) |
+| `utm_medium` | TEXT | YES | Marketing medium (cpc, social, email) |
+| `utm_campaign` | TEXT | YES | Campaign identifier |
+| `utm_content` | TEXT | YES | Ad variant identifier |
+| `utm_term` | TEXT | YES | Search keyword |
+
+#### public.quotes (Extended)
+
+| Column Added | Type | Nullable | Purpose |
+|--------------|------|----------|---------|
+| `utm_source` | TEXT | YES | Traffic source (google, facebook, etc.) |
+| `utm_medium` | TEXT | YES | Marketing medium (cpc, social, email) |
+| `utm_campaign` | TEXT | YES | Campaign identifier |
+| `utm_content` | TEXT | YES | Ad variant identifier |
+| `utm_term` | TEXT | YES | Search keyword |
+
+### RLS Impact
+
+- **No policy changes required** — existing policies remain valid
+- Public INSERT allows UTM fields (INSERT WITH CHECK true)
+- Admin SELECT/UPDATE access unchanged
+
+### Data Flow
+
+```
+URL with UTM params → sessionStorage → Form INSERT → Database → Admin UI (read-only)
+```
 
 ---
 

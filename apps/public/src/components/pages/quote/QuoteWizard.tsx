@@ -17,9 +17,10 @@
  * - .cmn-btn for navigation
  */
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { supabase } from '../../../lib/supabase';
 import { useServices } from '../../../hooks/useServices';
+import { captureUtmParams, getUtmData } from '../../../hooks/useUtmCapture';
 import ServiceSelection from './steps/ServiceSelection';
 import TierConfiguration from './steps/TierConfiguration';
 import QuoteSummary from './steps/QuoteSummary';
@@ -97,6 +98,11 @@ function QuoteWizard() {
   
   // Fetch services for title lookups
   const { services } = useServices();
+
+  // Capture UTM params on mount
+  useEffect(() => {
+    captureUtmParams();
+  }, []);
 
   // Navigation handlers
   const goToStep = (step: number) => {
@@ -195,6 +201,9 @@ function QuoteWizard() {
       const firstSelection = state.selections[state.selectedServiceIds[0]];
       const currency = firstSelection?.currency || 'USD';
 
+      // Get UTM data for marketing attribution
+      const utmData = getUtmData();
+
       // 1. Insert lead first (quote_id stays null - quote links via quotes.lead_id)
       const { error: leadError } = await supabase
         .from('leads')
@@ -205,6 +214,7 @@ function QuoteWizard() {
           subject: 'Quote Request',
           message: state.message.trim() || null,
           source: 'quote_wizard',
+          ...utmData,
           // Note: quote_id intentionally omitted - quotes.lead_id provides the link
         });
 
@@ -221,6 +231,7 @@ function QuoteWizard() {
           billing_period: state.billingPeriod,
           status: 'pending',
           lead_id: leadId,
+          ...utmData,
         });
 
       if (quoteError) throw quoteError;

@@ -152,6 +152,89 @@ const LeadDetailModal = ({ show, onClose, onUpdate, lead }: LeadDetailModalProps
                 </Form.Group>
               </Col>
             </Row>
+
+            {/* Phase 7A: Marketing Attribution (Read-Only) */}
+            {(lead.utm_source || lead.utm_medium || lead.utm_campaign) && (
+              <>
+                <h6 className="text-muted mb-3 mt-4">Marketing Attribution</h6>
+                <Row>
+                  {lead.utm_source && (
+                    <Col xs={4}>
+                      <Form.Group className="mb-3">
+                        <Form.Label className="text-muted small">UTM Source</Form.Label>
+                        <Form.Control
+                          type="text"
+                          value={lead.utm_source}
+                          disabled
+                          plaintext
+                          className="small"
+                        />
+                      </Form.Group>
+                    </Col>
+                  )}
+                  {lead.utm_medium && (
+                    <Col xs={4}>
+                      <Form.Group className="mb-3">
+                        <Form.Label className="text-muted small">UTM Medium</Form.Label>
+                        <Form.Control
+                          type="text"
+                          value={lead.utm_medium}
+                          disabled
+                          plaintext
+                          className="small"
+                        />
+                      </Form.Group>
+                    </Col>
+                  )}
+                  {lead.utm_campaign && (
+                    <Col xs={4}>
+                      <Form.Group className="mb-3">
+                        <Form.Label className="text-muted small">UTM Campaign</Form.Label>
+                        <Form.Control
+                          type="text"
+                          value={lead.utm_campaign}
+                          disabled
+                          plaintext
+                          className="small"
+                        />
+                      </Form.Group>
+                    </Col>
+                  )}
+                </Row>
+                {(lead.utm_content || lead.utm_term) && (
+                  <Row>
+                    {lead.utm_content && (
+                      <Col xs={6}>
+                        <Form.Group className="mb-3">
+                          <Form.Label className="text-muted small">UTM Content</Form.Label>
+                          <Form.Control
+                            type="text"
+                            value={lead.utm_content}
+                            disabled
+                            plaintext
+                            className="small"
+                          />
+                        </Form.Group>
+                      </Col>
+                    )}
+                    {lead.utm_term && (
+                      <Col xs={6}>
+                        <Form.Group className="mb-3">
+                          <Form.Label className="text-muted small">UTM Term</Form.Label>
+                          <Form.Control
+                            type="text"
+                            value={lead.utm_term}
+                            disabled
+                            plaintext
+                            className="small"
+                          />
+                        </Form.Group>
+                      </Col>
+                    )}
+                  </Row>
+                )}
+              </>
+            )}
           </Col>
 
           {/* Right Column - Editable Fields */}
