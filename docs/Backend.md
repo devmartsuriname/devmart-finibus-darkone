@@ -2,9 +2,71 @@
 
 # Backend Documentation
 
-**Status:** ✅ PHASE 12 COMPLETE — FRONTEND FROZEN  
-**Phase:** Phase 12 CLOSED | Phase 6C Schema ✅ EXECUTED | Phase 5 SEO ✅ EXECUTED | Phase 7A ✅ EXECUTED | Phase 7B ✅ EXECUTED  
+**Status:** ✅ PHASE 7C COMPLETE — ADMIN DASHBOARD LIVE  
+**Phase:** Phase 12 CLOSED | Phase 6C Schema ✅ EXECUTED | Phase 5 SEO ✅ EXECUTED | Phase 7A ✅ EXECUTED | Phase 7B ✅ EXECUTED | Phase 7C ✅ EXECUTED  
 **Last Updated:** 2026-01-02
+
+---
+
+## Phase 7C — Admin Dashboard Queries (2026-01-02)
+
+**Status:** ✅ **EXECUTED AND VERIFIED**
+
+### Objective
+
+Implement internal Admin Dashboard with read-only analytics using existing data sources.
+
+### Data Queries
+
+#### KPI Aggregations
+
+| Metric | Query | Table(s) |
+|--------|-------|----------|
+| Total Leads | COUNT(*) | leads |
+| Total Quotes | COUNT(*) | quotes |
+| Total Quote Value | SUM(total_amount) | quotes |
+| Content Items | COUNT(*) | blog_posts + projects + services |
+
+#### Leads by Source
+
+```sql
+SELECT source, COUNT(*) as count
+FROM leads
+GROUP BY source
+ORDER BY count DESC
+```
+
+#### Marketing Events by Type
+
+```sql
+SELECT event_type, COUNT(*) as count
+FROM marketing_events
+GROUP BY event_type
+```
+
+#### Recent Leads
+
+```sql
+SELECT id, name, email, source, status, created_at
+FROM leads
+ORDER BY created_at DESC
+LIMIT 5
+```
+
+#### Recent Quotes
+
+```sql
+SELECT id, reference_number, total_amount, currency, billing_period, status, created_at
+FROM quotes
+ORDER BY created_at DESC
+LIMIT 5
+```
+
+### Security
+
+- All queries require authenticated admin user
+- RLS policies enforce SELECT access
+- No write operations in dashboard
 
 ---
 
