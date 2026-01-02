@@ -1,19 +1,19 @@
-# Phase 9 — Scope Lock Document
+# Phase 13 — Scope Lock Document
 ## Polish & Enhancements (Pre-Marketing)
 
 ---
 
-## 1. Purpose of Phase 9
+## 1. Purpose of Phase 13
 
-Phase 9 exists to **technically and visually finalize** the Devmart platform (Frontend + Backend) before any marketing, tracking, or external integrations (Phase 7D).
+Phase 13 exists to **technically and visually finalize** the Devmart platform (Frontend + Backend) before any marketing, tracking, or external integrations (Phase 7D).
 
 The objective is **stability, governance completeness, compliance, and polish** — not feature expansion or growth experiments.
 
-**Phase 9 is the final engineering & UX consolidation phase.**
+**Phase 13 is the final engineering & UX consolidation phase.**
 
 ---
 
-## 2. Phase 9 Core Principles (Non-Negotiable)
+## 2. Phase 13 Core Principles (Non-Negotiable)
 
 - No marketing integrations (Phase 7D remains LOCKED)
 - No scope creep beyond what is explicitly defined here
@@ -24,16 +24,16 @@ The objective is **stability, governance completeness, compliance, and polish** 
 
 ---
 
-## 3. Phase 9 Structure Overview
+## 3. Phase 13 Structure Overview
 
-Phase 9 is divided into **four controlled sub-phases**:
+Phase 13 is divided into **four controlled sub-phases**:
 
 | Sub-Phase | Name | Priority | Focus |
 |---------|------|----------|-------|
-| 9A | Backend Governance Foundation | P0 | Security, roles, notifications |
-| 9B | Frontend Content Wiring | P1 | Remove hardcoded content |
-| 9C | Legal & System Pages | P1.5 | Compliance & trust |
-| 9D | System Toggles & Final Polish | P2 | Operational readiness |
+| 13A | Backend Governance Foundation | P0 | Security, roles, notifications |
+| 13B | Frontend Content Wiring | P1 | Remove hardcoded content |
+| 13C | Legal & System Pages | P1.5 | Compliance & trust |
+| 13D | System Toggles & Final Polish | P2 | Operational readiness |
 
 Each sub-phase requires:
 - Explicit authorization
@@ -43,7 +43,7 @@ Each sub-phase requires:
 
 ---
 
-## 4. Phase 9A — Backend Governance Foundation (P0)
+## 4. Phase 13A — Backend Governance Foundation (P0)
 
 ### In Scope
 
@@ -74,7 +74,7 @@ Each sub-phase requires:
 
 ---
 
-## 5. Phase 9B — Frontend Content Wiring (P1)
+## 5. Phase 13B — Frontend Content Wiring (P1)
 
 ### In Scope
 
@@ -99,7 +99,7 @@ Each sub-phase requires:
 
 ---
 
-## 6. Phase 9C — Legal & System Pages (P1.5)
+## 6. Phase 13C — Legal & System Pages (P1.5)
 
 ### Pages to Create
 
@@ -123,11 +123,11 @@ Each sub-phase requires:
 
 ---
 
-## 7. Phase 9D — System Toggles & Final Polish (P2)
+## 7. Phase 13D — System Toggles & Final Polish (P2)
 
 ### In Scope
 
-- “Coming Soon” / Maintenance Mode toggle:
+- "Coming Soon" / Maintenance Mode toggle:
   - Admin Settings (new tab or section)
   - Frontend conditional rendering
 
@@ -144,7 +144,7 @@ Each sub-phase requires:
 
 ---
 
-## 8. Explicitly Out of Scope for Phase 9
+## 8. Explicitly Out of Scope for Phase 13
 
 - Phase 7D Marketing Integrations
 - Blog search, pagination, filtering
@@ -154,13 +154,13 @@ Each sub-phase requires:
 
 ---
 
-## 9. Phase 9 Completion Definition
+## 9. Phase 13 Completion Definition
 
-Phase 9 is considered COMPLETE when:
+Phase 13 is considered COMPLETE when:
 
 - All authorized sub-phases are executed and verified
 - All restore points exist
-- Documentation reflects Phase 9 completion
+- Documentation reflects Phase 13 completion
 - Platform is declared **Marketing-Ready**
 
 ---
@@ -169,12 +169,11 @@ Phase 9 is considered COMPLETE when:
 
 After this Scope Lock:
 
-1. Explicit authorization of **Phase 9A (Backend)** OR **Phase 9C (Legal Pages)**
+1. Explicit authorization of **Phase 13A (Backend)** OR **Phase 13C (Legal Pages)**
 2. Execution instructions issued per sub-phase
 
 No execution may begin without this authorization.
 
 ---
 
-**Status:** Phase 9 SCOPE LOCKED (Pending Execution Authorization)
-
+**Status:** Phase 13 SCOPE LOCKED (Pending Execution Authorization)
