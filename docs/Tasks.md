@@ -1,7 +1,7 @@
 # Tasks — Devmart Implementation Tracker
 
-**Status:** ✅ PHASE 8 CLOSED  
-**Current Phase:** Phase 8 CLOSED — All sub-phases executed and verified  
+**Status:** ✅ PHASE 8 CLOSED | 📋 PHASE 9 SCOPE LOCKED  
+**Current Phase:** Phase 9 SCOPE LOCKED — Awaiting Execution Authorization  
 **Last Updated:** 2026-01-02
 
 ---
@@ -172,6 +172,129 @@ See: `docs/phase-8/Phase_8_Planning.md`
 
 All sub-phases (8A, 8B, 8C) have been executed, verified, and formally closed.
 Documentation and restore points are complete.
+
+---
+
+---
+
+## === PHASE 9 POLISH & ENHANCEMENTS (SCOPE LOCKED — NOT AUTHORIZED) ===
+
+**Planning Date:** 2026-01-02  
+**Status:** 📋 SCOPE LOCKED — AWAITING EXECUTION AUTHORIZATION
+
+---
+
+### Phase 9 Objective
+
+Technically and visually finalize the Devmart platform (Frontend + Backend) before any marketing, tracking, or external integrations (Phase 7D). The objective is stability, governance completeness, compliance, and polish — not feature expansion.
+
+---
+
+### Phase 9 Core Principles (Non-Negotiable)
+
+- No marketing integrations (Phase 7D remains LOCKED)
+- No scope creep beyond what is explicitly defined
+- No layout redesigns or visual rework
+- Darkone & Finibus parity must be preserved
+- CMS wiring is allowed ONLY for content-level gaps
+- All work must be gated, documented, and restorable
+
+---
+
+### Phase 9A — Backend Governance Foundation (P0)
+
+**Status:** ❌ NOT STARTED — AWAITING AUTHORIZATION
+
+**In Scope:**
+- Notifications system (In-app, Email, WhatsApp)
+- User & Role Model (admin, editor, viewer)
+- RLS Policies per role
+
+**Out of Scope:**
+- Marketing automation
+- Campaign-based notifications
+- External analytics providers
+
+---
+
+### Phase 9B — Frontend Content Wiring (P1)
+
+**Status:** ❌ NOT STARTED — AWAITING AUTHORIZATION
+
+**In Scope:**
+- Content-only GAPs as defined in GAP Registry
+- CMS wiring for headings, labels, static copy
+- Footer copyright via Admin Settings
+
+**Constraints:**
+- NO layout changes
+- NO CSS/SCSS changes
+- NO component refactors
+
+---
+
+### Phase 9C — Legal & System Pages (P1.5)
+
+**Status:** ❌ NOT STARTED — AWAITING AUTHORIZATION
+
+**Pages to Create:**
+- Privacy Policy
+- Terms of Use
+- Support Policy
+- Terms of Service
+
+**Implementation Rules:**
+- Use Frontend_Uniformity_Library
+- One shared layout pattern
+- Content supplied by Devmart via Live Documents
+
+---
+
+### Phase 9D — System Toggles & Final Polish (P2)
+
+**Status:** ❌ NOT STARTED — AWAITING AUTHORIZATION
+
+**In Scope:**
+- Coming Soon / Maintenance Mode toggle
+- Final polish (UX micro-consistency, copy alignment, state handling)
+
+---
+
+### Execution Gates
+
+| Gate | Description | Status |
+|------|-------------|--------|
+| Gate 9.0 | Phase 9 Scope Lock reviewed | ✅ COMPLETE |
+| Gate 9.1 | Documentation alignment | ✅ COMPLETE |
+| Gate 9.2 | Phase 9A authorization | ❌ NOT AUTHORIZED |
+| Gate 9.3 | Phase 9B authorization | ❌ NOT AUTHORIZED |
+| Gate 9.4 | Phase 9C authorization | ❌ NOT AUTHORIZED |
+| Gate 9.5 | Phase 9D authorization | ❌ NOT AUTHORIZED |
+| Gate 9.6 | Phase 9 governance lock | ❌ NOT STARTED |
+
+---
+
+### Explicitly Out of Scope
+
+- Phase 7D Marketing Integrations
+- Blog search, pagination, filtering
+- New dashboards or analytics
+- New frontend layouts or themes
+- Performance re-architecture
+
+---
+
+### Planning Document
+
+See: `docs/phase-9/Phase_9_Scope_Lock.md`
+
+---
+
+### HARD STOP
+
+Phase 9 is SCOPE LOCKED.
+No execution may begin without explicit sub-phase authorization.
+Await instructions.
 
 ---
 

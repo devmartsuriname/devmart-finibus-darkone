@@ -1,7 +1,7 @@
 # Architecture Documentation
 
-**Status:** ✅ PHASE 7 COMPLETE | ✅ PHASE 8 CLOSED  
-**Phase:** Phase 8 CLOSED (8A ✅ | 8B ✅ | 8C ✅)  
+**Status:** ✅ PHASE 7 COMPLETE | ✅ PHASE 8 CLOSED | 📋 PHASE 9 SCOPE LOCKED  
+**Phase:** Phase 9 SCOPE LOCKED — Awaiting Execution Authorization  
 **Last Updated:** 2026-01-02
 
 ---
@@ -91,6 +91,49 @@ See: `docs/phase-8/Phase_8_Planning.md`
 | Phase 8B execution | ✅ COMPLETE & VERIFIED |
 | Phase 8C execution | ✅ COMPLETE |
 | Phase 8 governance lock | ✅ CLOSED |
+
+---
+
+## Phase 9 — Polish & Enhancements (PLANNED — NOT AUTHORIZED)
+
+**Status:** 📋 SCOPE LOCKED — AWAITING EXECUTION AUTHORIZATION
+
+### Objective
+
+Technically and visually finalize the Devmart platform before any marketing, tracking, or external integrations (Phase 7D). This is the final engineering & UX consolidation phase.
+
+### Key Constraint
+
+Phase 9 is refinement, not expansion. No architectural changes are authorized yet.
+
+### Sub-Phases
+
+| Sub-Phase | Name | Priority | Status |
+|-----------|------|----------|--------|
+| 9A | Backend Governance Foundation | P0 | ❌ NOT AUTHORIZED |
+| 9B | Frontend Content Wiring | P1 | ❌ NOT AUTHORIZED |
+| 9C | Legal & System Pages | P1.5 | ❌ NOT AUTHORIZED |
+| 9D | System Toggles & Final Polish | P2 | ❌ NOT AUTHORIZED |
+
+### Scope Boundaries
+
+**Allowed:**
+- Notifications system (in-app, email, WhatsApp)
+- Role-based access (admin, editor, viewer)
+- RLS policies per role
+- Content-only CMS wiring (no layout changes)
+- Legal pages (Privacy, Terms, Support)
+- System toggles (Coming Soon / Maintenance Mode)
+
+**NOT Allowed:**
+- Frontend layout or CSS changes
+- New dashboards or analytics
+- Phase 7D marketing integrations
+- Schema expansion beyond notifications/roles
+
+### Planning Document
+
+See: `docs/phase-9/Phase_9_Scope_Lock.md`
 
 ---
 
