@@ -212,6 +212,55 @@ const QuoteDetailModal = ({ show, onClose, onUpdate, quote, quoteItems, isLoadin
               Current status: {getStatusBadge(quote.status)}
             </Form.Text>
 
+            {/* Phase 7A: Source Attribution (Read-Only) */}
+            {(quote.utm_source || quote.utm_medium || quote.utm_campaign) && (
+              <>
+                <h6 className="text-muted mb-3 mt-2">Source Attribution</h6>
+                <Row>
+                  {quote.utm_source && (
+                    <Col xs={6}>
+                      <Form.Group className="mb-2">
+                        <Form.Label className="text-muted small">UTM Source</Form.Label>
+                        <Form.Control
+                          type="text"
+                          value={quote.utm_source}
+                          disabled
+                          plaintext
+                          className="small"
+                        />
+                      </Form.Group>
+                    </Col>
+                  )}
+                  {quote.utm_medium && (
+                    <Col xs={6}>
+                      <Form.Group className="mb-2">
+                        <Form.Label className="text-muted small">UTM Medium</Form.Label>
+                        <Form.Control
+                          type="text"
+                          value={quote.utm_medium}
+                          disabled
+                          plaintext
+                          className="small"
+                        />
+                      </Form.Group>
+                    </Col>
+                  )}
+                </Row>
+                {quote.utm_campaign && (
+                  <Form.Group className="mb-2">
+                    <Form.Label className="text-muted small">UTM Campaign</Form.Label>
+                    <Form.Control
+                      type="text"
+                      value={quote.utm_campaign}
+                      disabled
+                      plaintext
+                      className="small"
+                    />
+                  </Form.Group>
+                )}
+              </>
+            )}
+
             {/* Note: Internal notes would require schema change */}
             <div className="alert alert-light mt-4">
               <small className="text-muted">

@@ -17,6 +17,12 @@ export interface Quote {
   // Joined from leads table
   lead_name?: string
   lead_email?: string
+  // Phase 7A: UTM marketing attribution fields (read-only)
+  utm_source: string | null
+  utm_medium: string | null
+  utm_campaign: string | null
+  utm_content: string | null
+  utm_term: string | null
 }
 
 export interface QuoteItem {
@@ -95,6 +101,12 @@ export const useQuotes = () => {
         updated_at: quote.updated_at,
         lead_name: quote.lead_id ? leadsMap[quote.lead_id]?.name : undefined,
         lead_email: quote.lead_id ? leadsMap[quote.lead_id]?.email : undefined,
+        // Phase 7A: UTM fields
+        utm_source: quote.utm_source || null,
+        utm_medium: quote.utm_medium || null,
+        utm_campaign: quote.utm_campaign || null,
+        utm_content: quote.utm_content || null,
+        utm_term: quote.utm_term || null,
       }))
 
       setQuotes(typedData)

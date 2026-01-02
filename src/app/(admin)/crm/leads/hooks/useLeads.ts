@@ -15,6 +15,12 @@ export interface Lead {
   notes: string | null
   created_at: string
   updated_at: string
+  // Phase 7A: UTM marketing attribution fields (read-only)
+  utm_source: string | null
+  utm_medium: string | null
+  utm_campaign: string | null
+  utm_content: string | null
+  utm_term: string | null
 }
 
 export interface LeadUpdateInput {

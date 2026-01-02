@@ -1,8 +1,13 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { supabase } from "../../../lib/supabase";
 import { usePublicSettings } from "../../../hooks/usePublicSettings";
+import { captureUtmParams, getUtmData } from "../../../hooks/useUtmCapture";
 
 function ContactForm() {
+  // Capture UTM params on mount
+  useEffect(() => {
+    captureUtmParams();
+  }, []);
   const { settings } = usePublicSettings();
   
   // Form state
@@ -53,6 +58,9 @@ function ContactForm() {
     setIsSubmitting(true);
     setSubmitStatus(null);
     
+    // Get UTM data for marketing attribution
+    const utmData = getUtmData();
+    
     const { error } = await supabase
       .from('leads')
       .insert({
@@ -60,7 +68,8 @@ function ContactForm() {
         email: trimmedEmail,
         subject: subject.trim() || null,
         message: trimmedMessage,
-        source: 'contact_form'
+        source: 'contact_form',
+        ...utmData,
       });
     
     setIsSubmitting(false);
