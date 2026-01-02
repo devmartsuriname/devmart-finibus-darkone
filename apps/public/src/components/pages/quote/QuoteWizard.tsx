@@ -21,6 +21,7 @@ import React, { useState, useEffect } from 'react';
 import { supabase } from '../../../lib/supabase';
 import { useServices } from '../../../hooks/useServices';
 import { captureUtmParams, getUtmData } from '../../../hooks/useUtmCapture';
+import { trackEvent } from '../../../hooks/useMarketingEvents';
 import ServiceSelection from './steps/ServiceSelection';
 import TierConfiguration from './steps/TierConfiguration';
 import QuoteSummary from './steps/QuoteSummary';
@@ -99,9 +100,11 @@ function QuoteWizard() {
   // Fetch services for title lookups
   const { services } = useServices();
 
-  // Capture UTM params on mount
+  // Capture UTM params and track quote start on mount
   useEffect(() => {
     captureUtmParams();
+    // Phase 7B: Track quote wizard start
+    trackEvent({ eventType: 'quote_started', source: 'quote_wizard' });
   }, []);
 
   // Navigation handlers
@@ -113,6 +116,12 @@ function QuoteWizard() {
 
   const goNext = () => {
     if (currentStep < 5) {
+      // Phase 7B: Track step completion
+      trackEvent({
+        eventType: 'quote_step_completed',
+        source: 'quote_wizard',
+        metadata: { from_step: currentStep, to_step: currentStep + 1 },
+      });
       setState(prev => ({ ...prev, currentStep: prev.currentStep + 1 }));
     }
   };
@@ -256,6 +265,19 @@ function QuoteWizard() {
         .insert(quoteItems);
 
       if (itemsError) throw itemsError;
+
+      // Phase 7B: Track quote submission
+      trackEvent({
+        eventType: 'quote_submitted',
+        source: 'quote_wizard',
+        referenceId: quoteId,
+        metadata: {
+          total_amount: totalAmount,
+          currency: currency,
+          billing_period: state.billingPeriod,
+          services_count: state.selectedServiceIds.length,
+        },
+      });
 
       // Success!
       setState(prev => ({

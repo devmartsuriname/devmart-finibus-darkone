@@ -316,6 +316,33 @@ export type Database = {
           },
         ]
       }
+      marketing_events: {
+        Row: {
+          created_at: string
+          event_type: string
+          id: string
+          metadata: Json | null
+          reference_id: string | null
+          source: string | null
+        }
+        Insert: {
+          created_at?: string
+          event_type: string
+          id?: string
+          metadata?: Json | null
+          reference_id?: string | null
+          source?: string | null
+        }
+        Update: {
+          created_at?: string
+          event_type?: string
+          id?: string
+          metadata?: Json | null
+          reference_id?: string | null
+          source?: string | null
+        }
+        Relationships: []
+      }
       media: {
         Row: {
           alt_text: string | null

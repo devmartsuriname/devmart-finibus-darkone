@@ -93,7 +93,20 @@ export const MENU_ITEMS: MenuItemType[] = [
     key: 'analytics',
     label: 'Analytics',
     icon: 'mingcute:chart-bar-line',
-    url: '/analytics',
+    children: [
+      {
+        key: 'analytics-overview',
+        label: 'Overview',
+        url: '/analytics',
+        parentKey: 'analytics',
+      },
+      {
+        key: 'marketing-events',
+        label: 'Events',
+        url: '/analytics/events',
+        parentKey: 'analytics',
+      },
+    ],
   },
 
   // ====================SYSTEM===============
