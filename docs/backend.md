@@ -3,12 +3,108 @@
 # Backend Documentation
 
 **Status:** ✅ PHASE 12 COMPLETE — FRONTEND FROZEN  
-**Phase:** Phase 12 CLOSED | Phase 6C Schema ✅ EXECUTED | Phase 5 SEO ✅ EXECUTED  
-**Last Updated:** 2025-12-31
+**Phase:** Phase 12 CLOSED | Phase 6C Schema ✅ EXECUTED | Phase 5 SEO ✅ EXECUTED | Phase 7A ✅ EXECUTED | Phase 7B ✅ EXECUTED  
+**Last Updated:** 2026-01-02
 
 ---
 
-## Phase 6C — Quote Wizard Schema & RLS (2025-12-31)
+## Phase 7A — UTM Marketing Attribution Schema (2026-01-02)
+
+**Status:** ✅ **EXECUTED AND VERIFIED**
+
+### Objective
+
+Add UTM tracking fields to leads and quotes tables for marketing attribution.
+
+### Schema Changes
+
+#### public.leads (Extended)
+
+| Column Added | Type | Nullable | Purpose |
+|--------------|------|----------|---------|
+| `utm_source` | TEXT | YES | Traffic source (google, facebook, etc.) |
+| `utm_medium` | TEXT | YES | Marketing medium (cpc, social, email) |
+| `utm_campaign` | TEXT | YES | Campaign identifier |
+| `utm_content` | TEXT | YES | Ad variant identifier |
+| `utm_term` | TEXT | YES | Search keyword |
+
+#### public.quotes (Extended)
+
+| Column Added | Type | Nullable | Purpose |
+|--------------|------|----------|---------|
+| `utm_source` | TEXT | YES | Traffic source (google, facebook, etc.) |
+| `utm_medium` | TEXT | YES | Marketing medium (cpc, social, email) |
+| `utm_campaign` | TEXT | YES | Campaign identifier |
+| `utm_content` | TEXT | YES | Ad variant identifier |
+| `utm_term` | TEXT | YES | Search keyword |
+
+### RLS Impact
+
+- **No policy changes required** — existing policies remain valid
+- Public INSERT allows UTM fields (INSERT WITH CHECK true)
+- Admin SELECT/UPDATE access unchanged
+
+### Data Flow
+
+```
+URL with UTM params → sessionStorage → Form INSERT → Database → Admin UI (read-only)
+```
+
+---
+
+## Phase 7B — Marketing Events Schema (2026-01-02)
+
+**Status:** ✅ **EXECUTED AND VERIFIED**
+
+### Objective
+
+Create a first-party event tracking system for internal marketing analytics.
+
+### Table Created
+
+#### public.marketing_events
+
+| Column | Type | Nullable | Default | Purpose |
+|--------|------|----------|---------|---------|
+| id | UUID | NO | gen_random_uuid() | Primary key |
+| event_type | TEXT | NO | — | Event identifier (quote_started, etc.) |
+| source | TEXT | YES | — | Event source (quote_wizard, contact_form, etc.) |
+| reference_id | UUID | YES | — | Optional link to quote/lead ID |
+| metadata | JSONB | YES | '{}' | Additional event data |
+| created_at | TIMESTAMPTZ | NO | now() | Event timestamp |
+
+### Indexes
+
+| Index | Columns | Purpose |
+|-------|---------|---------|
+| idx_marketing_events_created_at | created_at DESC | Efficient recent event queries |
+| idx_marketing_events_event_type | event_type | Filter by event type |
+
+### RLS Policies
+
+| Policy | Command | Expression |
+|--------|---------|------------|
+| Public can insert events | INSERT | WITH CHECK (true) |
+| Admins can view all events | SELECT | USING (has_role(auth.uid(), 'admin')) |
+
+### Event Types
+
+| Event | Trigger | Source |
+|-------|---------|--------|
+| quote_started | Quote Wizard mount | quote_wizard |
+| quote_step_completed | Step transition | quote_wizard |
+| quote_submitted | Quote submission success | quote_wizard |
+| contact_form_submitted | Contact form success | contact_form |
+| service_pricing_cta_clicked | PriceBox CTA click | service_pricing |
+
+### Security Notes
+
+- **No DELETE/UPDATE policies:** Events are immutable audit trail
+- **Public INSERT:** Anonymous event tracking (like analytics)
+- **No public SELECT:** Users cannot view events
+- **Admin only:** Full read access for analytics
+
+---
 
 **Status:** ✅ **EXECUTED AND VERIFIED**
 

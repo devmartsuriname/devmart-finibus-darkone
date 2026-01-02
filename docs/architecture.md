@@ -1,12 +1,115 @@
 # Architecture Documentation
 
 **Status:** ✅ PHASE 12 COMPLETE — FRONTEND FROZEN  
-**Phase:** Phase 5 SEO ✅ CLOSED | Phase 6C Schema ✅ EXECUTED | Phase 6D UI ✅ COMPLETE | Phase 6D Admin ✅ COMPLETE  
-**Last Updated:** 2026-01-01
+**Phase:** Phase 5 SEO ✅ CLOSED | Phase 6C Schema ✅ EXECUTED | Phase 6D UI ✅ COMPLETE | Phase 6D Admin ✅ COMPLETE | Phase 7A ✅ EXECUTED | Phase 7B ✅ EXECUTED  
+**Last Updated:** 2026-01-02
 
 ---
 
-## Phase 6 — Quote Wizard
+## Phase 7A — Marketing Data Foundations (✅ EXECUTED)
+
+### UTM Data Flow
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│                    UTM Data Flow (Phase 7A)                  │
+├─────────────────────────────────────────────────────────────┤
+│  STEP 1: User arrives with UTM parameters                   │
+│    └── URL: ?utm_source=google&utm_medium=cpc&...           │
+│                                                              │
+│  STEP 2: UTM capture on page load                            │
+│    └── useUtmCapture.ts captures params                      │
+│    └── Stored in sessionStorage (persists navigation)        │
+│                                                              │
+│  STEP 3: Form submission includes UTM                        │
+│    └── ContactForm.tsx: getUtmData() → leads.insert()        │
+│    └── QuoteWizard.tsx: getUtmData() → leads + quotes        │
+│                                                              │
+│  STEP 4: Admin views UTM data (read-only)                    │
+│    └── LeadDetailModal: Marketing Attribution section        │
+│    └── QuoteDetailModal: Source Attribution section          │
+└─────────────────────────────────────────────────────────────┘
+```
+
+### UTM Fields Added
+
+| Table | Fields |
+|-------|--------|
+| `leads` | utm_source, utm_medium, utm_campaign, utm_content, utm_term |
+| `quotes` | utm_source, utm_medium, utm_campaign, utm_content, utm_term |
+
+### Files Created
+
+| File | Purpose |
+|------|---------|
+| `apps/public/src/hooks/useUtmCapture.ts` | UTM parameter capture and sessionStorage persistence |
+
+### Files Modified
+
+| File | Change |
+|------|--------|
+| `apps/public/src/components/pages/contact/ContactForm.tsx` | Added UTM capture and INSERT with UTM data |
+| `apps/public/src/components/pages/quote/QuoteWizard.tsx` | Added UTM capture and INSERT with UTM data |
+| `src/app/(admin)/crm/leads/hooks/useLeads.ts` | Added UTM fields to Lead interface |
+| `src/app/(admin)/crm/quotes/hooks/useQuotes.ts` | Added UTM fields to Quote interface |
+| `src/app/(admin)/crm/leads/components/LeadDetailModal.tsx` | Added Marketing Attribution section (read-only) |
+| `src/app/(admin)/crm/quotes/components/QuoteDetailModal.tsx` | Added Source Attribution section (read-only) |
+
+---
+
+## Phase 7B — Marketing Events Tracking (✅ EXECUTED)
+
+### Marketing Events Data Flow
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│             Marketing Events Flow (Phase 7B)                 │
+├─────────────────────────────────────────────────────────────┤
+│  STEP 1: User action triggers event                         │
+│    └── Quote start, step complete, submit, contact, CTA     │
+│                                                              │
+│  STEP 2: trackEvent() fires (fire-and-forget)                │
+│    └── useMarketingEvents.ts → Supabase INSERT               │
+│    └── Silent failure (never blocks UX)                      │
+│                                                              │
+│  STEP 3: Event stored in marketing_events table              │
+│    └── event_type, source, reference_id, metadata            │
+│                                                              │
+│  STEP 4: Admin views events (read-only)                      │
+│    └── /analytics/events → MarketingEventsPage               │
+└─────────────────────────────────────────────────────────────┘
+```
+
+### Event Types
+
+| Event Type | Trigger Point | Source |
+|------------|---------------|--------|
+| quote_started | Quote Wizard mount | quote_wizard |
+| quote_step_completed | Step 1→2, 2→3, 3→4 | quote_wizard |
+| quote_submitted | Successful submission | quote_wizard |
+| contact_form_submitted | Contact form success | contact_form |
+| service_pricing_cta_clicked | PriceBox CTA click | service_pricing |
+
+### Files Created
+
+| File | Purpose |
+|------|---------|
+| `apps/public/src/hooks/useMarketingEvents.ts` | Fire-and-forget event tracking |
+| `src/app/(admin)/analytics/hooks/useMarketingEvents.ts` | Admin events data hook |
+| `src/app/(admin)/analytics/events/page.tsx` | Admin events list page |
+
+### Files Modified
+
+| File | Change |
+|------|--------|
+| `apps/public/src/components/pages/quote/QuoteWizard.tsx` | Added 3 event types |
+| `apps/public/src/components/pages/contact/ContactForm.tsx` | Added contact_form_submitted |
+| `apps/public/src/components/pages/service/PriceBox.tsx` | Added CTA click event |
+| `apps/public/src/components/pages/ServiceDetails/PriceBox.tsx` | Added CTA click event |
+| `src/assets/data/menu-items.ts` | Added Events menu item |
+| `src/routes/index.tsx` | Added /analytics/events route |
+
+---
 
 **Status:** ✅ **PHASE 6 COMPLETE** (Schema + Public UI + Admin UI)
 
