@@ -7,9 +7,11 @@ import DashboardSourceChart from './components/DashboardSourceChart'
 import DashboardFunnelChart from './components/DashboardFunnelChart'
 import DashboardRecentLeads from './components/DashboardRecentLeads'
 import DashboardRecentQuotes from './components/DashboardRecentQuotes'
+import DashboardContentBreakdown from './components/DashboardContentBreakdown'
+import DashboardQuotesBreakdown from './components/DashboardQuotesBreakdown'
 
 const DashboardPage = () => {
-  const { kpis, leadsBySource, marketingEvents, recentLeads, recentQuotes, isLoading, error } = useDashboardStats()
+  const { kpis, contentBreakdown, quotesBreakdown, leadsBySource, marketingEvents, recentLeads, recentQuotes, isLoading, error } = useDashboardStats()
 
   if (isLoading) {
     return (
@@ -54,7 +56,13 @@ const DashboardPage = () => {
         <DashboardSourceChart data={leadsBySource} />
       </Row>
       
-      {/* Row 3: Recent Tables */}
+      {/* Row 3: Content & Quotes Breakdown */}
+      <Row>
+        <DashboardContentBreakdown data={contentBreakdown} />
+        <DashboardQuotesBreakdown data={quotesBreakdown} />
+      </Row>
+      
+      {/* Row 4: Recent Tables */}
       <Row>
         <DashboardRecentLeads leads={recentLeads} />
         <DashboardRecentQuotes quotes={recentQuotes} />
