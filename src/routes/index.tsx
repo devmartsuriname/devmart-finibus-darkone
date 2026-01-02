@@ -13,6 +13,7 @@ const GlobalBlocks = lazy(() => import('@/app/(admin)/content/global-blocks/page
 const Leads = lazy(() => import('@/app/(admin)/crm/leads/page'))
 const Quotes = lazy(() => import('@/app/(admin)/crm/quotes/page'))
 const Analytics = lazy(() => import('@/app/(admin)/analytics/page'))
+const MarketingEvents = lazy(() => import('@/app/(admin)/analytics/events/page'))
 const Settings = lazy(() => import('@/app/(admin)/settings/page'))
 
 // Auth Routes
@@ -93,6 +94,11 @@ const adminRoutes: RoutesProps[] = [
     path: '/analytics',
     name: 'Analytics',
     element: <Analytics />,
+  },
+  {
+    path: '/analytics/events',
+    name: 'Marketing Events',
+    element: <MarketingEvents />,
   },
   {
     path: '/settings',

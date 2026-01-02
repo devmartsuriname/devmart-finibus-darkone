@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { supabase } from "../../../lib/supabase";
 import { usePublicSettings } from "../../../hooks/usePublicSettings";
 import { captureUtmParams, getUtmData } from "../../../hooks/useUtmCapture";
+import { trackEvent } from "../../../hooks/useMarketingEvents";
 
 function ContactForm() {
   // Capture UTM params on mount
@@ -78,6 +79,8 @@ function ContactForm() {
       setSubmitStatus('error');
       setErrorMessage('Something went wrong. Please try again.');
     } else {
+      // Phase 7B: Track contact form submission
+      trackEvent({ eventType: 'contact_form_submitted', source: 'contact_form' });
       setSubmitStatus('success');
       // Reset form
       setName("");

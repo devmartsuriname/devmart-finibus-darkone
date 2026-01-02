@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { trackEvent } from "../../../hooks/useMarketingEvents";
 
 interface PriceBoxProps {
   cartTitle: string;
@@ -14,7 +15,13 @@ interface PriceBoxProps {
 }
 
 function PriceBox(props: PriceBoxProps) {
-  const scrollTop = () => {
+  const handleCtaClick = () => {
+    // Phase 7B: Track pricing CTA click
+    trackEvent({
+      eventType: 'service_pricing_cta_clicked',
+      source: 'service_pricing',
+      metadata: { plan_name: props.cartTitle },
+    });
     window.scrollTo({
       top: 0,
       behavior: "smooth",
@@ -53,7 +60,7 @@ function PriceBox(props: PriceBoxProps) {
             </li>
           </ul>
           <div className="pay-btn">
-            <Link onClick={scrollTop} to="/quote">
+            <Link onClick={handleCtaClick} to="/quote">
               Pay Now
             </Link>
           </div>
