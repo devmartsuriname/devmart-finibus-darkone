@@ -1,15 +1,129 @@
 # Tasks — Devmart Implementation Tracker
 
-**Status:** ✅ PHASE 7C COMPLETE | Phase 7D PLANNING COMPLETE — AWAITING EXECUTION AUTHORIZATION  
-**Current Phase:** Phase 7 IN PROGRESS (7A ✅ | 7B ✅ | 7C ✅ | 7D PLANNING COMPLETE)  
+**Status:** ✅ PHASE 7 COMPLETE | Phase 8 PLANNING IN PROGRESS  
+**Current Phase:** Phase 8 PLANNING (Execution NOT Authorized)  
 **Last Updated:** 2026-01-02
 
 ---
 
-## === PHASE 7 MARKETING ANALYTICS & ADMIN DASHBOARD ===
+## === PHASE 8 ADMIN DASHBOARD CONSOLIDATION & ANALYTICS FOUNDATIONS ===
 
-**Planning Start:** 2026-01-02  
-**Status:** ⏳ IN PROGRESS — Phase 7C COMPLETE, Phase 7D PLANNING COMPLETE
+**Planning Date:** 2026-01-02  
+**Status:** 📋 PLANNING COMPLETE — AWAITING SCOPE SELECTION AND EXECUTION AUTHORIZATION
+
+---
+
+### Phase 8 Objective
+
+Consolidate and refine the Admin Dashboard and Analytics section using **first-party data only** and **existing Darkone components**. Internal operational visibility only—no external marketing integrations, no client-facing dashboards.
+
+---
+
+### Phase 8A — Dashboard Refinement (PLANNED — EXECUTION NOT AUTHORIZED)
+
+**Status:** 📋 PLANNED — AWAITING AUTHORIZATION
+
+| Enhancement | Description | Priority |
+|-------------|-------------|----------|
+| Leads Trend Sparkline | 7-day mini-chart in KPI card | Low |
+| Quote Conversion Rate | Leads with quote_id / Total leads | Medium |
+| Content Breakdown | Blog vs Projects vs Services split | Low |
+| Time Period Selector | Filter KPIs by date range | Low |
+
+**Decision Required:** Is Phase 8A necessary, or is Phase 7C dashboard sufficient?
+
+---
+
+### Phase 8B — Analytics Page Replacement (PLANNED — EXECUTION NOT AUTHORIZED)
+
+**Status:** 📋 PLANNED — AWAITING AUTHORIZATION
+
+**Objective:** Replace `/analytics` placeholder with first-party data dashboard.
+
+| Component | Darkone Pattern | Data Source |
+|-----------|-----------------|-------------|
+| AnalyticsKPICards | Cards.tsx StatCard | leads, quotes, marketing_events |
+| AnalyticsTrendChart | Chart.tsx area | leads, quotes by date |
+| AnalyticsBillingChart | SaleChart.tsx pie | quotes.billing_period |
+| AnalyticsEventsChart | Chart.tsx bar | marketing_events.event_type |
+
+---
+
+### Phase 8C — Navigation Consolidation (PLANNED — EXECUTION NOT AUTHORIZED)
+
+**Status:** 📋 PLANNED — AWAITING AUTHORIZATION
+
+| Current | Proposed |
+|---------|----------|
+| Analytics → Events | Analytics → Marketing Events |
+| Analytics (placeholder) | Analytics → Overview |
+
+---
+
+### Execution Gates
+
+| Gate | Description | Status |
+|------|-------------|--------|
+| Gate 8.0 | Phase 8 Planning approved | ✅ COMPLETE |
+| Gate 8.1 | Scope selection (8A, 8B, or both) | ⏳ PENDING |
+| Gate 8.2 | Explicit execution authorization | ⏳ PENDING |
+| Gate 8.3 | Phase 8A verification (if executed) | ⏳ PENDING |
+| Gate 8.4 | Phase 8B verification (if executed) | ⏳ PENDING |
+| Gate 8.5 | Phase 8 governance lock | ⏳ PENDING |
+
+---
+
+### Scope Boundaries (Explicit)
+
+**IN SCOPE:**
+- Admin dashboard only (Darkone)
+- Internal use only (no client dashboards)
+- First-party data only (Leads, Quotes, Blog, Projects, Services, Marketing Events)
+- Existing Darkone chart patterns (ApexCharts)
+
+**OUT OF SCOPE:**
+- Google Ads, Meta Pixel, GA4, or external analytics
+- Schema changes
+- New dependencies
+- Public / Finibus changes
+
+---
+
+### Guardian Rules Compliance
+
+| Rule | Status |
+|------|--------|
+| Darkone Admin 1:1 | ✅ Reuses existing patterns only |
+| Finibus Public 1:1 | ✅ NO changes to public app |
+| No schema changes | ✅ Uses existing tables only |
+| No external scripts | ✅ First-party data only |
+| Documentation first | ✅ Planning complete |
+
+---
+
+### Planning Document
+
+See: `docs/phase-8/Phase_8_Planning.md`
+
+---
+
+### HARD STOP
+
+Phase 8 planning is complete. Awaiting:
+1. Scope selection (8A, 8B, or both)
+2. Explicit execution authorization
+
+**NO IMPLEMENTATION WITHOUT AUTHORIZATION.**
+
+---
+
+---
+
+## === PHASE 7 MARKETING ANALYTICS & ADMIN DASHBOARD (✅ COMPLETE) ===
+
+**Started:** 2026-01-02  
+**Completed:** 2026-01-02  
+**Status:** ✅ COMPLETE (7A, 7B, 7C EXECUTED | 7D DEFERRED)
 
 ---
 
