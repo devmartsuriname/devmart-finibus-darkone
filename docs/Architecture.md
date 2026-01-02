@@ -47,6 +47,26 @@ AppProvidersWrapper
 ```
 No QueryClientProvider exists, therefore all hooks must use useState + useEffect pattern.
 
+### Phase 8B Parity Correction — Analytics Components
+
+**Issue:** Analytics components used custom chart configurations instead of reusing exact Darkone Dashboard patterns (Guardian Rule violation).
+
+**Components Corrected:**
+
+| Component | Fix Applied |
+|-----------|-------------|
+| `AnalyticsKPICards.tsx` | Replaced `Icon` with `IconifyIcon`, added `avatar-md bg-soft-primary rounded` wrapper, moved chart outside CardBody, height=50 |
+| `AnalyticsBillingChart.tsx` | Added `stroke: { width: 0 }`, `fill: { type: 'gradient' }`, removed center label, fixed table styling |
+| `AnalyticsSourceChart.tsx` | Same fixes as Billing chart |
+| `AnalyticsEventsChart.tsx` | Matched `DashboardFunnelChart` config exactly: `dataLabels`, CardHeader pattern, `card-height-100`, grid config |
+
+**Pattern Alignment:**
+- All Analytics components now exactly match their Dashboard counterparts
+- Same ApexOptions configuration
+- Same JSX structure
+- Same CSS classes
+- Only data source differs
+
 ### Scope Boundaries
 
 **Admin-only scope confirmed:**
