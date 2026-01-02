@@ -1,8 +1,49 @@
 # Architecture Documentation
 
-**Status:** ✅ PHASE 7C COMPLETE | Phase 7D PLANNING COMPLETE — AWAITING EXECUTION AUTHORIZATION  
-**Phase:** Phase 7 IN PROGRESS (7A ✅ | 7B ✅ | 7C ✅ COMPLETE | 7D 📋 PLANNING COMPLETE)  
+**Status:** ✅ PHASE 7 COMPLETE | Phase 8 PLANNING IN PROGRESS  
+**Phase:** Phase 8 PLANNING (7A ✅ | 7B ✅ | 7C ✅ | 7D 📋 DEFERRED | 8 📋 PLANNING)  
 **Last Updated:** 2026-01-02
+
+---
+
+## Phase 8 — Admin Dashboard Consolidation & Analytics Foundations (📋 PLANNING)
+
+**Status:** 📋 PLANNING COMPLETE — EXECUTION NOT AUTHORIZED
+
+### Objective
+
+Consolidate and refine the Admin Dashboard and Analytics section using first-party data only and existing Darkone components. Internal operational visibility—no external marketing integrations.
+
+### Scope
+
+| Sub-Phase | Description | Status |
+|-----------|-------------|--------|
+| Phase 8A | Dashboard Refinement (optional enhancements) | 📋 PLANNED |
+| Phase 8B | Analytics Page Replacement | 📋 PLANNED |
+| Phase 8C | Navigation Consolidation | 📋 PLANNED |
+
+### Scope Boundaries
+
+**Admin-only scope confirmed:**
+- Darkone Admin patterns only
+- First-party data only (leads, quotes, marketing_events, content tables)
+- No external integrations
+
+**Public app remains FROZEN:**
+- Finibus is READ-ONLY
+- No changes to public app in Phase 8
+
+### Planning Document
+
+See: `docs/phase-8/Phase_8_Planning.md`
+
+### Execution Gates
+
+| Gate | Status |
+|------|--------|
+| Planning approved | ✅ COMPLETE |
+| Scope selection | ⏳ PENDING |
+| Execution authorization | ⏳ PENDING |
 
 ---
 
