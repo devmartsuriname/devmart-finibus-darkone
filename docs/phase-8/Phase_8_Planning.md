@@ -1,8 +1,8 @@
 # Phase 8 — Admin Dashboard Consolidation & Analytics Foundations
 
 ```
-Status: IN PROGRESS — PHASE 8A COMPLETE
-Phase: 8A EXECUTED | 8B/8C AWAITING AUTHORIZATION
+Status: IN PROGRESS — PHASE 8A + 8B COMPLETE
+Phase: 8A EXECUTED | 8B EXECUTED | 8C AWAITING AUTHORIZATION
 Created: 2026-01-02
 Last Updated: 2026-01-02
 ```
@@ -84,42 +84,49 @@ Consolidate and refine the Admin Dashboard and Analytics section using **first-p
 | Quote Conversion Rate | Not requested in scope |
 | Time Period Selector | Not requested in scope |
 
-### 4.2 Phase 8B — Analytics Page Replacement (PLANNED — EXECUTION NOT AUTHORIZED)
+### 4.2 Phase 8B — Analytics Page Replacement ✅ EXECUTED
+
+**Status:** ✅ COMPLETE — 2026-01-02
 
 **Objective:** Replace the `/analytics` placeholder with a first-party data dashboard.
 
-#### Proposed Layout
+#### Implemented Layout
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
-│ Row 1: Time-Based KPIs                                       │
+│ Row 1: KPI Cards                                             │
 │ ┌─────────┬─────────┬─────────┬─────────┐                   │
 │ │ Leads   │ Quotes  │ Events  │ Conv %  │                   │
-│ │ (30d)   │ (30d)   │ (30d)   │         │                   │
 │ └─────────┴─────────┴─────────┴─────────┘                   │
 ├─────────────────────────────────────────────────────────────┤
-│ Row 2: Trend Charts                                          │
-│ ┌─────────────────────────────────────────┐                 │
-│ │ Leads + Quotes Over Time (Line/Area)    │                 │
-│ │ X-axis: Date, Y-axis: Count             │                 │
-│ └─────────────────────────────────────────┘                 │
+│ Row 2: Charts                                                │
+│ ┌─────────────────────────────────┬───────────────┐         │
+│ │ Events by Type (Col-8)          │ Quotes by     │         │
+│ │ (Bar chart)                     │ Billing (Col-4)│         │
+│ └─────────────────────────────────┴───────────────┘         │
 ├─────────────────────────────────────────────────────────────┤
-│ Row 3: Breakdowns                                            │
-│ ┌─────────────────────┬─────────────────────┐               │
-│ │ Quotes by Billing   │ Events by Type      │               │
-│ │ (Pie: Monthly/Yr)   │ (Bar chart)         │               │
-│ └─────────────────────┴─────────────────────┘               │
+│ Row 3: Leads by Source (Col-6)                               │
 └─────────────────────────────────────────────────────────────┘
 ```
 
-#### Proposed Components
+#### Components Implemented
 
 | Component | Darkone Pattern | Data Source |
 |-----------|-----------------|-------------|
 | AnalyticsKPICards | Cards.tsx StatCard | leads, quotes, marketing_events |
-| AnalyticsTrendChart | Chart.tsx area | leads, quotes by date |
-| AnalyticsBillingChart | SaleChart.tsx pie | quotes.billing_period |
 | AnalyticsEventsChart | Chart.tsx bar | marketing_events.event_type |
+| AnalyticsBillingChart | SaleChart.tsx donut | quotes.billing_period |
+| AnalyticsSourceChart | SaleChart.tsx donut | leads.source |
+
+#### Files Created
+
+| File | Purpose |
+|------|---------|
+| `src/app/(admin)/analytics/hooks/useAnalyticsStats.ts` | Analytics data hook |
+| `src/app/(admin)/analytics/components/AnalyticsKPICards.tsx` | KPI stat cards |
+| `src/app/(admin)/analytics/components/AnalyticsEventsChart.tsx` | Events bar chart |
+| `src/app/(admin)/analytics/components/AnalyticsBillingChart.tsx` | Billing period donut |
+| `src/app/(admin)/analytics/components/AnalyticsSourceChart.tsx` | Leads by source donut |
 
 ### 4.3 Phase 8C — Navigation Consolidation (PLANNED — EXECUTION NOT AUTHORIZED)
 
