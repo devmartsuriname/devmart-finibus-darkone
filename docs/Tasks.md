@@ -1,7 +1,7 @@
 # Tasks — Devmart Implementation Tracker
 
-**Status:** ✅ PHASE 8A COMPLETE | ✅ PHASE 8B COMPLETE | Phase 8C AWAITING AUTHORIZATION  
-**Current Phase:** Phase 8 IN PROGRESS (8A ✅ | 8B ✅)  
+**Status:** ✅ PHASE 8A COMPLETE | ✅ PHASE 8B COMPLETE & VERIFIED | Phase 8C AWAITING AUTHORIZATION  
+**Current Phase:** Phase 8 IN PROGRESS (8A ✅ | 8B ✅ VERIFIED)  
 **Last Updated:** 2026-01-02
 
 ---
@@ -9,7 +9,7 @@
 ## === PHASE 8 ADMIN DASHBOARD CONSOLIDATION & ANALYTICS FOUNDATIONS ===
 
 **Planning Date:** 2026-01-02  
-**Status:** 🚀 IN PROGRESS — PHASE 8A COMPLETE
+**Status:** 🚀 IN PROGRESS — PHASE 8A & 8B COMPLETE
 
 ---
 
@@ -42,9 +42,9 @@ Consolidate and refine the Admin Dashboard and Analytics section using **first-p
 
 ---
 
-### Phase 8B — Analytics Page Replacement ✅ COMPLETE
+### Phase 8B — Analytics Page Replacement ✅ COMPLETE & VERIFIED
 
-**Status:** ✅ EXECUTED — 2026-01-02
+**Status:** ✅ EXECUTED & FIXED — 2026-01-02
 
 **Implemented:**
 - [x] Analytics KPI Cards (Total Leads, Total Quotes, Total Events, Funnel Conversion)
@@ -60,9 +60,26 @@ Consolidate and refine the Admin Dashboard and Analytics section using **first-p
 - `src/app/(admin)/analytics/components/AnalyticsBillingChart.tsx`
 - `src/app/(admin)/analytics/components/AnalyticsSourceChart.tsx`
 - `docs/restore-points/Restore_Point_Phase_8B_Pre_Execution.md`
+- `docs/restore-points/Restore_Point_Phase_8B_Analytics_QueryClient_Fix.md`
 
 **Files Modified:**
 - `src/app/(admin)/analytics/page.tsx` — Replaced placeholder with analytics dashboard
+- `src/app/(admin)/analytics/hooks/useAnalyticsStats.ts` — Fixed QueryClient error
+
+**Runtime Fix Applied (2026-01-02):**
+
+| Issue | Root Cause | Fix |
+|-------|-----------|-----|
+| "No QueryClient set" error | `useAnalyticsStats` used `@tanstack/react-query` (`useQuery`) without `QueryClientProvider` in admin app | Rewrote hook to use `useState` + `useEffect` pattern matching `useDashboardStats` |
+
+**Why Dashboard Worked:**
+- `useDashboardStats.ts` uses `useState` + `useEffect` (no external dependencies)
+
+**Why Analytics Failed:**
+- `useAnalyticsStats.ts` used `useQuery` from `@tanstack/react-query`
+- Admin app's `AppProvidersWrapper` has no `QueryClientProvider`
+
+**Fix Strategy:** A (Parity-safe) — Removed react-query usage, matched Dashboard pattern
 
 **Guardian Rules Compliance:** ✅ All rules followed
 

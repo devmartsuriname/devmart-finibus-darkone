@@ -1,14 +1,14 @@
 # Architecture Documentation
 
-**Status:** ✅ PHASE 7 COMPLETE | Phase 8 PLANNING IN PROGRESS  
-**Phase:** Phase 8 PLANNING (7A ✅ | 7B ✅ | 7C ✅ | 7D 📋 DEFERRED | 8 📋 PLANNING)  
+**Status:** ✅ PHASE 7 COMPLETE | ✅ PHASE 8A & 8B COMPLETE | Phase 8C AWAITING AUTHORIZATION  
+**Phase:** Phase 8 IN PROGRESS (8A ✅ | 8B ✅ VERIFIED | 8C 📋 PLANNED)  
 **Last Updated:** 2026-01-02
 
 ---
 
-## Phase 8 — Admin Dashboard Consolidation & Analytics Foundations (📋 PLANNING)
+## Phase 8 — Admin Dashboard Consolidation & Analytics Foundations
 
-**Status:** 📋 PLANNING COMPLETE — EXECUTION NOT AUTHORIZED
+**Status:** ✅ PHASE 8A & 8B COMPLETE — Phase 8C AWAITING AUTHORIZATION
 
 ### Objective
 
@@ -18,9 +18,34 @@ Consolidate and refine the Admin Dashboard and Analytics section using first-par
 
 | Sub-Phase | Description | Status |
 |-----------|-------------|--------|
-| Phase 8A | Dashboard Refinement (optional enhancements) | 📋 PLANNED |
-| Phase 8B | Analytics Page Replacement | 📋 PLANNED |
+| Phase 8A | Dashboard Refinement | ✅ COMPLETE |
+| Phase 8B | Analytics Page Replacement | ✅ COMPLETE & VERIFIED |
 | Phase 8C | Navigation Consolidation | 📋 PLANNED |
+
+### Phase 8B Runtime Fix — Root Cause Documentation
+
+**Issue:** "No QueryClient set, use QueryClientProvider to set one" error on /analytics page
+
+**Root Cause Analysis:**
+- `useAnalyticsStats.ts` was incorrectly using `@tanstack/react-query`'s `useQuery`
+- Admin app's `AppProvidersWrapper` does not include a `QueryClientProvider`
+- Dashboard worked because `useDashboardStats.ts` uses the `useState` + `useEffect` pattern
+
+**Fix Applied (Strategy A — Parity-safe):**
+- Rewrote `useAnalyticsStats.ts` to use `useState` + `useEffect` pattern
+- No `QueryClientProvider` added (matches Darkone baseline)
+- Return signature preserved for page compatibility
+
+**Provider Hierarchy Confirmed:**
+```
+AppProvidersWrapper
+  └── HelmetProvider
+        └── AuthProvider
+              └── LayoutProvider
+                    └── NotificationProvider
+                          └── {children}
+```
+No QueryClientProvider exists, therefore all hooks must use useState + useEffect pattern.
 
 ### Scope Boundaries
 
@@ -42,8 +67,9 @@ See: `docs/phase-8/Phase_8_Planning.md`
 | Gate | Status |
 |------|--------|
 | Planning approved | ✅ COMPLETE |
-| Scope selection | ⏳ PENDING |
-| Execution authorization | ⏳ PENDING |
+| Phase 8A execution | ✅ COMPLETE |
+| Phase 8B execution | ✅ COMPLETE & VERIFIED |
+| Phase 8C authorization | ⏳ PENDING |
 
 ---
 
