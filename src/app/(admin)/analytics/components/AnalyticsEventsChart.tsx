@@ -1,4 +1,4 @@
-import { Card, CardBody, CardHeader } from 'react-bootstrap'
+import { Card, CardBody, CardHeader, CardTitle } from 'react-bootstrap'
 import ReactApexChart from 'react-apexcharts'
 import { ApexOptions } from 'apexcharts'
 
@@ -18,92 +18,80 @@ const AnalyticsEventsChart = ({ eventsByType }: AnalyticsEventsChartProps) => {
   const data = eventsByType.map((e) => e.count)
 
   const chartOptions: ApexOptions = {
-    series: [
-      {
-        name: 'Events',
-        type: 'bar',
-        data,
-      },
-    ],
     chart: {
-      height: 280,
       type: 'bar',
-      toolbar: {
-        show: false,
-      },
+      height: 300,
+      toolbar: { show: false },
     },
     plotOptions: {
       bar: {
-        columnWidth: '50%',
+        horizontal: false,
+        columnWidth: '55%',
         borderRadius: 4,
       },
     },
-    colors: ['#7e67fe'],
+    dataLabels: {
+      enabled: false,
+    },
+    stroke: {
+      show: true,
+      width: 2,
+      colors: ['transparent'],
+    },
     xaxis: {
       categories,
-      axisTicks: {
-        show: false,
-      },
-      axisBorder: {
-        show: false,
-      },
       labels: {
         style: {
           fontSize: '11px',
         },
+        rotate: -45,
+        rotateAlways: eventsByType.length > 4,
       },
     },
     yaxis: {
-      min: 0,
-      axisBorder: {
-        show: false,
+      title: {
+        text: 'Count',
+      },
+    },
+    fill: {
+      opacity: 1,
+    },
+    colors: ['#7e67fe'],
+    tooltip: {
+      y: {
+        formatter: (val: number) => `${val} events`,
       },
     },
     grid: {
-      show: true,
-      strokeDashArray: 3,
-      xaxis: {
-        lines: {
-          show: false,
-        },
-      },
-      yaxis: {
-        lines: {
-          show: true,
-        },
-      },
-    },
-    dataLabels: {
-      enabled: true,
-      formatter: function (val) {
-        return val.toString()
-      },
-    },
-    tooltip: {
-      y: {
-        formatter: function (val) {
-          return val + ' events'
-        },
-      },
+      borderColor: '#f1f1f1',
     },
   }
 
+  const series = [
+    {
+      name: 'Events',
+      data,
+    },
+  ]
+
   return (
-    <Card className="card-height-100">
-      <CardHeader className="d-flex align-items-center justify-content-between gap-2">
-        <h4 className="mb-0 flex-grow-1">Events by Type</h4>
+    <Card>
+      <CardHeader className="border-bottom bg-transparent">
+        <CardTitle as="h5" className="mb-0">
+          Events by Type
+        </CardTitle>
       </CardHeader>
-      <CardBody className="pt-0">
+      <CardBody>
         {eventsByType.length > 0 ? (
-          <div dir="ltr">
-            <div className="apex-charts">
-              <ReactApexChart options={chartOptions} series={chartOptions.series} height={280} type="bar" />
-            </div>
-          </div>
+          <ReactApexChart
+            options={chartOptions}
+            series={series}
+            type="bar"
+            height={300}
+          />
         ) : (
-          <div className="text-center py-5">
-            <p className="text-muted mb-0">No marketing events recorded yet</p>
-            <small className="text-muted">Events will appear as users interact with the site</small>
+          <div className="text-center text-muted py-5">
+            No marketing events recorded yet
           </div>
         )}
       </CardBody>

@@ -1,84 +1,64 @@
-import IconifyIcon from '@/components/wrapper/IconifyIcon'
-import { ApexOptions } from 'apexcharts'
+import { Row, Col, Card } from 'react-bootstrap'
 import ReactApexChart from 'react-apexcharts'
-import { Card, CardBody, Col, Row } from 'react-bootstrap'
+import { ApexOptions } from 'apexcharts'
+import { Icon } from '@iconify/react'
 
 interface KPICardProps {
   title: string
-  count: string
+  count: string | number
   icon: string
-  series: number[]
+  series: { data: number[] }[]
 }
 
 const KPICard = ({ title, count, icon, series }: KPICardProps) => {
   const chartOptions: ApexOptions = {
     chart: {
       type: 'area',
-      height: 50,
-      sparkline: {
-        enabled: true,
-      },
+      sparkline: { enabled: true },
+      height: 35,
     },
-    series: [
-      {
-        data: series,
-      },
-    ],
     stroke: {
-      width: 2,
+      width: 1.5,
       curve: 'smooth',
     },
-    markers: {
-      size: 0,
+    fill: {
+      type: 'gradient',
+      gradient: {
+        shadeIntensity: 1,
+        opacityFrom: 0.3,
+        opacityTo: 0.1,
+        stops: [0, 100],
+      },
     },
     colors: ['#7e67fe'],
     tooltip: {
-      fixed: {
-        enabled: false,
-      },
-      x: {
-        show: false,
-      },
-      y: {
-        title: {
-          formatter: function () {
-            return ''
-          },
-        },
-      },
-      marker: {
-        show: false,
-      },
-    },
-    fill: {
-      opacity: [1],
-      type: ['gradient'],
-      gradient: {
-        type: 'vertical',
-        inverseColors: false,
-        opacityFrom: 0.5,
-        opacityTo: 0,
-        stops: [0, 100],
-      },
+      enabled: false,
     },
   }
 
   return (
-    <Card>
-      <CardBody>
-        <Row>
-          <Col xs={6}>
-            <p className="text-muted mb-0 text-truncate">{title}</p>
-            <h3 className="text-dark mt-2 mb-0">{count}</h3>
+    <Card className="overflow-hidden">
+      <Card.Body className="p-3">
+        <Row className="align-items-center">
+          <Col xs={8}>
+            <p className="text-muted mb-1 text-truncate">{title}</p>
+            <h3 className="mb-0">{count}</h3>
           </Col>
-          <Col xs={6}>
-            <div className="ms-auto avatar-md bg-soft-primary rounded">
-              <IconifyIcon style={{ padding: '12px' }} icon={icon} className="fs-32 avatar-title text-primary" />
+          <Col xs={4} className="text-end">
+            <div className="d-flex justify-content-end align-items-center">
+              <Icon icon={icon} className="fs-2 text-primary opacity-75" />
             </div>
           </Col>
         </Row>
-      </CardBody>
-      <ReactApexChart options={chartOptions} series={chartOptions.series} height={50} type="area" />
+        <div className="mt-2">
+          <ReactApexChart
+            options={chartOptions}
+            series={series}
+            type="area"
+            height={35}
+          />
+        </div>
+      </Card.Body>
     </Card>
   )
 }
@@ -90,61 +70,55 @@ interface AnalyticsKPICardsProps {
   conversionRate: number
 }
 
+const generateSparkline = (base: number): number[] => {
+  return Array.from({ length: 7 }, () => 
+    Math.max(0, base + Math.floor(Math.random() * 10) - 5)
+  )
+}
+
 const AnalyticsKPICards = ({
   totalLeads,
   totalQuotes,
   totalEvents,
   conversionRate,
 }: AnalyticsKPICardsProps) => {
-  const generateSparkline = (value: number): number[] => {
-    const base = Math.max(value / 10, 1)
-    return [
-      Math.round(base * 0.5),
-      Math.round(base * 0.7),
-      Math.round(base * 0.6),
-      Math.round(base * 0.9),
-      Math.round(base * 0.8),
-      Math.round(base * 1.0),
-      Math.round(base * 0.85),
-      Math.round(base * 0.95),
-      Math.round(base * 1.1),
-      Math.round(base * 1.0),
-      value,
-    ]
-  }
-
-  const kpiCards: KPICardProps[] = [
+  const kpiData = [
     {
       title: 'Total Leads',
-      count: totalLeads.toLocaleString(),
-      icon: 'solar:users-group-two-rounded-broken',
-      series: generateSparkline(totalLeads),
+      count: totalLeads,
+      icon: 'solar:users-group-rounded-bold-duotone',
+      series: [{ data: generateSparkline(totalLeads) }],
     },
     {
       title: 'Total Quotes',
-      count: totalQuotes.toLocaleString(),
-      icon: 'solar:document-text-outline',
-      series: generateSparkline(totalQuotes),
+      count: totalQuotes,
+      icon: 'solar:document-text-bold-duotone',
+      series: [{ data: generateSparkline(totalQuotes) }],
     },
     {
       title: 'Marketing Events',
-      count: totalEvents.toLocaleString(),
-      icon: 'solar:chart-outline',
-      series: generateSparkline(totalEvents),
+      count: totalEvents,
+      icon: 'solar:chart-2-bold-duotone',
+      series: [{ data: generateSparkline(totalEvents) }],
     },
     {
       title: 'Funnel Conversion',
       count: `${conversionRate}%`,
-      icon: 'solar:graph-up-outline',
-      series: generateSparkline(conversionRate),
+      icon: 'solar:graph-up-bold-duotone',
+      series: [{ data: generateSparkline(conversionRate) }],
     },
   ]
 
   return (
-    <Row>
-      {kpiCards.map((card, idx) => (
-        <Col md={6} xl={3} key={idx}>
-          <KPICard {...card} />
+    <Row className="g-3">
+      {kpiData.map((kpi, index) => (
+        <Col key={index} xs={12} sm={6} xl={3}>
+          <KPICard
+            title={kpi.title}
+            count={kpi.count}
+            icon={kpi.icon}
+            series={kpi.series}
+          />
         </Col>
       ))}
     </Row>
