@@ -1,4 +1,4 @@
-import { useQuery } from '@tanstack/react-query'
+import { useState, useEffect } from 'react'
 import { supabase } from '@/integrations/supabase/client'
 
 interface AnalyticsStats {
@@ -11,89 +11,105 @@ interface AnalyticsStats {
   leadsBySource: { source: string; count: number }[]
 }
 
-export const useAnalyticsStats = () => {
-  return useQuery({
-    queryKey: ['analytics-stats'],
-    queryFn: async (): Promise<AnalyticsStats> => {
-      // Fetch total leads
-      const { count: totalLeads } = await supabase
-        .from('leads')
-        .select('*', { count: 'exact', head: true })
+interface UseAnalyticsStatsReturn {
+  data: AnalyticsStats | null
+  isLoading: boolean
+  error: string | null
+}
 
-      // Fetch total quotes
-      const { count: totalQuotes } = await supabase
-        .from('quotes')
-        .select('*', { count: 'exact', head: true })
+export const useAnalyticsStats = (): UseAnalyticsStatsReturn => {
+  const [data, setData] = useState<AnalyticsStats | null>(null)
+  const [isLoading, setIsLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
 
-      // Fetch total marketing events
-      const { count: totalEvents } = await supabase
-        .from('marketing_events')
-        .select('*', { count: 'exact', head: true })
+  useEffect(() => {
+    const fetchStats = async () => {
+      setIsLoading(true)
+      setError(null)
 
-      // Fetch events by type
-      const { data: eventsData } = await supabase
-        .from('marketing_events')
-        .select('event_type')
+      try {
+        // Fetch all data in parallel
+        const [
+          leadsCountResult,
+          quotesCountResult,
+          eventsCountResult,
+          eventsDataResult,
+          quotesDataResult,
+          leadsDataResult,
+        ] = await Promise.all([
+          supabase.from('leads').select('*', { count: 'exact', head: true }),
+          supabase.from('quotes').select('*', { count: 'exact', head: true }),
+          supabase.from('marketing_events').select('*', { count: 'exact', head: true }),
+          supabase.from('marketing_events').select('event_type'),
+          supabase.from('quotes').select('billing_period'),
+          supabase.from('leads').select('source'),
+        ])
 
-      const eventCounts: Record<string, number> = {}
-      eventsData?.forEach((event) => {
-        const type = event.event_type
-        eventCounts[type] = (eventCounts[type] || 0) + 1
-      })
+        const totalLeads = leadsCountResult.count || 0
+        const totalQuotes = quotesCountResult.count || 0
+        const totalEvents = eventsCountResult.count || 0
 
-      const eventsByType = Object.entries(eventCounts).map(([type, count]) => ({
-        type,
-        count,
-      }))
+        // Process events by type
+        const eventsData = eventsDataResult.data || []
+        const eventCounts: Record<string, number> = {}
+        eventsData.forEach((event) => {
+          const type = event.event_type
+          eventCounts[type] = (eventCounts[type] || 0) + 1
+        })
+        const eventsByType = Object.entries(eventCounts).map(([type, count]) => ({
+          type,
+          count,
+        }))
 
-      // Calculate conversion rate (quote_submitted / quote_started)
-      const quoteStarted = eventCounts['quote_started'] || 0
-      const quoteSubmitted = eventCounts['quote_submitted'] || 0
-      const conversionRate = quoteStarted > 0 
-        ? Math.round((quoteSubmitted / quoteStarted) * 100) 
-        : 0
+        // Calculate conversion rate
+        const quoteStarted = eventCounts['quote_started'] || 0
+        const quoteSubmitted = eventCounts['quote_submitted'] || 0
+        const conversionRate = quoteStarted > 0 
+          ? Math.round((quoteSubmitted / quoteStarted) * 100) 
+          : 0
 
-      // Fetch quotes by billing period
-      const { data: quotesData } = await supabase
-        .from('quotes')
-        .select('billing_period')
+        // Process quotes by billing period
+        const quotesData = quotesDataResult.data || []
+        const billingCounts: Record<string, number> = {}
+        quotesData.forEach((quote) => {
+          const period = quote.billing_period
+          billingCounts[period] = (billingCounts[period] || 0) + 1
+        })
+        const quotesByBilling = Object.entries(billingCounts).map(([period, count]) => ({
+          period,
+          count,
+        }))
 
-      const billingCounts: Record<string, number> = {}
-      quotesData?.forEach((quote) => {
-        const period = quote.billing_period
-        billingCounts[period] = (billingCounts[period] || 0) + 1
-      })
+        // Process leads by source
+        const leadsData = leadsDataResult.data || []
+        const sourceCounts: Record<string, number> = {}
+        leadsData.forEach((lead) => {
+          const source = lead.source
+          sourceCounts[source] = (sourceCounts[source] || 0) + 1
+        })
+        const leadsBySource = Object.entries(sourceCounts).map(([source, count]) => ({
+          source,
+          count,
+        }))
 
-      const quotesByBilling = Object.entries(billingCounts).map(([period, count]) => ({
-        period,
-        count,
-      }))
-
-      // Fetch leads by source
-      const { data: leadsData } = await supabase
-        .from('leads')
-        .select('source')
-
-      const sourceCounts: Record<string, number> = {}
-      leadsData?.forEach((lead) => {
-        const source = lead.source
-        sourceCounts[source] = (sourceCounts[source] || 0) + 1
-      })
-
-      const leadsBySource = Object.entries(sourceCounts).map(([source, count]) => ({
-        source,
-        count,
-      }))
-
-      return {
-        totalLeads: totalLeads || 0,
-        totalQuotes: totalQuotes || 0,
-        totalEvents: totalEvents || 0,
-        conversionRate,
-        eventsByType,
-        quotesByBilling,
-        leadsBySource,
+        setData({
+          totalLeads,
+          totalQuotes,
+          totalEvents,
+          conversionRate,
+          eventsByType,
+          quotesByBilling,
+          leadsBySource,
+        })
+      } catch (err) {
+        setError(err instanceof Error ? err.message : 'Failed to fetch analytics stats')
+      } finally {
+        setIsLoading(false)
       }
-    },
-  })
+    }
+
+    fetchStats()
+  }, [])
+
+  return { data, isLoading, error }
 }
