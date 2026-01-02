@@ -1,4 +1,4 @@
-import { Card, CardBody, CardHeader, CardTitle, Table } from 'react-bootstrap'
+import { Card, CardBody, CardHeader } from 'react-bootstrap'
 import ReactApexChart from 'react-apexcharts'
 import { ApexOptions } from 'apexcharts'
 
@@ -14,93 +14,92 @@ const AnalyticsBillingChart = ({ quotesByBilling }: AnalyticsBillingChartProps) 
   const labels = quotesByBilling.map((q) => formatPeriod(q.period))
   const series = quotesByBilling.map((q) => q.count)
   const total = series.reduce((a, b) => a + b, 0)
+  const colors = ['#7e67fe', '#17c553', '#7942ed', '#f9b931']
 
   const chartOptions: ApexOptions = {
     chart: {
+      height: 180,
       type: 'donut',
-      height: 200,
     },
-    labels,
-    colors: ['#7e67fe', '#17c553', '#7942ed', '#f9b931'],
+    series: series,
     legend: {
       show: false,
     },
-    dataLabels: {
-      enabled: false,
+    stroke: {
+      width: 0,
     },
     plotOptions: {
       pie: {
         donut: {
           size: '70%',
           labels: {
-            show: true,
-            name: {
-              show: true,
-              fontSize: '12px',
-            },
-            value: {
-              show: true,
-              fontSize: '16px',
-              fontWeight: 600,
-            },
+            show: false,
             total: {
+              showAlways: true,
               show: true,
-              label: 'Total',
-              fontSize: '12px',
-              formatter: () => String(total),
             },
           },
         },
       },
+    },
+    labels: labels,
+    colors: colors.slice(0, quotesByBilling.length),
+    dataLabels: {
+      enabled: false,
     },
     responsive: [
       {
         breakpoint: 480,
         options: {
           chart: {
-            height: 180,
+            width: 200,
           },
         },
       },
     ],
+    fill: {
+      type: 'gradient',
+    },
   }
 
   return (
     <Card>
-      <CardHeader className="border-bottom bg-transparent">
-        <CardTitle as="h5" className="mb-0">
-          Quotes by Billing Period
-        </CardTitle>
+      <CardHeader className="d-flex align-items-center justify-content-between gap-2">
+        <h4 className="card-title flex-grow-1 mb-0">Quotes by Billing Period</h4>
       </CardHeader>
       <CardBody>
         {quotesByBilling.length > 0 ? (
           <>
-            <ReactApexChart
-              options={chartOptions}
-              series={series}
-              type="donut"
-              height={200}
-            />
-            <Table className="table-sm mt-3 mb-0" borderless>
-              <thead>
-                <tr>
-                  <th>Period</th>
-                  <th className="text-end">Count</th>
-                  <th className="text-end">%</th>
-                </tr>
-              </thead>
-              <tbody>
-                {quotesByBilling.map((item, idx) => (
-                  <tr key={idx}>
-                    <td>{formatPeriod(item.period)}</td>
-                    <td className="text-end">{item.count}</td>
-                    <td className="text-end">
-                      {total > 0 ? Math.round((item.count / total) * 100) : 0}%
-                    </td>
+            <div dir="ltr">
+              <div className="apex-charts">
+                <ReactApexChart height={180} options={chartOptions} series={series} type="donut" />
+              </div>
+            </div>
+            <div className="table-responsive mb-n1 mt-2">
+              <table className="table table-nowrap table-borderless table-sm table-centered mb-0">
+                <thead className="bg-light bg-opacity-50 thead-sm">
+                  <tr>
+                    <th className="py-1">Period</th>
+                    <th className="py-1">Count</th>
+                    <th className="py-1">Perc.</th>
                   </tr>
-                ))}
-              </tbody>
-            </Table>
+                </thead>
+                <tbody>
+                  {quotesByBilling.map((item, idx) => (
+                    <tr key={idx}>
+                      <td className="text-capitalize">{formatPeriod(item.period)}</td>
+                      <td>{item.count.toLocaleString()}</td>
+                      <td>{total > 0 ? Math.round((item.count / total) * 100) : 0}%</td>
+                    </tr>
+                  ))}
+                  <tr className="fw-semibold">
+                    <td>Total</td>
+                    <td>{total.toLocaleString()}</td>
+                    <td>100%</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
           </>
         ) : (
           <div className="text-center text-muted py-5">
