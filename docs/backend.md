@@ -1,10 +1,52 @@
 # Backend Documentation
 
-# Backend Documentation
+**Status:** ✅ PHASE 7C COMPLETE — ADMIN DASHBOARD LIVE | 📋 PHASE 14 PLANNED  
+**Phase:** Phase 12 CLOSED | Phase 6C Schema ✅ EXECUTED | Phase 5 SEO ✅ EXECUTED | Phase 7A ✅ EXECUTED | Phase 7B ✅ EXECUTED | Phase 7C ✅ EXECUTED | Phase 13C ✅ STATIC DELIVERY | Phase 14 📋 PLANNED  
+**Last Updated:** 2026-01-03
 
-**Status:** ✅ PHASE 7C COMPLETE — ADMIN DASHBOARD LIVE  
-**Phase:** Phase 12 CLOSED | Phase 6C Schema ✅ EXECUTED | Phase 5 SEO ✅ EXECUTED | Phase 7A ✅ EXECUTED | Phase 7B ✅ EXECUTED | Phase 7C ✅ EXECUTED  
-**Last Updated:** 2026-01-02
+---
+
+## Phase 14 — Pages Content Model (PLANNED — NOT AUTHORIZED)
+
+**Status:** 📋 PLANNED — NOT AUTHORIZED FOR EXECUTION
+
+### Objective
+
+Extend the `pages` table to support page body content for legal/static pages, enabling Admin-managed content.
+
+### Proposed Schema Extension (Not Executed)
+
+| Column | Type | Nullable | Purpose |
+|--------|------|----------|---------|
+| content | TEXT | YES | HTML content body for static pages |
+
+**Target Table:** `public.pages`
+
+### Database Records (Planned)
+
+| slug | title | Purpose |
+|------|-------|---------|
+| `privacy-policy` | Privacy Policy | Legal page |
+| `terms-of-use` | Terms of Use | Legal page |
+| `support-policy` | Support Policy | Legal page |
+| `terms-of-service` | Terms of Service | Legal page |
+
+### RLS Impact
+
+- **No new policies required** — existing policies apply
+- Public SELECT where `is_published = true`
+- Admin UPDATE access unchanged
+
+### Execution Gates
+
+| Gate | Description | Status |
+|------|-------------|--------|
+| Gate 14.1 | Schema migration authorized | ❌ NOT AUTHORIZED |
+| Gate 14.2 | Database seeding authorized | ❌ NOT AUTHORIZED |
+
+### Planning Document
+
+See: `docs/phase-14/Phase_14_Pages_Content_Model.md`
 
 ---
 
