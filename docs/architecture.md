@@ -115,10 +115,10 @@ Phase 13 is refinement, not expansion. No architectural changes are authorized y
 | 13C | Legal & System Pages | P1.5 | ✅ COMPLETE — 2026-01-03 |
 | 13D | System Toggles & Final Polish | P2 | ❌ NOT AUTHORIZED |
 
-### Phase 13C — Legal & System Pages (✅ COMPLETE)
+### Phase 13C — Legal & System Pages (✅ COMPLETE — Static Delivery Only)
 
 **Execution Date:** 2026-01-03  
-**Status:** ✅ EXECUTED — No backend or CMS changes were made
+**Status:** ✅ COMPLETE (Static Delivery Only) — CMS wiring deferred to Phase 14
 
 **Pages Created:**
 
@@ -136,7 +136,16 @@ Phase 13 is refinement, not expansion. No architectural changes are authorized y
 - Breadcrumb header → sec-pad content section → LetsTalkArea CTA
 - Footer links updated to point to actual routes (previously `/commingsoon`)
 - Routes added within MainLayout in App.tsx
-- Content is placeholder text awaiting Devmart Live Documents
+- Email domain corrected from `@devmart.co.uk` to `@devmart.sr`
+- Content is static HTML (NOT database-driven)
+
+**What Was NOT Performed:**
+- ❌ No database schema changes (no `content` column added to `pages` table)
+- ❌ No CMS wiring (pages are hardcoded React components)
+- ❌ No Admin UI changes (no PageEditModal modifications)
+- ❌ No SEO field propagation from Admin
+
+**Deferred to Phase 14:** CMS wiring for legal pages → Phase 14 — Pages Content Model
 
 **Constraints Verified:**
 - ✅ No backend changes
@@ -144,6 +153,67 @@ Phase 13 is refinement, not expansion. No architectural changes are authorized y
 - ✅ No CSS/SCSS modifications
 - ✅ No new dependencies
 - ✅ Finibus parity maintained
+
+**Closure Document:** `docs/phase-13/Phase_13C_Closure.md`
+
+---
+
+## Phase 14 — Pages Content Model (PLANNED — NOT AUTHORIZED)
+
+**Status:** 📋 PLANNED — NOT AUTHORIZED FOR EXECUTION
+
+### Objective
+
+Wire the 4 legal/static pages (Privacy Policy, Terms of Use, Support Policy, Terms of Service) to the Admin Pages module, enabling content management through a single source of truth.
+
+### Proposed Changes (Not Executed)
+
+| Component | Change | Status |
+|-----------|--------|--------|
+| Database Schema | Add `content` TEXT column to `pages` table | ❌ NOT AUTHORIZED |
+| Database Records | INSERT 4 legal page records | ❌ NOT AUTHORIZED |
+| Admin UI | Add Content tab to PageEditModal for legal pages | ❌ NOT AUTHORIZED |
+| Public Frontend | Replace hardcoded content with DB fetch | ❌ NOT AUTHORIZED |
+| SEO Wiring | Propagate meta_title, meta_description, etc. from Admin | ❌ NOT AUTHORIZED |
+
+### Data Flow (Planned)
+
+```
+Admin Pages Module (Darkone)
+    └── pages.content (HTML body)
+    └── pages.meta_title
+    └── pages.meta_description
+    └── pages.og_image_media_id
+    └── pages.canonical_url
+    └── pages.noindex
+           ↓
+Public Legal Pages (Finibus)
+    └── dangerouslySetInnerHTML={{ __html: content }}
+    └── react-helmet-async for SEO tags
+```
+
+### Guardian Rules (Enforced)
+
+| Rule | Requirement |
+|------|-------------|
+| Admin UI 1:1 Darkone | Content tab follows existing tab/textarea patterns |
+| Public UI 1:1 Finibus | Layout and styling unchanged |
+| Reuse existing modules | Extends existing Pages module (no new tables) |
+
+### Legal Constraint Note
+
+**Future content updates MUST ensure:**
+- Governing law/jurisdiction is **Suriname** (not England/Wales)
+- All email addresses use the **@devmart.sr** domain
+
+### Planning Document
+
+See: `docs/phase-14/Phase_14_Pages_Content_Model.md`
+
+### HARD STOP
+
+Phase 14 is PLANNED but NOT AUTHORIZED.
+No execution may begin without explicit sub-phase authorization.
 
 ### Scope Boundaries
 
