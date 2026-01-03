@@ -117,7 +117,7 @@ function PrivacyPolicyPage() {
       <div className="legal-section">
         <h3>10. Contact Us</h3>
         <p>
-          If you have questions about this Privacy Policy, please contact us at: <a href="mailto:privacy@devmart.co.uk">privacy@devmart.co.uk</a>
+          If you have questions about this Privacy Policy, please contact us at: <a href="mailto:privacy@devmart.sr">privacy@devmart.sr</a>
         </p>
       </div>
     </LegalPageLayout>

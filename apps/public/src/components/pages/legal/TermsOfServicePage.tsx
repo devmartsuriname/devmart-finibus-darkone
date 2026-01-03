@@ -127,7 +127,7 @@ function TermsOfServicePage() {
       <div className="legal-section">
         <h3>12. Contact</h3>
         <p>
-          For questions about these Terms of Service, please contact us at: <a href="mailto:legal@devmart.co.uk">legal@devmart.co.uk</a>
+          For questions about these Terms of Service, please contact us at: <a href="mailto:legal@devmart.sr">legal@devmart.sr</a>
         </p>
       </div>
     </LegalPageLayout>
