@@ -94,7 +94,7 @@ function TermsOfUsePage() {
       <div className="legal-section">
         <h3>10. Contact</h3>
         <p>
-          For questions about these Terms of Use, please contact us at: <a href="mailto:legal@devmart.co.uk">legal@devmart.co.uk</a>
+          For questions about these Terms of Use, please contact us at: <a href="mailto:legal@devmart.sr">legal@devmart.sr</a>
         </p>
       </div>
     </LegalPageLayout>

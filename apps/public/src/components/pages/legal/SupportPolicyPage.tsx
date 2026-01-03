@@ -26,7 +26,7 @@ function SupportPolicyPage() {
         <h3>1. Support Channels</h3>
         <p>We offer support through the following channels:</p>
         <ul>
-          <li><strong>Email:</strong> <a href="mailto:support@devmart.co.uk">support@devmart.co.uk</a> (all tiers)</li>
+          <li><strong>Email:</strong> <a href="mailto:support@devmart.sr">support@devmart.sr</a> (all tiers)</li>
           <li><strong>Client Portal:</strong> Ticket submission and tracking (Professional and Enterprise tiers)</li>
           <li><strong>Phone:</strong> Direct line for urgent issues (Enterprise tier only)</li>
           <li><strong>Scheduled Calls:</strong> Regular check-ins as defined in your service agreement</li>
@@ -119,7 +119,7 @@ function SupportPolicyPage() {
       <div className="legal-section">
         <h3>10. Contact</h3>
         <p>
-          For support inquiries, please contact: <a href="mailto:support@devmart.co.uk">support@devmart.co.uk</a>
+          For support inquiries, please contact: <a href="mailto:support@devmart.sr">support@devmart.sr</a>
         </p>
       </div>
     </LegalPageLayout>
