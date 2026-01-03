@@ -1,8 +1,8 @@
 # Tasks — Devmart Implementation Tracker
 
-**Status:** ✅ PHASE 8 CLOSED | 📋 PHASE 13 SCOPE LOCKED  
-**Current Phase:** Phase 13 SCOPE LOCKED — Awaiting Execution Authorization  
-**Last Updated:** 2026-01-02
+**Status:** ✅ PHASE 8 CLOSED | ✅ PHASE 13C COMPLETE | 📋 PHASE 13 SCOPE LOCKED  
+**Current Phase:** Phase 13 SCOPE LOCKED — Sub-phase 13C COMPLETE  
+**Last Updated:** 2026-01-03
 
 ---
 
@@ -235,18 +235,28 @@ Technically and visually finalize the Devmart platform (Frontend + Backend) befo
 
 ### Phase 13C — Legal & System Pages (P1.5)
 
-**Status:** ❌ NOT STARTED — AWAITING AUTHORIZATION
+**Status:** ✅ COMPLETE — Executed 2026-01-03
 
-**Pages to Create:**
-- Privacy Policy
-- Terms of Use
-- Support Policy
-- Terms of Service
+**Pages Created:**
+- ✅ Privacy Policy (`/privacy-policy`)
+- ✅ Terms of Use (`/terms-of-use`)
+- ✅ Support Policy (`/support-policy`)
+- ✅ Terms of Service (`/terms-of-service`)
 
-**Implementation Rules:**
-- Use Frontend_Uniformity_Library
-- One shared layout pattern
-- Content supplied by Devmart via Live Documents
+**Implementation Details:**
+- Shared layout component: `apps/public/src/components/pages/legal/LegalPageLayout.tsx`
+- All 4 pages use Frontend_Uniformity_Library patterns (Breadcrumb + sec-pad + LetsTalkArea)
+- Footer links updated from `/commingsoon` to actual routes
+- Routes added to `apps/public/src/App.tsx` within MainLayout
+
+**Constraints Followed:**
+- ✅ No backend changes
+- ✅ No CMS schema changes
+- ✅ No CSS/SCSS modifications
+- ✅ No component refactors beyond scope
+- ✅ Content placeholder pending Devmart Live Documents
+
+**Restore Point:** `docs/restore-points/Restore_Point_Phase_13C_Legal_Pages_Pre_Execution.md`
 
 ---
 
@@ -268,7 +278,7 @@ Technically and visually finalize the Devmart platform (Frontend + Backend) befo
 | Gate 13.1 | Documentation alignment | ✅ COMPLETE |
 | Gate 13.2 | Phase 13A authorization | ❌ NOT AUTHORIZED |
 | Gate 13.3 | Phase 13B authorization | ❌ NOT AUTHORIZED |
-| Gate 13.4 | Phase 13C authorization | ❌ NOT AUTHORIZED |
+| Gate 13.4 | Phase 13C authorization | ✅ COMPLETE — Executed 2026-01-03 |
 | Gate 13.5 | Phase 13D authorization | ❌ NOT AUTHORIZED |
 | Gate 13.6 | Phase 13 governance lock | ❌ NOT STARTED |
 

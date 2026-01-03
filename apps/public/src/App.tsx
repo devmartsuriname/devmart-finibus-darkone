@@ -46,6 +46,12 @@ import CommingSoonPage from './components/pages/commingSoon/CommingSoonPage'
 import ErrorPage from './components/pages/Error/ErrorPage'
 import QuotePage from './components/pages/quote/QuotePage'
 
+// Legal Pages (Phase 13C)
+import PrivacyPolicyPage from './components/pages/legal/PrivacyPolicyPage'
+import TermsOfUsePage from './components/pages/legal/TermsOfUsePage'
+import SupportPolicyPage from './components/pages/legal/SupportPolicyPage'
+import TermsOfServicePage from './components/pages/legal/TermsOfServicePage'
+
 /**
  * Main Layout wrapper with Header/Footer
  * Used for most pages except standalone pages like Coming Soon
@@ -154,6 +160,11 @@ function App() {
           <Route path="/contact" element={<ContactPage />} />
           <Route path="/quote" element={<QuotePage />} />
           <Route path="/error" element={<ErrorPage />} />
+          {/* Legal Pages (Phase 13C) */}
+          <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
+          <Route path="/terms-of-use" element={<TermsOfUsePage />} />
+          <Route path="/support-policy" element={<SupportPolicyPage />} />
+          <Route path="/terms-of-service" element={<TermsOfServicePage />} />
           {/* Catch-all for 404 - inside MainLayout for Header/Footer */}
           <Route path="*" element={<ErrorPage />} />
         </Route>
