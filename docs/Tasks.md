@@ -1,8 +1,8 @@
 # Tasks — Devmart Implementation Tracker
 
-**Status:** ✅ PHASE 8 CLOSED | ✅ PHASE 13C COMPLETE | 📋 PHASE 13 SCOPE LOCKED  
-**Current Phase:** Phase 13 SCOPE LOCKED — Sub-phase 13C COMPLETE  
-**Last Updated:** 2026-01-03
+**Status:** ✅ PHASE 8 CLOSED | ✅ PHASE 13C COMPLETE | 📋 PHASE 13.1 DOCUMENTATION COMPLETE  
+**Current Phase:** Phase 13.1 — Interaction Infrastructure (AWAITING EXECUTION AUTHORIZATION)  
+**Last Updated:** 2026-01-04
 
 ---
 
@@ -177,10 +177,10 @@ Documentation and restore points are complete.
 
 ---
 
-## === PHASE 13 POLISH & ENHANCEMENTS (SCOPE LOCKED — NOT AUTHORIZED) ===
+## === PHASE 13 POLISH & ENHANCEMENTS (ACTIVE) ===
 
 **Planning Date:** 2026-01-02  
-**Status:** 📋 SCOPE LOCKED — AWAITING EXECUTION AUTHORIZATION
+**Status:** 🔄 PHASE 13.1 DOCUMENTATION COMPLETE — AWAITING EXECUTION AUTHORIZATION
 
 ---
 
@@ -201,14 +201,50 @@ Technically and visually finalize the Devmart platform (Frontend + Backend) befo
 
 ---
 
+### Phase 13.1 — Interaction Infrastructure (P0)
+
+**Status:** 📋 DOCUMENTATION COMPLETE — AWAITING EXECUTION AUTHORIZATION  
+**Documentation Date:** 2026-01-04
+
+**Scope:**
+- Notifications system (In-app ONLY — no email/WhatsApp)
+- User Profile foundation (display_name, avatar_url)
+- RLS alignment for multi-role access
+
+**Role Mapping (Using Existing Enum):**
+| Enum Value | Mapped Role | Access Level |
+|------------|-------------|--------------|
+| `admin` | Admin | Full access |
+| `moderator` | Editor | Content + read-only CRM |
+| `user` | Viewer | Read-only |
+
+**Documentation:**
+- Implementation Plan: `docs/phase-13/Phase_13.1_Implementation_Plan.md`
+- Restore Point: `docs/restore-points/Restore_Point_Phase_13.1_Pre_Execution.md`
+
+**Gating Requirements:**
+- ✅ Schema changes documented
+- ✅ Role mapping decision documented
+- ✅ Trigger logic documented
+- ✅ Rollback strategy documented
+- ✅ Restore point created
+- ⏳ Execution authorization pending
+
+---
+
 ### Phase 13A — Backend Governance Foundation (P0)
 
-**Status:** ❌ NOT STARTED — AWAITING AUTHORIZATION
+**Status:** 🔄 PARTIALLY ADDRESSED BY PHASE 13.1 — REMAINING SCOPE DEFERRED
 
-**In Scope:**
-- Notifications system (In-app, Email, WhatsApp)
-- User & Role Model (admin, editor, viewer)
-- RLS Policies per role
+**Addressed by Phase 13.1:**
+- ✅ In-app notifications
+- ✅ User profile foundation
+- ✅ RLS for admin / editor / viewer
+
+**Deferred (NOT in Phase 13.1):**
+- ❌ Email notifications
+- ❌ WhatsApp notifications
+- ❌ External notification providers
 
 **Out of Scope:**
 - Marketing automation
