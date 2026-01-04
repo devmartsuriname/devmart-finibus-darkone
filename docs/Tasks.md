@@ -1,7 +1,7 @@
 # Tasks — Devmart Implementation Tracker
 
-**Status:** ✅ PHASE 8 CLOSED | ✅ PHASE 13C COMPLETE | ✅ PHASE 13.1 EXECUTED  
-**Current Phase:** Phase 13.1 — Interaction Infrastructure (EXECUTED & VERIFIED)  
+**Status:** ✅ PHASE 8 CLOSED | ✅ PHASE 13C COMPLETE | ✅ PHASE 13.1 CLOSED  
+**Current Phase:** Phase 13 — Polish & Enhancements (Phase 13.1 CLOSED | Phase 13.2 PLANNING)  
 **Last Updated:** 2026-01-04
 
 ---
@@ -180,7 +180,7 @@ Documentation and restore points are complete.
 ## === PHASE 13 POLISH & ENHANCEMENTS (ACTIVE) ===
 
 **Planning Date:** 2026-01-02  
-**Status:** ✅ PHASE 13.1 EXECUTED & VERIFIED
+**Status:** ✅ PHASE 13.1 CLOSED | 📋 PHASE 13.2 PLANNING (NOT AUTHORIZED)
 
 ---
 
@@ -203,8 +203,9 @@ Technically and visually finalize the Devmart platform (Frontend + Backend) befo
 
 ### Phase 13.1 — Interaction Infrastructure (P0)
 
-**Status:** ✅ EXECUTED & VERIFIED  
-**Execution Date:** 2026-01-04
+**Status:** ✅ COMPLETED & VERIFIED — FORMALLY CLOSED  
+**Execution Date:** 2026-01-04  
+**Closure Date:** 2026-01-04
 
 **Scope:**
 - ✅ Notifications system (In-app ONLY — no email/WhatsApp)
@@ -257,6 +258,28 @@ Technically and visually finalize the Devmart platform (Frontend + Backend) befo
 - ❌ Profile editing limited to display_name and avatar_url
 
 **Rollback Readiness:** Full rollback script documented in restore point
+
+---
+
+### Phase 13.2 — Stabilization & Verification (P0)
+
+**Status:** 📋 PLANNING ONLY — NOT AUTHORIZED FOR EXECUTION  
+**Planning Date:** 2026-01-04
+
+**Scope:**
+- Notification flow verification (lead + quote triggers)
+- Profile creation & update verification
+- RLS sanity checks for admin / editor / viewer
+- Regression checks on existing Admin modules
+
+**Deliverable:** `docs/phase-13/Phase_13.2_Verification_Plan.md`
+
+**Constraints:**
+- ❌ No new features
+- ❌ No additional tables
+- ❌ No UI changes
+- ❌ No public frontend changes
+- ❌ No code modifications during verification
 
 ---
 
