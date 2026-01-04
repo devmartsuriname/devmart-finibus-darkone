@@ -1,8 +1,8 @@
 # Architecture Documentation
 
-**Status:** ✅ PHASE 7 COMPLETE | ✅ PHASE 8 CLOSED | ✅ PHASE 13C COMPLETE | 📋 PHASE 13 SCOPE LOCKED  
-**Phase:** Phase 13 Sub-phase 13C COMPLETE — Legal Pages Implemented  
-**Last Updated:** 2026-01-03
+**Status:** ✅ PHASE 7 COMPLETE | ✅ PHASE 8 CLOSED | ✅ PHASE 13C COMPLETE | 📋 PHASE 13.1 DOCS COMPLETE  
+**Phase:** Phase 13.1 — Interaction Infrastructure (AWAITING EXECUTION AUTHORIZATION)  
+**Last Updated:** 2026-01-04
 
 ---
 
@@ -94,9 +94,9 @@ See: `docs/phase-8/Phase_8_Planning.md`
 
 ---
 
-## Phase 13 — Polish & Enhancements (PLANNED — NOT AUTHORIZED)
+## Phase 13 — Polish & Enhancements (ACTIVE)
 
-**Status:** 📋 SCOPE LOCKED — AWAITING EXECUTION AUTHORIZATION
+**Status:** 🔄 PHASE 13.1 DOCUMENTATION COMPLETE — AWAITING EXECUTION AUTHORIZATION
 
 ### Objective
 
@@ -104,16 +104,68 @@ Technically and visually finalize the Devmart platform before any marketing, tra
 
 ### Key Constraint
 
-Phase 13 is refinement, not expansion. No architectural changes are authorized yet.
+Phase 13 is refinement, not expansion. No architectural changes are authorized without explicit approval.
 
 ### Sub-Phases
 
 | Sub-Phase | Name | Priority | Status |
 |-----------|------|----------|--------|
-| 13A | Backend Governance Foundation | P0 | ❌ NOT AUTHORIZED |
+| 13.1 | Interaction Infrastructure | P0 | 📋 DOCS COMPLETE — AWAITING AUTH |
+| 13A | Backend Governance Foundation | P0 | 🔄 Partially addressed by 13.1 |
 | 13B | Frontend Content Wiring | P1 | ❌ NOT AUTHORIZED |
 | 13C | Legal & System Pages | P1.5 | ✅ COMPLETE — 2026-01-03 |
 | 13D | System Toggles & Final Polish | P2 | ❌ NOT AUTHORIZED |
+
+---
+
+### Phase 13.1 — Interaction Infrastructure (DOCUMENTATION COMPLETE)
+
+**Documentation Date:** 2026-01-04  
+**Status:** 📋 DOCUMENTATION COMPLETE — AWAITING EXECUTION AUTHORIZATION
+
+**Scope:**
+
+| Component | Description |
+|-----------|-------------|
+| Notifications | In-app only (no email/WhatsApp), database-backed, triggered by new leads/quotes |
+| User Profiles | `display_name`, `avatar_url`, auto-created on signup |
+| RLS Alignment | Multi-role support (admin, editor/moderator, viewer/user) |
+
+**Role Mapping (Using Existing Enum):**
+
+| Enum Value | Mapped Role | Access Level |
+|------------|-------------|--------------|
+| `admin` | Admin | Full access to all modules |
+| `moderator` | Editor | Content modules + read-only CRM |
+| `user` | Viewer | Read-only access |
+
+**Schema Additions (Planned):**
+
+| Table | Purpose |
+|-------|---------|
+| `public.notifications` | Store in-app notifications per user |
+| `public.profiles` | Store user display_name and avatar_url |
+
+**Trigger Logic (Planned):**
+
+| Trigger | Event | Action |
+|---------|-------|--------|
+| `on_lead_created` | New lead INSERT | Notify all admins |
+| `on_quote_created` | New quote INSERT | Notify all admins |
+| `on_auth_user_created` | New user signup | Create profile record |
+
+**Documentation:**
+- Implementation Plan: `docs/phase-13/Phase_13.1_Implementation_Plan.md`
+- Restore Point: `docs/restore-points/Restore_Point_Phase_13.1_Pre_Execution.md`
+
+**Guardian Rules Compliance:**
+| Rule | Status |
+|------|--------|
+| Darkone Admin UI 1:1 | ✅ Reusing existing patterns only |
+| No public frontend changes | ✅ Admin-only scope |
+| Existing enum preserved | ✅ No alterations to app_role |
+
+---
 
 ### Phase 13C — Legal & System Pages (✅ COMPLETE — Static Delivery Only)
 
