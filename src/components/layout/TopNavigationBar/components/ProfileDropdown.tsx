@@ -1,17 +1,22 @@
 import avatar1 from '@/assets/images/users/avatar-1.jpg'
 import IconifyIcon from '@/components/wrapper/IconifyIcon'
 import { useAuthContext } from '@/context/useAuthContext'
+import { useProfile } from '@/hooks/useProfile'
 import { Dropdown, DropdownHeader, DropdownItem, DropdownMenu, DropdownToggle } from 'react-bootstrap'
+import { Link } from 'react-router-dom'
 
 const ProfileDropdown = () => {
   const { signOut, user } = useAuthContext()
+  const { profile, displayName } = useProfile()
 
   const handleLogout = async () => {
     await signOut()
   }
 
+  const avatarUrl = profile?.avatar_url || avatar1
+
   return (
-    <Dropdown className=" topbar-item">
+    <Dropdown className="topbar-item">
       <DropdownToggle
         type="button"
         className="topbar-button content-none"
@@ -23,16 +28,20 @@ const ProfileDropdown = () => {
           <img
             className="rounded-circle"
             width={32}
-            src={avatar1}
-            alt="avatar-3"
+            height={32}
+            src={avatarUrl}
+            alt="User avatar"
+            onError={(e) => {
+              (e.target as HTMLImageElement).src = avatar1
+            }}
           />
         </span>
       </DropdownToggle>
-      <DropdownMenu className=" dropdown-menu-end">
+      <DropdownMenu className="dropdown-menu-end">
         <DropdownHeader>
-          {user?.email ? `Welcome, ${user.email.split('@')[0]}!` : 'Welcome!'}
+          Welcome, {displayName}!
         </DropdownHeader>
-        <DropdownItem href="">
+        <DropdownItem as={Link} to="/account">
           <IconifyIcon icon="solar:user-outline" className="align-middle me-2 fs-18" />
           <span className="align-middle">My Account</span>
         </DropdownItem>
