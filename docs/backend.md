@@ -1,8 +1,213 @@
 # Backend Documentation
 
-**Status:** ✅ PHASE 7C COMPLETE — ADMIN DASHBOARD LIVE | 📋 PHASE 14 PLANNED  
-**Phase:** Phase 12 CLOSED | Phase 6C Schema ✅ EXECUTED | Phase 5 SEO ✅ EXECUTED | Phase 7A ✅ EXECUTED | Phase 7B ✅ EXECUTED | Phase 7C ✅ EXECUTED | Phase 13C ✅ STATIC DELIVERY | Phase 14 📋 PLANNED  
-**Last Updated:** 2026-01-03
+**Status:** ✅ PHASE 7C COMPLETE | ✅ PHASE 13.1 CLOSED | 📋 PHASE 14 PLANNED  
+**Phase:** Phase 13.1 CLOSED | Phase 12 CLOSED | Phase 6C Schema ✅ EXECUTED | Phase 5 SEO ✅ EXECUTED | Phase 7A ✅ EXECUTED | Phase 7B ✅ EXECUTED | Phase 7C ✅ EXECUTED | Phase 13C ✅ STATIC DELIVERY | Phase 14 📋 PLANNED  
+**Last Updated:** 2026-01-04
+
+---
+
+## Phase 13.1 — Interaction Infrastructure (CLOSED)
+
+**Execution Date:** 2026-01-04  
+**Closure Date:** 2026-01-04  
+**Status:** ✅ COMPLETED & VERIFIED — FORMALLY CLOSED
+
+### Objective
+
+Implement backend infrastructure for in-app notifications and user profiles with hardened RLS policies.
+
+### Database Schema Additions
+
+#### `public.notifications` Table
+
+| Column | Type | Nullable | Default | Purpose |
+|--------|------|----------|---------|---------|
+| id | UUID | NO | gen_random_uuid() | Primary key |
+| user_id | UUID | NO | — | FK to auth.users |
+| type | TEXT | NO | — | Notification type (new_lead, new_quote, etc.) |
+| title | TEXT | NO | — | Notification title |
+| message | TEXT | NO | — | Notification body |
+| link | TEXT | YES | — | Optional navigation link |
+| is_read | BOOLEAN | NO | false | Read status |
+| created_at | TIMESTAMPTZ | NO | now() | Creation timestamp |
+
+**RLS Policies (Hardened):**
+
+```sql
+-- SELECT: Users can only view their own notifications
+CREATE POLICY "Users can view own notifications"
+ON public.notifications FOR SELECT
+USING (auth.uid() = user_id);
+
+-- UPDATE: Users can only update their own notifications (hardened WITH CHECK)
+CREATE POLICY "Users can update own notifications"
+ON public.notifications FOR UPDATE
+USING (auth.uid() = user_id)
+WITH CHECK (auth.uid() = user_id);
+```
+
+**Index:**
+```sql
+CREATE INDEX idx_notifications_user_unread 
+ON public.notifications(user_id, is_read) 
+WHERE is_read = false;
+```
+
+#### `public.profiles` Table
+
+| Column | Type | Nullable | Default | Purpose |
+|--------|------|----------|---------|---------|
+| id | UUID | NO | — | Primary key (FK to auth.users) |
+| display_name | TEXT | YES | — | User display name |
+| avatar_url | TEXT | YES | — | User avatar URL |
+| created_at | TIMESTAMPTZ | NO | now() | Creation timestamp |
+| updated_at | TIMESTAMPTZ | NO | now() | Last update timestamp |
+
+**RLS Policies:**
+
+```sql
+-- SELECT: Users can view their own profile
+CREATE POLICY "Users can view own profile"
+ON public.profiles FOR SELECT
+USING (auth.uid() = id);
+
+-- UPDATE: Users can only update their own profile
+CREATE POLICY "Users can update own profile"
+ON public.profiles FOR UPDATE
+USING (auth.uid() = id)
+WITH CHECK (auth.uid() = id);
+
+-- SELECT: Admins can view all profiles
+CREATE POLICY "Admins can view all profiles"
+ON public.profiles FOR SELECT
+USING (public.has_role(auth.uid(), 'admin'));
+```
+
+### Triggers Created
+
+#### Profile Auto-Creation
+
+```sql
+CREATE OR REPLACE FUNCTION public.handle_new_user()
+RETURNS TRIGGER
+LANGUAGE plpgsql
+SECURITY DEFINER
+SET search_path = public
+AS $$
+BEGIN
+    INSERT INTO public.profiles (id, display_name)
+    VALUES (NEW.id, COALESCE(NEW.raw_user_meta_data->>'display_name', split_part(NEW.email, '@', 1)));
+    RETURN NEW;
+END;
+$$;
+
+CREATE TRIGGER on_auth_user_created
+AFTER INSERT ON auth.users
+FOR EACH ROW EXECUTE FUNCTION public.handle_new_user();
+```
+
+#### Lead Notification Trigger
+
+```sql
+CREATE OR REPLACE FUNCTION public.notify_admins_new_lead()
+RETURNS TRIGGER
+LANGUAGE plpgsql
+SECURITY DEFINER
+SET search_path = public
+AS $$
+BEGIN
+    INSERT INTO public.notifications (user_id, type, title, message, link)
+    SELECT ur.user_id, 'new_lead', 'New Lead Received',
+           'A new lead from ' || NEW.name || ' has been submitted.',
+           '/crm/leads'
+    FROM public.user_roles ur
+    WHERE ur.role = 'admin';
+    RETURN NEW;
+END;
+$$;
+
+CREATE TRIGGER on_lead_created
+AFTER INSERT ON public.leads
+FOR EACH ROW EXECUTE FUNCTION public.notify_admins_new_lead();
+```
+
+#### Quote Notification Trigger
+
+```sql
+CREATE OR REPLACE FUNCTION public.notify_admins_new_quote()
+RETURNS TRIGGER
+LANGUAGE plpgsql
+SECURITY DEFINER
+SET search_path = public
+AS $$
+BEGIN
+    INSERT INTO public.notifications (user_id, type, title, message, link)
+    SELECT ur.user_id, 'new_quote', 'New Quote Submitted',
+           'Quote #' || NEW.reference_number || ' has been submitted.',
+           '/crm/quotes'
+    FROM public.user_roles ur
+    WHERE ur.role = 'admin';
+    RETURN NEW;
+END;
+$$;
+
+CREATE TRIGGER on_quote_created
+AFTER INSERT ON public.quotes
+FOR EACH ROW EXECUTE FUNCTION public.notify_admins_new_quote();
+```
+
+### Helper Functions Created
+
+```sql
+-- Editor role check (admin or moderator)
+CREATE OR REPLACE FUNCTION public.has_editor_role(_user_id UUID)
+RETURNS BOOLEAN
+LANGUAGE sql
+STABLE
+SECURITY DEFINER
+SET search_path = public
+AS $$
+    SELECT EXISTS (
+        SELECT 1 FROM public.user_roles
+        WHERE user_id = _user_id
+        AND role IN ('admin', 'moderator')
+    )
+$$;
+
+-- Viewer role check (any authenticated role)
+CREATE OR REPLACE FUNCTION public.has_viewer_role(_user_id UUID)
+RETURNS BOOLEAN
+LANGUAGE sql
+STABLE
+SECURITY DEFINER
+SET search_path = public
+AS $$
+    SELECT EXISTS (
+        SELECT 1 FROM public.user_roles
+        WHERE user_id = _user_id
+        AND role IN ('admin', 'moderator', 'user')
+    )
+$$;
+```
+
+### Role Mapping
+
+| Enum Value | Mapped Role | Access Level |
+|------------|-------------|--------------|
+| `admin` | Admin | Full access to all modules |
+| `moderator` | Editor | Content modules + read-only CRM |
+| `user` | Viewer | Read-only access |
+
+### Known Limitations
+
+- ❌ External notification channels (email, WhatsApp, SMS) deferred to future phase
+- ❌ No push notifications
+- ❌ No notification preferences UI
+- ❌ Profile editing limited to display_name and avatar_url
+
+### Restore Point
+
+See: `docs/restore-points/Restore_Point_Phase_13.1_Pre_Execution.md`
 
 ---
 
