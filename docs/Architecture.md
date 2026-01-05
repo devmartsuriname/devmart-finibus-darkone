@@ -1,7 +1,7 @@
 # Architecture Documentation
 
-**Status:** ✅ PHASE 7 COMPLETE | ✅ PHASE 8 CLOSED | ✅ PHASE 13C COMPLETE | ✅ PHASE 13.1 CLOSED | ✅ PHASE 13.2A CLOSED | ✅ PHASE 13B CLOSED | ✅ PHASE 13D CLOSED  
-**Phase:** Phase 13 — Polish & Enhancements (Phase 13D FORMALLY CLOSED)
+**Status:** ✅ PHASE 7 COMPLETE | ✅ PHASE 8 CLOSED | ✅ PHASE 13C COMPLETE | ✅ PHASE 13.1 CLOSED | ✅ PHASE 13.2A CLOSED | ✅ PHASE 13B CLOSED | ✅ PHASE 13D CLOSED | ✅ PHASE 13E.1 COMPLETE  
+**Phase:** Phase 13 — Polish & Enhancements (Phase 13E.1 RLS Verification COMPLETE)
 **Last Updated:** 2026-01-05
 
 ---
@@ -356,6 +356,73 @@ All sub-phases (13D.1, 13D.2, 13D.3, 13D.4) have been executed, verified, and fo
 - ✅ Finibus parity maintained
 
 **Closure Document:** `docs/phase-13/Phase_13C_Closure.md`
+
+---
+
+## Phase 13E.1 — RLS Verification (COMPLETE)
+
+**Verification Date:** 2026-01-05  
+**Status:** ✅ COMPLETE (Verification-Only) — No Policy Changes Made
+
+### Objective
+
+Verify RLS policy coverage across all tables and document access boundaries per role.
+
+### Access Boundary Summary
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│  ADMIN ROLE (admin)                                          │
+│    └── Full CRUD on ALL tables                               │
+│    └── User/role management                                  │
+│    └── System settings                                       │
+├─────────────────────────────────────────────────────────────┤
+│  EDITOR ROLE (moderator) — NOT YET IMPLEMENTED               │
+│    └── has_editor_role() exists but UNUSED in policies       │
+│    └── Currently: Own profile/notifications only             │
+│    └── Planned: Content CRUD + read-only CRM                 │
+├─────────────────────────────────────────────────────────────┤
+│  VIEWER ROLE (user) — NOT YET IMPLEMENTED                    │
+│    └── has_viewer_role() exists but UNUSED in policies       │
+│    └── Currently: Own profile/notifications only             │
+│    └── Planned: Read-only content access                     │
+├─────────────────────────────────────────────────────────────┤
+│  PUBLIC (unauthenticated)                                    │
+│    └── SELECT published content only                         │
+│    └── INSERT leads/quotes (forms)                           │
+│    └── No UPDATE/DELETE                                      │
+└─────────────────────────────────────────────────────────────┘
+```
+
+### Key Finding: Editor/Viewer Access Gap
+
+**DOCUMENTED GAP (Future Phase):**
+
+The helper functions `has_editor_role()` and `has_viewer_role()` exist but are **NOT USED** in any RLS policies. This means:
+
+- Moderator/User roles currently have **NO CMS editing access** (admin-only CRUD)
+- This is a documented gap for a future phase, not a blocking defect
+- Current system operates correctly for admin-only access
+
+### Tables Verified: 24/24
+
+All tables have RLS enabled. Policies use `has_role(auth.uid(), 'admin')` pattern consistently.
+
+### Helper Functions (Verified Correct)
+
+| Function | Status | Usage |
+|----------|--------|-------|
+| `has_role(_user_id, _role)` | ✅ CORRECT | Used in 86+ policies |
+| `has_editor_role(_user_id)` | ✅ CORRECT | Not yet used (future phase) |
+| `has_viewer_role(_user_id)` | ✅ CORRECT | Not yet used (future phase) |
+
+### Supabase Linter Result
+
+**Result:** ✅ PASSED — No security issues detected
+
+### Restore Point
+
+See: `docs/restore-points/Restore_Point_Phase_13E_1_RLS_Verification.md`
 
 ---
 

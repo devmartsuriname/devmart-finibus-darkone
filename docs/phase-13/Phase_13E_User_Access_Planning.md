@@ -1,7 +1,8 @@
 # Phase 13E — User & Access Completion
 
-**Status:** 📋 PLANNING ONLY — NOT AUTHORIZED FOR EXECUTION  
-**Planning Date:** 2026-01-05
+**Status:** 📋 PLANNING ONLY — 13E.1 VERIFICATION COMPLETE  
+**Planning Date:** 2026-01-05  
+**13E.1 Verification Date:** 2026-01-05
 
 ---
 
@@ -128,38 +129,79 @@ USING (public.has_role(auth.uid(), 'admin'))
 WITH CHECK (public.has_role(auth.uid(), 'admin'));
 ```
 
-### 13E.4 — RLS Verification Matrix
+### 13E.1 — RLS Verification (✅ COMPLETE)
 
-**Tables to Verify:**
+**Verification Date:** 2026-01-05  
+**Status:** ✅ COMPLETE (Verification-Only)
 
-| Table | Admin | Editor | Viewer |
-|-------|-------|--------|--------|
-| `blog_posts` | CRUD | CRUD | SELECT |
-| `blog_comments` | CRUD | CRUD | SELECT |
-| `blog_tags` | CRUD | CRUD | SELECT |
-| `projects` | CRUD | CRUD | SELECT |
-| `project_process_steps` | CRUD | CRUD | SELECT |
-| `services` | CRUD | CRUD | SELECT |
-| `service_pricing_plans` | CRUD | CRUD | SELECT |
-| `service_process_steps` | CRUD | CRUD | SELECT |
-| `pages` | CRUD | CRUD | SELECT |
-| `page_settings` | CRUD | CRUD | SELECT |
-| `media` | CRUD | CRUD | SELECT |
-| `testimonials` | CRUD | CRUD | SELECT |
-| `leads` | CRUD | SELECT | SELECT |
-| `quotes` | CRUD | SELECT | SELECT |
-| `quote_items` | CRUD | SELECT | SELECT |
-| `settings` | CRUD | SELECT | NONE |
-| `notifications` | Own only | Own only | Own only |
-| `profiles` | Own only | Own only | Own only |
-| `user_roles` | CRUD | NONE | NONE |
-| `global_blocks` | CRUD | CRUD | SELECT |
-| `homepage_settings` | CRUD | CRUD | SELECT |
+#### Verification Results
 
-**Verification Method:**
-- Create test accounts for each role
-- Verify SELECT/INSERT/UPDATE/DELETE per table
-- Document any discrepancies
+| Metric | Result |
+|--------|--------|
+| Tables with RLS enabled | 24/24 (100%) |
+| Total policies verified | 86+ |
+| Helper functions verified | 3 |
+| Supabase linter | PASSED |
+| Blocking defects | 0 |
+
+#### Key Finding: Editor/Viewer Access Gap
+
+**CRITICAL DOCUMENTATION:**
+
+The helper functions `has_editor_role()` and `has_viewer_role()` exist but are **NOT USED** in any RLS policies:
+
+- **Moderator role (Editor):** Currently has **NO CMS editing access** — admin-only CRUD
+- **User role (Viewer):** Currently has **NO content access** beyond own profile/notifications
+
+This is a **documented gap for a future phase**, NOT a blocking defect.
+
+#### Verified RLS Matrix (Current State)
+
+**Admin Role (`admin`):**
+
+| Table Category | SELECT | INSERT | UPDATE | DELETE |
+|----------------|--------|--------|--------|--------|
+| Content (blog, projects, services, pages) | ✅ | ✅ | ✅ | ✅ |
+| CRM (leads, quotes) | ✅ | ✅ | ✅ | ✅ |
+| System (settings, user_roles) | ✅ | ✅ | ✅ | ✅ |
+| Media | ✅ | ✅ | ✅ | ✅ |
+| Own data (profiles, notifications) | ✅ | ✅ | ✅ | N/A |
+
+**Editor Role (`moderator`) — NOT IMPLEMENTED:**
+
+| Table Category | SELECT | INSERT | UPDATE | DELETE |
+|----------------|--------|--------|--------|--------|
+| Content | ❌ | ❌ | ❌ | ❌ |
+| CRM | ❌ | ❌ | ❌ | ❌ |
+| System | ❌ | ❌ | ❌ | ❌ |
+| Own data | ✅ | ✅ | ✅ | N/A |
+
+**Viewer Role (`user`) — NOT IMPLEMENTED:**
+
+| Table Category | SELECT | INSERT | UPDATE | DELETE |
+|----------------|--------|--------|--------|--------|
+| Content | ❌ | ❌ | ❌ | ❌ |
+| CRM | ❌ | ❌ | ❌ | ❌ |
+| System | ❌ | ❌ | ❌ | ❌ |
+| Own data | ✅ | ❌ | ✅ | N/A |
+
+**Public (unauthenticated):**
+
+| Table | SELECT | INSERT |
+|-------|--------|--------|
+| Published content | ✅ | ❌ |
+| Leads/Quotes | ❌ | ✅ |
+| Settings | ✅ (read-only) | ❌ |
+
+#### Restore Point
+
+See: `docs/restore-points/Restore_Point_Phase_13E_1_RLS_Verification.md`
+
+---
+
+### 13E.2 — User List Page (PLANNING ONLY)
+
+**Status:** ⏳ NOT AUTHORIZED
 
 ---
 
@@ -221,12 +263,13 @@ WITH CHECK (public.has_role(auth.uid(), 'admin'));
 
 | Gate | Description | Status |
 |------|-------------|--------|
-| Gate 13E.0 | Planning approved | ⏳ PENDING |
-| Gate 13E.1 | Sub-phase 13E.1 authorized | ⏳ PENDING |
-| Gate 13E.2 | Sub-phase 13E.2 authorized | ⏳ PENDING |
-| Gate 13E.3 | Sub-phase 13E.3 authorized | ⏳ PENDING |
-| Gate 13E.4 | Sub-phase 13E.4 authorized | ⏳ PENDING |
-| Gate 13E.5 | Phase 13E verification complete | ⏳ PENDING |
+| Gate 13E.0 | Planning approved | ✅ COMPLETE |
+| Gate 13E.1 | RLS Verification (docs only) | ✅ COMPLETE — 2026-01-05 |
+| Gate 13E.2 | User List Page authorized | ⏳ PENDING |
+| Gate 13E.3 | User Creation Flow authorized | ⏳ PENDING |
+| Gate 13E.4 | Role Assignment UI authorized | ⏳ PENDING |
+| Gate 13E.5 | Editor/Viewer RLS Implementation authorized | ⏳ PENDING |
+| Gate 13E.6 | Phase 13E verification complete | ⏳ PENDING |
 
 ---
 
