@@ -20,6 +20,7 @@
 import React, { useState, useEffect } from 'react';
 import { supabase } from '../../../lib/supabase';
 import { useServices } from '../../../hooks/useServices';
+import { useSystemSettings } from '../../../hooks/useSystemSettings';
 import { captureUtmParams, getUtmData } from '../../../hooks/useUtmCapture';
 import { trackEvent } from '../../../hooks/useMarketingEvents';
 import ServiceSelection from './steps/ServiceSelection';
@@ -99,13 +100,42 @@ function QuoteWizard() {
   
   // Fetch services for title lookups
   const { services } = useServices();
+  
+  // System settings for feature toggle
+  const { settings: systemSettings, isLoading: systemLoading } = useSystemSettings();
+  const isQuoteDisabled = !systemSettings.quotes_enabled;
 
   // Capture UTM params and track quote start on mount
   useEffect(() => {
     captureUtmParams();
-    // Phase 7B: Track quote wizard start
-    trackEvent({ eventType: 'quote_started', source: 'quote_wizard' });
-  }, []);
+    // Phase 7B: Track quote wizard start (only if enabled)
+    if (!isQuoteDisabled) {
+      trackEvent({ eventType: 'quote_started', source: 'quote_wizard' });
+    }
+  }, [isQuoteDisabled]);
+
+  // Feature guard: if quotes are disabled, show message
+  if (!systemLoading && isQuoteDisabled) {
+    return (
+      <section className="service-area sec-pad">
+        <div className="container">
+          <div className="row justify-content-center">
+            <div className="col-lg-8 text-center">
+              <div className="title">
+                <h2>Quote Wizard</h2>
+              </div>
+              <p style={{ marginTop: '2rem', fontSize: '1.1rem' }}>
+                The Quote Wizard is temporarily unavailable. Please contact us directly for a custom quote.
+              </p>
+              <div className="cmn-btn" style={{ marginTop: '2rem' }}>
+                <a href="/contact">Contact Us</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    );
+  }
 
   // Navigation handlers
   const goToStep = (step: number) => {

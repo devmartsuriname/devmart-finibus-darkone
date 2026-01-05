@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { supabase } from "../../../lib/supabase";
 import { usePublicSettings } from "../../../hooks/usePublicSettings";
+import { useSystemSettings } from "../../../hooks/useSystemSettings";
 import { captureUtmParams, getUtmData } from "../../../hooks/useUtmCapture";
 import { trackEvent } from "../../../hooks/useMarketingEvents";
 
@@ -10,6 +11,10 @@ function ContactForm() {
     captureUtmParams();
   }, []);
   const { settings } = usePublicSettings();
+  const { settings: systemSettings } = useSystemSettings();
+  
+  // Feature guard: check if contact form is enabled
+  const isFormDisabled = !systemSettings.contact_form_enabled;
   
   // Form state
   const [name, setName] = useState("");
@@ -27,6 +32,13 @@ function ContactForm() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    // Feature guard: if form is disabled, show message and return
+    if (isFormDisabled) {
+      setSubmitStatus('error');
+      setErrorMessage('Contact form is temporarily unavailable. Please try again later.');
+      return;
+    }
     
     // Anti-spam: if honeypot is filled, silently "succeed" without DB insert
     if (honeypot) {
@@ -169,9 +181,10 @@ function ContactForm() {
                     <div className="col-12">
                       <input
                         type="submit"
-                        value={isSubmitting ? "Sending..." : "Send Message"}
-                        disabled={isSubmitting}
-                        style={isSubmitting ? { opacity: 0.7, cursor: 'not-allowed' } : {}}
+                        value={isSubmitting ? "Sending..." : (isFormDisabled ? "Temporarily Unavailable" : "Send Message")}
+                        disabled={isSubmitting || isFormDisabled}
+                        style={(isSubmitting || isFormDisabled) ? { opacity: 0.7, cursor: 'not-allowed' } : {}}
+                      />
                       />
                     </div>
                   </div>

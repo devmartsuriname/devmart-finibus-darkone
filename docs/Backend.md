@@ -323,7 +323,7 @@ See: `docs/restore-points/Restore_Point_Phase_13B_Backend_Polish_Verification.md
 
 ## Phase 13D — System Toggles & Operational Controls (IN PROGRESS)
 
-**Status:** 🔄 IN PROGRESS (13D.1 ✅ | 13D.2 ✅)  
+**Status:** 🔄 IN PROGRESS (13D.1 ✅ | 13D.2 ✅ | 13D.3 ✅)  
 **Execution Date:** 2026-01-05
 
 ### Objective
@@ -389,31 +389,83 @@ System Tab
 - No boolean values stored in database
 - onChange handler: `onChange('key', e.target.checked ? 'true' : 'false')`
 
-### Remaining Sub-Phases (NOT AUTHORIZED)
+### Phase 13D.3 — Public Settings Consumption (EXECUTED)
+
+**Execution Date:** 2026-01-05
+
+#### Objective
+
+Wire system settings to the public frontend for Coming Soon redirect and feature toggles.
+
+#### Route Confirmation
+
+| Property | Value |
+|----------|-------|
+| Coming Soon Route | `/commingsoon` (double "m" — Finibus original) |
+| Component | `apps/public/src/components/pages/commingSoon/CommingSoonPage.tsx` |
+| App.tsx Reference | Line 140: `<Route path="/commingsoon" element={<CommingSoonPage />} />` |
+
+#### Files Created
+
+| File | Purpose |
+|------|---------|
+| `apps/public/src/hooks/useSystemSettings.ts` | System settings hook with type-safe defaults |
+| `apps/public/src/components/providers/SystemModeWrapper.tsx` | Centralized routing guard |
+
+#### Files Modified
+
+| File | Change |
+|------|--------|
+| `apps/public/src/App.tsx` | Wrapped Routes with SystemModeWrapper |
+| `apps/public/src/components/pages/contact/ContactForm.tsx` | Added feature guard for `contact_form_enabled` |
+| `apps/public/src/components/pages/quote/QuoteWizard.tsx` | Added feature guard for `quotes_enabled` |
+| `apps/public/src/components/pages/commingSoon/CommingSoonPage.tsx` | Added custom message binding |
+
+#### Public Consumption Architecture
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│  useSystemSettings Hook                                      │
+│    └── Fetches 5 system keys from settings table            │
+│    └── Parses 'true'/'false' strings to booleans            │
+│    └── Provides type-safe defaults                           │
+├─────────────────────────────────────────────────────────────┤
+│  SystemModeWrapper Component                                 │
+│    └── Wraps all Routes in App.tsx                          │
+│    └── Priority: Maintenance > Coming Soon > Normal          │
+│    └── Redirects to /commingsoon when coming_soon_enabled   │
+│    └── Loop prevention for /commingsoon path                 │
+├─────────────────────────────────────────────────────────────┤
+│  Feature Guards                                              │
+│    └── ContactForm: Blocks submission when disabled          │
+│    └── QuoteWizard: Shows message when disabled              │
+│    └── CommingSoonPage: Displays custom message              │
+└─────────────────────────────────────────────────────────────┘
+```
+
+#### Maintenance Mode (DEFERRED)
+
+Maintenance mode wiring is **documented but not implemented** in Phase 13D.3:
+- SystemModeWrapper includes commented code for future maintenance redirect
+- Requires Phase 13D.4 authorization to create MaintenancePage component
+
+### Remaining Sub-Phases
 
 | Sub-Phase | Description | Status |
 |-----------|-------------|--------|
-| 13D.3 | Public settings consumption update | 📋 NOT AUTHORIZED |
-| 13D.4 | MaintenancePage component | 📋 NOT AUTHORIZED |
-| 13D.5 | Conditional routing wrapper | 📋 NOT AUTHORIZED |
-| 13D.6 | Feature toggle integration | 📋 NOT AUTHORIZED |
-| 13D.7 | Verification & documentation | 📋 NOT AUTHORIZED |
-
-### Important Note
-
-> **Public Coming Soon route exists at `/commingsoon` and must be toggled via system settings in Phase 13D.3/13D.5.**
->
-> The existing route (`apps/public/src/components/pages/commingSoon/CommingSoonPage.tsx`) should be wired to the `coming_soon_enabled` setting. No new pages need to be created.
+| 13D.4 | MaintenancePage component + maintenance_mode wiring | 📋 NOT AUTHORIZED |
 
 ### Restore Points
 
 - `docs/restore-points/Restore_Point_Phase_13D1_System_Toggles_DB_Seed.md`
 - `docs/restore-points/Restore_Point_Phase_13D2_Pre_Execution.md`
+- `docs/restore-points/Restore_Point_Phase_13D3_Pre_Execution.md`
 
 ### Execution Reports
 
 - `docs/phase-13/Phase_13D1_Execution_Report.md`
 - `docs/phase-13/Phase_13D2_Execution_Report.md`
+- `docs/phase-13/Phase_13D3_Execution_Report.md`
 
 ---
 

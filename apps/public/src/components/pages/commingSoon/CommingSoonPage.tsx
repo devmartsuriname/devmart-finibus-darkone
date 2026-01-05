@@ -1,18 +1,22 @@
 import React from "react";
 import DateCounter from "./DateCounter";
+import { useSystemSettings } from '../../../hooks/useSystemSettings';
+
+// Default message (Finibus original)
+const DEFAULT_MESSAGE = "Donec bibendum enim ut elit porta ullamcorper. Vestibulum Naiquam nulla, venenatis eget dapibus catali topuny wekemdini iaculis vitae nulla.";
 
 function CommingSoonPage() {
+  const { settings } = useSystemSettings();
+  
+  // Use custom message if provided, otherwise use default
+  const displayMessage = settings.coming_soon_message || DEFAULT_MESSAGE;
   return (
     <>
       <section className="comming-soon">
         <div className="comming-soon-left">
           <div className="cngs-content">
             <h1>Coming Soon</h1>
-            <p>
-              Donec bibendum enim ut elit porta ullamcorper. Vestibulum Naiquam
-              nulla, venenatis eget dapibus catali topuny wekemdini iaculis
-              vitae nulla.
-            </p>
+            <p>{displayMessage}</p>
             <DateCounter />
             <div className="subscribe-mail">
               <form

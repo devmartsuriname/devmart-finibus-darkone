@@ -1,0 +1,4 @@
+# Memory: phase-13/13-d3-execution-complete
+Updated: 2026-01-05
+
+Phase 13D.3 (Public Settings Consumption + Coming Soon Wiring) is EXECUTED and COMPLETE. Key implementations: (1) Created `useSystemSettings` hook at `apps/public/src/hooks/useSystemSettings.ts` for fetching system settings with type-safe defaults; (2) Created `SystemModeWrapper` component at `apps/public/src/components/providers/SystemModeWrapper.tsx` as centralized routing guard with Coming Soon redirect (target: `/commingsoon` - double "m"); (3) Updated `App.tsx` to wrap Routes with SystemModeWrapper; (4) Added feature guards to ContactForm (contact_form_enabled) and QuoteWizard (quotes_enabled); (5) Added custom message binding to CommingSoonPage. Maintenance mode is DOCUMENTED ONLY (commented code) - requires Phase 13D.4 for MaintenancePage. All changes are logic-only with no UI redesign, preserving Finibus 1:1 parity.
