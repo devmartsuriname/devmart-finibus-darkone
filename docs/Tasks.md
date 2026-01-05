@@ -1,7 +1,7 @@
 # Tasks — Devmart Implementation Tracker
 
-**Status:** ✅ PHASE 8 CLOSED | ✅ PHASE 13C COMPLETE | ✅ PHASE 13.1 CLOSED | ✅ PHASE 13.2A CLOSED | ✅ PHASE 13B CLOSED  
-**Current Phase:** Phase 13 — Polish & Enhancements (Phase 13B CLOSED | Phase 13D COMPLETE)  
+**Status:** ✅ PHASE 8 CLOSED | ✅ PHASE 13C COMPLETE | ✅ PHASE 13.1 CLOSED | ✅ PHASE 13.2A CLOSED | ✅ PHASE 13B CLOSED | ✅ PHASE 13D CLOSED  
+**Current Phase:** Phase 13 — Polish & Enhancements (Phase 13D FORMALLY CLOSED)  
 **Last Updated:** 2026-01-05
 
 ---
@@ -180,7 +180,7 @@ Documentation and restore points are complete.
 ## === PHASE 13 POLISH & ENHANCEMENTS (ACTIVE) ===
 
 **Planning Date:** 2026-01-02  
-**Status:** ✅ PHASE 13.1 CLOSED | ✅ PHASE 13.2A CLOSED | ✅ PHASE 13B CLOSED | ✅ PHASE 13D COMPLETE (13D.1 ✅ | 13D.2 ✅ | 13D.3 ✅ | 13D.4 ✅)
+**Status:** ✅ PHASE 13.1 CLOSED | ✅ PHASE 13.2A CLOSED | ✅ PHASE 13B CLOSED | ✅ PHASE 13D CLOSED (13D.1 ✅ | 13D.2 ✅ | 13D.3 ✅ | 13D.4 ✅)
 
 ---
 
@@ -413,9 +413,10 @@ Technically and visually finalize the Devmart platform (Frontend + Backend) befo
 
 ### Phase 13D — System Toggles & Operational Controls (P2)
 
-**Status:** ✅ COMPLETE (13D.1 ✅ | 13D.2 ✅ | 13D.3 ✅ | 13D.4 ✅)  
+**Status:** ✅ COMPLETE — FORMALLY CLOSED  
 **Planning Date:** 2026-01-05  
-**Execution Completed:** 2026-01-05
+**Execution Completed:** 2026-01-05  
+**Closure Date:** 2026-01-05
 
 **Scope:**
 - System-level toggles for operational control (Coming Soon, Maintenance Mode)
@@ -471,8 +472,29 @@ Technically and visually finalize the Devmart platform (Frontend + Backend) befo
 
 **Planning Document:** `docs/phase-13/Phase_13D_System_Toggles_Planning.md`
 **Execution Report:** `docs/phase-13/Phase_13D4_Execution_Report.md`
+**Restore Point:** `docs/restore-points/Restore_Point_Phase_13D_Closure_Docs.md`
 
-**PHASE 13D COMPLETE:** All sub-phases executed.
+---
+
+### Phase 13D Closure Statement
+
+**Phase 13D EXECUTED & FORMALLY CLOSED — 2026-01-05**
+
+All sub-phases (13D.1, 13D.2, 13D.3, 13D.4) have been executed, verified, and formally closed.
+
+**Final State:**
+- 7 settings keys seeded: `maintenance_mode`, `coming_soon_enabled`, `coming_soon_message`, `coming_soon_countdown_enabled`, `coming_soon_countdown_target`, `quotes_enabled`, `contact_form_enabled`
+- SystemModeWrapper enforces priority hierarchy: Maintenance Mode > Coming Soon Mode > Normal Operation
+- MaintenancePage created with Finibus 1:1 parity (ErrorPage pattern)
+- DateCounter wired to admin-controlled countdown settings
+- Admin Settings > System tab complete with 3 cards (Site Availability, Countdown, Feature Controls)
+- Public feature guards active for Quote Wizard and Contact Form
+- Coming Soon redirect target: `/commingsoon` (exact Finibus route)
+
+**Route Clarification:**
+The Coming Soon page uses the original Finibus route `/commingsoon` (double "m"). This is NOT a typo — it is the exact path from the Finibus template and must not be "corrected".
+
+Documentation and restore points are complete. No further Phase 13D execution is authorized.
 
 ---
 

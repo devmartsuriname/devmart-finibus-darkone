@@ -1,7 +1,7 @@
 # Architecture Documentation
 
-**Status:** ✅ PHASE 7 COMPLETE | ✅ PHASE 8 CLOSED | ✅ PHASE 13C COMPLETE | ✅ PHASE 13.1 CLOSED | ✅ PHASE 13.2A CLOSED | ✅ PHASE 13B CLOSED | ✅ PHASE 13D COMPLETE  
-**Phase:** Phase 13 — Polish & Enhancements (Phase 13B CLOSED | Phase 13D COMPLETE)
+**Status:** ✅ PHASE 7 COMPLETE | ✅ PHASE 8 CLOSED | ✅ PHASE 13C COMPLETE | ✅ PHASE 13.1 CLOSED | ✅ PHASE 13.2A CLOSED | ✅ PHASE 13B CLOSED | ✅ PHASE 13D CLOSED  
+**Phase:** Phase 13 — Polish & Enhancements (Phase 13D FORMALLY CLOSED)
 **Last Updated:** 2026-01-05
 
 ---
@@ -98,7 +98,7 @@ See: `docs/phase-8/Phase_8_Planning.md`
 
 ## Phase 13 — Polish & Enhancements (ACTIVE)
 
-**Status:** ✅ PHASE 13.1 CLOSED | ✅ PHASE 13.2A CLOSED | ✅ PHASE 13B CLOSED | 🔄 PHASE 13D IN PROGRESS (13D.3 ✅)
+**Status:** ✅ PHASE 13.1 CLOSED | ✅ PHASE 13.2A CLOSED | ✅ PHASE 13B CLOSED | ✅ PHASE 13D CLOSED
 
 ### Objective
 
@@ -117,14 +117,16 @@ Phase 13 is refinement, not expansion. No architectural changes are authorized w
 | 13A | Backend Governance Foundation | P0 | 🔄 Partially addressed by 13.1 |
 | 13B | Backend Polish | P1 | ✅ CLOSED — 2026-01-05 (Verification-Only) |
 | 13C | Legal & System Pages | P1.5 | ✅ COMPLETE — 2026-01-03 |
-| 13D | System Toggles & Operational Controls | P2 | 🔄 IN PROGRESS (13D.1 ✅ | 13D.2 ✅ | 13D.3 ✅) |
+| 13D | System Toggles & Operational Controls | P2 | ✅ CLOSED — 2026-01-05 |
 
 ---
 
-### Phase 13D — System Toggles & Operational Controls (IN PROGRESS)
+### Phase 13D — System Toggles & Operational Controls (CLOSED)
 
 **Planning Date:** 2026-01-05  
-**Status:** 🔄 IN PROGRESS (13D.1 ✅ | 13D.2 ✅ | 13D.3 ✅)
+**Execution Completed:** 2026-01-05  
+**Closure Date:** 2026-01-05  
+**Status:** ✅ COMPLETE — FORMALLY CLOSED (13D.1 ✅ | 13D.2 ✅ | 13D.3 ✅ | 13D.4 ✅)
 
 #### Objective
 
@@ -177,13 +179,15 @@ Priority 3: NORMAL MODE (default)
 | Layout | Standalone (no Header/Footer) |
 | Status | EXISTS — 1:1 Finibus parity |
 
-#### Proposed Settings Keys
+#### Settings Keys (7 Total)
 
 | Key | Category | Default | Purpose |
 |-----|----------|---------|---------|
 | `maintenance_mode` | system | `"false"` | Full site offline |
 | `coming_soon_enabled` | system | `"false"` | Redirect all traffic to Coming Soon |
 | `coming_soon_message` | system | `""` | Custom message for Coming Soon |
+| `coming_soon_countdown_enabled` | system | `"true"` | Enable countdown timer |
+| `coming_soon_countdown_target` | system | `""` | Countdown target datetime (ISO 8601) |
 | `quotes_enabled` | system | `"true"` | Quote Wizard availability |
 | `contact_form_enabled` | system | `"true"` | Contact Form availability |
 
@@ -220,15 +224,45 @@ Priority 3: NORMAL MODE (default)
 └─────────────────────────────────────────────────────────────┘
 ```
 
-**Maintenance Mode:** Documented/commented in SystemModeWrapper, requires Phase 13D.4 for MaintenancePage.
+#### SystemMode Priority Hierarchy
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│  Priority 1: MAINTENANCE MODE (highest)                      │
+│    └── maintenance_mode = 'true' → Render MaintenancePage    │
+│    └── Inline render (no redirect)                           │
+│    └── Admin app unaffected (separate Vite environment)      │
+├─────────────────────────────────────────────────────────────┤
+│  Priority 2: COMING SOON MODE                                │
+│    └── coming_soon_enabled = 'true' → Redirect to /commingsoon │
+│    └── Loop prevention: pathname === '/commingsoon' check    │
+│    └── Route: /commingsoon (double "m" — Finibus original)   │
+├─────────────────────────────────────────────────────────────┤
+│  Priority 3: NORMAL OPERATION (default)                      │
+│    └── Both modes = 'false' → Standard routing               │
+└─────────────────────────────────────────────────────────────┘
+```
+
+#### File Inventory (Phase 13D)
+
+| File | Purpose |
+|------|---------|
+| `apps/public/src/components/pages/maintenance/MaintenancePage.tsx` | Maintenance mode display |
+| `apps/public/src/components/providers/SystemModeWrapper.tsx` | Priority-based mode routing |
+| `apps/public/src/hooks/useSystemSettings.ts` | System settings consumption |
+| `apps/public/src/components/pages/commingSoon/CommingSoonPage.tsx` | Coming Soon page (Finibus original) |
+| `apps/public/src/components/pages/commingSoon/DateCounter.tsx` | Countdown timer component |
+| `src/app/(admin)/settings/components/SystemSettingsTab.tsx` | Admin System settings UI |
 
 #### Planning Document
 
 See: `docs/phase-13/Phase_13D_System_Toggles_Planning.md`
 
-#### HARD STOP
+#### Phase 13D Closure Statement
 
-Phase 13D.3 is complete. Phase 13D.4 (MaintenancePage) requires explicit authorization.
+**Phase 13D EXECUTED & FORMALLY CLOSED — 2026-01-05**
+
+All sub-phases (13D.1, 13D.2, 13D.3, 13D.4) have been executed, verified, and formally closed. No further Phase 13D execution is authorized.
 
 ---
 
