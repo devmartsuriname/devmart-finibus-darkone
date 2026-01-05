@@ -1,5 +1,6 @@
 import React from "react";
 import DateCounter from "./DateCounter";
+import AnimatedCursor from "react-animated-cursor";
 import { useSystemSettings } from '../../../hooks/useSystemSettings';
 
 // Default message (Finibus original)
@@ -12,6 +13,28 @@ function CommingSoonPage() {
   const displayMessage = settings.coming_soon_message || DEFAULT_MESSAGE;
   return (
     <>
+      <AnimatedCursor
+        innerSize={8}
+        outerSize={30}
+        color="30, 179, 107"
+        outerAlpha={0.5}
+        innerScale={0.7}
+        outerScale={1.5}
+        clickables={[
+          'a',
+          'i',
+          'input[type="text"]',
+          'input[type="email"]',
+          'input[type="number"]',
+          'input[type="submit"]',
+          'input[type="image"]',
+          'label[for]',
+          'select',
+          'textarea',
+          'button',
+          '.link',
+        ]}
+      />
       <section className="comming-soon">
         <div className="comming-soon-left">
           <div className="cngs-content">
