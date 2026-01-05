@@ -14,6 +14,7 @@ import GeneralSettingsTab from './components/GeneralSettingsTab'
 import SeoSettingsTab from './components/SeoSettingsTab'
 import SocialSettingsTab from './components/SocialSettingsTab'
 import BrandingSettingsTab from './components/BrandingSettingsTab'
+import SystemSettingsTab, { SYSTEM_SETTINGS_DEFAULTS } from './components/SystemSettingsTab'
 
 // Validation helpers
 const isValidEmail = (email: string): boolean => {
@@ -58,6 +59,12 @@ interface FormValues {
   primary_color: string
   secondary_color: string
   accent_color: string
+  // System (all values are strings: "true"/"false" for booleans)
+  maintenance_mode: string
+  coming_soon_enabled: string
+  coming_soon_message: string
+  quotes_enabled: string
+  contact_form_enabled: string
 }
 
 const INITIAL_VALUES: FormValues = {
@@ -79,6 +86,12 @@ const INITIAL_VALUES: FormValues = {
   primary_color: '#D90A2C',
   secondary_color: '#17161A',
   accent_color: '#F7941D',
+  // System - guaranteed string defaults to prevent undefined values
+  maintenance_mode: SYSTEM_SETTINGS_DEFAULTS.maintenance_mode,
+  coming_soon_enabled: SYSTEM_SETTINGS_DEFAULTS.coming_soon_enabled,
+  coming_soon_message: SYSTEM_SETTINGS_DEFAULTS.coming_soon_message,
+  quotes_enabled: SYSTEM_SETTINGS_DEFAULTS.quotes_enabled,
+  contact_form_enabled: SYSTEM_SETTINGS_DEFAULTS.contact_form_enabled,
 }
 
 const SettingsPage = () => {
@@ -110,6 +123,12 @@ const SettingsPage = () => {
         primary_color: getSettingValue('primary_color') || '#D90A2C',
         secondary_color: getSettingValue('secondary_color') || '#17161A',
         accent_color: getSettingValue('accent_color') || '#F7941D',
+        // System settings - use defaults if not present to guarantee string values
+        maintenance_mode: getSettingValue('maintenance_mode') || SYSTEM_SETTINGS_DEFAULTS.maintenance_mode,
+        coming_soon_enabled: getSettingValue('coming_soon_enabled') || SYSTEM_SETTINGS_DEFAULTS.coming_soon_enabled,
+        coming_soon_message: getSettingValue('coming_soon_message'),
+        quotes_enabled: getSettingValue('quotes_enabled') || SYSTEM_SETTINGS_DEFAULTS.quotes_enabled,
+        contact_form_enabled: getSettingValue('contact_form_enabled') || SYSTEM_SETTINGS_DEFAULTS.contact_form_enabled,
       }
       setFormValues(newValues)
       setHasChanges(false)
@@ -243,6 +262,9 @@ const SettingsPage = () => {
                       <Nav.Item>
                         <Nav.Link eventKey="branding">Branding</Nav.Link>
                       </Nav.Item>
+                      <Nav.Item>
+                        <Nav.Link eventKey="system">System</Nav.Link>
+                      </Nav.Item>
                     </Nav>
                   </Col>
                   <Col sm={9}>
@@ -291,6 +313,18 @@ const SettingsPage = () => {
                             primary_color: formValues.primary_color,
                             secondary_color: formValues.secondary_color,
                             accent_color: formValues.accent_color,
+                          }}
+                          onChange={handleChange}
+                        />
+                      </Tab.Pane>
+                      <Tab.Pane eventKey="system">
+                        <SystemSettingsTab
+                          values={{
+                            maintenance_mode: formValues.maintenance_mode,
+                            coming_soon_enabled: formValues.coming_soon_enabled,
+                            coming_soon_message: formValues.coming_soon_message,
+                            quotes_enabled: formValues.quotes_enabled,
+                            contact_form_enabled: formValues.contact_form_enabled,
                           }}
                           onChange={handleChange}
                         />

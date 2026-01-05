@@ -1,7 +1,7 @@
 # Tasks — Devmart Implementation Tracker
 
 **Status:** ✅ PHASE 8 CLOSED | ✅ PHASE 13C COMPLETE | ✅ PHASE 13.1 CLOSED | ✅ PHASE 13.2A CLOSED | ✅ PHASE 13B CLOSED  
-**Current Phase:** Phase 13 — Polish & Enhancements (Phase 13B CLOSED | Phase 13D NOT AUTHORIZED)  
+**Current Phase:** Phase 13 — Polish & Enhancements (Phase 13B CLOSED | Phase 13D IN PROGRESS — 13D.2 EXECUTED)  
 **Last Updated:** 2026-01-05
 
 ---
@@ -413,7 +413,7 @@ Technically and visually finalize the Devmart platform (Frontend + Backend) befo
 
 ### Phase 13D — System Toggles & Operational Controls (P2)
 
-**Status:** 🔄 IN PROGRESS (13D.1 EXECUTED)  
+**Status:** 🔄 IN PROGRESS (13D.1 ✅ | 13D.2 ✅)  
 **Planning Date:** 2026-01-05  
 **Execution Started:** 2026-01-05
 
@@ -452,7 +452,7 @@ Technically and visually finalize the Devmart platform (Frontend + Backend) befo
 | Sub-Phase | Description | Status |
 |-----------|-------------|--------|
 | 13D.1 | Database seeding (5 settings keys) | ✅ EXECUTED |
-| 13D.2 | Admin SystemSettingsTab component | 📋 NOT AUTHORIZED |
+| 13D.2 | Admin SystemSettingsTab component | ✅ EXECUTED |
 | 13D.3 | Public settings consumption update | 📋 NOT AUTHORIZED |
 | 13D.4 | MaintenancePage component | 📋 NOT AUTHORIZED |
 | 13D.5 | Conditional routing wrapper | 📋 NOT AUTHORIZED |

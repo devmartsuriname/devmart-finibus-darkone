@@ -18,6 +18,7 @@ export interface SettingsByCategory {
   seo: Setting[]
   social: Setting[]
   branding: Setting[]
+  system: Setting[]
 }
 
 export interface SettingUpdate {
@@ -77,6 +78,7 @@ export const useSettings = () => {
       seo: settings.filter(s => s.category === 'seo'),
       social: settings.filter(s => s.category === 'social'),
       branding: settings.filter(s => s.category === 'branding'),
+      system: settings.filter(s => s.category === 'system'),
     }
   }, [settings])
 
