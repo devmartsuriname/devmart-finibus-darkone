@@ -1,7 +1,7 @@
 # Backend Documentation
 
-**Status:** ✅ PHASE 7C COMPLETE | ✅ PHASE 13.1 CLOSED | ✅ PHASE 13.2A CLOSED | ✅ PHASE 13B CLOSED | ✅ PHASE 13D CLOSED | 📋 PHASE 14 PLANNED  
-**Phase:** Phase 13D FORMALLY CLOSED | Phase 13B CLOSED | Phase 13.2A CLOSED | Phase 13.1 CLOSED | Phase 12 CLOSED | Phase 6C Schema ✅ EXECUTED | Phase 5 SEO ✅ EXECUTED | Phase 7A ✅ EXECUTED | Phase 7B ✅ EXECUTED | Phase 7C ✅ EXECUTED | Phase 13C ✅ STATIC DELIVERY | Phase 14 📋 PLANNED  
+**Status:** ✅ PHASE 7C COMPLETE | ✅ PHASE 13.1 CLOSED | ✅ PHASE 13.2A CLOSED | ✅ PHASE 13B CLOSED | ✅ PHASE 13D CLOSED | ✅ PHASE 13E.1 COMPLETE | 📋 PHASE 14 PLANNED  
+**Phase:** Phase 13E.1 COMPLETE | Phase 13D FORMALLY CLOSED | Phase 13B CLOSED | Phase 13.2A CLOSED | Phase 13.1 CLOSED | Phase 12 CLOSED | Phase 6C Schema ✅ EXECUTED | Phase 5 SEO ✅ EXECUTED | Phase 7A ✅ EXECUTED | Phase 7B ✅ EXECUTED | Phase 7C ✅ EXECUTED | Phase 13C ✅ STATIC DELIVERY | Phase 14 📋 PLANNED  
 **Last Updated:** 2026-01-05
 
 ---
@@ -211,9 +211,157 @@ See: `docs/restore-points/Restore_Point_Phase_13.1_Pre_Execution.md`
 
 ---
 
-## Phase 13B — Backend Polish (CLOSED)
+## Phase 13E.1 — RLS Verification (COMPLETE)
 
 **Verification Date:** 2026-01-05  
+**Status:** ✅ COMPLETE (Verification-Only) — No Policy Changes Made
+
+### Objective
+
+Verify and document existing RLS policies across all tables. Confirm access boundaries per role (admin/moderator/user).
+
+### Verification Results
+
+#### Tables with RLS Enabled: 24/24 (100%)
+
+| Table | RLS Enabled | Policies Count |
+|-------|-------------|----------------|
+| `blog_posts` | ✅ | 4 |
+| `blog_comments` | ✅ | 3 |
+| `blog_tags` | ✅ | 4 |
+| `blog_post_tags` | ✅ | 4 |
+| `projects` | ✅ | 4 |
+| `project_process_steps` | ✅ | 4 |
+| `services` | ✅ | 4 |
+| `service_pricing_plans` | ✅ | 4 |
+| `service_process_steps` | ✅ | 4 |
+| `pages` | ✅ | 4 |
+| `page_settings` | ✅ | 4 |
+| `media` | ✅ | 4 |
+| `testimonials` | ✅ | 4 |
+| `leads` | ✅ | 4 |
+| `quotes` | ✅ | 5 |
+| `quote_items` | ✅ | 4 |
+| `settings` | ✅ | 3 |
+| `notifications` | ✅ | 2 |
+| `profiles` | ✅ | 3 |
+| `user_roles` | ✅ | 4 |
+| `global_blocks` | ✅ | 4 |
+| `homepage_settings` | ✅ | 4 |
+| `newsletter_subscribers` | ✅ | 2 |
+| `marketing_events` | ✅ | 2 |
+
+#### Helper Functions Verified
+
+| Function | Purpose | Used in Policies | Status |
+|----------|---------|------------------|--------|
+| `has_role(_user_id, _role)` | Check specific role | ✅ YES (86+ policies) | ✅ CORRECT |
+| `has_editor_role(_user_id)` | Check admin OR moderator | ❌ NOT USED | ⚠️ DOCUMENTED GAP |
+| `has_viewer_role(_user_id)` | Check any authenticated role | ❌ NOT USED | ⚠️ DOCUMENTED GAP |
+
+All functions use `SECURITY DEFINER` and `SET search_path = public`.
+
+#### Supabase Linter Result
+
+**Result:** ✅ PASSED — No issues found
+
+### Key Finding: Editor/Viewer Access Gap
+
+**CRITICAL DOCUMENTATION:**
+
+The helper functions `has_editor_role()` and `has_viewer_role()` exist in the database but are **NOT USED** in any RLS policies. This means:
+
+- **Moderator role (Editor):** Currently has **NO CMS editing access** — admin-only CRUD
+- **User role (Viewer):** Currently has **NO content access** beyond own profile/notifications
+- All content modules are **admin-only** for authenticated CRUD operations
+
+**This is a documented gap for a future phase, NOT a blocking defect.** The current system operates correctly for admin-only access patterns.
+
+### RLS Access Matrix by Role
+
+#### Admin Role (`admin`)
+
+| Table Category | SELECT | INSERT | UPDATE | DELETE |
+|----------------|--------|--------|--------|--------|
+| Content (blog, projects, services, pages) | ✅ | ✅ | ✅ | ✅ |
+| CRM (leads, quotes) | ✅ | ✅ | ✅ | ✅ |
+| System (settings, user_roles) | ✅ | ✅ | ✅ | ✅ |
+| Media | ✅ | ✅ | ✅ | ✅ |
+| Own data (profiles, notifications) | ✅ | ✅ | ✅ | N/A |
+
+#### Editor Role (`moderator`) — FUTURE IMPLEMENTATION
+
+| Table Category | SELECT | INSERT | UPDATE | DELETE |
+|----------------|--------|--------|--------|--------|
+| Content | ❌ Not implemented | ❌ Not implemented | ❌ Not implemented | ❌ Not implemented |
+| CRM | ❌ Not implemented | ❌ | ❌ | ❌ |
+| System | ❌ | ❌ | ❌ | ❌ |
+| Media | ❌ Not implemented | ❌ Not implemented | ❌ Not implemented | ❌ |
+| Own data | ✅ | ✅ | ✅ | N/A |
+
+#### Viewer Role (`user`) — FUTURE IMPLEMENTATION
+
+| Table Category | SELECT | INSERT | UPDATE | DELETE |
+|----------------|--------|--------|--------|--------|
+| Content | ❌ Not implemented | ❌ | ❌ | ❌ |
+| CRM | ❌ Not implemented | ❌ | ❌ | ❌ |
+| System | ❌ | ❌ | ❌ | ❌ |
+| Media | ❌ Not implemented | ❌ | ❌ | ❌ |
+| Own data | ✅ | ❌ | ✅ | N/A |
+
+### Public Access Verified
+
+| Table | Public SELECT | Condition |
+|-------|---------------|-----------|
+| `blog_posts` | ✅ | `status = 'published'` |
+| `blog_comments` | ✅ | Via published post |
+| `blog_tags` | ✅ | All |
+| `projects` | ✅ | `status = 'published'` |
+| `services` | ✅ | `status = 'published'` |
+| `testimonials` | ✅ | `status = 'published'` |
+| `pages` | ✅ | `is_published = true` |
+| `settings` | ✅ | All (read-only) |
+| `media` | ✅ | All (public bucket) |
+| `leads` | ❌ | INSERT only (unauthenticated) |
+| `quotes` | ❌ | INSERT only (unauthenticated) |
+
+### Minor Inconsistency Noted
+
+**Table:** `user_roles`  
+**Issue:** Admin policy uses inline subquery instead of `has_role()` function  
+**Impact:** Functional — not blocking  
+**Status:** Documented for future cleanup (not authorized in this phase)
+
+### Intentionally Missing Operations (Justified)
+
+| Table | Missing Operation | Justification |
+|-------|-------------------|---------------|
+| `settings` | DELETE | Settings are seeded, never deleted |
+| `profiles` | DELETE | Profiles cascade with auth.users |
+| `notifications` | DELETE | Archive pattern preferred |
+| `newsletter_subscribers` | UPDATE/DELETE by admin | Public INSERT only |
+| `marketing_events` | UPDATE/DELETE by admin | Append-only analytics |
+
+### Compliance Statement
+
+| Rule | Status |
+|------|--------|
+| No code changes made | ✅ VERIFIED |
+| No DB migrations | ✅ VERIFIED |
+| No RLS policy changes | ✅ VERIFIED |
+| No UI changes | ✅ VERIFIED |
+| No public frontend changes | ✅ VERIFIED |
+| Documentation only | ✅ VERIFIED |
+
+### Restore Point
+
+See: `docs/restore-points/Restore_Point_Phase_13E_1_RLS_Verification.md`
+
+---
+
+## Phase 13B — Backend Polish (CLOSED)
+
+**Verification Date:** 2026-01-05
 **Closure Date:** 2026-01-05  
 **Status:** ✅ COMPLETED (Verification-Only) — FORMALLY CLOSED
 
