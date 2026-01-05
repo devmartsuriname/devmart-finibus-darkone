@@ -184,8 +184,7 @@ function ContactForm() {
                         value={isSubmitting ? "Sending..." : (isFormDisabled ? "Temporarily Unavailable" : "Send Message")}
                         disabled={isSubmitting || isFormDisabled}
                         style={(isSubmitting || isFormDisabled) ? { opacity: 0.7, cursor: 'not-allowed' } : {}}
-                      />
-                      />
+                  />
                     </div>
                   </div>
                 </form>
