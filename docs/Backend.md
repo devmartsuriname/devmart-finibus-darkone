@@ -321,9 +321,9 @@ See: `docs/restore-points/Restore_Point_Phase_13B_Backend_Polish_Verification.md
 
 ---
 
-## Phase 13D — System Toggles & Operational Controls (IN PROGRESS)
+## Phase 13D — System Toggles & Operational Controls (COMPLETE)
 
-**Status:** 🔄 IN PROGRESS (13D.1 ✅ | 13D.2 ✅ | 13D.3 ✅)  
+**Status:** ✅ COMPLETE (13D.1 ✅ | 13D.2 ✅ | 13D.3 ✅ | 13D.4 ✅)  
 **Execution Date:** 2026-01-05
 
 ### Objective
@@ -443,29 +443,64 @@ Wire system settings to the public frontend for Coming Soon redirect and feature
 └─────────────────────────────────────────────────────────────┘
 ```
 
-#### Maintenance Mode (DEFERRED)
+### Phase 13D.4 — Maintenance Mode + Countdown Wiring (EXECUTED)
 
-Maintenance mode wiring is **documented but not implemented** in Phase 13D.3:
-- SystemModeWrapper includes commented code for future maintenance redirect
-- Requires Phase 13D.4 authorization to create MaintenancePage component
+**Execution Date:** 2026-01-05
 
-### Remaining Sub-Phases
+#### Maintenance Mode Behavior
+
+When `maintenance_mode` is set to `'true'`:
+- All public routes render `MaintenancePage` directly (inline render, no redirect)
+- Admin app (apps/admin) is completely unaffected
+- Coming Soon mode is overridden (Maintenance takes priority)
+- No loop prevention needed (component is rendered, not navigated)
+
+**Priority Hierarchy:**
+1. Maintenance Mode (highest) — Renders MaintenancePage directly
+2. Coming Soon Mode — Redirects to /commingsoon
+3. Normal Operation (default)
+
+**MaintenancePage Component:**
+- Location: `apps/public/src/components/pages/maintenance/MaintenancePage.tsx`
+- Pattern: Exact copy of ErrorPage structure (Finibus 1:1)
+- CSS classes: `.notfound-error`, `.error-wrapper`, `.error-content`, `.cmn-btn`
+- Image: `/images/error.png` (existing Finibus asset)
+
+#### Coming Soon Countdown Settings
+
+| Key | Default Value | Type | Purpose |
+|-----|---------------|------|---------|
+| `coming_soon_countdown_enabled` | `'true'` | String | Enable countdown timer on Coming Soon page |
+| `coming_soon_countdown_target` | `''` | String | Target datetime (ISO 8601 format) |
+
+**DateCounter Behavior:**
+- When countdown enabled + valid target: Shows live countdown to target
+- When countdown enabled + no/invalid target: Falls back to 30 days from now
+- When countdown disabled: Shows zeros (00:00:00:00)
+- No console errors in any scenario
+
+### All Sub-Phases Complete
 
 | Sub-Phase | Description | Status |
 |-----------|-------------|--------|
-| 13D.4 | MaintenancePage component + maintenance_mode wiring | 📋 NOT AUTHORIZED |
+| 13D.1 | Database seeding (5 settings keys) | ✅ EXECUTED |
+| 13D.2 | Admin SystemSettingsTab component | ✅ EXECUTED |
+| 13D.3 | Public settings consumption + Coming Soon wiring | ✅ EXECUTED |
+| 13D.4 | MaintenancePage + Countdown wiring | ✅ EXECUTED |
 
 ### Restore Points
 
 - `docs/restore-points/Restore_Point_Phase_13D1_System_Toggles_DB_Seed.md`
 - `docs/restore-points/Restore_Point_Phase_13D2_Pre_Execution.md`
 - `docs/restore-points/Restore_Point_Phase_13D3_Pre_Execution.md`
+- `docs/restore-points/Restore_Point_Phase_13D4_Pre_Execution.md`
 
 ### Execution Reports
 
 - `docs/phase-13/Phase_13D1_Execution_Report.md`
 - `docs/phase-13/Phase_13D2_Execution_Report.md`
 - `docs/phase-13/Phase_13D3_Execution_Report.md`
+- `docs/phase-13/Phase_13D4_Execution_Report.md`
 
 ---
 
