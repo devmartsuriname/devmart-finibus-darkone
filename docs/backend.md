@@ -1,62 +1,78 @@
 # Backend Documentation
 
-**Status:** ✅ PHASE 7C COMPLETE | ✅ PHASE 13.1 CLOSED | ✅ PHASE 13.2A CLOSED | ✅ PHASE 13B CLOSED | ✅ PHASE 13D CLOSED | ✅ PHASE 13E CLOSED | 📋 PHASE 14 PLANNED  
-**Phase:** ✅ PHASE 13E CLOSED | 📋 PHASE 14 PLANNING APPROVED | Phase 13D CLOSED | Phase 13B CLOSED | Phase 13.2A CLOSED | Phase 13.1 CLOSED | Phase 12 CLOSED | Phase 6C Schema ✅ EXECUTED | Phase 5 SEO ✅ EXECUTED | Phase 7A ✅ EXECUTED | Phase 7B ✅ EXECUTED | Phase 7C ✅ EXECUTED | Phase 13C ✅ STATIC DELIVERY  
+**Status:** ✅ PHASE 7C COMPLETE | ✅ PHASE 13.1 CLOSED | ✅ PHASE 13.2A CLOSED | ✅ PHASE 13B CLOSED | ✅ PHASE 13D CLOSED | ✅ PHASE 13E CLOSED | ✅ PHASE 14A EXECUTED  
+**Phase:** ✅ PHASE 14A EXECUTED — Awaiting Phase 14B | Phase 13E CLOSED | Phase 13D CLOSED | Phase 13B CLOSED | Phase 13.2A CLOSED | Phase 13.1 CLOSED | Phase 12 CLOSED | Phase 6C Schema ✅ EXECUTED | Phase 5 SEO ✅ EXECUTED | Phase 7A ✅ EXECUTED | Phase 7B ✅ EXECUTED | Phase 7C ✅ EXECUTED | Phase 13C ✅ STATIC DELIVERY  
 **Last Updated:** 2026-01-05
 
 ---
 
-## Phase 14 — Pages Content Model (PLANNING APPROVED)
+## Phase 14 — Pages Content Model (PHASE 14A EXECUTED)
 
 **Planning Date:** 2026-01-05  
-**Status:** 📋 PLANNING APPROVED — NOT AUTHORIZED FOR EXECUTION
+**Phase 14A Executed:** 2026-01-05  
+**Status:** ✅ PHASE 14A EXECUTED — Awaiting Phase 14B Authorization
 
 ### Objective
 
 Enable CMS-driven content management for static pages (legal pages) through the Admin Pages module.
 
-### Proposed Schema Extension
+### Schema Extension (EXECUTED)
 
-**Add `content` column to `public.pages` table:**
+**Added `content` column to `public.pages` table:**
 
 ```sql
--- PLANNING ONLY — NOT EXECUTED
+-- EXECUTED: 2026-01-05
 ALTER TABLE public.pages
 ADD COLUMN content TEXT;
 
-COMMENT ON COLUMN public.pages.content IS 'HTML content body for static pages';
+COMMENT ON COLUMN public.pages.content IS 'HTML content body for static pages (legal pages, etc.)';
 ```
 
-### Proposed Database Records
+### Current `pages` Table Schema (12 columns)
 
-| slug | title | is_published | content |
-|------|-------|--------------|---------|
-| `privacy-policy` | Privacy Policy | true | (Migrate from hardcoded HTML) |
-| `terms-of-use` | Terms of Use | true | (Migrate from hardcoded HTML) |
-| `support-policy` | Support Policy | true | (Migrate from hardcoded HTML) |
-| `terms-of-service` | Terms of Service | true | (Migrate from hardcoded HTML) |
+| Column | Type | Nullable | Default | Status |
+|--------|------|----------|---------|--------|
+| id | uuid | No | gen_random_uuid() | Existing |
+| title | text | No | — | Existing |
+| slug | text | No | — | Existing |
+| **content** | **text** | **Yes** | **—** | **NEW (Phase 14A)** |
+| meta_title | text | Yes | — | Existing |
+| meta_description | text | Yes | — | Existing |
+| canonical_url | text | Yes | — | Existing |
+| noindex | boolean | Yes | false | Existing |
+| og_image_media_id | uuid | Yes | — | Existing |
+| is_published | boolean | No | false | Existing |
+| created_at | timestamptz | No | now() | Existing |
+| updated_at | timestamptz | No | now() | Existing |
 
-### Sub-Phases (When Authorized)
+### Sub-Phases Status
 
 | Sub-Phase | Description | Status |
 |-----------|-------------|--------|
-| Phase 14A | Schema Extension (`content` column) | ❌ NOT AUTHORIZED |
-| Phase 14B | Database Seeding (4 legal pages) | ❌ NOT AUTHORIZED |
+| Phase 14A | Schema Extension (`content` column) | ✅ EXECUTED |
+| Phase 14B | Admin CRUD / Pages Module Wiring | ❌ NOT AUTHORIZED |
 | Phase 14C | Admin UI Extension (Content tab) | ❌ NOT AUTHORIZED |
 | Phase 14D | Public Frontend Wiring | ❌ NOT AUTHORIZED |
 | Phase 14E | SEO Propagation | ❌ NOT AUTHORIZED |
 
+### Code Changes Constraint
+
+| Category | Status |
+|----------|--------|
+| Admin UI code | ❌ NOT MODIFIED |
+| Public frontend code | ❌ NOT MODIFIED |
+| Shared components | ❌ NOT MODIFIED |
+| Supabase types | ✅ Auto-generated only |
+
 ### RLS Considerations
 
-Existing RLS policies on `pages` table will apply:
+Existing RLS policies on `pages` table apply (no changes made):
 - Public: SELECT where `is_published = true`
 - Admin: SELECT, UPDATE (no INSERT/DELETE — edit-only module)
 
-No new RLS policies required.
+### Execution Report
 
-### Planning Document
-
-See: `docs/phase-14/Phase_14_Pages_Content_Model.md`
+See: `docs/phase-14/Phase_14A_Execution_Report.md`
 
 ---
 

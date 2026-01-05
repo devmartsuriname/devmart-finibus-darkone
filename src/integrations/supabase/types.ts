@@ -466,6 +466,7 @@ export type Database = {
       pages: {
         Row: {
           canonical_url: string | null
+          content: string | null
           created_at: string
           id: string
           is_published: boolean
@@ -479,6 +480,7 @@ export type Database = {
         }
         Insert: {
           canonical_url?: string | null
+          content?: string | null
           created_at?: string
           id?: string
           is_published?: boolean
@@ -492,6 +494,7 @@ export type Database = {
         }
         Update: {
           canonical_url?: string | null
+          content?: string | null
           created_at?: string
           id?: string
           is_published?: boolean
