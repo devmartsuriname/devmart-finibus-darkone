@@ -25,6 +25,9 @@ import React from 'react'
 import { Routes, Route, Outlet } from 'react-router-dom'
 import { HelmetProvider } from 'react-helmet-async'
 
+// System Mode Provider (Phase 13D.3)
+import SystemModeWrapper from './components/providers/SystemModeWrapper'
+
 // Layout Components
 import Header from './components/common/Header'
 import Footer from './components/common/Footer'
@@ -132,7 +135,8 @@ function App() {
   return (
     <HelmetProvider>
       <DynamicHead />
-      <Routes>
+      <SystemModeWrapper>
+        <Routes>
         {/* Standalone pages (no layout wrapper) */}
         <Route path="/commingsoon" element={<CommingSoonPage />} />
         
@@ -168,7 +172,8 @@ function App() {
           {/* Catch-all for 404 - inside MainLayout for Header/Footer */}
           <Route path="*" element={<ErrorPage />} />
         </Route>
-      </Routes>
+        </Routes>
+      </SystemModeWrapper>
     </HelmetProvider>
   )
 }
