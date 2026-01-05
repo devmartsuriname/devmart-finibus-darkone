@@ -1106,6 +1106,18 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      get_admin_user_list: {
+        Args: never
+        Returns: {
+          avatar_url: string
+          created_at: string
+          display_name: string
+          email: string
+          last_sign_in_at: string
+          role: string
+          user_id: string
+        }[]
+      }
       has_editor_role: { Args: { _user_id: string }; Returns: boolean }
       has_role: {
         Args: {

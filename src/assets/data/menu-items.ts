@@ -116,6 +116,12 @@ export const MENU_ITEMS: MenuItemType[] = [
     isTitle: true,
   },
   {
+    key: 'users',
+    label: 'Users',
+    icon: 'mingcute:user-setting-line',
+    url: '/system/users',
+  },
+  {
     key: 'settings',
     label: 'Settings',
     icon: 'mingcute:settings-3-line',

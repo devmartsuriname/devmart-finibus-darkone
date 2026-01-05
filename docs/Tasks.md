@@ -1,7 +1,7 @@
 # Tasks — Devmart Implementation Tracker
 
-**Status:** ✅ PHASE 8 CLOSED | ✅ PHASE 13C COMPLETE | ✅ PHASE 13.1 CLOSED | ✅ PHASE 13.2A CLOSED | ✅ PHASE 13B CLOSED | ✅ PHASE 13D CLOSED  
-**Current Phase:** Phase 13 — Polish & Enhancements (Phase 13D FORMALLY CLOSED)  
+**Status:** ✅ PHASE 8 CLOSED | ✅ PHASE 13C COMPLETE | ✅ PHASE 13.1 CLOSED | ✅ PHASE 13.2A CLOSED | ✅ PHASE 13B CLOSED | ✅ PHASE 13D CLOSED | ✅ PHASE 13E.2 EXECUTED  
+**Current Phase:** Phase 13 — Polish & Enhancements (Phase 13E.2 User List Page EXECUTED)  
 **Last Updated:** 2026-01-05
 
 ---
@@ -180,7 +180,7 @@ Documentation and restore points are complete.
 ## === PHASE 13 POLISH & ENHANCEMENTS (ACTIVE) ===
 
 **Planning Date:** 2026-01-02  
-**Status:** ✅ PHASE 13.1 CLOSED | ✅ PHASE 13.2A CLOSED | ✅ PHASE 13B CLOSED | ✅ PHASE 13D CLOSED (13D.1 ✅ | 13D.2 ✅ | 13D.3 ✅ | 13D.4 ✅)
+**Status:** ✅ PHASE 13.1 CLOSED | ✅ PHASE 13.2A CLOSED | ✅ PHASE 13B CLOSED | ✅ PHASE 13D CLOSED | ✅ PHASE 13E.2 EXECUTED (13D.1 ✅ | 13D.2 ✅ | 13D.3 ✅ | 13D.4 ✅ | 13E.1 ✅ | 13E.2 ✅)
 
 ---
 
@@ -498,6 +498,70 @@ Documentation and restore points are complete. No further Phase 13D execution is
 
 ---
 
+### Phase 13E — User & Access Completion
+
+**Status:** 🔄 IN PROGRESS (13E.1 ✅ | 13E.2 ✅)  
+**Execution Date:** 2026-01-05
+
+#### Phase 13E.1 — RLS Verification ✅ COMPLETE
+
+**Verification Date:** 2026-01-05  
+**Status:** ✅ COMPLETE (Verification-Only)
+
+- Verified 24/24 tables have RLS enabled
+- Verified 86+ policies
+- Verified 3 helper functions (all SECURITY DEFINER)
+- Supabase linter: PASSED
+- Documented Editor/Viewer access gap (future phase)
+
+**Restore Point:** `docs/restore-points/Restore_Point_Phase_13E_1_RLS_Verification.md`
+
+#### Phase 13E.2 — User List Page ✅ EXECUTED
+
+**Execution Date:** 2026-01-05  
+**Status:** ✅ EXECUTED
+
+**Database Function Created:**
+- `public.get_admin_user_list()` — SECURITY DEFINER function with admin check
+
+**Files Created:**
+- `src/app/(admin)/system/users/page.tsx` — User list page (Darkone pattern)
+- `src/app/(admin)/system/users/hooks/useUsers.ts` — Data hook with CRUD operations
+- `src/app/(admin)/system/users/components/UserRoleModal.tsx` — Edit role modal
+- `src/app/(admin)/system/users/components/DeleteUserModal.tsx` — Delete confirmation modal
+
+**Files Modified:**
+- `src/routes/index.tsx` — Added `/system/users` route
+- `src/assets/data/menu-items.ts` — Added Users nav item in SYSTEM section
+
+**Features Implemented:**
+- User list table with avatar, name, email, role, created, last login
+- Role badges (Admin = danger, Editor = info, Viewer = secondary)
+- Edit role modal with radio buttons for 3 roles
+- Delete user modal with confirmation
+- Search filter
+
+**Access Control:**
+- Admin-only access (enforced in database function)
+- Route protected by existing auth guard
+
+**Restore Point:** `docs/restore-points/Restore_Point_Phase_13E_2_Pre_Execution.md`
+
+**Guardian Rules Compliance:** ✅ All rules followed (Darkone 1:1 parity)
+
+#### Remaining Gates
+
+| Gate | Description | Status |
+|------|-------------|--------|
+| Gate 13E.1 | RLS Verification | ✅ COMPLETE |
+| Gate 13E.2 | User List Page | ✅ EXECUTED |
+| Gate 13E.3 | User Creation Flow | ⏳ NOT AUTHORIZED |
+| Gate 13E.4 | Role Assignment UI | ✅ INCLUDED IN 13E.2 |
+| Gate 13E.5 | Editor/Viewer RLS | ⏳ NOT AUTHORIZED |
+| Gate 13E.6 | Phase Closure | ⏳ PENDING |
+
+---
+
 ### Execution Gates
 
 | Gate | Description | Status |
@@ -507,8 +571,9 @@ Documentation and restore points are complete. No further Phase 13D execution is
 | Gate 13.2 | Phase 13A authorization | ❌ NOT AUTHORIZED |
 | Gate 13.3 | Phase 13B authorization | ❌ NOT AUTHORIZED |
 | Gate 13.4 | Phase 13C authorization | ✅ COMPLETE — Executed 2026-01-03 |
-| Gate 13.5 | Phase 13D authorization | ❌ NOT AUTHORIZED |
-| Gate 13.6 | Phase 13 governance lock | ❌ NOT STARTED |
+| Gate 13.5 | Phase 13D authorization | ✅ COMPLETE — Executed 2026-01-05 |
+| Gate 13.6 | Phase 13E authorization | 🔄 IN PROGRESS — 13E.2 Executed |
+| Gate 13.7 | Phase 13 governance lock | ❌ NOT STARTED |
 
 ---
 
@@ -530,9 +595,8 @@ See: `docs/phase-13/Phase_13_Scope_Lock.md`
 
 ### HARD STOP
 
-Phase 13 is SCOPE LOCKED.
-No execution may begin without explicit sub-phase authorization.
-Await instructions.
+Phase 13E.2 EXECUTED.
+Await further instructions before proceeding to Phase 13E.3 or Phase 14.
 
 ---
 

@@ -17,6 +17,7 @@ const MarketingEvents = lazy(() => import('@/app/(admin)/analytics/events/page')
 const Settings = lazy(() => import('@/app/(admin)/settings/page'))
 const Notifications = lazy(() => import('@/app/(admin)/notifications/page'))
 const Account = lazy(() => import('@/app/(admin)/account/page'))
+const Users = lazy(() => import('@/app/(admin)/system/users/page'))
 
 // Auth Routes
 const AuthSignIn = lazy(() => import('@/app/(other)/auth/sign-in/page'))
@@ -106,6 +107,11 @@ const adminRoutes: RoutesProps[] = [
     path: '/settings',
     name: 'Settings',
     element: <Settings />,
+  },
+  {
+    path: '/system/users',
+    name: 'Users',
+    element: <Users />,
   },
   {
     path: '/notifications',
