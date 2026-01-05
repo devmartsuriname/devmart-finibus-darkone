@@ -98,7 +98,7 @@ See: `docs/phase-8/Phase_8_Planning.md`
 
 ## Phase 13 — Polish & Enhancements (ACTIVE)
 
-**Status:** ✅ PHASE 13.1 CLOSED | ✅ PHASE 13.2A CLOSED | ✅ PHASE 13B CLOSED | 📋 PHASE 13D NOT AUTHORIZED
+**Status:** ✅ PHASE 13.1 CLOSED | ✅ PHASE 13.2A CLOSED | ✅ PHASE 13B CLOSED | 📋 PHASE 13D PLANNING COMPLETE
 
 ### Objective
 
@@ -117,7 +117,92 @@ Phase 13 is refinement, not expansion. No architectural changes are authorized w
 | 13A | Backend Governance Foundation | P0 | 🔄 Partially addressed by 13.1 |
 | 13B | Backend Polish | P1 | ✅ CLOSED — 2026-01-05 (Verification-Only) |
 | 13C | Legal & System Pages | P1.5 | ✅ COMPLETE — 2026-01-03 |
-| 13D | System Toggles & Final Polish | P2 | ❌ NOT AUTHORIZED |
+| 13D | System Toggles & Operational Controls | P2 | 📋 PLANNING COMPLETE — NOT AUTHORIZED |
+
+---
+
+### Phase 13D — System Toggles & Operational Controls (PLANNING COMPLETE)
+
+**Planning Date:** 2026-01-05  
+**Status:** 📋 PLANNING COMPLETE — NOT AUTHORIZED FOR EXECUTION
+
+#### Objective
+
+Wire existing frontend routes to admin-controlled settings, enabling Coming Soon and Maintenance modes without code deployments.
+
+#### Key Clarification
+
+The Coming Soon page **already exists** at `/commingsoon` (Finibus template, line 137 in App.tsx). This phase wires that existing route to admin toggles — it does NOT create a new Coming Soon page.
+
+#### Architecture — Three Layers
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│  Layer 1: Database (Settings Table)                         │
+│    └── 5 new keys: maintenance_mode, coming_soon_enabled,   │
+│        coming_soon_message, quotes_enabled, contact_form_enabled │
+│    └── INSERT only — no schema changes                      │
+├─────────────────────────────────────────────────────────────┤
+│  Layer 2: Admin Control (Settings → System Tab)             │
+│    └── New tab in existing Settings page                    │
+│    └── Uses Darkone Form.Check switch pattern               │
+│    └── Admin-only access (existing auth)                    │
+├─────────────────────────────────────────────────────────────┤
+│  Layer 3: Public Frontend Consumption                        │
+│    └── usePublicSettings hook updated with system keys      │
+│    └── App.tsx conditional wrapper for mode rendering       │
+│    └── Quote/Contact forms check feature toggles            │
+└─────────────────────────────────────────────────────────────┘
+```
+
+#### Priority Order — Mode Hierarchy
+
+```
+Priority 1: MAINTENANCE MODE (highest)
+    └── maintenance_mode = true → Show MaintenancePage
+    
+Priority 2: COMING SOON MODE
+    └── coming_soon_enabled = true → Show existing CommingSoonPage
+    
+Priority 3: NORMAL MODE (default)
+    └── Both modes = false → Normal site operation
+```
+
+#### Existing Frontend Route (NOT being created)
+
+| Property | Value |
+|----------|-------|
+| Route | `/commingsoon` |
+| Component | `apps/public/src/components/pages/commingSoon/CommingSoonPage.tsx` |
+| Layout | Standalone (no Header/Footer) |
+| Status | EXISTS — 1:1 Finibus parity |
+
+#### Proposed Settings Keys
+
+| Key | Category | Default | Purpose |
+|-----|----------|---------|---------|
+| `maintenance_mode` | system | `"false"` | Full site offline |
+| `coming_soon_enabled` | system | `"false"` | Redirect all traffic to Coming Soon |
+| `coming_soon_message` | system | `""` | Custom message for Coming Soon |
+| `quotes_enabled` | system | `"true"` | Quote Wizard availability |
+| `contact_form_enabled` | system | `"true"` | Contact Form availability |
+
+#### Guardian Rules Compliance
+
+| Rule | Status |
+|------|--------|
+| Admin UI 1:1 Darkone | ✅ Uses existing Form.Check pattern |
+| Public UI 1:1 Finibus | ✅ Uses existing CommingSoonPage |
+| No schema changes | ✅ INSERT only |
+| Existing routes preserved | ✅ `/commingsoon` remains accessible |
+
+#### Planning Document
+
+See: `docs/phase-13/Phase_13D_System_Toggles_Planning.md`
+
+#### HARD STOP
+
+Phase 13D planning is complete. No execution may begin without explicit sub-phase authorization.
 
 ---
 
