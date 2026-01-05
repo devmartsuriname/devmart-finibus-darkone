@@ -1,9 +1,10 @@
 # Phase 13E — User & Access Completion
 
-**Status:** 🔄 IN PROGRESS (13E.1 ✅ COMPLETE | 13E.2 ✅ EXECUTED)  
+**Status:** ✅ FORMALLY CLOSED  
 **Planning Date:** 2026-01-05  
 **13E.1 Verification Date:** 2026-01-05  
-**13E.2 Execution Date:** 2026-01-05
+**13E.2 Execution Date:** 2026-01-05  
+**Closure Date:** 2026-01-05
 
 ---
 
@@ -315,24 +316,63 @@ See: `docs/restore-points/Restore_Point_Phase_13E_2_Pre_Execution.md`
 
 | Gate | Description | Status |
 |------|-------------|--------|
-| Gate 13E.0 | Planning approved | ✅ COMPLETE |
+| Gate 13E.0 | Planning approved | ✅ COMPLETE — 2026-01-05 |
 | Gate 13E.1 | RLS Verification (docs only) | ✅ COMPLETE — 2026-01-05 |
 | Gate 13E.2 | User List Page | ✅ EXECUTED — 2026-01-05 |
-| Gate 13E.3 | User Creation Flow | ⏳ NOT AUTHORIZED |
-| Gate 13E.4 | Role Assignment UI | ✅ INCLUDED IN 13E.2 |
-| Gate 13E.5 | Editor/Viewer RLS Implementation | ⏳ NOT AUTHORIZED |
-| Gate 13E.6 | Phase 13E verification complete | ⏳ PENDING |
+| Gate 13E.3 | User Creation Flow | ⏳ NOT AUTHORIZED (deferred) |
+| Gate 13E.4 | Role Assignment UI | ✅ INCLUDED IN 13E.2 — 2026-01-05 |
+| Gate 13E.5 | Editor/Viewer RLS Implementation | ⏳ NOT AUTHORIZED (deferred) |
+| Gate 13E.6 | Phase Closure | ✅ COMPLETE — 2026-01-05 |
 
 ---
 
-## HARD STOP
+## Phase 13E Closure Statement
 
-**Phase 13E.2 EXECUTED.**
+**Phase 13E — User & Access Completion is FORMALLY CLOSED as of 2026-01-05.**
 
-Await further instructions before proceeding to Phase 13E.3 (User Creation Flow) or Phase 14.
+### Completed Sub-Phases
 
-Do NOT:
-- Implement user creation / invite flow
-- Modify RLS policies for editor/viewer
-- Create Edge Functions
-- Create test accounts
+| Gate | Description | Date |
+|------|-------------|------|
+| 13E.0 | Planning approved | 2026-01-05 |
+| 13E.1 | RLS Verification | 2026-01-05 |
+| 13E.2 | User List Page | 2026-01-05 |
+| 13E.4 | Role Assignment UI | 2026-01-05 |
+| 13E.6 | Phase Closure | 2026-01-05 |
+
+### Deferred Sub-Phases (NOT EXECUTED)
+
+| Gate | Description | Reason |
+|------|-------------|--------|
+| 13E.3 | User Creation Flow | Not authorized — requires Edge Function with service_role key |
+| 13E.5 | Editor/Viewer RLS | Documented gap for future phase implementation |
+
+### Editor/Viewer Gap Statement
+
+The helper functions `has_editor_role()` and `has_viewer_role()` exist but are **NOT USED** in any RLS policies. This is a **documented gap for future phase implementation**, NOT a blocking defect. The current system operates correctly for admin-only access patterns.
+
+### Guardian Rules Compliance
+
+| Rule | Status |
+|------|--------|
+| Admin UI 1:1 Darkone | ✅ Used existing table/modal/form patterns |
+| Public UI 1:1 Finibus | ✅ No public frontend changes |
+| No new dependencies | ✅ No new packages added |
+| Existing schema preserved | ✅ No alterations to app_role enum |
+| No redesigns | ✅ Matched existing CRUD module patterns |
+
+### Restore Points
+
+| Document | Purpose |
+|----------|---------|
+| `Restore_Point_Phase_13E_1_RLS_Verification.md` | RLS verification phase |
+| `Restore_Point_Phase_13E_2_Pre_Execution.md` | Pre-execution state for User List |
+| `Restore_Point_Phase_13E_Closure.md` | Phase closure documentation |
+
+---
+
+## PHASE 13E FORMALLY CLOSED
+
+No further Phase 13E execution is authorized.
+
+Await explicit authorization before proceeding to Phase 14 or any other phase.

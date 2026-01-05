@@ -1,7 +1,7 @@
 # Backend Documentation
 
-**Status:** ✅ PHASE 7C COMPLETE | ✅ PHASE 13.1 CLOSED | ✅ PHASE 13.2A CLOSED | ✅ PHASE 13B CLOSED | ✅ PHASE 13D CLOSED | ✅ PHASE 13E.1 COMPLETE | ✅ PHASE 13E.2 EXECUTED | 📋 PHASE 14 PLANNED  
-**Phase:** Phase 13E.2 EXECUTED | Phase 13E.1 COMPLETE | Phase 13D CLOSED | Phase 13B CLOSED | Phase 13.2A CLOSED | Phase 13.1 CLOSED | Phase 12 CLOSED | Phase 6C Schema ✅ EXECUTED | Phase 5 SEO ✅ EXECUTED | Phase 7A ✅ EXECUTED | Phase 7B ✅ EXECUTED | Phase 7C ✅ EXECUTED | Phase 13C ✅ STATIC DELIVERY | Phase 14 📋 PLANNED  
+**Status:** ✅ PHASE 7C COMPLETE | ✅ PHASE 13.1 CLOSED | ✅ PHASE 13.2A CLOSED | ✅ PHASE 13B CLOSED | ✅ PHASE 13D CLOSED | ✅ PHASE 13E CLOSED | 📋 PHASE 14 PLANNED  
+**Phase:** ✅ PHASE 13E CLOSED | Phase 13D CLOSED | Phase 13B CLOSED | Phase 13.2A CLOSED | Phase 13.1 CLOSED | Phase 12 CLOSED | Phase 6C Schema ✅ EXECUTED | Phase 5 SEO ✅ EXECUTED | Phase 7A ✅ EXECUTED | Phase 7B ✅ EXECUTED | Phase 7C ✅ EXECUTED | Phase 13C ✅ STATIC DELIVERY | Phase 14 📋 PLANNED  
 **Last Updated:** 2026-01-05
 
 ---
@@ -359,10 +359,44 @@ See: `docs/restore-points/Restore_Point_Phase_13E_1_RLS_Verification.md`
 
 ---
 
-## Phase 13E.2 — User List Page (EXECUTED)
+## Phase 13E — User & Access Completion (CLOSED)
 
 **Execution Date:** 2026-01-05  
-**Status:** ✅ EXECUTED
+**Closure Date:** 2026-01-05  
+**Status:** ✅ FORMALLY CLOSED
+
+### Phase 13E Summary
+
+| Gate | Description | Status |
+|------|-------------|--------|
+| 13E.0 | Planning approved | ✅ COMPLETE |
+| 13E.1 | RLS Verification | ✅ COMPLETE |
+| 13E.2 | User List Page | ✅ EXECUTED |
+| 13E.4 | Role Assignment UI | ✅ INCLUDED IN 13E.2 |
+| 13E.6 | Phase Closure | ✅ COMPLETE |
+| 13E.3 | User Creation Flow | ⏳ NOT AUTHORIZED (deferred) |
+| 13E.5 | Editor/Viewer RLS | ⏳ NOT AUTHORIZED (deferred) |
+
+### Deferred Items (Documented)
+
+| Item | Reason |
+|------|--------|
+| User Creation Flow (13E.3) | Requires Edge Function with service_role key — not authorized |
+| Editor/Viewer RLS (13E.5) | Documented gap for future phase implementation |
+
+### Editor/Viewer Gap Statement
+
+The helper functions `has_editor_role()` and `has_viewer_role()` exist but are NOT USED in any RLS policies. This is a **documented gap for future phase implementation**, NOT a blocking defect. The current system operates correctly for admin-only access patterns.
+
+### Restore Points
+
+- `docs/restore-points/Restore_Point_Phase_13E_1_RLS_Verification.md`
+- `docs/restore-points/Restore_Point_Phase_13E_2_Pre_Execution.md`
+- `docs/restore-points/Restore_Point_Phase_13E_Closure.md`
+
+---
+
+### Phase 13E.2 — User List Page (EXECUTED)
 
 ### Objective
 

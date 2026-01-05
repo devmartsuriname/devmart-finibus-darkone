@@ -1,7 +1,7 @@
 # Architecture Documentation
 
-**Status:** ✅ PHASE 7 COMPLETE | ✅ PHASE 8 CLOSED | ✅ PHASE 13C COMPLETE | ✅ PHASE 13.1 CLOSED | ✅ PHASE 13.2A CLOSED | ✅ PHASE 13B CLOSED | ✅ PHASE 13D CLOSED | ✅ PHASE 13E.1 COMPLETE | ✅ PHASE 13E.2 EXECUTED  
-**Phase:** Phase 13 — Polish & Enhancements (Phase 13E.2 User List Page EXECUTED)
+**Status:** ✅ PHASE 7 COMPLETE | ✅ PHASE 8 CLOSED | ✅ PHASE 13C COMPLETE | ✅ PHASE 13.1 CLOSED | ✅ PHASE 13.2A CLOSED | ✅ PHASE 13B CLOSED | ✅ PHASE 13D CLOSED | ✅ PHASE 13E CLOSED  
+**Phase:** Phase 13 — Polish & Enhancements (✅ PHASE 13E FORMALLY CLOSED)  
 **Last Updated:** 2026-01-05
 
 ---
@@ -98,7 +98,7 @@ See: `docs/phase-8/Phase_8_Planning.md`
 
 ## Phase 13 — Polish & Enhancements (ACTIVE)
 
-**Status:** ✅ PHASE 13.1 CLOSED | ✅ PHASE 13.2A CLOSED | ✅ PHASE 13B CLOSED | ✅ PHASE 13D CLOSED
+**Status:** ✅ PHASE 13.1 CLOSED | ✅ PHASE 13.2A CLOSED | ✅ PHASE 13B CLOSED | ✅ PHASE 13D CLOSED | ✅ PHASE 13E CLOSED
 
 ### Objective
 
@@ -359,14 +359,52 @@ All sub-phases (13D.1, 13D.2, 13D.3, 13D.4) have been executed, verified, and fo
 
 ---
 
-## Phase 13E.1 — RLS Verification (COMPLETE)
+## Phase 13E — User & Access Completion (CLOSED)
 
-**Verification Date:** 2026-01-05  
-**Status:** ✅ COMPLETE (Verification-Only) — No Policy Changes Made
+**Execution Date:** 2026-01-05  
+**Closure Date:** 2026-01-05  
+**Status:** ✅ FORMALLY CLOSED
 
-### Objective
+### Summary
 
-Verify RLS policy coverage across all tables and document access boundaries per role.
+Phase 13E completed the User Management module visibility in admin with role management capabilities.
+
+### Completed Sub-Phases
+
+| Gate | Description | Status |
+|------|-------------|--------|
+| 13E.0 | Planning approved | ✅ COMPLETE |
+| 13E.1 | RLS Verification | ✅ COMPLETE |
+| 13E.2 | User List Page | ✅ EXECUTED |
+| 13E.4 | Role Assignment UI | ✅ INCLUDED IN 13E.2 |
+| 13E.6 | Phase Closure | ✅ COMPLETE |
+
+### Deferred Sub-Phases
+
+| Gate | Description | Reason |
+|------|-------------|--------|
+| 13E.3 | User Creation Flow | Not authorized — requires Edge Function with service_role |
+| 13E.5 | Editor/Viewer RLS | Documented gap for future phase |
+
+### Architecture: User List Page
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│  Route: /system/users                                        │
+│    └── Protected by auth guard                               │
+│    └── Admin-only access (function-level check)              │
+├─────────────────────────────────────────────────────────────┤
+│  Data Flow                                                   │
+│    └── page.tsx → useUsers.ts → supabase.rpc()              │
+│    └── get_admin_user_list() [SECURITY DEFINER]             │
+│    └── Joins: auth.users + profiles + user_roles            │
+├─────────────────────────────────────────────────────────────┤
+│  Components                                                  │
+│    └── UserRoleModal.tsx (edit role)                        │
+│    └── DeleteUserModal.tsx (confirmation)                   │
+│    └── Uses Darkone table/modal patterns                    │
+└─────────────────────────────────────────────────────────────┘
+```
 
 ### Access Boundary Summary
 
