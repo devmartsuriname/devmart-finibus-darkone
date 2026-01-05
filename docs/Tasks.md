@@ -411,13 +411,52 @@ Technically and visually finalize the Devmart platform (Frontend + Backend) befo
 
 ---
 
-### Phase 13D — System Toggles & Final Polish (P2)
+### Phase 13D — System Toggles & Operational Controls (P2)
 
-**Status:** ❌ NOT STARTED — AWAITING AUTHORIZATION
+**Status:** 📋 PLANNING COMPLETE — NOT AUTHORIZED FOR EXECUTION  
+**Planning Date:** 2026-01-05
 
-**In Scope:**
-- Coming Soon / Maintenance Mode toggle
-- Final polish (UX micro-consistency, copy alignment, state handling)
+**Scope:**
+- System-level toggles for operational control (Coming Soon, Maintenance Mode)
+- Feature toggles for Quote Wizard and Contact Form
+- Wire **existing** `/commingsoon` route to admin-controlled settings
+- Create MaintenancePage component (mirrors Finibus patterns)
+- Add System tab to Admin Settings using existing Darkone patterns
+
+**Key Clarification:**
+- The Coming Soon page **already exists** at `/commingsoon` (Finibus template)
+- This phase wires that existing route to admin toggles — NO new Coming Soon page created
+- Priority order: Maintenance Mode > Coming Soon Mode > Normal
+
+**Proposed Settings Keys (5):**
+| Key | Default | Purpose |
+|-----|---------|---------|
+| `maintenance_mode` | `"false"` | Full site offline |
+| `coming_soon_enabled` | `"false"` | Redirect to Coming Soon |
+| `coming_soon_message` | `""` | Custom Coming Soon message |
+| `quotes_enabled` | `"true"` | Quote Wizard availability |
+| `contact_form_enabled` | `"true"` | Contact Form availability |
+
+**Execution Sub-Phases (All NOT AUTHORIZED):**
+| Sub-Phase | Description |
+|-----------|-------------|
+| 13D.1 | Database seeding (5 settings keys) |
+| 13D.2 | Admin SystemSettingsTab component |
+| 13D.3 | Public settings consumption update |
+| 13D.4 | MaintenancePage component |
+| 13D.5 | Conditional routing wrapper |
+| 13D.6 | Feature toggle integration |
+| 13D.7 | Verification & documentation |
+
+**Guardian Rules Compliance:**
+- ✅ Admin UI 1:1 Darkone (uses existing Form.Check pattern)
+- ✅ Public UI 1:1 Finibus (uses existing CommingSoonPage)
+- ✅ No schema changes (INSERT only)
+- ✅ No new dependencies
+
+**Planning Document:** `docs/phase-13/Phase_13D_System_Toggles_Planning.md`
+
+**HARD STOP:** Await explicit authorization before any execution.
 
 ---
 
