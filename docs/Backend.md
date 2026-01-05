@@ -1,7 +1,7 @@
 # Backend Documentation
 
-**Status:** ✅ PHASE 7C COMPLETE | ✅ PHASE 13.1 CLOSED | ✅ PHASE 13.2A CLOSED | ✅ PHASE 13B CLOSED | 📋 PHASE 14 PLANNED  
-**Phase:** Phase 13B CLOSED | Phase 13.2A CLOSED | Phase 13.1 CLOSED | Phase 12 CLOSED | Phase 6C Schema ✅ EXECUTED | Phase 5 SEO ✅ EXECUTED | Phase 7A ✅ EXECUTED | Phase 7B ✅ EXECUTED | Phase 7C ✅ EXECUTED | Phase 13C ✅ STATIC DELIVERY | Phase 14 📋 PLANNED  
+**Status:** ✅ PHASE 7C COMPLETE | ✅ PHASE 13.1 CLOSED | ✅ PHASE 13.2A CLOSED | ✅ PHASE 13B CLOSED | 🔄 PHASE 13D IN PROGRESS (13D.1 ✅ | 13D.2 ✅) | 📋 PHASE 14 PLANNED  
+**Phase:** Phase 13B CLOSED | Phase 13.2A CLOSED | Phase 13.1 CLOSED | Phase 12 CLOSED | Phase 6C Schema ✅ EXECUTED | Phase 5 SEO ✅ EXECUTED | Phase 7A ✅ EXECUTED | Phase 7B ✅ EXECUTED | Phase 7C ✅ EXECUTED | Phase 13C ✅ STATIC DELIVERY | Phase 13D.1 ✅ EXECUTED | Phase 13D.2 ✅ EXECUTED | Phase 14 📋 PLANNED  
 **Last Updated:** 2026-01-05
 
 ---
@@ -318,6 +318,102 @@ All functions use `SECURITY DEFINER` and `SET search_path = public`.
 ### Restore Point
 
 See: `docs/restore-points/Restore_Point_Phase_13B_Backend_Polish_Verification.md`
+
+---
+
+## Phase 13D — System Toggles & Operational Controls (IN PROGRESS)
+
+**Status:** 🔄 IN PROGRESS (13D.1 ✅ | 13D.2 ✅)  
+**Execution Date:** 2026-01-05
+
+### Objective
+
+Implement system-level toggles for operational control (Coming Soon, Maintenance Mode) and feature toggles for Quote Wizard and Contact Form.
+
+### Phase 13D.1 — Database Seeding (EXECUTED)
+
+**Execution Date:** 2026-01-05
+
+#### Settings Keys Added (Category: `system`)
+
+| Key | Default Value | Type | Purpose |
+|-----|---------------|------|---------|
+| `maintenance_mode` | `'false'` | String | Full site offline |
+| `coming_soon_enabled` | `'false'` | String | Redirect to Coming Soon |
+| `coming_soon_message` | `''` | String | Custom Coming Soon message |
+| `quotes_enabled` | `'true'` | String | Quote Wizard availability |
+| `contact_form_enabled` | `'true'` | String | Contact Form availability |
+
+**Important:** All values are stored as strings (`'true'`/`'false'`), not booleans.
+
+### Phase 13D.2 — Admin System Settings UI (EXECUTED)
+
+**Execution Date:** 2026-01-05
+
+#### Files Created
+
+| File | Purpose |
+|------|---------|
+| `src/app/(admin)/settings/components/SystemSettingsTab.tsx` | System settings tab with Form.Check switches |
+
+#### Files Modified
+
+| File | Change |
+|------|--------|
+| `src/app/(admin)/settings/hooks/useSettings.ts` | Added `system` to `SettingsByCategory` interface |
+| `src/app/(admin)/settings/page.tsx` | Added System tab, FormValues, initial values, tab pane |
+
+#### Type Safety Implementation
+
+1. **SYSTEM_SETTINGS_DEFAULTS** — Exported constant with guaranteed string defaults
+2. **INITIAL_VALUES** — Uses defaults for system keys on initial load
+3. **useEffect population** — Uses fallback defaults when loading from database
+4. **SystemSettingsTab** — Applies defensive `??` defaults internally to prevent undefined values
+
+#### UI Structure
+
+```
+System Tab
+├── Site Availability (Card)
+│   ├── Maintenance Mode (Form.Check switch)
+│   ├── Coming Soon Mode (Form.Check switch)
+│   └── Coming Soon Message (Form.Control textarea)
+└── Feature Controls (Card)
+    ├── Quote Wizard Enabled (Form.Check switch)
+    └── Contact Form Enabled (Form.Check switch)
+```
+
+#### Save Pipeline
+
+- Form.Check switches write string values: `'true'` or `'false'`
+- No boolean values stored in database
+- onChange handler: `onChange('key', e.target.checked ? 'true' : 'false')`
+
+### Remaining Sub-Phases (NOT AUTHORIZED)
+
+| Sub-Phase | Description | Status |
+|-----------|-------------|--------|
+| 13D.3 | Public settings consumption update | 📋 NOT AUTHORIZED |
+| 13D.4 | MaintenancePage component | 📋 NOT AUTHORIZED |
+| 13D.5 | Conditional routing wrapper | 📋 NOT AUTHORIZED |
+| 13D.6 | Feature toggle integration | 📋 NOT AUTHORIZED |
+| 13D.7 | Verification & documentation | 📋 NOT AUTHORIZED |
+
+### Important Note
+
+> **Public Coming Soon route exists at `/commingsoon` and must be toggled via system settings in Phase 13D.3/13D.5.**
+>
+> The existing route (`apps/public/src/components/pages/commingSoon/CommingSoonPage.tsx`) should be wired to the `coming_soon_enabled` setting. No new pages need to be created.
+
+### Restore Points
+
+- `docs/restore-points/Restore_Point_Phase_13D1_System_Toggles_DB_Seed.md`
+- `docs/restore-points/Restore_Point_Phase_13D2_Pre_Execution.md`
+
+### Execution Reports
+
+- `docs/phase-13/Phase_13D1_Execution_Report.md`
+- `docs/phase-13/Phase_13D2_Execution_Report.md`
 
 ---
 
