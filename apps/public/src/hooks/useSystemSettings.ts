@@ -2,14 +2,17 @@
  * System Settings Hook
  * 
  * Purpose: Fetch system operational settings from Supabase.
- * Used for Coming Soon mode redirect and feature toggles.
+ * Used for Coming Soon mode redirect, countdown, and feature toggles.
  * 
  * Phase 13D.3 — System Toggles Wiring
+ * Phase 13D.4 — Maintenance Mode + Countdown Wiring
  * 
- * Settings Keys (seeded in Phase 13D.1):
- * - maintenance_mode: Full site offline (DEFERRED to 13D.4)
+ * Settings Keys (seeded in Phase 13D.1 + 13D.4):
+ * - maintenance_mode: Full site offline
  * - coming_soon_enabled: Redirect to /commingsoon
  * - coming_soon_message: Custom Coming Soon message
+ * - coming_soon_countdown_enabled: Enable countdown timer
+ * - coming_soon_countdown_target: Target datetime (ISO 8601)
  * - quotes_enabled: Quote Wizard availability
  * - contact_form_enabled: Contact Form availability
  */
@@ -17,21 +20,25 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '../lib/supabase';
 
-// System settings keys (must match Phase 13D.1 seeding)
+// System settings keys (must match Phase 13D.1 + 13D.4 seeding)
 const SYSTEM_SETTINGS_KEYS = [
   'maintenance_mode',
   'coming_soon_enabled',
   'coming_soon_message',
+  'coming_soon_countdown_enabled',
+  'coming_soon_countdown_target',
   'quotes_enabled',
   'contact_form_enabled',
 ] as const;
 
-// Type-safe defaults (matching Phase 13D.1 database seeding)
+// Type-safe defaults (matching database seeding)
 // All modes disabled by default, features enabled by default
 const SYSTEM_SETTINGS_DEFAULTS: SystemSettings = {
   maintenance_mode: false,
   coming_soon_enabled: false,
   coming_soon_message: '',
+  coming_soon_countdown_enabled: true,
+  coming_soon_countdown_target: '',
   quotes_enabled: true,
   contact_form_enabled: true,
 };
@@ -40,6 +47,8 @@ export interface SystemSettings {
   maintenance_mode: boolean;
   coming_soon_enabled: boolean;
   coming_soon_message: string;
+  coming_soon_countdown_enabled: boolean;
+  coming_soon_countdown_target: string;
   quotes_enabled: boolean;
   contact_form_enabled: boolean;
 }
@@ -80,6 +89,14 @@ export function useSystemSettings(): UseSystemSettingsResult {
               case 'coming_soon_message':
                 // String value, empty string fallback
                 fetched.coming_soon_message = row.value || '';
+                break;
+              case 'coming_soon_countdown_enabled':
+                // Default true, only false if explicitly 'false'
+                fetched.coming_soon_countdown_enabled = row.value !== 'false';
+                break;
+              case 'coming_soon_countdown_target':
+                // ISO 8601 datetime string
+                fetched.coming_soon_countdown_target = row.value || '';
                 break;
               case 'quotes_enabled':
                 // Default true, only false if explicitly 'false'

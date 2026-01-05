@@ -63,6 +63,8 @@ interface FormValues {
   maintenance_mode: string
   coming_soon_enabled: string
   coming_soon_message: string
+  coming_soon_countdown_enabled: string
+  coming_soon_countdown_target: string
   quotes_enabled: string
   contact_form_enabled: string
 }
@@ -90,6 +92,8 @@ const INITIAL_VALUES: FormValues = {
   maintenance_mode: SYSTEM_SETTINGS_DEFAULTS.maintenance_mode,
   coming_soon_enabled: SYSTEM_SETTINGS_DEFAULTS.coming_soon_enabled,
   coming_soon_message: SYSTEM_SETTINGS_DEFAULTS.coming_soon_message,
+  coming_soon_countdown_enabled: SYSTEM_SETTINGS_DEFAULTS.coming_soon_countdown_enabled,
+  coming_soon_countdown_target: SYSTEM_SETTINGS_DEFAULTS.coming_soon_countdown_target,
   quotes_enabled: SYSTEM_SETTINGS_DEFAULTS.quotes_enabled,
   contact_form_enabled: SYSTEM_SETTINGS_DEFAULTS.contact_form_enabled,
 }
@@ -127,6 +131,8 @@ const SettingsPage = () => {
         maintenance_mode: getSettingValue('maintenance_mode') || SYSTEM_SETTINGS_DEFAULTS.maintenance_mode,
         coming_soon_enabled: getSettingValue('coming_soon_enabled') || SYSTEM_SETTINGS_DEFAULTS.coming_soon_enabled,
         coming_soon_message: getSettingValue('coming_soon_message'),
+        coming_soon_countdown_enabled: getSettingValue('coming_soon_countdown_enabled') || SYSTEM_SETTINGS_DEFAULTS.coming_soon_countdown_enabled,
+        coming_soon_countdown_target: getSettingValue('coming_soon_countdown_target') || SYSTEM_SETTINGS_DEFAULTS.coming_soon_countdown_target,
         quotes_enabled: getSettingValue('quotes_enabled') || SYSTEM_SETTINGS_DEFAULTS.quotes_enabled,
         contact_form_enabled: getSettingValue('contact_form_enabled') || SYSTEM_SETTINGS_DEFAULTS.contact_form_enabled,
       }
@@ -323,6 +329,8 @@ const SettingsPage = () => {
                             maintenance_mode: formValues.maintenance_mode,
                             coming_soon_enabled: formValues.coming_soon_enabled,
                             coming_soon_message: formValues.coming_soon_message,
+                            coming_soon_countdown_enabled: formValues.coming_soon_countdown_enabled,
+                            coming_soon_countdown_target: formValues.coming_soon_countdown_target,
                             quotes_enabled: formValues.quotes_enabled,
                             contact_form_enabled: formValues.contact_form_enabled,
                           }}
