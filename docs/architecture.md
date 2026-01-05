@@ -98,7 +98,7 @@ See: `docs/phase-8/Phase_8_Planning.md`
 
 ## Phase 13 — Polish & Enhancements (ACTIVE)
 
-**Status:** ✅ PHASE 13.1 CLOSED | ✅ PHASE 13.2A CLOSED | ✅ PHASE 13B CLOSED | 📋 PHASE 13D PLANNING COMPLETE
+**Status:** ✅ PHASE 13.1 CLOSED | ✅ PHASE 13.2A CLOSED | ✅ PHASE 13B CLOSED | 🔄 PHASE 13D IN PROGRESS (13D.3 ✅)
 
 ### Objective
 
@@ -117,14 +117,14 @@ Phase 13 is refinement, not expansion. No architectural changes are authorized w
 | 13A | Backend Governance Foundation | P0 | 🔄 Partially addressed by 13.1 |
 | 13B | Backend Polish | P1 | ✅ CLOSED — 2026-01-05 (Verification-Only) |
 | 13C | Legal & System Pages | P1.5 | ✅ COMPLETE — 2026-01-03 |
-| 13D | System Toggles & Operational Controls | P2 | 📋 PLANNING COMPLETE — NOT AUTHORIZED |
+| 13D | System Toggles & Operational Controls | P2 | 🔄 IN PROGRESS (13D.1 ✅ | 13D.2 ✅ | 13D.3 ✅) |
 
 ---
 
-### Phase 13D — System Toggles & Operational Controls (PLANNING COMPLETE)
+### Phase 13D — System Toggles & Operational Controls (IN PROGRESS)
 
 **Planning Date:** 2026-01-05  
-**Status:** 📋 PLANNING COMPLETE — NOT AUTHORIZED FOR EXECUTION
+**Status:** 🔄 IN PROGRESS (13D.1 ✅ | 13D.2 ✅ | 13D.3 ✅)
 
 #### Objective
 
@@ -196,13 +196,39 @@ Priority 3: NORMAL MODE (default)
 | No schema changes | ✅ INSERT only |
 | Existing routes preserved | ✅ `/commingsoon` remains accessible |
 
+#### Phase 13D.3 — Public Consumption Architecture
+
+**Execution Date:** 2026-01-05
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│  useSystemSettings Hook (apps/public/src/hooks/)            │
+│    └── Fetches 5 system keys from settings table            │
+│    └── Parses 'true'/'false' strings to booleans            │
+│    └── Type-safe defaults: SYSTEM_SETTINGS_DEFAULTS         │
+├─────────────────────────────────────────────────────────────┤
+│  SystemModeWrapper (apps/public/src/components/providers/)  │
+│    └── Wraps all Routes in App.tsx                          │
+│    └── Priority: Maintenance > Coming Soon > Normal          │
+│    └── Redirect target: /commingsoon (exact path)           │
+│    └── Loop prevention: if pathname === '/commingsoon'      │
+├─────────────────────────────────────────────────────────────┤
+│  Feature Guards                                              │
+│    └── ContactForm: isFormDisabled → blocks submission       │
+│    └── QuoteWizard: isQuoteDisabled → shows message          │
+│    └── CommingSoonPage: settings.coming_soon_message         │
+└─────────────────────────────────────────────────────────────┘
+```
+
+**Maintenance Mode:** Documented/commented in SystemModeWrapper, requires Phase 13D.4 for MaintenancePage.
+
 #### Planning Document
 
 See: `docs/phase-13/Phase_13D_System_Toggles_Planning.md`
 
 #### HARD STOP
 
-Phase 13D planning is complete. No execution may begin without explicit sub-phase authorization.
+Phase 13D.3 is complete. Phase 13D.4 (MaintenancePage) requires explicit authorization.
 
 ---
 
