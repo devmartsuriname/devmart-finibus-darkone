@@ -1,8 +1,89 @@
 # Architecture Documentation
 
-**Status:** ✅ PHASE 7 COMPLETE | ✅ PHASE 8 CLOSED | ✅ PHASE 13C COMPLETE | ✅ PHASE 13.1 CLOSED | ✅ PHASE 13.2A CLOSED | ✅ PHASE 13B CLOSED | ✅ PHASE 13D CLOSED | ✅ PHASE 13E CLOSED  
-**Phase:** Phase 13 — Polish & Enhancements (✅ PHASE 13E FORMALLY CLOSED)  
+**Status:** ✅ PHASE 7 COMPLETE | ✅ PHASE 8 CLOSED | ✅ PHASE 13C COMPLETE | ✅ PHASE 13.1 CLOSED | ✅ PHASE 13.2A CLOSED | ✅ PHASE 13B CLOSED | ✅ PHASE 13D CLOSED | ✅ PHASE 13E CLOSED | ✅ PHASE 14A EXECUTED  
+**Phase:** Phase 14 — Pages Content Model (✅ PHASE 14A EXECUTED — Awaiting Phase 14B)  
 **Last Updated:** 2026-01-05
+
+---
+
+## Phase 14 — Pages Content Model (PHASE 14A EXECUTED)
+
+**Planning Date:** 2026-01-05  
+**Phase 14A Executed:** 2026-01-05  
+**Status:** ✅ PHASE 14A EXECUTED — Awaiting Phase 14B Authorization
+
+### Objective
+
+Enable CMS-driven content management for static pages through the Admin Pages module, replacing hardcoded legal page content with database-driven rendering.
+
+### Architecture Overview
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│  Admin Pages Module (Darkone)                               │
+│    └── PageEditModal                                        │
+│          ├── Page Info tab (existing)                       │
+│          ├── Content tab (NEW for legal pages)              │
+│          └── SEO tab (existing)                             │
+├─────────────────────────────────────────────────────────────┤
+│  Database (pages table)                                     │
+│    └── content: TEXT ✅ ADDED (Phase 14A)                   │
+│    └── Existing: title, meta_title, meta_description, etc.  │
+├─────────────────────────────────────────────────────────────┤
+│  Public Legal Pages (Finibus)                               │
+│    └── Fetch from pages table                               │
+│    └── Render via dangerouslySetInnerHTML                   │
+│    └── LegalPageLayout preserved (1:1 parity)               │
+└─────────────────────────────────────────────────────────────┘
+```
+
+### Page Type Classification
+
+| Type | Examples | Content Source | Admin Tabs |
+|------|----------|----------------|------------|
+| Section-Based | Homepage, About | Separate settings tables | Page Info + Sections + SEO |
+| Listing | Blog, Projects, Services | Content tables | Page Info + SEO |
+| Content Pages | Legal pages | `pages.content` ✅ READY | Page Info + Content + SEO |
+
+### SEO Fallback Hierarchy (3-Tier)
+
+```
+Tier 1: Page-specific SEO fields (pages.meta_title, etc.)
+    ↓ (if empty)
+Tier 2: Content-derived values (title + suffix, first 160 chars)
+    ↓ (if unavailable)
+Tier 3: Global settings (default_meta_title, default_og_image_media_id)
+```
+
+### Guardian Rules Compliance
+
+| Rule | Compliance |
+|------|------------|
+| Admin UI 1:1 Darkone | ✅ Content tab follows existing tab/textarea patterns |
+| Public UI 1:1 Finibus | ✅ LegalPageLayout preserved, no CSS changes |
+| Reuse existing modules | ✅ Extends existing Pages module |
+| No layout changes | ✅ Only data source changes |
+
+### Execution Gates
+
+| Gate | Description | Status |
+|------|-------------|--------|
+| Gate 14.0 | Phase 14 planning approved | ✅ COMPLETE (2026-01-05) |
+| Gate 14.1 | Schema migration executed | ✅ COMPLETE (2026-01-05) |
+| Gate 14.2 | Admin CRUD / Pages Module Wiring | ❌ NOT AUTHORIZED |
+| Gate 14.3 | Admin UI Extension (Content tab) | ❌ NOT AUTHORIZED |
+| Gate 14.4 | Frontend wiring authorized | ❌ NOT AUTHORIZED |
+| Gate 14.5 | SEO propagation authorized | ❌ NOT AUTHORIZED |
+| Gate 14.6 | Phase 14 verification | ❌ NOT STARTED |
+| Gate 14.7 | Phase 14 governance lock | ❌ NOT STARTED |
+
+### Documents
+
+| Document | Purpose |
+|----------|---------|
+| `docs/phase-14/Phase_14_Pages_Content_Model.md` | Master planning document |
+| `docs/phase-14/Phase_14A_Execution_Report.md` | Schema execution report |
+| `docs/restore-points/Restore_Point_Phase_14A_Pre_Execution.md` | Pre-execution snapshot |
 
 ---
 
