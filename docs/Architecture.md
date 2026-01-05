@@ -1,7 +1,7 @@
 # Architecture Documentation
 
-**Status:** ✅ PHASE 7 COMPLETE | ✅ PHASE 8 CLOSED | ✅ PHASE 13C COMPLETE | ✅ PHASE 13.1 CLOSED | ✅ PHASE 13.2A CLOSED | ✅ PHASE 13B CLOSED | ✅ PHASE 13D CLOSED | ✅ PHASE 13E.1 COMPLETE  
-**Phase:** Phase 13 — Polish & Enhancements (Phase 13E.1 RLS Verification COMPLETE)
+**Status:** ✅ PHASE 7 COMPLETE | ✅ PHASE 8 CLOSED | ✅ PHASE 13C COMPLETE | ✅ PHASE 13.1 CLOSED | ✅ PHASE 13.2A CLOSED | ✅ PHASE 13B CLOSED | ✅ PHASE 13D CLOSED | ✅ PHASE 13E.1 COMPLETE | ✅ PHASE 13E.2 EXECUTED  
+**Phase:** Phase 13 — Polish & Enhancements (Phase 13E.2 User List Page EXECUTED)
 **Last Updated:** 2026-01-05
 
 ---
@@ -423,6 +423,83 @@ All tables have RLS enabled. Policies use `has_role(auth.uid(), 'admin')` patter
 ### Restore Point
 
 See: `docs/restore-points/Restore_Point_Phase_13E_1_RLS_Verification.md`
+
+---
+
+## Phase 13E.2 — User List Page (EXECUTED)
+
+**Execution Date:** 2026-01-05  
+**Status:** ✅ EXECUTED
+
+### Architecture
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│  Admin UI Layer                                              │
+│    └── Route: /system/users                                  │
+│    └── Navigation: SYSTEM section (before Settings)         │
+│    └── Pattern: Darkone Testimonials/Leads table            │
+├─────────────────────────────────────────────────────────────┤
+│  Component Layer                                             │
+│    └── page.tsx → Table with search, actions                 │
+│    └── useUsers.ts → RPC call + CRUD operations              │
+│    └── UserRoleModal.tsx → Radio buttons for 3 roles         │
+│    └── DeleteUserModal.tsx → Confirmation dialog             │
+├─────────────────────────────────────────────────────────────┤
+│  Database Layer (SECURITY DEFINER)                           │
+│    └── get_admin_user_list() → Joins auth.users, profiles,   │
+│        user_roles with admin check inside function           │
+│    └── No direct client access to auth.users                 │
+└─────────────────────────────────────────────────────────────┘
+```
+
+### Access Control Flow
+
+```
+User requests /system/users
+    │
+    ▼
+Router checks isAuthenticated
+    │ (redirect to /auth/sign-in if not)
+    ▼
+useUsers.ts calls supabase.rpc('get_admin_user_list')
+    │
+    ▼
+get_admin_user_list() checks has_role(auth.uid(), 'admin')
+    │ (throws exception if not admin)
+    ▼
+Returns user list with profiles and roles joined
+```
+
+### Files Created
+
+| File | Purpose |
+|------|---------|
+| `src/app/(admin)/system/users/page.tsx` | User list page |
+| `src/app/(admin)/system/users/hooks/useUsers.ts` | Data hook |
+| `src/app/(admin)/system/users/components/UserRoleModal.tsx` | Role editing |
+| `src/app/(admin)/system/users/components/DeleteUserModal.tsx` | Delete confirm |
+
+### Role Badge Mapping
+
+| Role | Enum Value | Badge Color |
+|------|------------|-------------|
+| Admin | `admin` | danger (red) |
+| Editor | `moderator` | info (blue) |
+| Viewer | `user` | secondary (gray) |
+
+### Guardian Rules Compliance
+
+| Rule | Status |
+|------|--------|
+| Admin UI 1:1 Darkone | ✅ Uses Testimonials/Leads patterns |
+| Public UI 1:1 Finibus | ✅ No public changes |
+| No new dependencies | ✅ Uses existing supabase client |
+| Existing schema preserved | ✅ No enum changes |
+
+### Restore Point
+
+See: `docs/restore-points/Restore_Point_Phase_13E_2_Pre_Execution.md`
 
 ---
 

@@ -1,7 +1,7 @@
 # Backend Documentation
 
-**Status:** ✅ PHASE 7C COMPLETE | ✅ PHASE 13.1 CLOSED | ✅ PHASE 13.2A CLOSED | ✅ PHASE 13B CLOSED | ✅ PHASE 13D CLOSED | ✅ PHASE 13E.1 COMPLETE | 📋 PHASE 14 PLANNED  
-**Phase:** Phase 13E.1 COMPLETE | Phase 13D FORMALLY CLOSED | Phase 13B CLOSED | Phase 13.2A CLOSED | Phase 13.1 CLOSED | Phase 12 CLOSED | Phase 6C Schema ✅ EXECUTED | Phase 5 SEO ✅ EXECUTED | Phase 7A ✅ EXECUTED | Phase 7B ✅ EXECUTED | Phase 7C ✅ EXECUTED | Phase 13C ✅ STATIC DELIVERY | Phase 14 📋 PLANNED  
+**Status:** ✅ PHASE 7C COMPLETE | ✅ PHASE 13.1 CLOSED | ✅ PHASE 13.2A CLOSED | ✅ PHASE 13B CLOSED | ✅ PHASE 13D CLOSED | ✅ PHASE 13E.1 COMPLETE | ✅ PHASE 13E.2 EXECUTED | 📋 PHASE 14 PLANNED  
+**Phase:** Phase 13E.2 EXECUTED | Phase 13E.1 COMPLETE | Phase 13D CLOSED | Phase 13B CLOSED | Phase 13.2A CLOSED | Phase 13.1 CLOSED | Phase 12 CLOSED | Phase 6C Schema ✅ EXECUTED | Phase 5 SEO ✅ EXECUTED | Phase 7A ✅ EXECUTED | Phase 7B ✅ EXECUTED | Phase 7C ✅ EXECUTED | Phase 13C ✅ STATIC DELIVERY | Phase 14 📋 PLANNED  
 **Last Updated:** 2026-01-05
 
 ---
@@ -356,6 +356,117 @@ The helper functions `has_editor_role()` and `has_viewer_role()` exist in the da
 ### Restore Point
 
 See: `docs/restore-points/Restore_Point_Phase_13E_1_RLS_Verification.md`
+
+---
+
+## Phase 13E.2 — User List Page (EXECUTED)
+
+**Execution Date:** 2026-01-05  
+**Status:** ✅ EXECUTED
+
+### Objective
+
+Implement admin-only User List page with role management using SECURITY DEFINER function pattern.
+
+### Database Function Created
+
+```sql
+CREATE OR REPLACE FUNCTION public.get_admin_user_list()
+RETURNS TABLE (
+    user_id UUID,
+    email TEXT,
+    display_name TEXT,
+    avatar_url TEXT,
+    role TEXT,
+    created_at TIMESTAMPTZ,
+    last_sign_in_at TIMESTAMPTZ
+)
+LANGUAGE plpgsql
+SECURITY DEFINER
+SET search_path = public
+AS $$
+BEGIN
+    -- Verify caller is admin
+    IF NOT public.has_role(auth.uid(), 'admin') THEN
+        RAISE EXCEPTION 'Access denied: admin role required';
+    END IF;
+
+    RETURN QUERY
+    SELECT 
+        u.id AS user_id,
+        u.email::TEXT,
+        COALESCE(p.display_name, split_part(u.email, '@', 1))::TEXT AS display_name,
+        p.avatar_url::TEXT,
+        COALESCE(ur.role::TEXT, 'user') AS role,
+        u.created_at,
+        u.last_sign_in_at
+    FROM auth.users u
+    LEFT JOIN public.profiles p ON p.id = u.id
+    LEFT JOIN public.user_roles ur ON ur.user_id = u.id
+    ORDER BY u.created_at DESC;
+END;
+$$;
+```
+
+**Security Notes:**
+- Uses SECURITY DEFINER to access `auth.users` table
+- Admin check enforced inside function (not RLS)
+- Returns only necessary fields (no password hashes, etc.)
+- Fallbacks: display_name from email prefix, role defaults to 'user'
+
+### Files Created
+
+| File | Purpose |
+|------|---------|
+| `src/app/(admin)/system/users/page.tsx` | User list page |
+| `src/app/(admin)/system/users/hooks/useUsers.ts` | Data hook with CRUD operations |
+| `src/app/(admin)/system/users/components/UserRoleModal.tsx` | Edit role modal |
+| `src/app/(admin)/system/users/components/DeleteUserModal.tsx` | Delete confirmation modal |
+
+### Files Modified
+
+| File | Change |
+|------|--------|
+| `src/routes/index.tsx` | Added `/system/users` route |
+| `src/assets/data/menu-items.ts` | Added Users nav item in SYSTEM section |
+
+### Hook Operations
+
+```typescript
+// useUsers.ts exports
+{
+  users: User[],           // List of all users
+  isLoading: boolean,      // Loading state
+  error: string | null,    // Error message
+  updateUserRole: (userId: string, role: UserRole) => Promise<boolean>,
+  deleteUser: (userId: string) => Promise<boolean>,
+  refetch: () => Promise<void>
+}
+```
+
+### Role Management
+
+| Role | Badge Color | Access Level |
+|------|-------------|--------------|
+| `admin` | danger (red) | Full access |
+| `moderator` | info (blue) | Editor — Content + read-only CRM |
+| `user` | secondary (gray) | Viewer — Read-only |
+
+### Access Control
+
+1. **Route Level:** Protected by existing auth guard in `router.tsx`
+2. **Function Level:** `get_admin_user_list()` checks admin role
+3. **CRUD Operations:** `user_roles` table RLS (admin-only manage)
+
+### Limitations (Documented)
+
+- **Delete User:** Only removes profiles + roles data, not auth.users record (requires Edge Function with service_role)
+- **Create User:** Not implemented — Phase 13E.3 scope
+- **Editor/Viewer Access:** Not yet implemented — Phase 13E.5 scope
+
+### Restore Point
+
+See: `docs/restore-points/Restore_Point_Phase_13E_2_Pre_Execution.md`
 
 ---
 

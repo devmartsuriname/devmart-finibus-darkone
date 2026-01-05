@@ -1,8 +1,9 @@
 # Phase 13E — User & Access Completion
 
-**Status:** 📋 PLANNING ONLY — 13E.1 VERIFICATION COMPLETE  
+**Status:** 🔄 IN PROGRESS (13E.1 ✅ COMPLETE | 13E.2 ✅ EXECUTED)  
 **Planning Date:** 2026-01-05  
-**13E.1 Verification Date:** 2026-01-05
+**13E.1 Verification Date:** 2026-01-05  
+**13E.2 Execution Date:** 2026-01-05
 
 ---
 
@@ -199,9 +200,60 @@ See: `docs/restore-points/Restore_Point_Phase_13E_1_RLS_Verification.md`
 
 ---
 
-### 13E.2 — User List Page (PLANNING ONLY)
+### 13E.2 — User List Page ✅ EXECUTED
 
-**Status:** ⏳ NOT AUTHORIZED
+**Execution Date:** 2026-01-05  
+**Status:** ✅ EXECUTED
+
+#### Database Function Created
+
+```sql
+CREATE OR REPLACE FUNCTION public.get_admin_user_list()
+RETURNS TABLE (
+    user_id UUID,
+    email TEXT,
+    display_name TEXT,
+    avatar_url TEXT,
+    role TEXT,
+    created_at TIMESTAMPTZ,
+    last_sign_in_at TIMESTAMPTZ
+)
+LANGUAGE plpgsql
+SECURITY DEFINER
+SET search_path = public
+```
+
+- Admin check enforced inside function
+- Joins auth.users, profiles, user_roles
+- Returns necessary fields only
+
+#### Files Created
+
+| File | Purpose |
+|------|---------|
+| `src/app/(admin)/system/users/page.tsx` | User list page (Darkone pattern) |
+| `src/app/(admin)/system/users/hooks/useUsers.ts` | Data hook with CRUD |
+| `src/app/(admin)/system/users/components/UserRoleModal.tsx` | Edit role modal |
+| `src/app/(admin)/system/users/components/DeleteUserModal.tsx` | Delete confirmation |
+
+#### Files Modified
+
+| File | Change |
+|------|--------|
+| `src/routes/index.tsx` | Added `/system/users` route |
+| `src/assets/data/menu-items.ts` | Added Users nav item |
+
+#### Features Implemented
+
+- User list table with avatar, name, email, role, created, last login
+- Search filter
+- Role badges (Admin=red, Editor=blue, Viewer=gray)
+- Edit role modal with 3 radio options
+- Delete modal with confirmation
+
+#### Restore Point
+
+See: `docs/restore-points/Restore_Point_Phase_13E_2_Pre_Execution.md`
 
 ---
 
@@ -265,25 +317,22 @@ See: `docs/restore-points/Restore_Point_Phase_13E_1_RLS_Verification.md`
 |------|-------------|--------|
 | Gate 13E.0 | Planning approved | ✅ COMPLETE |
 | Gate 13E.1 | RLS Verification (docs only) | ✅ COMPLETE — 2026-01-05 |
-| Gate 13E.2 | User List Page authorized | ⏳ PENDING |
-| Gate 13E.3 | User Creation Flow authorized | ⏳ PENDING |
-| Gate 13E.4 | Role Assignment UI authorized | ⏳ PENDING |
-| Gate 13E.5 | Editor/Viewer RLS Implementation authorized | ⏳ PENDING |
+| Gate 13E.2 | User List Page | ✅ EXECUTED — 2026-01-05 |
+| Gate 13E.3 | User Creation Flow | ⏳ NOT AUTHORIZED |
+| Gate 13E.4 | Role Assignment UI | ✅ INCLUDED IN 13E.2 |
+| Gate 13E.5 | Editor/Viewer RLS Implementation | ⏳ NOT AUTHORIZED |
 | Gate 13E.6 | Phase 13E verification complete | ⏳ PENDING |
 
 ---
 
 ## HARD STOP
 
-**Phase 13E is PLANNING ONLY.**
+**Phase 13E.2 EXECUTED.**
 
-No execution authorized without explicit sub-phase approval.
+Await further instructions before proceeding to Phase 13E.3 (User Creation Flow) or Phase 14.
 
 Do NOT:
-- Create user list page
+- Implement user creation / invite flow
+- Modify RLS policies for editor/viewer
 - Create Edge Functions
-- Modify RLS policies
-- Add navigation items
 - Create test accounts
-
-Await further instructions.
