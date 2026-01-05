@@ -1,16 +1,23 @@
 # Phase 14 — Pages Content Model
 
-**Status:** 📋 PLANNED — NOT AUTHORIZED  
+**Status:** 📋 PLANNING APPROVED — NOT AUTHORIZED FOR EXECUTION  
 **Type:** Schema Extension + Admin UI + Public Frontend Wiring  
-**Last Updated:** 2026-01-03
+**Planning Approved:** 2026-01-05  
+**Last Updated:** 2026-01-05
 
 ---
 
 ## 1. Objective
 
-Wire the 4 legal/static pages (Privacy Policy, Terms of Use, Support Policy, Terms of Service) to the Admin Pages module, enabling content management through a single source of truth.
+Enable CMS-driven content management for all static pages (legal pages, etc.) through the Admin Pages module.
 
-**Goal:** Admin becomes the authoritative source for legal page content and SEO metadata.
+**Goal:** Admin becomes the single source of truth for static page content and SEO metadata.
+
+**Scope:**
+- Wire legal pages (Privacy Policy, Terms of Use, Support Policy, Terms of Service) to database
+- Extend `pages` table with `content` column
+- Add Content tab to PageEditModal for legal pages
+- Preserve 1:1 Finibus visual parity on public frontend
 
 ---
 
@@ -232,13 +239,14 @@ Public Legal Pages (Finibus + react-helmet-async)
 
 | Gate | Description | Status |
 |------|-------------|--------|
-| Gate 14.0 | Phase 14 planning approved | ✅ COMPLETE |
+| Gate 14.0 | Phase 14 planning approved | ✅ COMPLETE (2026-01-05) |
 | Gate 14.1 | Schema migration authorized | ❌ NOT AUTHORIZED |
 | Gate 14.2 | Database seeding authorized | ❌ NOT AUTHORIZED |
 | Gate 14.3 | Admin UI changes authorized | ❌ NOT AUTHORIZED |
 | Gate 14.4 | Frontend wiring authorized | ❌ NOT AUTHORIZED |
-| Gate 14.5 | Phase 14 verification | ❌ NOT STARTED |
-| Gate 14.6 | Phase 14 governance lock | ❌ NOT STARTED |
+| Gate 14.5 | SEO propagation authorized | ❌ NOT AUTHORIZED |
+| Gate 14.6 | Phase 14 verification | ❌ NOT STARTED |
+| Gate 14.7 | Phase 14 governance lock | ❌ NOT STARTED |
 
 ### 8.2 Files to Modify (When Authorized)
 

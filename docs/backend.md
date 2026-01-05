@@ -1,8 +1,64 @@
 # Backend Documentation
 
 **Status:** ✅ PHASE 7C COMPLETE | ✅ PHASE 13.1 CLOSED | ✅ PHASE 13.2A CLOSED | ✅ PHASE 13B CLOSED | ✅ PHASE 13D CLOSED | ✅ PHASE 13E CLOSED | 📋 PHASE 14 PLANNED  
-**Phase:** ✅ PHASE 13E CLOSED | Phase 13D CLOSED | Phase 13B CLOSED | Phase 13.2A CLOSED | Phase 13.1 CLOSED | Phase 12 CLOSED | Phase 6C Schema ✅ EXECUTED | Phase 5 SEO ✅ EXECUTED | Phase 7A ✅ EXECUTED | Phase 7B ✅ EXECUTED | Phase 7C ✅ EXECUTED | Phase 13C ✅ STATIC DELIVERY | Phase 14 📋 PLANNED  
+**Phase:** ✅ PHASE 13E CLOSED | 📋 PHASE 14 PLANNING APPROVED | Phase 13D CLOSED | Phase 13B CLOSED | Phase 13.2A CLOSED | Phase 13.1 CLOSED | Phase 12 CLOSED | Phase 6C Schema ✅ EXECUTED | Phase 5 SEO ✅ EXECUTED | Phase 7A ✅ EXECUTED | Phase 7B ✅ EXECUTED | Phase 7C ✅ EXECUTED | Phase 13C ✅ STATIC DELIVERY  
 **Last Updated:** 2026-01-05
+
+---
+
+## Phase 14 — Pages Content Model (PLANNING APPROVED)
+
+**Planning Date:** 2026-01-05  
+**Status:** 📋 PLANNING APPROVED — NOT AUTHORIZED FOR EXECUTION
+
+### Objective
+
+Enable CMS-driven content management for static pages (legal pages) through the Admin Pages module.
+
+### Proposed Schema Extension
+
+**Add `content` column to `public.pages` table:**
+
+```sql
+-- PLANNING ONLY — NOT EXECUTED
+ALTER TABLE public.pages
+ADD COLUMN content TEXT;
+
+COMMENT ON COLUMN public.pages.content IS 'HTML content body for static pages';
+```
+
+### Proposed Database Records
+
+| slug | title | is_published | content |
+|------|-------|--------------|---------|
+| `privacy-policy` | Privacy Policy | true | (Migrate from hardcoded HTML) |
+| `terms-of-use` | Terms of Use | true | (Migrate from hardcoded HTML) |
+| `support-policy` | Support Policy | true | (Migrate from hardcoded HTML) |
+| `terms-of-service` | Terms of Service | true | (Migrate from hardcoded HTML) |
+
+### Sub-Phases (When Authorized)
+
+| Sub-Phase | Description | Status |
+|-----------|-------------|--------|
+| Phase 14A | Schema Extension (`content` column) | ❌ NOT AUTHORIZED |
+| Phase 14B | Database Seeding (4 legal pages) | ❌ NOT AUTHORIZED |
+| Phase 14C | Admin UI Extension (Content tab) | ❌ NOT AUTHORIZED |
+| Phase 14D | Public Frontend Wiring | ❌ NOT AUTHORIZED |
+| Phase 14E | SEO Propagation | ❌ NOT AUTHORIZED |
+
+### RLS Considerations
+
+Existing RLS policies on `pages` table will apply:
+- Public: SELECT where `is_published = true`
+- Admin: SELECT, UPDATE (no INSERT/DELETE — edit-only module)
+
+No new RLS policies required.
+
+### Planning Document
+
+See: `docs/phase-14/Phase_14_Pages_Content_Model.md`
+
+---
 
 ---
 
