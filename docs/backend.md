@@ -1,8 +1,8 @@
 # Backend Documentation
 
-**Status:** ✅ PHASE 7C COMPLETE | ✅ PHASE 13.1 CLOSED | ✅ PHASE 13.2A CLOSED | 📋 PHASE 14 PLANNED  
-**Phase:** Phase 13.2A CLOSED | Phase 13.1 CLOSED | Phase 12 CLOSED | Phase 6C Schema ✅ EXECUTED | Phase 5 SEO ✅ EXECUTED | Phase 7A ✅ EXECUTED | Phase 7B ✅ EXECUTED | Phase 7C ✅ EXECUTED | Phase 13C ✅ STATIC DELIVERY | Phase 14 📋 PLANNED  
-**Last Updated:** 2026-01-04
+**Status:** ✅ PHASE 7C COMPLETE | ✅ PHASE 13.1 CLOSED | ✅ PHASE 13.2A CLOSED | ✅ PHASE 13B CLOSED | 📋 PHASE 14 PLANNED  
+**Phase:** Phase 13B CLOSED | Phase 13.2A CLOSED | Phase 13.1 CLOSED | Phase 12 CLOSED | Phase 6C Schema ✅ EXECUTED | Phase 5 SEO ✅ EXECUTED | Phase 7A ✅ EXECUTED | Phase 7B ✅ EXECUTED | Phase 7C ✅ EXECUTED | Phase 13C ✅ STATIC DELIVERY | Phase 14 📋 PLANNED  
+**Last Updated:** 2026-01-05
 
 ---
 
@@ -208,6 +208,116 @@ $$;
 ### Restore Point
 
 See: `docs/restore-points/Restore_Point_Phase_13.1_Pre_Execution.md`
+
+---
+
+## Phase 13B — Backend Polish (CLOSED)
+
+**Verification Date:** 2026-01-05  
+**Closure Date:** 2026-01-05  
+**Status:** ✅ COMPLETED (Verification-Only) — FORMALLY CLOSED
+
+### Objective
+
+Verify backend structure, flows, naming conventions, and consistency WITHOUT making any code or schema changes.
+
+### Verification Results
+
+#### 1. Notifications System — VERIFIED
+
+| Component | Status | Details |
+|-----------|--------|---------|
+| `public.notifications` table | ✅ CORRECT | 8 columns, RLS enabled with hardened `WITH CHECK` |
+| Notification types | ✅ CONSISTENT | `new_lead`, `new_quote` — semantic naming |
+| `notify_admins_new_lead()` | ✅ ENABLED | Trigger `on_lead_created` on `public.leads` |
+| `notify_admins_new_quote()` | ✅ ENABLED | Trigger `on_quote_created` on `public.quotes` |
+| Real-time subscription | ✅ CORRECT | `useNotifications.ts` subscribes to INSERT events |
+| UI wiring | ✅ CORRECT | `Notifications.tsx` uses hook, shows unread count |
+
+#### 2. Profile System — VERIFIED
+
+| Component | Status | Details |
+|-----------|--------|---------|
+| `public.profiles` table | ✅ CORRECT | id, display_name, avatar_url, timestamps |
+| Auto-creation trigger | ✅ ENABLED | `on_auth_user_created` on `auth.users` |
+| `handle_new_user()` | ✅ CORRECT | Extracts display_name from metadata or email prefix |
+| RLS policies | ✅ CORRECT | Users can view/update own; Admins can view all |
+| `useProfile.ts` hook | ✅ CORRECT | Fetch, update, displayName fallback logic |
+
+#### 3. Status Field Consistency — VERIFIED
+
+| Table | Status Values | Type |
+|-------|---------------|------|
+| `leads` | new, contacted, qualified, closed | TEXT |
+| `quotes` | pending, reviewed, converted, expired | TEXT |
+| `blog_posts` | draft, published | TEXT |
+| `projects` | draft, published | TEXT |
+| `services` | draft, published | TEXT |
+| `service_pricing_plans` | draft, published | TEXT |
+| `testimonials` | draft, published | TEXT |
+
+#### 4. Helper Functions — VERIFIED
+
+| Function | Purpose | Status |
+|----------|---------|--------|
+| `has_role(_user_id, _role)` | Check if user has specific role | ✅ CORRECT |
+| `has_editor_role(_user_id)` | Check admin OR moderator | ✅ CORRECT |
+| `has_viewer_role(_user_id)` | Check any role (admin/moderator/user) | ✅ CORRECT |
+| `handle_new_user()` | Auto-create profile on signup | ✅ CORRECT |
+| `notify_admins_new_lead()` | Notify admins on new lead | ✅ CORRECT |
+| `notify_admins_new_quote()` | Notify admins on new quote | ✅ CORRECT |
+| `update_updated_at_column()` | Auto-update timestamp | ✅ CORRECT |
+| `prevent_slug_change()` | Immutable slug protection | ✅ CORRECT |
+
+All functions use `SECURITY DEFINER` and `SET search_path = public`.
+
+#### 5. Trigger Inventory (28 Total) — VERIFIED
+
+**Notification Triggers:** `on_lead_created`, `on_quote_created`, `on_auth_user_created`
+**Updated_at Triggers:** All content tables have `update_*_updated_at` triggers enabled
+**Slug Protection:** `pages_prevent_slug_change` enabled
+
+#### 6. Role Model — VERIFIED
+
+| Enum Value | Mapped Role | Access Level |
+|------------|-------------|--------------|
+| `admin` | Admin | Full access |
+| `moderator` | Editor | Content + read-only CRM |
+| `user` | Viewer | Read-only |
+
+#### 7. RLS Policy Audit — VERIFIED
+
+**Supabase Linter Result:** No issues found
+
+### Deferred Items (Explicitly OUT OF SCOPE)
+
+| Item | Reason | Deferred To |
+|------|--------|-------------|
+| User Management module | Not part of Phase 13B | Future backend phase |
+| Email/WhatsApp notifications | External provider integration | Phase 7D |
+| Profile auto-creation testing | Requires new user signup | Future verification |
+| Editor/Viewer RLS testing | Requires multi-user environment | Future verification |
+| Notification preferences UI | New feature | Out of scope |
+
+### Compliance Statement
+
+| Rule | Status |
+|------|--------|
+| No code changes made | ✅ VERIFIED |
+| No DB migrations | ✅ VERIFIED |
+| No RLS changes | ✅ VERIFIED |
+| No UI changes | ✅ VERIFIED |
+| No public frontend changes | ✅ VERIFIED |
+| No Phase 14 work | ✅ VERIFIED |
+| Darkone 1:1 preserved | ✅ VERIFIED |
+
+### Closure Statement
+
+**"No implementation work was performed during Phase 13B. This was a verification-only phase. All backend components passed inspection with no issues requiring remediation."**
+
+### Restore Point
+
+See: `docs/restore-points/Restore_Point_Phase_13B_Backend_Polish_Verification.md`
 
 ---
 
